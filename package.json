@@ -9,7 +9,8 @@
     "ingest": "tsx scripts/ingest.ts",
     "query": "tsx scripts/query.ts",
     "ask": "tsx scripts/ask.ts",
-    "eval": "tsx evals/run.ts"
+    "eval": "tsx evals/run.ts",
+    "test": "node --import tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
