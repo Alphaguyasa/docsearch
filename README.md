@@ -127,6 +127,38 @@ definitions in [`evals/README.md`](evals/README.md).
 - **Refusal:** all five unanswerable questions refuse with no citation markers
   (`npm run ask -- --refusals`).
 
+## Deploying (Vercel)
+
+Prerequisites: a Supabase project with `schema.sql` applied, and your API keys.
+The app reads all secrets from environment variables — nothing is baked into the
+build.
+
+Using the Vercel CLI (no GitHub repo required):
+
+```bash
+npm i -g vercel && vercel login
+vercel link                                  # create/link the project
+# Add each secret (you'll be prompted for the value):
+vercel env add SUPABASE_URL production
+vercel env add SUPABASE_SERVICE_ROLE_KEY production
+vercel env add VOYAGE_API_KEY production
+vercel env add GENERATION_PROVIDER production   # anthropic | gemini
+vercel env add GEMINI_API_KEY production        # or ANTHROPIC_API_KEY
+vercel env add APP_PASSWORD production           # strongly recommended (see below)
+vercel --prod                                    # build + deploy
+```
+
+Or via GitHub: create a repo, push, import it in the Vercel dashboard, set the
+same variables under **Settings → Environment Variables**, and deploy.
+
+- **Set `APP_PASSWORD`.** Without it the deployment is open to anyone with the
+  URL, and uploads/searches cost embedding and LLM tokens. With it set, the whole
+  app requires HTTP Basic auth (any username, that password).
+- The private `documents` Storage bucket is created automatically on the first
+  upload — no manual step.
+- The Voyage free tier (3 embeddings/min) throttles ingestion and hybrid search;
+  hybrid degrades to keyword-only when the limit is hit.
+
 ## Limitations
 
 - **Small, saturated eval set.** 35 answerable questions with recall@5 already at
