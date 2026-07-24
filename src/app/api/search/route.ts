@@ -19,8 +19,11 @@
  *                                        after the stream has already started
  *
  * Each entry in "chunks" is:
- *   { n, id, title, filename, pageNumber, content }
- * where `n` is the 1-based citation number the answer's [n] markers refer to.
+ *   { n, id, title, filename, pageNumber, content,
+ *     fusedScore, vectorScore, keywordScore }
+ * where `n` is the 1-based citation number the answer's [n] markers refer to,
+ * and the scores are the retrieval signals (fusedScore is the RRF rank; the
+ * per-arm scores are null when that arm did not surface the chunk).
  *
  * Note: once the 200 stream has opened the status can no longer change, so a
  * mid-stream generation failure surfaces as a terminal {"type":"error"} line
@@ -53,16 +56,28 @@ function line(message: SearchStreamMessage): string {
   return JSON.stringify(message) + "\n";
 }
 
+/** The wire shape of a "sources" entry: the base contract plus retrieval scores. */
+type WireSource = SourceChunk & {
+  fusedScore: number;
+  vectorScore: number | null;
+  keywordScore: number | null;
+};
+
 function sourceLine(chunks: RetrievedChunk[]): string {
-  const sources: SourceChunk[] = chunks.map((chunk, i) => ({
+  const sources: WireSource[] = chunks.map((chunk, i) => ({
     n: i + 1,
     id: chunk.id,
     title: chunk.title,
     filename: chunk.filename,
     pageNumber: chunk.pageNumber,
     content: chunk.content,
+    fusedScore: chunk.fusedScore,
+    vectorScore: chunk.vectorScore,
+    keywordScore: chunk.keywordScore,
   }));
-  return line({ type: "sources", chunks: sources });
+  // Emitted directly (not via line()) because the enriched entry is a superset
+  // of the base SearchStreamMessage "sources" shape.
+  return JSON.stringify({ type: "sources", chunks: sources }) + "\n";
 }
 
 export async function POST(request: Request): Promise<Response> {
