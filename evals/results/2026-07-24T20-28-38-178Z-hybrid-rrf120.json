@@ -1,0 +1,1051 @@
+{
+  "mode": "hybrid",
+  "label": "rrf120",
+  "timestamp": "2026-07-24T20-28-38-178Z",
+  "delayMs": 22000,
+  "counts": {
+    "total": 40,
+    "answerable": 35,
+    "unanswerable": 5,
+    "degraded": 0
+  },
+  "overall": {
+    "n": 35,
+    "recallAt1": 0.8857142857142857,
+    "recallAt5": 1,
+    "recallAt10": 1,
+    "mrr": 0.9295238095238094
+  },
+  "byDifficulty": {
+    "easy": {
+      "n": 10,
+      "recallAt1": 1,
+      "recallAt5": 1,
+      "recallAt10": 1,
+      "mrr": 1
+    },
+    "hard": {
+      "n": 7,
+      "recallAt1": 0.8571428571428571,
+      "recallAt5": 1,
+      "recallAt10": 1,
+      "mrr": 0.9047619047619049
+    },
+    "medium": {
+      "n": 18,
+      "recallAt1": 0.8333333333333334,
+      "recallAt5": 1,
+      "recallAt10": 1,
+      "mrr": 0.8999999999999999
+    }
+  },
+  "misses": [],
+  "perQuestion": [
+    {
+      "id": "q01",
+      "difficulty": "easy",
+      "question": "How many days of paid annual leave do full-time employees get?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "difficulty": "easy",
+      "question": "What happens to annual leave days I carry over if I do not use them?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "difficulty": "easy",
+      "question": "How long is parental leave for the secondary caregiver?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 5
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "difficulty": "medium",
+      "question": "Who has to approve a 900 unit expense before I incur it?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "difficulty": "medium",
+      "question": "Can I fly business class on a nine-hour flight?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "difficulty": "easy",
+      "question": "How quickly must I report a stolen work laptop?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "difficulty": "medium",
+      "question": "How long is the notice period for a manager who resigns?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        6
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "difficulty": "medium",
+      "question": "When do I become eligible for share options and when do they vest?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        6
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "difficulty": "hard",
+      "question": "What is the difference between the leave I can carry over and what gets paid out when I leave?",
+      "expected_doc": "meridian-employee-handbook.pdf",
+      "expected_pages": [
+        3,
+        6
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "difficulty": "easy",
+      "question": "How often should Atlas API keys be rotated?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        2
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 5
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "difficulty": "medium",
+      "question": "What error do I get if I use a test key against production?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        2
+      ],
+      "firstHitRank": 2,
+      "hitAt1": false,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 1
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "difficulty": "medium",
+      "question": "Does the Atlas API support offset pagination?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 1
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "difficulty": "easy",
+      "question": "How long are idempotency records kept?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "difficulty": "medium",
+      "question": "What is the rate limit and how do I raise it?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "difficulty": "medium",
+      "question": "How do I verify a webhook signature correctly?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "difficulty": "hard",
+      "question": "Can I refund a charge from a year ago through the API?",
+      "expected_doc": "atlas-payments-api-reference.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 1
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "difficulty": "easy",
+      "question": "How much did yields improve with drip irrigation plus scheduling?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        1,
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "difficulty": "hard",
+      "question": "Why did arm B save almost no water despite better hardware?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 6
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "difficulty": "medium",
+      "question": "How many plots completed the pilot and why did some drop out?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 6
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "difficulty": "medium",
+      "question": "How many growing seasons does it take arm C to recover its capital cost?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "difficulty": "hard",
+      "question": "What is the biggest weakness of this study?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 3,
+      "hitAt1": false,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 5
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "difficulty": "medium",
+      "question": "Why was the shared ownership question dropped?",
+      "expected_doc": "kabaro-irrigation-pilot-report.pdf",
+      "expected_pages": [
+        2
+      ],
+      "firstHitRank": 2,
+      "hitAt1": false,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 6
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 1
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "difficulty": "easy",
+      "question": "What does error E07 mean on the Helix 3000?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "difficulty": "medium",
+      "question": "How often does the pH sensor need calibrating and with which buffers?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        3
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "difficulty": "medium",
+      "question": "My turbidity readings are slowly climbing over several days. What is likely wrong?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 5,
+      "hitAt1": false,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "difficulty": "medium",
+      "question": "How should I store the pH sensor between deployments?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "difficulty": "easy",
+      "question": "Is the battery covered by the warranty?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 5
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 3
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "difficulty": "hard",
+      "question": "Why might a logger show intermittent high turbidity spikes right after installation?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        2,
+        5
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 3
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "difficulty": "medium",
+      "question": "Why did gross margin fall in Q4 2024?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        2
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 5
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "difficulty": "medium",
+      "question": "Did the board approve the Underwood depot expansion?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        3,
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 3
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 2
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "difficulty": "medium",
+      "question": "Who owns the action about indexation clauses and when is it due?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 6
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "difficulty": "easy",
+      "question": "When and where is the next board meeting?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 3
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "difficulty": "medium",
+      "question": "What is the budget and deadline for the second-source programme?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "kabaro-irrigation-pilot-report.pdf",
+          "pageNumber": 2
+        },
+        {
+          "filename": "atlas-payments-api-reference.pdf",
+          "pageNumber": 4
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "difficulty": "hard",
+      "question": "Which handbook revision did the board approve, and when did it take effect?",
+      "expected_doc": "meridian-board-minutes-q1-2025.pdf",
+      "expected_pages": [
+        4
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "meridian-employee-handbook.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "meridian-board-minutes-q1-2025.pdf",
+          "pageNumber": 3
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "difficulty": "hard",
+      "question": "Which company makes the Helix 3000?",
+      "expected_doc": "helix-3000-operator-manual.pdf",
+      "expected_pages": [
+        1
+      ],
+      "firstHitRank": 1,
+      "hitAt1": true,
+      "hitAt5": true,
+      "hitAt10": true,
+      "degraded": false,
+      "topReturned": [
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 1
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 4
+        },
+        {
+          "filename": "helix-3000-operator-manual.pdf",
+          "pageNumber": 2
+        }
+      ]
+    }
+  ],
+  "unanswerable": [
+    {
+      "id": "u01",
+      "question": "What is Meridian Systems' policy on pet insurance?"
+    },
+    {
+      "id": "u02",
+      "question": "What is the Atlas API's GraphQL endpoint?"
+    },
+    {
+      "id": "u03",
+      "question": "What was the maize yield in the Kabaro pilot?"
+    },
+    {
+      "id": "u04",
+      "question": "What is the Helix 3000's dissolved oxygen accuracy?"
+    },
+    {
+      "id": "u05",
+      "question": "How much did Meridian Systems pay its auditor in 2024?"
+    }
+  ]
+}
