@@ -25,5 +25,6 @@ export interface DocumentSummary {
   chunk_count: number;
   byte_size: number | null;
   status: string;
+  error: string | null;
   created_at: string;
 }

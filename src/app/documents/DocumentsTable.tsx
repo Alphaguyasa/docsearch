@@ -48,6 +48,7 @@ export function DocumentsTable({ documents }: { documents: DocumentSummary[] }) 
             <th className="py-2 pr-3 font-medium">File</th>
             <th className="py-2 pr-3 text-right font-medium">Pages</th>
             <th className="py-2 pr-3 text-right font-medium">Chunks</th>
+            <th className="py-2 pr-3 font-medium">Status</th>
             <th className="py-2 font-medium" />
           </tr>
         </thead>
@@ -58,6 +59,20 @@ export function DocumentsTable({ documents }: { documents: DocumentSummary[] }) 
               <td className="py-2 pr-3 font-mono text-xs text-muted">{d.filename}</td>
               <td className="py-2 pr-3 text-right font-mono">{d.page_count ?? "—"}</td>
               <td className="py-2 pr-3 text-right font-mono">{d.chunk_count}</td>
+              <td className="py-2 pr-3">
+                <span
+                  title={d.error ?? undefined}
+                  className={`font-mono text-xs ${
+                    d.status === "failed"
+                      ? "text-red-600 dark:text-red-400"
+                      : d.status === "complete"
+                        ? "text-muted"
+                        : "text-accent"
+                  }`}
+                >
+                  {d.status}
+                </span>
+              </td>
               <td className="py-2 text-right">
                 {confirmId === d.id ? (
                   <span className="inline-flex items-center gap-2">

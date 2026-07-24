@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import type { DocumentSummary } from "@/app/types";
 
 import { DocumentsTable } from "./DocumentsTable";
+import { Uploader } from "./Uploader";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ interface DocRow {
   page_count: number | null;
   byte_size: number | null;
   status: string;
+  error: string | null;
   created_at: string;
   chunks: { count: number }[];
 }
@@ -25,7 +27,7 @@ interface DocRow {
 export default async function DocumentsPage() {
   const { data, error } = await db
     .from("documents")
-    .select("id,title,filename,page_count,byte_size,status,created_at,chunks(count)")
+    .select("id,title,filename,page_count,byte_size,status,error,created_at,chunks(count)")
     .order("created_at", { ascending: false })
     .returns<DocRow[]>();
 
@@ -52,6 +54,7 @@ function DocumentsView({ data }: { data: DocRow[] }) {
     page_count: d.page_count,
     byte_size: d.byte_size,
     status: d.status,
+    error: d.error,
     created_at: d.created_at,
     chunk_count: d.chunks?.[0]?.count ?? 0,
   }));
@@ -62,6 +65,7 @@ function DocumentsView({ data }: { data: DocRow[] }) {
         {documents.length} document{documents.length === 1 ? "" : "s"} in the corpus.
       </p>
       <div className="mt-6">
+        <Uploader />
         <DocumentsTable documents={documents} />
       </div>
     </>

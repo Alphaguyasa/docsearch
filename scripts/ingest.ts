@@ -12,17 +12,13 @@
 import { readdir, readFile } from "node:fs/promises";
 import { basename, extname, join } from "node:path";
 
-import { extractText } from "unpdf";
-
 import {
   chunkPages,
   stripRepeatedLines,
   type Chunk,
   type Page,
 } from "../src/lib/chunk";
-
-const MIN_PAGE_CHARS = 50; // pages shorter than this are likely scanned images
-const CHUNK_INSERT_BATCH = 500;
+import { extractPdf, insertChunks } from "../src/lib/pipeline";
 
 // Lazily-loaded module types (imported only on the live path, see main()).
 type Db = typeof import("../src/lib/db").db;
@@ -81,18 +77,7 @@ async function parseFile(path: string, stripRepeated: boolean): Promise<ParsedFi
   // byte_size is REQUIRED: the unique (filename, byte_size) index depends on it.
   const byteSize = bytes.byteLength;
 
-  const { totalPages, text } = await extractText(new Uint8Array(bytes), {
-    mergePages: false,
-  });
-
-  const kept: Page[] = [];
-  const skipped: number[] = [];
-  text.forEach((pageText, i) => {
-    const pageNumber = i + 1; // 1-based; this is the citation later
-    if (pageText.trim().length < MIN_PAGE_CHARS) skipped.push(pageNumber);
-    else kept.push({ pageNumber, text: pageText });
-  });
-
+  const { totalPages, pages: kept, skipped } = await extractPdf(new Uint8Array(bytes));
   const pages = stripRepeated ? stripRepeatedLines(kept) : kept;
   return { filename, byteSize, totalPages, pages, skipped };
 }
@@ -151,24 +136,7 @@ async function storeFile(
     .single();
   if (doc.error) throw new Error(`Insert failed for ${parsed.filename}: ${doc.error.message}`);
 
-  const rows = chunks.map((c, i) => ({
-    document_id: doc.data.id,
-    content: c.content,
-    page_number: c.pageNumber,
-    chunk_index: i,
-    token_count: c.tokenCount,
-    // pgvector wants the "[1,2,3]" text form; a raw JS array serializes to a
-    // Postgres array literal ("{1,2,3}") and fails to cast.
-    embedding: JSON.stringify(embeddings[i]),
-  }));
-
-  for (let i = 0; i < rows.length; i += CHUNK_INSERT_BATCH) {
-    const ins = await db.from("chunks").insert(rows.slice(i, i + CHUNK_INSERT_BATCH));
-    if (ins.error) {
-      throw new Error(`Chunk insert failed for ${parsed.filename}: ${ins.error.message}`);
-    }
-  }
-
+  await insertChunks(db, doc.data.id, chunks, embeddings);
   return "ingested";
 }
 
@@ -207,7 +175,7 @@ async function main(): Promise<void> {
 
     for (const p of parsed.skipped) {
       console.warn(
-        `  ${parsed.filename}: page ${p} under ${MIN_PAGE_CHARS} chars — likely scanned, skipped`,
+        `  ${parsed.filename}: page ${p} has too little text — likely scanned, skipped`,
       );
     }
 
