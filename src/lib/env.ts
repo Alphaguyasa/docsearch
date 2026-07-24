@@ -10,14 +10,43 @@
  */
 import { z } from "zod";
 
-const envSchema = z.object({
-  SUPABASE_URL: z.string().url("must be a valid URL"),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, "must not be empty"),
-  ANTHROPIC_API_KEY: z.string().min(1, "must not be empty"),
-  VOYAGE_API_KEY: z.string().min(1, "must not be empty"),
-});
+/**
+ * Which generation backend src/lib/llm.ts uses. The two generation API keys are
+ * validated conditionally below: only the selected provider's key is required,
+ * so a Gemini-only deployment needs no Anthropic key and vice versa.
+ */
+const generationProvider = z.enum(["anthropic", "gemini"]);
+
+const envSchema = z
+  .object({
+    SUPABASE_URL: z.string().url("must be a valid URL"),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, "must not be empty"),
+    VOYAGE_API_KEY: z.string().min(1, "must not be empty"),
+    // Generation keys are optional at the schema level; the superRefine below
+    // requires whichever one GENERATION_PROVIDER selects.
+    ANTHROPIC_API_KEY: z.string().min(1, "must not be empty").optional(),
+    GEMINI_API_KEY: z.string().min(1, "must not be empty").optional(),
+    GENERATION_PROVIDER: generationProvider.default("anthropic"),
+  })
+  .superRefine((val, ctx) => {
+    if (val.GENERATION_PROVIDER === "anthropic" && !val.ANTHROPIC_API_KEY) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["ANTHROPIC_API_KEY"],
+        message: "required when GENERATION_PROVIDER=anthropic",
+      });
+    }
+    if (val.GENERATION_PROVIDER === "gemini" && !val.GEMINI_API_KEY) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["GEMINI_API_KEY"],
+        message: "required when GENERATION_PROVIDER=gemini",
+      });
+    }
+  });
 
 export type Config = z.infer<typeof envSchema>;
+export type GenerationProvider = z.infer<typeof generationProvider>;
 
 const parsed = envSchema.safeParse(process.env);
 
