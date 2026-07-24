@@ -15,6 +15,7 @@ interface DocRow {
   page_count: number | null;
   byte_size: number | null;
   status: string;
+  error: string | null;
   created_at: string;
   chunks: { count: number }[];
 }
@@ -22,7 +23,7 @@ interface DocRow {
 export async function GET(): Promise<Response> {
   const { data, error } = await db
     .from("documents")
-    .select("id,title,filename,page_count,byte_size,status,created_at,chunks(count)")
+    .select("id,title,filename,page_count,byte_size,status,error,created_at,chunks(count)")
     .order("created_at", { ascending: false })
     .returns<DocRow[]>();
 
@@ -37,6 +38,7 @@ export async function GET(): Promise<Response> {
     page_count: d.page_count,
     byte_size: d.byte_size,
     status: d.status,
+    error: d.error,
     created_at: d.created_at,
     chunk_count: d.chunks?.[0]?.count ?? 0,
   }));

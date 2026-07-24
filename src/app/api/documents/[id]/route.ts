@@ -7,6 +7,8 @@
  */
 import { db } from "@/lib/db";
 
+const BUCKET = "documents";
+
 export async function DELETE(
   _request: Request,
   ctx: { params: Promise<{ id: string }> },
@@ -20,6 +22,10 @@ export async function DELETE(
   if (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
+
+  // Best-effort: remove the uploaded PDF from Storage. CLI-ingested documents
+  // have no stored object; remove() is a no-op for a missing key.
+  await db.storage.from(BUCKET).remove([`${id}.pdf`]);
 
   return new Response(null, { status: 204 });
 }
