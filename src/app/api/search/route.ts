@@ -31,6 +31,7 @@ import { z } from "zod";
 import { streamAnswer } from "@/lib/answer";
 import { retrieve } from "@/lib/retrieve";
 import type { RetrievedChunk } from "@/lib/retrieve";
+import type { SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
 
 const requestSchema = z.object({
   question: z
@@ -47,8 +48,13 @@ function errorResponse(message: string, status: number): Response {
   });
 }
 
+/** Serialize one contract message as an NDJSON line (typed against the shared contract). */
+function line(message: SearchStreamMessage): string {
+  return JSON.stringify(message) + "\n";
+}
+
 function sourceLine(chunks: RetrievedChunk[]): string {
-  const sources = chunks.map((chunk, i) => ({
+  const sources: SourceChunk[] = chunks.map((chunk, i) => ({
     n: i + 1,
     id: chunk.id,
     title: chunk.title,
@@ -56,7 +62,7 @@ function sourceLine(chunks: RetrievedChunk[]): string {
     pageNumber: chunk.pageNumber,
     content: chunk.content,
   }));
-  return JSON.stringify({ type: "sources", chunks: sources }) + "\n";
+  return line({ type: "sources", chunks: sources });
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -92,19 +98,15 @@ export async function POST(request: Request): Promise<Response> {
         controller.enqueue(encoder.encode(sourceLine(chunks)));
 
         for await (const text of streamAnswer(question, chunks)) {
-          controller.enqueue(
-            encoder.encode(JSON.stringify({ type: "delta", text }) + "\n"),
-          );
+          controller.enqueue(encoder.encode(line({ type: "delta", text })));
         }
 
-        controller.enqueue(encoder.encode(JSON.stringify({ type: "done" }) + "\n"));
+        controller.enqueue(encoder.encode(line({ type: "done" })));
       } catch (err) {
         // The status is already committed (200); report the failure in-band as
         // the terminal line instead of a "done".
         controller.enqueue(
-          encoder.encode(
-            JSON.stringify({ type: "error", message: errorMessage(err) }) + "\n",
-          ),
+          encoder.encode(line({ type: "error", message: errorMessage(err) })),
         );
       } finally {
         controller.close();
