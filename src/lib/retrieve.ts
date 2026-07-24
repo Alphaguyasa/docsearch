@@ -149,9 +149,17 @@ async function vectorSearch(embedding: number[]): Promise<SearchHit[]> {
   }));
 }
 
+// keyword_chunks runs websearch_to_tsquery, which ANDs every word — so a full
+// natural-language question matches nothing (no single chunk contains all its
+// words). Joining the words with OR lets partial matches survive; ts_rank still
+// ranks a chunk that hits more terms highest. "OR" is websearch's OR operator.
+function toOrQuery(query: string): string {
+  return query.trim().split(/\s+/).filter(Boolean).join(" OR ");
+}
+
 async function keywordSearch(query: string): Promise<SearchHit[]> {
   const { data, error } = await db.rpc("keyword_chunks", {
-    query_text: query,
+    query_text: toOrQuery(query),
     match_count: SEARCH_TOP,
   });
   if (error) throw new Error(error.message);
