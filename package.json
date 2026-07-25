@@ -17,7 +17,9 @@
     "eval:validate": "tsx scripts/validate-golden-set.ts",
     "test": "node --import tsx --test \"tests/**/*.test.ts\"",
     "test:eval": "vitest run",
-    "test:eval:cov": "vitest run --coverage"
+    "test:eval:cov": "vitest run --coverage",
+    "eval:calibrate": "tsx scripts/calibrate-judge.ts",
+    "eval:judge-smoke": "tsx scripts/judge-smoke.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
