@@ -27,6 +27,11 @@ const envSchema = z
     ANTHROPIC_API_KEY: z.string().min(1, "must not be empty").optional(),
     GEMINI_API_KEY: z.string().min(1, "must not be empty").optional(),
     GENERATION_PROVIDER: generationProvider.default("anthropic"),
+    // Voyage throughput limits. The defaults are the free-tier allowance for an
+    // account with no payment method; raise them here rather than in code once
+    // the account is upgraded.
+    VOYAGE_RPM: z.coerce.number().int().positive().default(3),
+    VOYAGE_TPM: z.coerce.number().int().positive().default(10_000),
   })
   .superRefine((val, ctx) => {
     if (val.GENERATION_PROVIDER === "anthropic" && !val.ANTHROPIC_API_KEY) {

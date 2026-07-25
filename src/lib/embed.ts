@@ -3,7 +3,9 @@
  * convention. Reads VOYAGE_API_KEY through the validated config. Never import
  * this module into a client component.
  */
+import { countTokens } from "./chunk";
 import { config } from "./env";
+import { batchByTokens, RateLimiter } from "./ratelimit";
 
 const VOYAGE_URL = "https://api.voyageai.com/v1/embeddings";
 
@@ -25,6 +27,48 @@ const MODEL = "voyage-4";
 const EXPECTED_DIM = 1024; // must match the schema's vector(1024) column
 const BATCH_SIZE = 100;
 const MAX_RETRIES = 5;
+
+/**
+ * Target tokens per request.
+ *
+ * On a free account the binding constraint is 3 requests/min against 10,000
+ * tokens/min — so a request carrying one 200-token chunk burns a third of the
+ * minute's request budget to move 2% of its token budget. Packing to ~3,000
+ * tokens spends all three slots against the full token allowance instead.
+ *
+ * Kept below the per-minute token budget so a single batch is always sendable.
+ */
+const MAX_BATCH_TOKENS = 3_000;
+
+/** First 429 backoff. Deliberately long: at 3 rpm a shorter wait just 429s again. */
+const BASE_429_BACKOFF_MS = 20_000;
+
+/**
+ * One limiter per process, shared by ingestion and live queries — they draw on
+ * the same account allowance, so separate limiters would together exceed it.
+ */
+let limiter: RateLimiter | null = null;
+function getLimiter(): RateLimiter {
+  if (!limiter) {
+    limiter = new RateLimiter({ rpm: config.VOYAGE_RPM, tpm: config.VOYAGE_TPM });
+  }
+  return limiter;
+}
+
+/** Progress/ETA reporting for long ingests. */
+export function limiterState(): {
+  requestsMade: number;
+  tokensSpent: number;
+  totalWaitedMs: number;
+} {
+  const { requestsMade, tokensSpent, totalWaitedMs } = getLimiter().state;
+  return { requestsMade, tokensSpent, totalWaitedMs };
+}
+
+/** Lower bound on how long `tokens` more tokens will take, given the limits. */
+export function estimateRemainingMs(tokens: number, requests: number): number {
+  return getLimiter().estimateRemainingMs(tokens, requests);
+}
 
 // Voyage distinguishes the two sides of the search. Documents are embedded at
 // ingestion as "document"; the live query is embedded as "query". Using the
@@ -55,17 +99,25 @@ export async function embedQuery(text: string): Promise<number[]> {
 }
 
 async function embed(texts: string[], inputType: InputType): Promise<number[][]> {
+  // Pack by TOKENS, not item count: the request budget is the scarce resource,
+  // so each request should carry as much of the token allowance as it can.
+  const batches = batchByTokens(texts, countTokens, MAX_BATCH_TOKENS, BATCH_SIZE);
+
   const out: number[][] = [];
-  for (let i = 0; i < texts.length; i += BATCH_SIZE) {
-    const batch = texts.slice(i, i + BATCH_SIZE);
+  for (const batch of batches) {
     out.push(...(await embedBatch(batch, inputType)));
   }
   return out;
 }
 
 async function embedBatch(input: string[], inputType: InputType): Promise<number[][]> {
-  // Retry on 429 and 5xx with exponential backoff + jitter, up to MAX_RETRIES.
+  const batchTokens = input.reduce((sum, text) => sum + countTokens(text), 0);
+
   for (let attempt = 0; ; attempt++) {
+    // Wait for BOTH a request slot and the token budget before every attempt,
+    // including retries — a retry is another request against the same limits.
+    await getLimiter().acquire(batchTokens);
+
     let res: Response;
     try {
       res = await fetch(VOYAGE_URL, {
@@ -82,9 +134,13 @@ async function embedBatch(input: string[], inputType: InputType): Promise<number
         }),
       });
     } catch (err) {
-      // Network-level failure — treat as transient.
       if (attempt >= MAX_RETRIES) throw err;
-      await sleep(backoffMs(attempt));
+      const waitMs = backoffMs(attempt);
+      console.warn(
+        `  [embed] network error (attempt ${attempt + 1}/${MAX_RETRIES + 1}) — ` +
+          `retrying in ${Math.round(waitMs / 1000)}s`,
+      );
+      await sleep(waitMs);
       continue;
     }
 
@@ -102,12 +158,23 @@ async function embedBatch(input: string[], inputType: InputType): Promise<number
       );
     }
 
-    // Honor Retry-After on 429 when present; otherwise exponential backoff.
+    // Honour Retry-After when present; otherwise exponential from 20s. A
+    // shorter first backoff is pointless at 3 requests/min — the next call
+    // would simply 429 again.
     const retryAfter = Number(res.headers.get("retry-after"));
-    const waitMs =
-      res.status === 429 && Number.isFinite(retryAfter) && retryAfter > 0
-        ? retryAfter * 1000
-        : backoffMs(attempt);
+    const honoured = res.status === 429 && Number.isFinite(retryAfter) && retryAfter > 0;
+    const waitMs = honoured ? retryAfter * 1000 : backoffMs(attempt);
+
+    console.warn(
+      `  [embed] ${res.status} (attempt ${attempt + 1}/${MAX_RETRIES + 1}) — ` +
+        `waiting ${Math.round(waitMs / 1000)}s` +
+        (honoured ? " (Retry-After)" : "") +
+        `, ${input.length} chunk(s) / ${batchTokens} tokens`,
+    );
+
+    // Drain the buckets too: the provider has just told us we are over the
+    // limit, so the local accounting is optimistic and must catch up.
+    getLimiter().penalise(waitMs);
     await sleep(waitMs);
   }
 }
@@ -132,8 +199,9 @@ function parseVectors(json: VoyageResponse, expectedCount: number): number[][] {
   });
 }
 
+/** 20s, 40s, 80s, 160s, 320s (+jitter). Sized for a 3 requests/min account. */
 function backoffMs(attempt: number): number {
-  return 500 * 2 ** attempt + Math.random() * 250; // 0.5s, 1s, 2s, 4s, 8s (+jitter)
+  return BASE_429_BACKOFF_MS * 2 ** attempt + Math.random() * 1000;
 }
 
 function sleep(ms: number): Promise<void> {
