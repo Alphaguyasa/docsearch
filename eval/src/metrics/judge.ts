@@ -215,7 +215,13 @@ async function judgeCall<T>(
           prompt,
           attempt,
         },
-        () => provider.complete(prompt, { system, json: true, maxTokens: 2048 }),
+        () =>
+          provider.complete(prompt, {
+            system,
+            json: true,
+            maxTokens: 2048,
+            temperature: JUDGE_TEMPERATURE,
+          }),
       );
       return { ok: true, value: parse(res.text) };
     } catch (err) {
