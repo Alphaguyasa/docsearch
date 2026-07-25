@@ -20,7 +20,7 @@
  */
 import "../src/lib/loadenv"; // must precede modules that read env
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { cacheStats, setCacheEnabled } from "../eval/src/cache";
@@ -38,6 +38,11 @@ import {
   parseJsonObject,
   QuotaExhaustedError,
 } from "../eval/src/provider";
+import {
+  buildIdf,
+  triageCandidates,
+  type TriageResult,
+} from "../eval/src/triage";
 import type { Difficulty, Question, QuestionType } from "../eval/src/types";
 
 /**
@@ -55,6 +60,7 @@ function flush(): void {
 }
 
 const OUT_FILE = "eval/golden/questions.candidate.jsonl";
+const ACCEPTED_FILE = "eval/golden/questions.jsonl";
 
 /**
  * Target mix from the composition table in docs/EVAL_HARNESS.md, as a fraction
@@ -70,12 +76,24 @@ const TARGET_MIX: Record<QuestionType, number> = {
   paraphrase: 15,
 };
 
+/**
+ * Triage thresholds. Advisory only — these change the review ORDER and add a
+ * warning label, never the outcome. Both are tunable per run.
+ *
+ * The lexical default is calibrated against real generations rather than picked
+ * round: see eval/src/triage.ts for what the score measures.
+ */
+const DEFAULT_LEXICAL_THRESHOLD = 0.5;
+const DEFAULT_DUPLICATE_THRESHOLD = 0.9;
+
 interface Args {
   perDoc: number;
   seed: number;
   provider: string | undefined;
   useCache: boolean;
   target: number;
+  lexicalThreshold: number;
+  duplicateThreshold: number;
 }
 
 function parseArgs(argv: string[]): Args {
@@ -85,6 +103,8 @@ function parseArgs(argv: string[]): Args {
     provider: undefined,
     useCache: true,
     target: 100,
+    lexicalThreshold: DEFAULT_LEXICAL_THRESHOLD,
+    duplicateThreshold: DEFAULT_DUPLICATE_THRESHOLD,
   };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
@@ -93,6 +113,10 @@ function parseArgs(argv: string[]): Args {
     else if (flag === "--target") args.target = requireNumber(argv[++i], "--target");
     else if (flag === "--provider") args.provider = requireValue(argv[++i], "--provider");
     else if (flag === "--no-cache") args.useCache = false;
+    else if (flag === "--lexical-threshold")
+      args.lexicalThreshold = requireNumber(argv[++i], "--lexical-threshold");
+    else if (flag === "--duplicate-threshold")
+      args.duplicateThreshold = requireNumber(argv[++i], "--duplicate-threshold");
     else throw new Error(`Unknown argument: ${flag}`);
   }
   return args;
@@ -462,10 +486,61 @@ async function main(): Promise<void> {
   }
   console.log("");
 
-  report();
+  // --- Review triage --------------------------------------------------------
+  // Flag only — nothing is rejected here. Flagged candidates sort last so they
+  // can be culled in one pass, but each still goes in front of a human.
+  console.log("Triage: scoring lexical overlap and near-duplicates...");
+  const idf = buildIdf(corpus.map((c) => c.content));
+  const chunkById = new Map(corpus.map((c) => [c.id, c]));
+
+  const accepted = existsSync(ACCEPTED_FILE)
+    ? readFileSync(ACCEPTED_FILE, "utf8")
+        .split("\n")
+        .filter((l) => l.trim())
+        .map((l) => JSON.parse(l) as Question)
+        .map((q) => ({ id: q.id, question: q.question }))
+    : [];
+
+  const triage = triageCandidates(
+    drafted.map((q) => ({
+      id: q.id,
+      question: q.question,
+      sourceText: q.relevantChunkIds
+        .map((id) => chunkById.get(id)?.content ?? "")
+        .join("\n"),
+    })),
+    idf,
+    corpus.length,
+    {
+      lexicalThreshold: args.lexicalThreshold,
+      duplicateThreshold: args.duplicateThreshold,
+      accepted,
+    },
+  );
+
+  const byId = new Map(triage.map((t) => [t.id, t]));
+  for (const question of drafted) {
+    const result = byId.get(question.id);
+    question.suspect = result?.flag ?? null;
+    question.suspectDetail = result?.detail ?? null;
+  }
+
+  // Clean first, flagged last — the review queue order.
+  drafted.sort((a, b) => (a.suspect ? 1 : 0) - (b.suspect ? 1 : 0));
+
+  report(triage, accepted.length, args);
 }
 
-function report(): void {
+/**
+ * `triage` is empty when a quota wall cut the run short — the partial draft is
+ * still written and summarised, just without the triage section, since flagging
+ * an incomplete batch would mislead more than it helps.
+ */
+function report(
+  triage: TriageResult[] = [],
+  acceptedCount = 0,
+  args?: Args,
+): void {
   flush();
 
   const counts = drafted.reduce<Record<string, number>>((acc, q) => {
@@ -480,6 +555,48 @@ function report(): void {
   }
   console.log(`  ${"TOTAL".padEnd(13)} ${String(drafted.length).padStart(3)}`);
   console.log(`\n  cache: ${hits} hit(s), ${misses} miss(es)`);
+
+  // --- Flag distribution ----------------------------------------------------
+  if (triage.length === 0 || !args) {
+    console.log(`\nWrote ${OUT_FILE} (partial — triage skipped)\n`);
+    return;
+  }
+
+  const lexical = triage.filter((t) => t.flag === "lexical").length;
+  const duplicate = triage.filter((t) => t.flag === "duplicate").length;
+  const clean = triage.length - lexical - duplicate;
+
+  console.log("\n── Review triage (advisory — nothing rejected) ─────────");
+  console.log(`  clean          ${String(clean).padStart(3)}  reviewed first`);
+  console.log(
+    `  lexical        ${String(lexical).padStart(3)}  ` +
+      `overlap >= ${args.lexicalThreshold} with source chunk`,
+  );
+  console.log(
+    `  duplicate      ${String(duplicate).padStart(3)}  ` +
+      `cosine >= ${args.duplicateThreshold} vs an earlier question` +
+      (acceptedCount > 0 ? ` (incl. ${acceptedCount} already accepted)` : ""),
+  );
+
+  if (triage.length > 0) {
+    const overlaps = triage
+      .filter((t) => t.lexicalOverlap > 0)
+      .map((t) => t.lexicalOverlap)
+      .sort((a, b) => a - b);
+    if (overlaps.length > 0) {
+      const at = (q: number): string =>
+        overlaps[Math.min(overlaps.length - 1, Math.floor(q * overlaps.length))].toFixed(2);
+      console.log(
+        `\n  lexical overlap distribution — ` +
+          `p10 ${at(0.1)}  p50 ${at(0.5)}  p90 ${at(0.9)}  max ${overlaps[overlaps.length - 1].toFixed(2)}`,
+      );
+      console.log(
+        `  (tune with --lexical-threshold; the flagged tail is where questions\n` +
+          `   reuse the passage's rare words and inflate retrieval scores)`,
+      );
+    }
+  }
+
   console.log(`\nWrote ${OUT_FILE}`);
   console.log(
     "\nThese are CANDIDATES. Review them before they count:\n" +

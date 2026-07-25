@@ -33,6 +33,7 @@ import path from "node:path";
 import { createInterface } from "node:readline";
 
 import { loadCorpus, type CorpusChunk } from "../eval/src/corpus";
+import { sortForReview } from "../eval/src/triage";
 import type { Question } from "../eval/src/types";
 
 const CANDIDATES = "eval/golden/questions.candidate.jsonl";
@@ -182,6 +183,25 @@ function render(
       `        [${index + 1} of ${total}]`,
   );
   console.log("═".repeat(80));
+
+  // Advisory flag from generation triage. Shown prominently because these are
+  // the candidates most likely to need a rewrite or a drop — but the call is
+  // still the reviewer's, so nothing is pre-decided here.
+  if (question.suspect) {
+    const label = question.suspect === "lexical" ? "LEXICAL OVERLAP" : "NEAR-DUPLICATE";
+    console.log(`\n⚠ FLAGGED — ${label}`);
+    if (question.suspectDetail) console.log(wrap(question.suspectDetail));
+    console.log(
+      question.suspect === "lexical"
+        ? wrap(
+            "This question reuses its source passage's distinctive wording, so " +
+              "retrieval can match on a shared rare term rather than on meaning. " +
+              "Rewrite it with different vocabulary, or drop it.",
+          )
+        : wrap("This restates a question already in the set. Usually a drop."),
+    );
+  }
+
   console.log("\nQUESTION");
   console.log(wrap(question.question));
 
@@ -226,7 +246,9 @@ async function main(): Promise<void> {
   }
 
   const reviewed = loadReviewed();
-  const pending = candidates.filter((q) => !reviewed.has(q.id));
+  // Clean candidates first, flagged ones last, so the suspect tail can be
+  // culled in one pass at the end rather than interrupting the good ones.
+  const pending = sortForReview(candidates.filter((q) => !reviewed.has(q.id)));
 
   if (pending.length === 0) {
     console.log(
