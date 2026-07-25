@@ -34,3 +34,4 @@ CLAUDE.md
 # the manifest lets anyone rebuild a byte-identical corpus.
 corpus/*
 !corpus/manifest.json
+!corpus/failed.json
