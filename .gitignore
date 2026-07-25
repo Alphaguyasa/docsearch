@@ -1,5 +1,17 @@
-﻿.env.local
-.env
 node_modules
 .next
 tsconfig.tsbuildinfo
+.vercel
+
+# Secrets — never commit. .env.example is the only tracked env file.
+.env*
+!.env.example
+
+# Local agent/editor config
+.claude/
+CLAUDE.md
+.cursor/
+.idea/
+.vscode/
+*.pem
+*.key
