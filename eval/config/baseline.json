@@ -1,0 +1,23 @@
+{
+  "name": "baseline",
+  "description": "The live DocSearch pipeline, unmodified. Every value read from the codebase — see eval/config/README.md for the per-field source. This is the 'before' every experiment is compared against.",
+  "embeddingModel": "voyage-3.5",
+  "chunkStrategy": {
+    "size": 800,
+    "overlap": 0.15,
+    "tableName": "chunks"
+  },
+  "retrieval": {
+    "mode": "hybrid",
+    "topK": 8,
+    "rrfK": 60,
+    "searchTop": 20,
+    "rerank": null
+  },
+  "queryRewrite": "none",
+  "generation": {
+    "model": "gemini-flash-latest",
+    "promptVersion": "v1",
+    "maxTokens": 4096
+  }
+}

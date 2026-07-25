@@ -10,6 +10,9 @@
     "query": "tsx scripts/query.ts",
     "ask": "tsx scripts/ask.ts",
     "eval": "tsx evals/run.ts",
+    "eval:run": "tsx eval/src/runner.ts",
+    "eval:compare": "tsx scripts/compare-runs.ts",
+    "eval:golden": "tsx scripts/generate-golden-set.ts",
     "test": "node --import tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {

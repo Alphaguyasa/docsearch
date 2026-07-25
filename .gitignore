@@ -7,6 +7,11 @@ tsconfig.tsbuildinfo
 .env*
 !.env.example
 
+# Eval harness: run output and the API-call cache are machine-local.
+# Results that matter live in Supabase (history) and are summarised in git.
+eval/runs/
+eval/.cache/
+
 # Local agent/editor config
 .claude/
 CLAUDE.md
