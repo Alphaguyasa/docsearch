@@ -12,6 +12,12 @@ tsconfig.tsbuildinfo
 eval/runs/
 eval/.cache/
 
+# Golden-set working state. questions.jsonl (the reviewed set) IS tracked — it
+# is the source of truth every metric is computed against. These two are not:
+# candidates are regenerable from the cache, and .reviewed is local progress.
+eval/golden/questions.candidate.jsonl
+eval/golden/.reviewed
+
 # Local agent/editor config
 .claude/
 CLAUDE.md
