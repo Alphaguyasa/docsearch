@@ -2,6 +2,7 @@
  * Corpus fetcher — bulk-download arXiv PDFs for one subfield into corpus/.
  *
  *   npm run corpus:fetch -- --category cs.CL --count 200 --from 2023-01-01 --to 2024-12-31
+ *   npm run corpus:fetch -- --count 200 --overfetch 1.3   # more headroom for failures
  *   npm run corpus:fetch                      # re-fetch exactly what the manifest names
  *
  * WHY cs.CL: multi-hop questions need two documents that share a named entity,
@@ -45,6 +46,13 @@ const MANIFEST_FILE = path.join(CORPUS_DIR, "manifest.json");
 const REQUEST_DELAY_MS = 3000;
 const PAGE_SIZE = 100;
 
+/**
+ * Search for this multiple of --count so per-paper failures do not leave the
+ * corpus short. Downloading stops as soon as --count usable papers exist, so
+ * the extra candidates cost a search page, not downloads.
+ */
+const DEFAULT_OVERFETCH = 1.15;
+
 const USER_AGENT =
   "docsearch-eval-corpus/1.0 (retrieval evaluation harness; " +
   "https://github.com/Alphaguyasa/docsearch)";
@@ -60,6 +68,20 @@ interface ManifestEntry {
   file: string;
   sha256: string;
   bytes: number;
+}
+
+/**
+ * A paper that could not be fetched. Recorded rather than fatal: some arXiv
+ * entries legitimately have no PDF (withdrawn, or source-only submissions).
+ */
+interface FailedEntry {
+  arxivId: string;
+  version: number;
+  title: string;
+  /** HTTP status, or null for a network-level failure. */
+  status: number | null;
+  reason: string;
+  failedAt: string;
 }
 
 interface Manifest {
@@ -78,6 +100,7 @@ interface Args {
   manifest: string;
   outDir: string;
   yes: boolean;
+  overfetch: number;
 }
 
 function parseArgs(argv: string[]): Args {
@@ -89,6 +112,7 @@ function parseArgs(argv: string[]): Args {
     manifest: MANIFEST_FILE,
     outDir: CORPUS_DIR,
     yes: false,
+    overfetch: DEFAULT_OVERFETCH,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -121,6 +145,12 @@ function parseArgs(argv: string[]): Args {
         break;
       case "--out":
         args.outDir = value;
+        break;
+      case "--overfetch":
+        args.overfetch = Number(value);
+        if (!Number.isFinite(args.overfetch) || args.overfetch < 1) {
+          throw new Error("--overfetch must be >= 1 (e.g. 1.15 for 15% headroom)");
+        }
         break;
       default:
         throw new Error(`Unknown argument: ${flag}`);
@@ -159,11 +189,12 @@ async function search(args: Args): Promise<Paper[]> {
   }
 
   const query = terms.join(" AND ");
+  const wantTotal = Math.ceil(args.count * args.overfetch);
   const found: Paper[] = [];
   let skippedTotal = 0;
 
-  for (let start = 0; found.length < args.count; start += PAGE_SIZE) {
-    const wanted = Math.min(PAGE_SIZE, args.count - found.length);
+  for (let start = 0; found.length < wantTotal; start += PAGE_SIZE) {
+    const wanted = Math.min(PAGE_SIZE, wantTotal - found.length);
     const url =
       `${ARXIV_API}?search_query=${encodeURIComponent(query)}` +
       `&start=${start}&max_results=${wanted}` +
@@ -188,7 +219,7 @@ async function search(args: Args): Promise<Paper[]> {
   if (skippedTotal > 0) {
     console.log(`  ⚠ ${skippedTotal} entr(ies) skipped — missing id or title`);
   }
-  return found.slice(0, args.count);
+  return found.slice(0, wantTotal);
 }
 
 function sha256(bytes: Uint8Array): string {
@@ -229,10 +260,7 @@ async function fetchPdf(
   }
 
   const url = `https://arxiv.org/pdf/${paper.arxivId}v${paper.version}`;
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) {
-    throw new Error(`Download failed for ${paper.arxivId}: ${res.status} ${res.statusText}`);
-  }
+  const res = await downloadWithRetry(url);
   const bytes = new Uint8Array(await res.arrayBuffer());
 
   if (expectedHash !== null && sha256(bytes) !== expectedHash) {
@@ -247,6 +275,63 @@ async function fetchPdf(
   mkdirSync(outDir, { recursive: true });
   writeFileSync(fullPath, bytes);
   return { bytes, file, downloaded: true };
+}
+
+/** A download that failed for a reason specific to one paper. */
+class PaperUnavailableError extends Error {
+  constructor(
+    readonly status: number | null,
+    message: string,
+  ) {
+    super(message);
+    this.name = "PaperUnavailableError";
+  }
+}
+
+/**
+ * Fetch a PDF, retrying ONCE on transient failures.
+ *
+ * 404 is not retried: some arXiv entries legitimately have no PDF at all —
+ * withdrawn papers, and source-only submissions — so retrying just doubles the
+ * wait before the same answer. 5xx, network errors, and 429 are retried once;
+ * a 429 is transient by definition and backing off is the courteous response.
+ *
+ * Throws PaperUnavailableError so the caller can record the paper and move on
+ * rather than losing the whole run.
+ */
+async function downloadWithRetry(url: string): Promise<Response> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    let res: Response;
+    try {
+      res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+    } catch (err) {
+      const reason = err instanceof Error ? err.message : String(err);
+      if (attempt === 0) {
+        await sleep(REQUEST_DELAY_MS);
+        continue;
+      }
+      throw new PaperUnavailableError(null, `network error: ${reason}`);
+    }
+
+    if (res.ok) return res;
+
+    if (res.status === 404) {
+      throw new PaperUnavailableError(
+        404,
+        "no PDF at this version (withdrawn, or a source-only submission)",
+      );
+    }
+
+    const transient = res.status >= 500 || res.status === 429;
+    if (transient && attempt === 0) {
+      await sleep(REQUEST_DELAY_MS);
+      continue;
+    }
+    throw new PaperUnavailableError(res.status, `${res.status} ${res.statusText}`);
+  }
+
+  // Unreachable: the loop either returns or throws on its second pass.
+  throw new PaperUnavailableError(null, "exhausted retries");
 }
 
 // --- Corpus analysis ---------------------------------------------------------
@@ -350,51 +435,129 @@ async function main(): Promise<void> {
   }
 
   // --- Download (serial, with the courtesy delay) --------------------------
+  //
+  // Each paper is isolated: a 404 or a transient error takes that paper out of
+  // the corpus, never the run. Some arXiv entries genuinely have no PDF, so a
+  // fatal per-paper failure would make a large fetch a coin toss.
   console.log("Downloading (serial, 3s between requests — arXiv etiquette):");
   const entries: ManifestEntry[] = [];
+  const failures: FailedEntry[] = [];
   let downloaded = 0;
   let reused = 0;
 
+  const target = existingManifest ? papers.length : args.count;
+
+  const writeManifest = (): void => {
+    const manifest: Manifest = {
+      category: existingManifest?.category ?? args.category,
+      from: existingManifest?.from ?? args.from,
+      to: existingManifest?.to ?? args.to,
+      fetchedAt: existingManifest?.fetchedAt ?? new Date().toISOString(),
+      entries,
+    };
+    mkdirSync(path.dirname(args.manifest), { recursive: true });
+    writeFileSync(args.manifest, JSON.stringify(manifest, null, 2) + "\n");
+  };
+
   for (const [i, paper] of papers.entries()) {
-    const label = `${i + 1}/${papers.length} ${paper.arxivId}v${paper.version}`;
-    const result = await fetchPdf(
-      paper,
-      args.outDir,
-      expectedHashes.get(paper.arxivId) ?? null,
-    );
+    if (downloaded + reused >= target) {
+      console.log(
+        `\n  Reached ${target} usable paper(s) — stopping with ` +
+          `${papers.length - i} overfetched candidate(s) unused.`,
+      );
+      break;
+    }
 
-    entries.push({
-      arxivId: paper.arxivId,
-      version: paper.version,
-      title: paper.title,
-      file: result.file,
-      sha256: sha256(result.bytes),
-      bytes: result.bytes.byteLength,
-    });
+    const label = `${String(downloaded + reused + 1).padStart(3)}/${target} ${paper.arxivId}v${paper.version}`;
 
-    if (result.downloaded) {
-      downloaded++;
-      console.log(`  ${label}  ${(result.bytes.byteLength / 1024).toFixed(0)} KB`);
+    try {
+      const result = await fetchPdf(
+        paper,
+        args.outDir,
+        expectedHashes.get(paper.arxivId) ?? null,
+      );
+
+      entries.push({
+        arxivId: paper.arxivId,
+        version: paper.version,
+        title: paper.title,
+        file: result.file,
+        sha256: sha256(result.bytes),
+        bytes: result.bytes.byteLength,
+      });
+
+      // Written after every paper so an interruption keeps its progress. The
+      // previous version only wrote at the end, so an abort at 85/200 recorded
+      // nothing at all.
+      writeManifest();
+
+      if (result.downloaded) {
+        downloaded++;
+        console.log(`  ${label}  ${(result.bytes.byteLength / 1024).toFixed(0)} KB`);
+        await sleep(REQUEST_DELAY_MS);
+      } else {
+        reused++;
+        console.log(`  ${label}  already on disk, hash matches — skipped`);
+      }
+    } catch (err) {
+      if (!(err instanceof PaperUnavailableError)) throw err; // hash mismatch etc.
+
+      failures.push({
+        arxivId: paper.arxivId,
+        version: paper.version,
+        title: paper.title,
+        status: err.status,
+        reason: err.message,
+        failedAt: new Date().toISOString(),
+      });
+      writeFileSync(
+        path.join(args.outDir, "failed.json"),
+        JSON.stringify({ updatedAt: new Date().toISOString(), entries: failures }, null, 2) + "\n",
+      );
+
+      console.log(
+        `  ⚠ ${paper.arxivId}v${paper.version}  ${err.status ?? "ERR"} — ${err.message}`,
+      );
       await sleep(REQUEST_DELAY_MS);
-    } else {
-      reused++;
-      console.log(`  ${label}  already on disk, hash matches — skipped`);
     }
   }
 
-  const manifest: Manifest = {
-    category: existingManifest?.category ?? args.category,
-    from: existingManifest?.from ?? args.from,
-    to: existingManifest?.to ?? args.to,
-    fetchedAt: existingManifest?.fetchedAt ?? new Date().toISOString(),
-    entries,
-  };
-  mkdirSync(path.dirname(args.manifest), { recursive: true });
-  writeFileSync(args.manifest, JSON.stringify(manifest, null, 2) + "\n");
+  writeManifest();
 
-  console.log(
-    `\n${downloaded} downloaded, ${reused} reused.  Manifest: ${args.manifest}\n`,
-  );
+  // --- Fetch totals, before anything about chunks --------------------------
+  console.log("\n── Fetch ───────────────────────────────────────────────");
+  console.log(`  succeeded  ${String(downloaded).padStart(4)}   newly downloaded`);
+  console.log(`  skipped    ${String(reused).padStart(4)}   already on disk, hash matched`);
+  console.log(`  failed     ${String(failures.length).padStart(4)}   see ${path.join(args.outDir, "failed.json")}`);
+  console.log(`  usable     ${String(downloaded + reused).padStart(4)}   of ${target} requested`);
+
+  if (failures.length > 0) {
+    const byStatus = failures.reduce<Record<string, number>>((acc, f) => {
+      const key = String(f.status ?? "network");
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {});
+    console.log(
+      `\n  failure breakdown: ` +
+        Object.entries(byStatus)
+          .map(([status, n]) => `${status}×${n}`)
+          .join(", "),
+    );
+    for (const f of failures.slice(0, 5)) {
+      console.log(`    ${f.arxivId}v${f.version}  ${f.reason}`);
+    }
+    if (failures.length > 5) console.log(`    ... and ${failures.length - 5} more`);
+  }
+
+  if (downloaded + reused < target) {
+    console.log(
+      `\n  ⚠ Short of the target by ${target - (downloaded + reused)}. ` +
+        `Raise --overfetch (currently ${args.overfetch}) or --count and re-run;\n` +
+        `    papers already on disk are skipped, so a re-run only fetches the shortfall.`,
+    );
+  }
+
+  console.log(`\n  Manifest: ${args.manifest}\n`);
 
   // --- Analyse -------------------------------------------------------------
   console.log("Analysing at the baseline chunk size (800 tokens, 15% overlap):");

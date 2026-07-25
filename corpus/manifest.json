@@ -1,0 +1,728 @@
+{
+  "category": "cs.CL",
+  "from": "2023-01-01",
+  "to": "2024-12-31",
+  "fetchedAt": "2026-07-25T19:10:05.220Z",
+  "entries": [
+    {
+      "arxivId": "2301.00320",
+      "version": 1,
+      "title": "Relevance Classification of Flood-related Twitter Posts via Multiple Transformers",
+      "file": "relevance-classification-of-flood-related-twitter-posts-via--2301.00320v1.pdf",
+      "sha256": "5632b32308f0d2d630c303a15cf4d9abea15326830c9a16692ac42c41d75def7",
+      "bytes": 661464
+    },
+    {
+      "arxivId": "2301.00321",
+      "version": 1,
+      "title": "Floods Relevancy and Identification of Location from Twitter Posts using NLP Techniques",
+      "file": "floods-relevancy-and-identification-of-location-from-twitter--2301.00321v1.pdf",
+      "sha256": "4bee6860975925c0ba67dcff339664404f9a515536e5d29a7132b5c45beaaec2",
+      "bytes": 524532
+    },
+    {
+      "arxivId": "2301.01743",
+      "version": 1,
+      "title": "Chatbots as Problem Solvers: Playing Twenty Questions with Role Reversals",
+      "file": "chatbots-as-problem-solvers-playing-twenty-questions-with-ro--2301.01743v1.pdf",
+      "sha256": "5f939a19316fa6de2e35dd9b85c852a0fbf18ee2de68ba986514f32e1b4bb6b4",
+      "bytes": 401475
+    },
+    {
+      "arxivId": "2301.00355",
+      "version": 2,
+      "title": "Second Thoughts are Best: Learning to Re-Align With Human Values from Text Edits",
+      "file": "second-thoughts-are-best-learning-to-re-align-with-human-val--2301.00355v2.pdf",
+      "sha256": "d8dbedeae4ac6a05dfc3759d4bb781ff9432ed9d7342754bcd4f6480f4da2c80",
+      "bytes": 1308479
+    },
+    {
+      "arxivId": "2301.00374",
+      "version": 1,
+      "title": "Optimizing Readability Using Genetic Algorithms",
+      "file": "optimizing-readability-using-genetic-algorithms--2301.00374v1.pdf",
+      "sha256": "be5284554c2254ddfe99e4b650cd5c048d349754fe24de33c8740983d2f7946a",
+      "bytes": 335293
+    },
+    {
+      "arxivId": "2301.00395",
+      "version": 1,
+      "title": "CORGI-PM: A Chinese Corpus For Gender Bias Probing and Mitigation",
+      "file": "corgi-pm-a-chinese-corpus-for-gender-bias-probing-and-mitiga--2301.00395v1.pdf",
+      "sha256": "2278b5de1a995c297ccc6364b9178f6c48c65487f7cb54f26df74b3f26c23fe4",
+      "bytes": 6349099
+    },
+    {
+      "arxivId": "2301.00397",
+      "version": 1,
+      "title": "Inflected Forms Are Redundant in Question Generation Models",
+      "file": "inflected-forms-are-redundant-in-question-generation-models--2301.00397v1.pdf",
+      "sha256": "db965784b9490a55c480bbb4fe69b0f0fed35578862bcf9e52b9dd445a44e9be",
+      "bytes": 646433
+    },
+    {
+      "arxivId": "2301.00399",
+      "version": 1,
+      "title": "Semantic Operator Prediction and Applications",
+      "file": "semantic-operator-prediction-and-applications--2301.00399v1.pdf",
+      "sha256": "943ca119da60c66b38b2c8c0557a88fb5bb288a8926fbeb30ecb08ed333dc1b8",
+      "bytes": 2600156
+    },
+    {
+      "arxivId": "2301.00418",
+      "version": 1,
+      "title": "Is word segmentation necessary for Vietnamese sentiment classification?",
+      "file": "is-word-segmentation-necessary-for-vietnamese-sentiment-clas--2301.00418v1.pdf",
+      "sha256": "63485eadf8afaa5e65f8d7a982aa88be1d8a5400b4467091034d52b3440237f2",
+      "bytes": 149656
+    },
+    {
+      "arxivId": "2301.00422",
+      "version": 1,
+      "title": "Leveraging Semantic Representations Combined with Contextual Word Representations for Recognizing Textual Entailment in Vietnamese",
+      "file": "leveraging-semantic-representations-combined-with-contextual--2301.00422v1.pdf",
+      "sha256": "62dd8a36201d4243142f4a2a8d7c281922116a25325f6c16f4c66f2492f6c3e1",
+      "bytes": 473727
+    },
+    {
+      "arxivId": "2301.00429",
+      "version": 1,
+      "title": "Integrating Semantic Information into Sketchy Reading Module of Retro-Reader for Vietnamese Machine Reading Comprehension",
+      "file": "integrating-semantic-information-into-sketchy-reading-module--2301.00429v1.pdf",
+      "sha256": "a16f7840f5fc9fe14e592405bd1f6277b75dcde458c0629002620d33287d12ce",
+      "bytes": 363799
+    },
+    {
+      "arxivId": "2301.00479",
+      "version": 2,
+      "title": "The Design Principle of Blockchain: An Initiative for the SoK of SoKs",
+      "file": "the-design-principle-of-blockchain-an-initiative-for-the-sok--2301.00479v2.pdf",
+      "sha256": "b0f623414ffddbc9fd072726d2c4cf369e9f1657e616aaff6c76465a2f510a95",
+      "bytes": 6088608
+    },
+    {
+      "arxivId": "2301.00503",
+      "version": 3,
+      "title": "A Concept Knowledge Graph for User Next Intent Prediction at Alipay",
+      "file": "a-concept-knowledge-graph-for-user-next-intent-prediction-at--2301.00503v3.pdf",
+      "sha256": "8e87917d4d2726df05cabab9f92f2c0f776ab427339390a58e36cc9ea1708424",
+      "bytes": 1640664
+    },
+    {
+      "arxivId": "2301.00539",
+      "version": 1,
+      "title": "Statistical Machine Translation for Indic Languages",
+      "file": "statistical-machine-translation-for-indic-languages--2301.00539v1.pdf",
+      "sha256": "070dcd891e94bd289d98f8827a4cc3cc85fc7f2a85d683e435d3ad055215e116",
+      "bytes": 1305438
+    },
+    {
+      "arxivId": "2301.00565",
+      "version": 1,
+      "title": "Using meaning instead of words to track topics",
+      "file": "using-meaning-instead-of-words-to-track-topics--2301.00565v1.pdf",
+      "sha256": "103386381f61682e57c3385d786fa2c7c0a0d66c895e2d454127af5dca89416a",
+      "bytes": 304597
+    },
+    {
+      "arxivId": "2301.01170",
+      "version": 1,
+      "title": "Transformer Based Geocoding",
+      "file": "transformer-based-geocoding--2301.01170v1.pdf",
+      "sha256": "380c66e9b829caea6c9acb9093b6e43c694c9c06e8d9ae6262f8a1f7ba3972ec",
+      "bytes": 18040602
+    },
+    {
+      "arxivId": "2301.00591",
+      "version": 3,
+      "title": "Analysing Discrete Self Supervised Speech Representation for Spoken Language Modeling",
+      "file": "analysing-discrete-self-supervised-speech-representation-for--2301.00591v3.pdf",
+      "sha256": "3b4e0cad590eb60f95b117350d42dc4ddaf3ed5cce2e1bee24cfce0db719b8e3",
+      "bytes": 1646851
+    },
+    {
+      "arxivId": "2301.00604",
+      "version": 1,
+      "title": "Russia-Ukraine war: Modeling and Clustering the Sentiments Trends of Various Countries",
+      "file": "russia-ukraine-war-modeling-and-clustering-the-sentiments-tr--2301.00604v1.pdf",
+      "sha256": "5a7ccda2f579ca4b9e1c7a68603688e059f721fadae6ad3747608dfc579fa189",
+      "bytes": 519442
+    },
+    {
+      "arxivId": "2301.00626",
+      "version": 2,
+      "title": "Design and analysis of tweet-based election models for the 2021 Mexican legislative election",
+      "file": "design-and-analysis-of-tweet-based-election-models-for-the-2--2301.00626v2.pdf",
+      "sha256": "c80982f284c1a1abd411ad80bac2dadab0f08beb8dbb5a800decb1b77b9d3fbf",
+      "bytes": 814203
+    },
+    {
+      "arxivId": "2301.00628",
+      "version": 2,
+      "title": "Using Active Learning Methods to Strategically Select Essays for Automated Scoring",
+      "file": "using-active-learning-methods-to-strategically-select-essays--2301.00628v2.pdf",
+      "sha256": "120256fc282cbe2cb02705b600e548045461644a8f5db3df2b3625f492049200",
+      "bytes": 788857
+    },
+    {
+      "arxivId": "2301.00709",
+      "version": 1,
+      "title": "Tsetlin Machine Embedding: Representing Words Using Logical Expressions",
+      "file": "tsetlin-machine-embedding-representing-words-using-logical-e--2301.00709v1.pdf",
+      "sha256": "bd102b1f7ae975092e137963681cf344631026de22fb4489a77e05f920c7e7c8",
+      "bytes": 1512315
+    },
+    {
+      "arxivId": "2301.00716",
+      "version": 1,
+      "title": "IRT2: Inductive Linking and Ranking in Knowledge Graphs of Varying Scale",
+      "file": "irt2-inductive-linking-and-ranking-in-knowledge-graphs-of-va--2301.00716v1.pdf",
+      "sha256": "3a471284f703f3166a38f7488d349558df08655eecdd594bd05d1c0e1f7fdb75",
+      "bytes": 571916
+    },
+    {
+      "arxivId": "2301.00792",
+      "version": 1,
+      "title": "The Undesirable Dependence on Frequency of Gender Bias Metrics Based on Word Embeddings",
+      "file": "the-undesirable-dependence-on-frequency-of-gender-bias-metri--2301.00792v1.pdf",
+      "sha256": "1a19841495a473518ce568e1604b23e761af31f955895a2f438f3c1ef5f0c095",
+      "bytes": 985013
+    },
+    {
+      "arxivId": "2301.00867",
+      "version": 1,
+      "title": "Follow the Timeline! Generating Abstractive and Extractive Timeline Summary in Chronological Order",
+      "file": "follow-the-timeline-generating-abstractive-and-extractive-ti--2301.00867v1.pdf",
+      "sha256": "71450da360e0fff46435678931c2d5310d64626fb89d73bd5a50820493b1823e",
+      "bytes": 1458492
+    },
+    {
+      "arxivId": "2301.00876",
+      "version": 3,
+      "title": "MAUD: An Expert-Annotated Legal NLP Dataset for Merger Agreement Understanding",
+      "file": "maud-an-expert-annotated-legal-nlp-dataset-for-merger-agreem--2301.00876v3.pdf",
+      "sha256": "a1e23303d4d58e1719b5143c82f3da03c2756892190d00534c5746987bf1e626",
+      "bytes": 361158
+    },
+    {
+      "arxivId": "2301.00891",
+      "version": 1,
+      "title": "Understanding Political Polarisation using Language Models: A dataset and method",
+      "file": "understanding-political-polarisation-using-language-models-a--2301.00891v1.pdf",
+      "sha256": "42ac3c8148621028e0dc61f53a5b77eb7b97599f015bd30fd84e7f7748c22e0a",
+      "bytes": 1091497
+    },
+    {
+      "arxivId": "2301.00818",
+      "version": 1,
+      "title": "ClusTop: An unsupervised and integrated text clustering and topic extraction framework",
+      "file": "clustop-an-unsupervised-and-integrated-text-clustering-and-t--2301.00818v1.pdf",
+      "sha256": "e4d242a330698ae7aabc3f50d83a24396775ab490e69bee744a186cb45207c6d",
+      "bytes": 4295143
+    },
+    {
+      "arxivId": "2301.00972",
+      "version": 1,
+      "title": "EZInterviewer: To Improve Job Interview Performance with Mock Interview Generator",
+      "file": "ezinterviewer-to-improve-job-interview-performance-with-mock--2301.00972v1.pdf",
+      "sha256": "b7a9726ff49e98887463a06ed63bc3ad3f0057f56971bd54452346c22e072a87",
+      "bytes": 2063116
+    },
+    {
+      "arxivId": "2301.00982",
+      "version": 2,
+      "title": "Analogical Inference Enhanced Knowledge Graph Embedding",
+      "file": "analogical-inference-enhanced-knowledge-graph-embedding--2301.00982v2.pdf",
+      "sha256": "2adc7ebc90ffb06124976aeef6ce30f4daebc8eb5648b895e7528edaf5be9b8d",
+      "bytes": 527104
+    },
+    {
+      "arxivId": "2301.01015",
+      "version": 4,
+      "title": "Semi-Structured Object Sequence Encoders",
+      "file": "semi-structured-object-sequence-encoders--2301.01015v4.pdf",
+      "sha256": "b4223d5ee31595b2fcd1a12cee3f8c390c3e8bf095c08d96e30f711a956e7842",
+      "bytes": 729765
+    },
+    {
+      "arxivId": "2301.01020",
+      "version": 1,
+      "title": "Supervised Acoustic Embeddings And Their Transferability Across Languages",
+      "file": "supervised-acoustic-embeddings-and-their-transferability-acr--2301.01020v1.pdf",
+      "sha256": "3fd13189bc5602af2662f53db8efafa8bfccb215962a33654c754674721c063e",
+      "bytes": 161342
+    },
+    {
+      "arxivId": "2301.01064",
+      "version": 1,
+      "title": "PIE-QG: Paraphrased Information Extraction for Unsupervised Question Generation from Small Corpora",
+      "file": "pie-qg-paraphrased-information-extraction-for-unsupervised-q--2301.01064v1.pdf",
+      "sha256": "c30afdcb5e5ca706074a211a4488b51f0123f139a385a6a2ff557c206e66f03b",
+      "bytes": 349105
+    },
+    {
+      "arxivId": "2301.01067",
+      "version": 1,
+      "title": "Towards Knowledge-Intensive Text-to-SQL Semantic Parsing with Formulaic Knowledge",
+      "file": "towards-knowledge-intensive-text-to-sql-semantic-parsing-wit--2301.01067v1.pdf",
+      "sha256": "ee91fed38193b0d8255956d3b140b36ac494d6a60e7fe66b6e5089078c85089d",
+      "bytes": 978010
+    },
+    {
+      "arxivId": "2301.01162",
+      "version": 1,
+      "title": "Language Models are Drummers: Drum Composition with Natural Language Pre-Training",
+      "file": "language-models-are-drummers-drum-composition-with-natural-l--2301.01162v1.pdf",
+      "sha256": "db8e9cf4a316b882c8536352e759bc332dd83dc63a89241be94f33e0b61682e6",
+      "bytes": 1845825
+    },
+    {
+      "arxivId": "2301.01172",
+      "version": 1,
+      "title": "A Survey On Few-shot Knowledge Graph Completion with Structural and Commonsense Knowledge",
+      "file": "a-survey-on-few-shot-knowledge-graph-completion-with-structu--2301.01172v1.pdf",
+      "sha256": "b7e43cce998d9b987008cda7dca695819160fb5376b9a64a482ae08bbcc77b34",
+      "bytes": 865555
+    },
+    {
+      "arxivId": "2301.01181",
+      "version": 7,
+      "title": "Large Language Models as Corporate Lobbyists",
+      "file": "large-language-models-as-corporate-lobbyists--2301.01181v7.pdf",
+      "sha256": "4b4369dfcdb32428a15f7db5abc7c2803ac5b5108a1d016f7f2927205ae31c2f",
+      "bytes": 262045
+    },
+    {
+      "arxivId": "2301.01269",
+      "version": 1,
+      "title": "Average Is Not Enough: Caveats of Multilingual Evaluation",
+      "file": "average-is-not-enough-caveats-of-multilingual-evaluation--2301.01269v1.pdf",
+      "sha256": "40eca99386b4f91512be5bcbf5666367105e00b9d87d4511450d83c57364f7d1",
+      "bytes": 538890
+    },
+    {
+      "arxivId": "2301.01378",
+      "version": 1,
+      "title": "An ensemble-based framework for mispronunciation detection of Arabic phonemes",
+      "file": "an-ensemble-based-framework-for-mispronunciation-detection-o--2301.01378v1.pdf",
+      "sha256": "c31becdc1edb74c5ec7170e756e6fb142faa396f24e0fc3d0a7609a78038de4d",
+      "bytes": 1482406
+    },
+    {
+      "arxivId": "2301.01456",
+      "version": 1,
+      "title": "Audio-Visual Efficient Conformer for Robust Speech Recognition",
+      "file": "audio-visual-efficient-conformer-for-robust-speech-recogniti--2301.01456v1.pdf",
+      "sha256": "b128b796fc7d155961fe0081b5499ab1e1e774170403d47dfe43444f82b8f8c4",
+      "bytes": 538501
+    },
+    {
+      "arxivId": "2301.01579",
+      "version": 1,
+      "title": "Learning Ambiguity from Crowd Sequential Annotations",
+      "file": "learning-ambiguity-from-crowd-sequential-annotations--2301.01579v1.pdf",
+      "sha256": "d1f91d18bfca0228eacc978158048f5ad1f64f0b23fa9c7cdc9d2de4036f41c9",
+      "bytes": 876586
+    },
+    {
+      "arxivId": "2302.05289",
+      "version": 1,
+      "title": "Rumor Classification through a Multimodal Fusion Framework and Ensemble Learning",
+      "file": "rumor-classification-through-a-multimodal-fusion-framework-a--2302.05289v1.pdf",
+      "sha256": "635a947383ffa0152dd24bf805f3b885ad90081dd29b97efd13f906c088b2ff9",
+      "bytes": 1156704
+    },
+    {
+      "arxivId": "2301.01621",
+      "version": 3,
+      "title": "Grammar construction methods for extended deterministic expressions",
+      "file": "grammar-construction-methods-for-extended-deterministic-expr--2301.01621v3.pdf",
+      "sha256": "793058942416f992126bd2dc9d8ff4ef990458db649d84dc4678efe9137ad8ae",
+      "bytes": 3364635
+    },
+    {
+      "arxivId": "2301.01664",
+      "version": 2,
+      "title": "Multi-Aspect Explainable Inductive Relation Prediction by Sentence Transformer",
+      "file": "multi-aspect-explainable-inductive-relation-prediction-by-se--2301.01664v2.pdf",
+      "sha256": "15d99b8e2b79e4895bd707c38d17ef0020477dd4f852f6e6b55ca10228a06b70",
+      "bytes": 452158
+    },
+    {
+      "arxivId": "2301.01751",
+      "version": 2,
+      "title": "Iterated Decomposition: Improving Science Q&A by Supervising Reasoning Processes",
+      "file": "iterated-decomposition-improving-science-q-a-by-supervising--2301.01751v2.pdf",
+      "sha256": "371c10eb8e8b8d3bce9274fc4bb006b5018ac4e7910c202234e3d80256b5334e",
+      "bytes": 4992573
+    },
+    {
+      "arxivId": "2301.01764",
+      "version": 2,
+      "title": "UniHD at TSAR-2022 Shared Task: Is Compute All We Need for Lexical Simplification?",
+      "file": "unihd-at-tsar-2022-shared-task-is-compute-all-we-need-for-le--2301.01764v2.pdf",
+      "sha256": "5dc201ca499fb19dd21fe36b9c91846c504ec3cd0c32e1a53b7299a0020e2768",
+      "bytes": 210718
+    },
+    {
+      "arxivId": "2301.03403",
+      "version": 4,
+      "title": "A comprehensive review of automatic text summarization techniques: method, data, evaluation and coding",
+      "file": "a-comprehensive-review-of-automatic-text-summarization-techn--2301.03403v4.pdf",
+      "sha256": "77e6ddd7682c67635827505a19b230926b49f9f8e4a7d2c404aae8e3d974a9a5",
+      "bytes": 1302902
+    },
+    {
+      "arxivId": "2301.01808",
+      "version": 1,
+      "title": "MessageNet: Message Classification using Natural Language Processing and Meta-data",
+      "file": "messagenet-message-classification-using-natural-language-pro--2301.01808v1.pdf",
+      "sha256": "e55ddf20074ae703902cd1cefec69d2698288a57b7f969007c1ec339597e1d5c",
+      "bytes": 459048
+    },
+    {
+      "arxivId": "2301.01821",
+      "version": 1,
+      "title": "Parameter-Efficient Fine-Tuning Design Spaces",
+      "file": "parameter-efficient-fine-tuning-design-spaces--2301.01821v1.pdf",
+      "sha256": "0326e90cf8754e263c4b09dd7ac9b1483d363dc513e28ce4810289ffc33d2771",
+      "bytes": 458926
+    },
+    {
+      "arxivId": "2301.01874",
+      "version": 1,
+      "title": "Critical Perspectives: A Benchmark Revealing Pitfalls in PerspectiveAPI",
+      "file": "critical-perspectives-a-benchmark-revealing-pitfalls-in-pers--2301.01874v1.pdf",
+      "sha256": "4f654d66fd22748e5189389779b8b6f8b32b297d795a06f6e26cd82920c60b0e",
+      "bytes": 250256
+    },
+    {
+      "arxivId": "2301.01893",
+      "version": 1,
+      "title": "GIVL: Improving Geographical Inclusivity of Vision-Language Models with Pre-Training Methods",
+      "file": "givl-improving-geographical-inclusivity-of-vision-language-m--2301.01893v1.pdf",
+      "sha256": "b987c78347c3828293b5246f0cbcb59f3cf0843aee58f960ec346627e44b6ae9",
+      "bytes": 12751990
+    },
+    {
+      "arxivId": "2301.01935",
+      "version": 1,
+      "title": "Topic Segmentation Model Focusing on Local Context",
+      "file": "topic-segmentation-model-focusing-on-local-context--2301.01935v1.pdf",
+      "sha256": "4e6f3863404d501144729e25e44790e7427ee3d30029ef2b3c8e6d9d7de79005",
+      "bytes": 357387
+    },
+    {
+      "arxivId": "2301.01768",
+      "version": 1,
+      "title": "The political ideology of conversational AI: Converging evidence on ChatGPT's pro-environmental, left-libertarian orientation",
+      "file": "the-political-ideology-of-conversational-ai-converging-evide--2301.01768v1.pdf",
+      "sha256": "58e3bddca26bb082c30e71c4a295a9610ae1b56561826f3c8b12a2d2255ef457",
+      "bytes": 2837714
+    },
+    {
+      "arxivId": "2301.01949",
+      "version": 1,
+      "title": "SPRING: Situated Conversation Agent Pretrained with Multimodal Questions from Incremental Layout Graph",
+      "file": "spring-situated-conversation-agent-pretrained-with-multimoda--2301.01949v1.pdf",
+      "sha256": "958859898df09c44bba84e5737af602dea451cd018f50a339ea19317b6de1134",
+      "bytes": 4831337
+    },
+    {
+      "arxivId": "2301.01967",
+      "version": 1,
+      "title": "A Survey of Code-switching: Linguistic and Social Perspectives for Language Technologies",
+      "file": "a-survey-of-code-switching-linguistic-and-social-perspective--2301.01967v1.pdf",
+      "sha256": "d897738a452dedd508eaa6d1c264043546bf3eb2804c76e7351b134760dbd049",
+      "bytes": 216633
+    },
+    {
+      "arxivId": "2301.01982",
+      "version": 2,
+      "title": "Emotion-Cause Pair Extraction as Question Answering",
+      "file": "emotion-cause-pair-extraction-as-question-answering--2301.01982v2.pdf",
+      "sha256": "d9f4f96d25e38ab94b7cbe89a3662c68b70a37a9f16cc05670dba62aebe8da71",
+      "bytes": 259902
+    },
+    {
+      "arxivId": "2301.02010",
+      "version": 1,
+      "title": "HIT-SCIR at MMNLU-22: Consistency Regularization for Multilingual Spoken Language Understanding",
+      "file": "hit-scir-at-mmnlu-22-consistency-regularization-for-multilin--2301.02010v1.pdf",
+      "sha256": "c20bf3c64a241c240ee0b3441880ca3daa21b03d9993438443ccf5876b41d6c8",
+      "bytes": 419107
+    },
+    {
+      "arxivId": "2301.02057",
+      "version": 3,
+      "title": "TextDescriptives: A Python package for calculating a large variety of metrics from text",
+      "file": "textdescriptives-a-python-package-for-calculating-a-large-va--2301.02057v3.pdf",
+      "sha256": "22e7f17f4a1067ca59f4d5b2d31cd5bbcb3d90523f62a8463bf19c1a18f248d9",
+      "bytes": 66356
+    },
+    {
+      "arxivId": "2301.02071",
+      "version": 1,
+      "title": "Towards Table-to-Text Generation with Pretrained Language Model: A Table Structure Understanding and Text Deliberating Approach",
+      "file": "towards-table-to-text-generation-with-pretrained-language-mo--2301.02071v1.pdf",
+      "sha256": "9c1297334a5972f0c652bfc8e70decc54fffe9f7aefc52d79ac123bcc2ba78e0",
+      "bytes": 2807370
+    },
+    {
+      "arxivId": "2301.02111",
+      "version": 1,
+      "title": "Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers",
+      "file": "neural-codec-language-models-are-zero-shot-text-to-speech-sy--2301.02111v1.pdf",
+      "sha256": "3f4d4ddbb4cfb1682aa38a23ec9134eaccbda498e38af0013a69a8d7e8207fa1",
+      "bytes": 1391691
+    },
+    {
+      "arxivId": "2301.02113",
+      "version": 1,
+      "title": "Anaphora Resolution in Dialogue: System Description (CODI-CRAC 2022 Shared Task)",
+      "file": "anaphora-resolution-in-dialogue-system-description-codi-crac--2301.02113v1.pdf",
+      "sha256": "7c301c12c2a3514fc6e8d86ad6ccd77978da6ea4c8e6208a73c84c70e29fd772",
+      "bytes": 253463
+    },
+    {
+      "arxivId": "2301.02120",
+      "version": 1,
+      "title": "Reprogramming Pretrained Language Models for Protein Sequence Representation Learning",
+      "file": "reprogramming-pretrained-language-models-for-protein-sequenc--2301.02120v1.pdf",
+      "sha256": "4cbed21c23b1741ba7ecea1d0e55237c89244461116769a30978f39dd1f419bf",
+      "bytes": 2405746
+    },
+    {
+      "arxivId": "2301.02160",
+      "version": 2,
+      "title": "ANNA: Abstractive Text-to-Image Synthesis with Filtered News Captions",
+      "file": "anna-abstractive-text-to-image-synthesis-with-filtered-news--2301.02160v2.pdf",
+      "sha256": "86439ce1931e32db117f66faf6ffeac6c1c130084a7a2125ff982809013b3f42",
+      "bytes": 9487871
+    },
+    {
+      "arxivId": "2301.02195",
+      "version": 1,
+      "title": "Towards Autoformalization of Mathematics and Code Correctness: Experiments with Elementary Proofs",
+      "file": "towards-autoformalization-of-mathematics-and-code-correctnes--2301.02195v1.pdf",
+      "sha256": "7d64d32be44a11d5fd48ecdb8989d9ffc8b8845b6682633a45ab852546dd68a0",
+      "bytes": 331712
+    },
+    {
+      "arxivId": "2302.10291",
+      "version": 1,
+      "title": "Can Large Language Models Change User Preference Adversarially?",
+      "file": "can-large-language-models-change-user-preference-adversarial--2302.10291v1.pdf",
+      "sha256": "fc56111d9bf7e86b80a8bdb06f1ca817fc0b3643119ad40f540c99e37d318683",
+      "bytes": 3133998
+    },
+    {
+      "arxivId": "2301.02228",
+      "version": 3,
+      "title": "MedKLIP: Medical Knowledge Enhanced Language-Image Pre-Training in Radiology",
+      "file": "medklip-medical-knowledge-enhanced-language-image-pre-traini--2301.02228v3.pdf",
+      "sha256": "874abad9853655a6ea5d7af5a35344dd0bab35d8f88de8e46ad5e73b8c241a66",
+      "bytes": 987015
+    },
+    {
+      "arxivId": "2301.02241",
+      "version": 1,
+      "title": "CiT: Curation in Training for Effective Vision-Language Data",
+      "file": "cit-curation-in-training-for-effective-vision-language-data--2301.02241v1.pdf",
+      "sha256": "f0e5d91123e112a5468205d2b078a257444656275529617a1a7940cab925ba0a",
+      "bytes": 524488
+    },
+    {
+      "arxivId": "2301.02275",
+      "version": 2,
+      "title": "Language as a Latent Sequence: deep latent variable models for semi-supervised paraphrase generation",
+      "file": "language-as-a-latent-sequence-deep-latent-variable-models-fo--2301.02275v2.pdf",
+      "sha256": "bf041149254b00f0565ba6071c2da61819388b0fe6c890b7ee97efadfa360ecf",
+      "bytes": 592200
+    },
+    {
+      "arxivId": "2301.02284",
+      "version": 1,
+      "title": "Unsupervised Broadcast News Summarization; a comparative study on Maximal Marginal Relevance (MMR) and Latent Semantic Analysis (LSA)",
+      "file": "unsupervised-broadcast-news-summarization-a-comparative-stud--2301.02284v1.pdf",
+      "sha256": "a66b21629e6c03f2968f6c4d4257e623743cc0857de3dcc9dd44fce3aa5819c2",
+      "bytes": 443911
+    },
+    {
+      "arxivId": "2301.02299",
+      "version": 1,
+      "title": "Sequentially Controlled Text Generation",
+      "file": "sequentially-controlled-text-generation--2301.02299v1.pdf",
+      "sha256": "21af165396ae5b177e869190e0eee0e8d45d6cbc535bd570c05a2679e0ff43ff",
+      "bytes": 1649526
+    },
+    {
+      "arxivId": "2301.03373",
+      "version": 1,
+      "title": "Chatbots As Fluent Polyglots: Revisiting Breakthrough Code Snippets",
+      "file": "chatbots-as-fluent-polyglots-revisiting-breakthrough-code-sn--2301.03373v1.pdf",
+      "sha256": "9e282fd92d35e3b090487407363c5ebb18b8527c78eaff5f1ad4f49f003b4bdc",
+      "bytes": 575191
+    },
+    {
+      "arxivId": "2301.02401",
+      "version": 1,
+      "title": "You Truly Understand What I Need: Intellectual and Friendly Dialogue Agents grounding Knowledge and Persona",
+      "file": "you-truly-understand-what-i-need-intellectual-and-friendly-d--2301.02401v1.pdf",
+      "sha256": "8b70bb0495f5246f46cac5880b70c75b535d5db190a78b2162f53556adf9961d",
+      "bytes": 2435792
+    },
+    {
+      "arxivId": "2301.02427",
+      "version": 1,
+      "title": "Mask-then-Fill: A Flexible and Effective Data Augmentation Framework for Event Extraction",
+      "file": "mask-then-fill-a-flexible-and-effective-data-augmentation-fr--2301.02427v1.pdf",
+      "sha256": "bbf13794c57e74d3293e18747cedabb14b4ac17718ea3945090f95c0e49de6bc",
+      "bytes": 430689
+    },
+    {
+      "arxivId": "2301.02458",
+      "version": 3,
+      "title": "Topics as Entity Clusters: Entity-based Topics from Large Language Models and Graph Neural Networks",
+      "file": "topics-as-entity-clusters-entity-based-topics-from-large-lan--2301.02458v3.pdf",
+      "sha256": "818300b1d0c17ccc57ba480a359443564c2f8b86cf48a064d3e09618d6f4b4c5",
+      "bytes": 680614
+    },
+    {
+      "arxivId": "2301.02459",
+      "version": 1,
+      "title": "OPD@NL4Opt: An ensemble approach for the NER task of the optimization problem",
+      "file": "opd-nl4opt-an-ensemble-approach-for-the-ner-task-of-the-opti--2301.02459v1.pdf",
+      "sha256": "eb2cc32e3742c772e75a2fa7dcbbb2975c36ac1d9a9fd38ee76ff1c22645e466",
+      "bytes": 1270738
+    },
+    {
+      "arxivId": "2301.02521",
+      "version": 1,
+      "title": "SAIDS: A Novel Approach for Sentiment Analysis Informed of Dialect and Sarcasm",
+      "file": "saids-a-novel-approach-for-sentiment-analysis-informed-of-di--2301.02521v1.pdf",
+      "sha256": "2f1a081184748db3fa9cbb8cb8f9bebf7c9d05ce423f2af2c9f664176353fafa",
+      "bytes": 255035
+    },
+    {
+      "arxivId": "2301.02555",
+      "version": 1,
+      "title": "\"No, to the Right\" -- Online Language Corrections for Robotic Manipulation via Shared Autonomy",
+      "file": "no-to-the-right-online-language-corrections-for-robotic-mani--2301.02555v1.pdf",
+      "sha256": "23df8ea49aaee321b492e67f54382db19af85aaccd0a0b19c0ca147fb79bbf7c",
+      "bytes": 6292192
+    },
+    {
+      "arxivId": "2301.02589",
+      "version": 2,
+      "title": "Causal Categorization of Mental Health Posts using Transformers",
+      "file": "causal-categorization-of-mental-health-posts-using-transform--2301.02589v2.pdf",
+      "sha256": "80c76988ab74e5c79d2f69c4c66b35930d65b32826f6005be1c26f832a418d5c",
+      "bytes": 498256
+    },
+    {
+      "arxivId": "2301.02695",
+      "version": 1,
+      "title": "Witscript 3: A Hybrid AI System for Improvising Jokes in a Conversation",
+      "file": "witscript-3-a-hybrid-ai-system-for-improvising-jokes-in-a-co--2301.02695v1.pdf",
+      "sha256": "35f715b1000ef1b8952591f75b9fd4dac370ab238e393f9dfabf57d4fdd35318",
+      "bytes": 180422
+    },
+    {
+      "arxivId": "2301.02724",
+      "version": 1,
+      "title": "Facilitating Contrastive Learning of Discourse Relational Senses by Exploiting the Hierarchy of Sense Relations",
+      "file": "facilitating-contrastive-learning-of-discourse-relational-se--2301.02724v1.pdf",
+      "sha256": "18e91c0ba1ba3576c417d81149bc23e013edb0c1d0007bb9d5da2da816a6b44b",
+      "bytes": 2442260
+    },
+    {
+      "arxivId": "2301.02748",
+      "version": 4,
+      "title": "Generative Antibody Design for Complementary Chain Pairing Sequences through Encoder-Decoder Language Model",
+      "file": "generative-antibody-design-for-complementary-chain-pairing-s--2301.02748v4.pdf",
+      "sha256": "6022ac9fbf0859e23468b92d94b929e9961872c58b826904d9ec5b81ca1ca218",
+      "bytes": 31539534
+    },
+    {
+      "arxivId": "2301.02773",
+      "version": 1,
+      "title": "Building a Parallel Corpus and Training Translation Models Between Luganda and English",
+      "file": "building-a-parallel-corpus-and-training-translation-models-b--2301.02773v1.pdf",
+      "sha256": "7973ec63d2fba6a42e51d131b3343ebcf1553eaa3557287b1f2c318df9fd5b68",
+      "bytes": 507391
+    },
+    {
+      "arxivId": "2301.02777",
+      "version": 1,
+      "title": "Visual Story Generation Based on Emotion and Keywords",
+      "file": "visual-story-generation-based-on-emotion-and-keywords--2301.02777v1.pdf",
+      "sha256": "590e327305c9d01749165b21151bea31eeba528bbcb8dc1a1bf289bcb32366d9",
+      "bytes": 8825005
+    },
+    {
+      "arxivId": "2301.04582",
+      "version": 1,
+      "title": "A Personalized Utterance Style (PUS) based Dialogue Strategy for Efficient Service Requirement Elicitation",
+      "file": "a-personalized-utterance-style-pus-based-dialogue-strategy-f--2301.04582v1.pdf",
+      "sha256": "e488e81e5687379c21468a690ec15881c00335cfb444fb5e1d2e8aa7924e4b00",
+      "bytes": 1412453
+    },
+    {
+      "arxivId": "2301.02792",
+      "version": 1,
+      "title": "Linguistic-style-aware Neural Networks for Fake News Detection",
+      "file": "linguistic-style-aware-neural-networks-for-fake-news-detecti--2301.02792v1.pdf",
+      "sha256": "af2119f3d05ffc449eb5728ee954590ccc636bd33208b20a3834d45339f6b1f8",
+      "bytes": 659123
+    },
+    {
+      "arxivId": "2301.02807",
+      "version": 1,
+      "title": "RLAS-BIABC: A Reinforcement Learning-Based Answer Selection Using the BERT Model Boosted by an Improved ABC Algorithm",
+      "file": "rlas-biabc-a-reinforcement-learning-based-answer-selection-u--2301.02807v1.pdf",
+      "sha256": "0cb4610a747c6e815edcb305373b7e4b73b178cc0baa3209b1fab85c9cff56cb",
+      "bytes": 728237
+    },
+    {
+      "arxivId": "2301.02828",
+      "version": 2,
+      "title": "Why do Nearest Neighbor Language Models Work?",
+      "file": "why-do-nearest-neighbor-language-models-work--2301.02828v2.pdf",
+      "sha256": "cad6d4016a2d009fe04e577a31d693e3af13d888cf0afc18bc51c0f92abc1fac",
+      "bytes": 1389313
+    },
+    {
+      "arxivId": "2301.06901",
+      "version": 1,
+      "title": "Graph-based Keyword Planning for Legal Clause Generation from Topics",
+      "file": "graph-based-keyword-planning-for-legal-clause-generation-fro--2301.06901v1.pdf",
+      "sha256": "8b254248faaca668e026e22f994ee9f980306585ff7bdf2c081529856daad1ab",
+      "bytes": 1423301
+    },
+    {
+      "arxivId": "2301.02966",
+      "version": 1,
+      "title": "SpeeChain: A Speech Toolkit for Large-Scale Machine Speech Chain",
+      "file": "speechain-a-speech-toolkit-for-large-scale-machine-speech-ch--2301.02966v1.pdf",
+      "sha256": "02bd4a99f526efc6c1e1db639ce9a49bc921f7d3e69c7df2704b7d0c36bf2992",
+      "bytes": 7306532
+    },
+    {
+      "arxivId": "2301.02975",
+      "version": 3,
+      "title": "Traditional Readability Formulas Compared for English",
+      "file": "traditional-readability-formulas-compared-for-english--2301.02975v3.pdf",
+      "sha256": "9ccb365053b69b20d7f0e98ec16a07db85d7ce9b031ec0433f23c55dbecd421c",
+      "bytes": 328889
+    },
+    {
+      "arxivId": "2301.02998",
+      "version": 2,
+      "title": "InPars-Light: Cost-Effective Unsupervised Training of Efficient Rankers",
+      "file": "inpars-light-cost-effective-unsupervised-training-of-efficie--2301.02998v2.pdf",
+      "sha256": "7a91bcf5982603de5880ca8161674c99049607c12aa70518998aeebccc8dcfdc",
+      "bytes": 696689
+    }
+  ]
+}
