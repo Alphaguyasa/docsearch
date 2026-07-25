@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { describe, test } from "node:test";
 
 import {
   chunkPage,
   chunkPages,
   countTokens,
+  sanitizeText,
   stripRepeatedLines,
   type Page,
 } from "../src/lib/chunk";
@@ -147,4 +148,82 @@ test("stripRepeatedLines is a no-op with too few pages to judge", () => {
     text: ["Header line", `Body ${n}`].join("\n"),
   }));
   assert.deepEqual(stripRepeatedLines(pages), pages);
+});
+
+describe("sanitizeText", () => {
+  // The fixture that reproduces the crash: PDF extraction emitted \u0000, which
+  // Postgres text columns reject outright ("unsupported Unicode escape
+  // sequence"), killing a two-hour ingest on a single chunk insert.
+  const FIXTURE =
+    "Attention\u0000 is all you need." +
+    "\u0001\u0002\u0007\u0008" +
+    "\u000B\u000C\u000E\u001F" +
+    " Tabs\tnewlines\nand\rreturns survive.";
+
+  test("strips the null byte that broke the insert", () => {
+    assert.equal(sanitizeText(FIXTURE).includes("\u0000"), false);
+  });
+
+  test("strips every other C0 control character", () => {
+    const out = sanitizeText(FIXTURE);
+    for (const code of [1, 2, 7, 8, 11, 12, 14, 31]) {
+      assert.equal(
+        out.includes(String.fromCharCode(code)),
+        false,
+        `control char \\u${code.toString(16).padStart(4, "0")} survived`,
+      );
+    }
+  });
+
+  test("keeps tab, newline and carriage return — they are real text", () => {
+    const out = sanitizeText(FIXTURE);
+    assert.ok(out.includes("\t"), "tab was stripped");
+    assert.ok(out.includes("\n"), "newline was stripped");
+    assert.ok(out.includes("\r"), "carriage return was stripped");
+  });
+
+  test("leaves ordinary text intact", () => {
+    assert.equal(
+      sanitizeText(FIXTURE),
+      "Attention is all you need. Tabs\tnewlines\nand\rreturns survive.",
+    );
+  });
+
+  test("normalizes to NFC so equivalent forms hash and embed identically", () => {
+    const decomposed = "e\u0301"; // e + combining acute
+    const composed = "\u00e9"; // precomposed é
+    assert.equal(sanitizeText(decomposed), composed);
+    assert.equal(sanitizeText(decomposed), sanitizeText(composed));
+  });
+
+  test("is a no-op on already-clean text", () => {
+    assert.equal(sanitizeText("plain ASCII text"), "plain ASCII text");
+  });
+
+  test("handles an empty string", () => {
+    assert.equal(sanitizeText(""), "");
+  });
+
+  test("handles text that is nothing but control characters", () => {
+    assert.equal(sanitizeText("\u0000\u0001\u0002"), "");
+  });
+});
+
+describe("chunkPage sanitisation", () => {
+  test("removes control characters before they reach chunk content", () => {
+    // The whole point of sanitising during chunking: what is embedded and what
+    // is stored are the same string, so a cached vector always describes the
+    // text actually in the row.
+    const chunks = chunkPage(1, "Clean\u0000 text here.\u0007 More text.");
+    assert.equal(chunks.length, 1);
+    assert.equal(chunks[0].content.includes("\u0000"), false);
+    assert.equal(chunks[0].content.includes("\u0007"), false);
+    assert.match(chunks[0].content, /Clean text here\. More text\./);
+  });
+
+  test("counts tokens on the sanitised text, not the raw text", () => {
+    const dirty = chunkPage(1, "abcd" + "\u0000".repeat(100));
+    const clean = chunkPage(1, "abcd");
+    assert.equal(dirty[0].tokenCount, clean[0].tokenCount);
+  });
 });

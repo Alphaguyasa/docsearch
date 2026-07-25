@@ -35,3 +35,4 @@ CLAUDE.md
 corpus/*
 !corpus/manifest.json
 !corpus/failed.json
+ingest-failures.json
