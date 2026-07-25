@@ -40,7 +40,19 @@ export interface Question {
   notes?: string;
   /** Id of the question this paraphrases, for `paraphrase` items; else null. */
   paraphraseOf: string | null;
+  /**
+   * REVIEW TRIAGE ONLY — advisory, never a rejection. Set by the generator when
+   * a candidate reuses its source chunk's distinctive wording ("lexical") or
+   * near-restates another question ("duplicate"). Flagged candidates sort last
+   * in the review queue so they can be culled in one pass; a human still decides
+   * every one. Not part of the spec's Question shape, hence optional.
+   */
+  suspect?: SuspectFlag | null;
+  /** Why `suspect` was set — the score and what it was measured against. */
+  suspectDetail?: string | null;
 }
+
+export type SuspectFlag = "lexical" | "duplicate";
 
 // --- Variants (experiment arms) ----------------------------------------------
 
