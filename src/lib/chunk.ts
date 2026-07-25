@@ -32,6 +32,34 @@ export interface ChunkOptions {
 const DEFAULT_TARGET_TOKENS = 800;
 const DEFAULT_OVERLAP_RATIO = 0.15;
 
+/**
+ * C0 control characters except tab (09), line feed (0A) and carriage return
+ * (0D), which are legitimate text. PDF extraction emits the rest as noise.
+ */
+const ILLEGAL_CONTROLS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g;
+
+/**
+ * Make extracted text safe to embed AND to store.
+ *
+ * Postgres `text` cannot hold \u0000 at all — an insert containing one fails
+ * with "unsupported Unicode escape sequence", which is what killed a two-hour
+ * ingest. The other C0 controls are accepted by Postgres but are extraction
+ * noise that pollutes both the embedding and the displayed citation.
+ *
+ * This runs during CHUNKING, not at insert time, and that ordering is the
+ * point: sanitising only before the insert would embed one string and store a
+ * different one, so the cached vector would describe text that no longer exists.
+ * Every downstream consumer — embeddings, keyword tsvector, the UI — sees the
+ * same bytes.
+ *
+ * NFC normalisation is applied first so that composed and decomposed forms of
+ * the same character produce identical chunk text, and therefore identical
+ * cache keys and embeddings.
+ */
+export function sanitizeText(text: string): string {
+  return text.normalize("NFC").replace(ILLEGAL_CONTROLS, "");
+}
+
 /** The one and only token counter — see the file header. */
 export function countTokens(text: string): number {
   return Math.ceil(text.length / 4);
@@ -88,7 +116,12 @@ export function chunkPage(
   const overlapRatio = options.overlapRatio ?? DEFAULT_OVERLAP_RATIO;
   const overlapTokens = Math.round(targetTokens * overlapRatio);
 
-  const segments = segmentsForPage(text, targetTokens);
+  // Sanitise ONCE, here, before segmentation. Everything downstream — segment
+  // boundaries, token counts, chunk content, the embedding, the stored row — is
+  // then derived from the same clean string. Note that splitParagraphs' \s+
+  // collapse does NOT remove \u0000: JavaScript's \s excludes it, which is
+  // precisely why null bytes survived all the way to the insert.
+  const segments = segmentsForPage(sanitizeText(text), targetTokens);
   if (segments.length === 0) return [];
   const tokens = segments.map(countTokens);
 

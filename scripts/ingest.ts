@@ -9,6 +9,7 @@
  *
  * Per-file output: filename, pages, chunks, mean tokens/chunk, elapsed.
  */
+import { writeFileSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { basename, extname, join } from "node:path";
 
@@ -89,6 +90,41 @@ function meanTokens(chunks: Chunk[]): number {
 }
 
 type StoreResult = "ingested" | "resumed" | "skipped";
+
+const FAILURES_FILE = "ingest-failures.json";
+
+/** A chunk that could not be stored. Recorded rather than fatal. */
+interface ChunkFailure {
+  document: string;
+  documentId: string;
+  chunkIndex: number;
+  page: number | null;
+  error: string;
+  /** Enough text to recognise the offending chunk without dumping it all. */
+  contentPreview: string;
+  failedAt: string;
+}
+
+const chunkFailures: ChunkFailure[] = [];
+
+/**
+ * Append a failure and flush immediately.
+ *
+ * Written on every failure rather than at the end: the run this guards against
+ * is one that dies partway, and a failure log that only exists on clean exit
+ * would be empty exactly when it is needed.
+ */
+function recordChunkFailure(failure: ChunkFailure): void {
+  chunkFailures.push(failure);
+  writeFileSync(
+    FAILURES_FILE,
+    JSON.stringify(
+      { updatedAt: new Date().toISOString(), failures: chunkFailures },
+      null,
+      2,
+    ) + "\n",
+  );
+}
 
 /**
  * Chunks are embedded and written in slices of this many, so a crash loses at
@@ -184,11 +220,43 @@ async function storeFile(
       token_count: p.chunk.tokenCount,
       embedding: JSON.stringify(embeddings[j]),
     }));
-    const ins = await db.from("chunks").insert(rows);
-    if (ins.error) throw new Error(`Chunk insert failed: ${ins.error.message}`);
 
-    progress.chunksDone += slice.length;
-    progress.tokensDone += slice.reduce((sum, p) => sum + p.chunk.tokenCount, 0);
+    const batch = await db.from("chunks").insert(rows);
+
+    if (batch.error) {
+      // The batch is all-or-nothing, so one bad row loses the other seven.
+      // Retry individually to isolate the offender, keep the rest, and record
+      // what failed. A single unstorable chunk must not end a two-hour run.
+      console.warn(
+        `\n    batch insert failed (${batch.error.message}) — retrying ` +
+          `${rows.length} chunk(s) individually`,
+      );
+
+      for (const [j, row] of rows.entries()) {
+        const one = await db.from("chunks").insert(row);
+        if (one.error) {
+          recordChunkFailure({
+            document: parsed.filename,
+            documentId,
+            chunkIndex: row.chunk_index,
+            page: row.page_number,
+            error: one.error.message,
+            contentPreview: row.content.slice(0, 120),
+            failedAt: new Date().toISOString(),
+          });
+          console.warn(
+            `      ✗ chunk ${row.chunk_index} (p.${row.page_number}): ${one.error.message}`,
+          );
+          continue;
+        }
+        progress.chunksDone += 1;
+        progress.tokensDone += slice[j].chunk.tokenCount;
+      }
+    } else {
+      progress.chunksDone += slice.length;
+      progress.tokensDone += slice.reduce((sum, p) => sum + p.chunk.tokenCount, 0);
+    }
+
     progress.report();
   }
 
@@ -378,6 +446,23 @@ async function main(): Promise<void> {
   }
 
   const spent = limiterState!();
+
+  if (chunkFailures.length > 0) {
+    console.log(
+      `\n⚠ ${chunkFailures.length} chunk(s) could not be stored — see ${FAILURES_FILE}`,
+    );
+    for (const failure of chunkFailures.slice(0, 5)) {
+      console.log(
+        `    ${failure.document} chunk ${failure.chunkIndex} ` +
+          `(p.${failure.page}): ${failure.error}`,
+      );
+    }
+    if (chunkFailures.length > 5) {
+      console.log(`    ... and ${chunkFailures.length - 5} more`);
+    }
+    console.log("    Re-running retries them; until then they are simply absent.");
+  }
+
   console.log(
     `\nDone: ${ingested} ingested, ${resumed} resumed, ${skippedFiles} already complete.\n` +
       `      ${progress.chunksDone}/${totalChunks} chunks stored, ` +
