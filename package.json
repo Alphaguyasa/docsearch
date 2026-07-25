@@ -13,6 +13,8 @@
     "eval:run": "tsx eval/src/runner.ts",
     "eval:compare": "tsx scripts/compare-runs.ts",
     "eval:golden": "tsx scripts/generate-golden-set.ts",
+    "eval:review": "tsx scripts/review-golden-set.ts",
+    "eval:validate": "tsx scripts/validate-golden-set.ts",
     "test": "node --import tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
