@@ -11,6 +11,24 @@ import { NextResponse, type NextRequest } from "next/server";
  * upload/delete/search endpoints (which cost embedding and LLM tokens) to
  * anyone. It is not a multi-user auth system.
  */
+/**
+ * Constant-time string compare. A plain `===` bails at the first differing
+ * byte, so response latency leaks how much of a guessed password is correct
+ * and makes the secret recoverable one character at a time.
+ */
+function safeEqual(a: string, b: string): boolean {
+  const enc = new TextEncoder();
+  const av = enc.encode(a);
+  const bv = enc.encode(b);
+  // Always walk the full expected length so the loop count doesn't vary with
+  // the supplied value; the length mismatch is folded into the same result.
+  let diff = av.length ^ bv.length;
+  for (let i = 0; i < bv.length; i++) {
+    diff |= (av[i] ?? 0) ^ bv[i];
+  }
+  return diff === 0;
+}
+
 export function middleware(req: NextRequest): NextResponse {
   const password = process.env.APP_PASSWORD;
   if (!password) return NextResponse.next();
@@ -20,7 +38,7 @@ export function middleware(req: NextRequest): NextResponse {
     try {
       const decoded = atob(header.slice("Basic ".length));
       const supplied = decoded.slice(decoded.indexOf(":") + 1);
-      if (supplied === password) return NextResponse.next();
+      if (safeEqual(supplied, password)) return NextResponse.next();
     } catch {
       // Malformed header — fall through to the challenge.
     }
