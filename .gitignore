@@ -11,6 +11,7 @@ tsconfig.tsbuildinfo
 # Results that matter live in Supabase (history) and are summarised in git.
 eval/runs/
 eval/.cache/
+coverage/
 
 # Golden-set working state. questions.jsonl (the reviewed set) IS tracked — it
 # is the source of truth every metric is computed against. These two are not:
