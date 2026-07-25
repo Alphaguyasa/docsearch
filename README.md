@@ -14,7 +14,7 @@ with the citation targets rendered before the answer text.
 
 - **Ingest** PDFs — via the CLI (`npm run ingest`) or drag-and-drop in the
   browser. Each PDF is extracted per page, chunked (~800 tokens, page-bounded),
-  embedded with `voyage-3.5` (1024-dim), and stored in Postgres.
+  embedded with `voyage-4` (1024-dim), and stored in Postgres.
 - **Search** — a question runs hybrid retrieval (vector + keyword + RRF); the top
   chunks are numbered and fed to the model, which streams a cited answer. Inline
   `[n]` chips open a panel with the source chunk's full text, title, and page.
@@ -77,7 +77,7 @@ is used by both the CLI and the `/api/process` route, so it exists in one place.
 
 - Next.js 15 (App Router) + TypeScript + Tailwind
 - Supabase Postgres with pgvector (+ Supabase Storage for uploaded PDFs)
-- Voyage AI embeddings — `voyage-3.5`, output pinned to 1024 dims
+- Voyage AI embeddings — `voyage-4`, output pinned to 1024 dims
 - Generation behind a provider interface: Anthropic `claude-sonnet-5` **or**
   Google Gemini (`gemini-flash-latest`), selected by `GENERATION_PROVIDER`
 - `unpdf` for PDF text extraction

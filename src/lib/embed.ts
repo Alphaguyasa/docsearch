@@ -6,7 +6,22 @@
 import { config } from "./env";
 
 const VOYAGE_URL = "https://api.voyageai.com/v1/embeddings";
-const MODEL = "voyage-3.5";
+
+/**
+ * voyage-4. Verified against docs.voyageai.com: 1024 default dimensions
+ * (configurable), 32k context, and covered by the 200M-token free allocation
+ * shared with voyage-4-large / voyage-4-lite / voyage-context-4 / voyage-code-3.
+ *
+ * The previous pin, voyage-3.5, is NOT in that allocation and bills from the
+ * first token — which is why this moved.
+ *
+ * CHANGING THIS IS A RE-INDEX, NOT A CONFIG TWEAK. Embeddings from different
+ * model generations occupy different vector spaces; mixing them in one table
+ * makes cosine distance meaningless between rows and degrades retrieval with no
+ * error and no obvious symptom. If you change the model, delete every chunk and
+ * re-embed the whole corpus.
+ */
+const MODEL = "voyage-4";
 const EXPECTED_DIM = 1024; // must match the schema's vector(1024) column
 const BATCH_SIZE = 100;
 const MAX_RETRIES = 5;

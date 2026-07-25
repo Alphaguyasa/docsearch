@@ -1,12 +1,18 @@
 -- DocSearch — initial schema
 -- Run this in the Supabase SQL editor (Dashboard -> SQL Editor -> New query).
 --
--- NOTE ON DIMENSIONS: vector(1024) matches voyage-3.
+-- NOTE ON DIMENSIONS: vector(1024) matches voyage-4 at its default output size.
 -- If you switch embedding models, change every 1024 below to match:
---   voyage-3            -> 1024
---   voyage-3-lite       -> 512
---   text-embedding-3-small (OpenAI) -> 1536
+--   voyage-4 / voyage-4-large / voyage-4-lite -> 1024 default (256/512/2048 also offered)
+--   voyage-3-lite                             -> 512
+--   text-embedding-3-small (OpenAI)           -> 1536
 -- The column and the match_chunks function must agree, or inserts will fail.
+--
+-- CHANGING THE MODEL IS A FULL RE-INDEX, even when the dimension is unchanged.
+-- Different embedding generations occupy different vector spaces, so a table
+-- holding vectors from two models makes cosine distance meaningless between
+-- rows: retrieval degrades silently, with no error and no obvious symptom.
+-- Delete every chunk and re-embed the whole corpus.
 
 -- ---------------------------------------------------------------------------
 -- Extensions

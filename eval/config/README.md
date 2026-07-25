@@ -11,7 +11,7 @@ with no invented values. Each field and its source:
 
 | Field | Value | Source |
 |---|---|---|
-| `embeddingModel` | `voyage-3.5` | `src/lib/embed.ts` — `MODEL` |
+| `embeddingModel` | `voyage-4` | `src/lib/embed.ts` — `MODEL` |
 | `chunkStrategy.size` | `800` | `src/lib/chunk.ts` — `DEFAULT_TARGET_TOKENS` |
 | `chunkStrategy.overlap` | `0.15` | `src/lib/chunk.ts` — `DEFAULT_OVERLAP_RATIO` (a *fraction*, not tokens) |
 | `chunkStrategy.tableName` | `chunks` | `schema.sql` — `create table if not exists chunks` |
@@ -32,6 +32,23 @@ than passed off as read values:
   `v1` is introduced here to mean the current `SYSTEM_PROMPT` in
   `src/lib/answer.ts`. Any edit to that prompt must bump this, or two runs with
   different prompts will be recorded as the same arm.
+
+## Why the embedding model is voyage-4
+
+Verified against docs.voyageai.com, not recalled: `voyage-4` defaults to 1024
+dimensions and is covered by the 200M-token free allocation (shared with
+`voyage-4-large`, `voyage-4-lite`, `voyage-context-4`, `voyage-code-3`).
+`voyage-3.5`, the previous pin, is **not** in that allocation and bills from the
+first token — at ~2M tokens for a 200-paper corpus, and again for every
+chunk-size experiment arm, that was a real cost for no benefit.
+
+The schema stays `vector(1024)`; only the model string changed.
+
+**Changing this field is a full re-index.** Different embedding generations
+occupy different vector spaces, so a table holding both makes cosine distance
+meaningless between rows — retrieval degrades with no error and no obvious
+symptom. Every chunk embedded with voyage-3.5 was deleted before the switch;
+if you change the model again, do the same.
 
 ## Why the generation model is Gemini, not Claude
 

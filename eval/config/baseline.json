@@ -1,7 +1,7 @@
 {
   "name": "baseline",
   "description": "The live DocSearch pipeline, unmodified. Every value read from the codebase — see eval/config/README.md for the per-field source. This is the 'before' every experiment is compared against.",
-  "embeddingModel": "voyage-3.5",
+  "embeddingModel": "voyage-4",
   "chunkStrategy": {
     "size": 800,
     "overlap": 0.15,
