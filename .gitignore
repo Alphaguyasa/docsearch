@@ -18,6 +18,7 @@ coverage/
 # candidates are regenerable from the cache, and .reviewed is local progress.
 eval/golden/questions.candidate.jsonl
 eval/golden/.reviewed
+eval/golden/unlabelled-candidates.jsonl
 
 # Local agent/editor config
 .claude/
