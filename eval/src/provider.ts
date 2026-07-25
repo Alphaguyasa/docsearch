@@ -69,7 +69,16 @@ export interface CompleteOptions {
   maxTokens?: number;
   /** Ask the provider for raw JSON. Advisory — parse defensively regardless. */
   json?: boolean;
+  /**
+   * Sampling temperature. Defaults to 0 — a judge or generator that varies run
+   * to run cannot be calibrated, and a cached result would disagree with a
+   * fresh one. Callers may override, but every current caller wants 0.
+   */
+  temperature?: number;
 }
+
+/** Deterministic by default; see CompleteOptions.temperature. */
+const DEFAULT_TEMPERATURE = 0;
 
 export interface LLMProvider {
   readonly name: ProviderName;
@@ -199,8 +208,8 @@ class GeminiProvider implements LLMProvider {
             : {}),
           contents: [{ role: "user", parts: [{ text: prompt }] }],
           generationConfig: {
-            // Deterministic, so a cached result and a fresh one agree.
-            temperature: 0,
+            // Deterministic by default, so a cached result and a fresh one agree.
+            temperature: opts.temperature ?? DEFAULT_TEMPERATURE,
             maxOutputTokens: opts.maxTokens ?? 2048,
             ...(opts.json ? { responseMimeType: "application/json" } : {}),
           },
@@ -238,7 +247,7 @@ class AnthropicProvider implements LLMProvider {
     const message = await client.messages.create({
       model: this.model,
       max_tokens: opts.maxTokens ?? 2048,
-      temperature: 0,
+      temperature: opts.temperature ?? DEFAULT_TEMPERATURE,
       ...(opts.system ? { system: opts.system } : {}),
       messages: [{ role: "user", content: prompt }],
     });
