@@ -13,9 +13,11 @@ eval/runs/
 eval/.cache/
 coverage/
 
-# Golden-set working state. questions.jsonl (the reviewed set) IS tracked — it
-# is the source of truth every metric is computed against. These two are not:
-# candidates are regenerable from the cache, and .reviewed is local progress.
+# Golden-set working state. questions.dev.jsonl and questions.holdout.jsonl ARE
+# tracked — they are the source of truth every metric is computed against, and
+# the holdout in particular must be fixed and reproducible across machines.
+# These are not: candidates are regenerable from the cache, .reviewed is local
+# review progress, and unlabelled-candidates is a scan output.
 eval/golden/questions.candidate.jsonl
 eval/golden/.reviewed
 eval/golden/unlabelled-candidates.jsonl
