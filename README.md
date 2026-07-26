@@ -105,27 +105,57 @@ is used by both the CLI and the `/api/process` route, so it exists in one place.
 
 Other scripts: `npm run query -- "<q>"` (retrieval only), `npm run ask -- "<q>"`
 (retrieve + cited answer in the terminal), `npm run ask -- --refusals` (refusal
-check), `npm run eval -- --mode hybrid` (retrieval metrics).
+smoke check against the dev golden set).
 
 ## Evaluation
 
-Measured on a 35-question gold set (`evals/questions.jsonl`), hybrid mode,
-top-10. Full write-up in [`evals/EXPERIMENTS.md`](evals/EXPERIMENTS.md); metric
-definitions in [`evals/README.md`](evals/README.md).
+An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
+Phases 0–1 (scaffolding, golden set) and 2 (retrieval metrics) are complete; the
+runner is Phase 4, so **there are no measured numbers yet**.
 
-| Metric | overall | easy | medium | hard |
-|---|---|---|---|---|
-| recall@1 | 88.6% | 100% | 94.4% | 85.7% |
-| recall@5 | 100% | 100% | 100% | 100% |
-| recall@10 | 100% | 100% | 100% | 100% |
-| MRR | 0.930 | 1.000 | 0.900 | 0.905 |
+> An earlier ad-hoc eval (35 questions over a 26-chunk corpus) reported
+> recall@5 = 100%. Those numbers are deleted, not carried forward: they came from
+> a corpus roughly 1% the size of the current one and were saturated — every
+> setting scored 100%, so they could not distinguish anything and would be
+> actively misleading beside the new harness. Recoverable from git history if
+> ever needed.
 
-- **RRF `k` experiment (20 / 60 / 120):** no measurable effect — recall@5 and MRR
-  are identical across all three and no question changed rank. recall@5 is
-  already saturated at 100%, so the gold set can't distinguish the settings. See
-  `evals/EXPERIMENTS.md`.
-- **Refusal:** all five unanswerable questions refuse with no citation markers
-  (`npm run ask -- --refusals`).
+### The golden set
+
+92 human-reviewed questions over a 2,134-chunk / 90-document corpus, split into
+two files that are **never** used interchangeably:
+
+| File | Questions | Purpose |
+|---|---|---|
+| `eval/golden/questions.dev.jsonl` | 77 | Tune against this. The default everywhere. |
+| `eval/golden/questions.holdout.jsonl` | 15 | Touched once, at the end. Requires `--holdout`. |
+
+The split is seeded (seed 42) and reproducible via `npm run eval:split`; the seed
+and rule are written into both files' `#` headers so any number can be traced
+back to the split that produced it.
+
+**Split rule, and why it is not a uniform sample:**
+
+- The holdout draws **only** from factoid (7), unanswerable (5), and paraphrase
+  (3).
+- **Multi-hop (n=7) and aggregation (n=8) stay entirely in dev.** Both are far
+  too small to survive a split — a 20% share would put one or two questions on
+  each side, where a single item moves the score by tens of points — and too
+  small to meaningfully tune against in the first place.
+- **Paraphrase families are atomic.** A paraphrase and its parent factoid never
+  straddle the split. A paraphrase exists to test robustness to rewording *the
+  same question*, so tuning on the parent would transfer straight to its holdout
+  twin — the most direct leakage available. The splitter asserts this and fails
+  loudly rather than writing a leaky split.
+
+**Consequence, stated plainly: the holdout measures factoid / unanswerable /
+paraphrase performance, not whole-system performance.** It says nothing about
+multi-hop or aggregation, which are dev-only. Report it as such.
+
+Every script and runner defaults to dev. Reading the holdout requires an explicit
+`--holdout` flag and prints a warning that it is a one-time measurement — a
+holdout re-run after every change is just a second dev set with a misleading
+name.
 
 ## Deploying (Vercel)
 
@@ -161,9 +191,17 @@ same variables under **Settings → Environment Variables**, and deploy.
 
 ## Limitations
 
-- **Small, saturated eval set.** 35 answerable questions with recall@5 already at
-  100% — good enough to catch regressions and hallucinated citations, but too
-  easy to distinguish fine retrieval changes (hence the RRF-`k` null result).
+- **The golden set is small, and small in specific places.** 77 dev questions.
+  At n≈77 a recall@10 of 0.6 carries a 95% CI of roughly ±0.11, so differences
+  under ~5 points are not distinguishable and must be reported as null results,
+  not wins. Worse per bucket: multi-hop is n=7 and aggregation n=8, where a
+  single question moves the score by 12–14 points — neither supports a per-type
+  conclusion, and Phase 6's per-type breakdown should say so rather than print a
+  number that looks like evidence.
+- **The holdout is 15 questions and covers three types.** It is enough to catch a
+  gross overfit, not to estimate anything precisely: a 15-question score has a
+  CI wide enough to swallow most plausible differences. Treat it as a sanity
+  check on the dev number, not as an independent measurement.
 - **Voyage free tier is 3 embeddings/min.** Large ingests and vector/hybrid evals
   must be paced (`--delay`), and in the web app a query that hits the limit
   **degrades to keyword-only** rather than failing.
@@ -182,3 +220,53 @@ same variables under **Settings → Environment Variables**, and deploy.
   with no policies and there is no auth or per-user isolation.
 - **Refusal is prompt-enforced, not guaranteed.** It's held to account by the
   refusal harness, but a model can still deviate.
+- **The multi-hop bucket is intra-document only, and is 8% of the set, not 20%.**
+  `docs/EVAL_HARNESS.md` originally specified multi-hop questions spanning two
+  *different* documents, at 20% of the golden set. Measured on this corpus —
+  90 topically unrelated arXiv NLP papers — cross-document multi-hop yielded
+  **2 questions from 33 generation attempts, and 0 of 33 end-to-end after human
+  review**; same-document pairs yielded 12 from 51, of which 7 survived. The
+  targets were retargeted to measurement: multi-hop 20% → **8%**, factoid
+  35% → **47%** to absorb the difference.
+
+  This is a property of *corpus construction*, not of the generator. Pairs are
+  ranked by IDF-weighted entity salience and the model declines them correctly:
+  two papers that both mention `BERT` or `ICASSP` share a topic, not a joint
+  fact. An arbitrary sample of unrelated papers contains almost no cross-document
+  joint facts; a corpus of *related* documents would behave differently.
+
+  All 7 accepted multi-hop questions therefore pair two sections of one paper
+  (≥5 chunks apart, typically a method and its results). These are genuine
+  two-chunk questions, but a same-document question can often be answered from
+  one well-chosen chunk, so the bucket tests multi-chunk assembly **less severely
+  than the original design intended**. `multihopKind` is retained on every
+  question and reported, but no cross-doc share is enforced — a target the corpus
+  cannot supply at any attempt count is a permanently red check, not a standard.
+  **At n=7 this bucket cannot support a per-type conclusion**; report it
+  descriptively with the count attached.
+- **Aggregation questions are generated deterministically, not by an LLM.** Their
+  ground truth is the entity document-frequency index, so "how many papers
+  mention X" is exact and reproducible — but it measures retrieval against the
+  *extractor's* notion of which chunks mention X, not a human's. Asking a model
+  instead returned null 4 times in 10 and produced unverified answers for the
+  rest.
+- **Golden set review: 126 candidates, 92 accepted, 34 dropped (27%).** Slightly
+  under the 30–40% drop rate `docs/EVAL_HARNESS.md` expects. Per bucket:
+  factoid 43/49 (88%), unanswerable 20/28 (71%), paraphrase 14/20 (70%),
+  multi-hop 7/14 (50%), aggregation 8/15 (53%).
+
+  **The first review pass dropped all 28 unanswerable questions — a tooling bug,
+  not a judgment.** The review UI displayed every candidate beside its source
+  chunk, which framed the reviewer's implicit question as *"is this answerable
+  here?"* — a test an unanswerable question fails by definition. The entire
+  highest-signal bucket was rejected in one pass, and the run still looked
+  successful: 70 questions accepted, no error, no warning. The UI now renders
+  unanswerable candidates differently — no source chunk, an explicit banner, and
+  a **live retrieval of the top 3 corpus matches** shown as evidence *against*
+  the candidate, so "nothing in the corpus answers this" is checked rather than
+  assumed. Re-reviewed, the same 28 questions were accepted at 71%.
+
+  This is worth reporting rather than quietly fixing: eval tooling can silently
+  destroy the most valuable part of a test set, and the failure is invisible in
+  every summary statistic. The bucket that measures whether the system refuses or
+  hallucinates was the one the tooling was worst at presenting.
