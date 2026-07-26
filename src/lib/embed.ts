@@ -77,6 +77,13 @@ type InputType = "document" | "query";
 
 interface VoyageResponse {
   data?: { embedding: number[]; index: number }[];
+  /** Voyage reports what it actually billed; the limiter's estimate is not it. */
+  usage?: { total_tokens?: number };
+}
+
+/** Tokens the API reported for the most recent embed call, per request. */
+export interface EmbedUsage {
+  totalTokens: number;
 }
 
 /**
@@ -94,8 +101,23 @@ export async function embedDocuments(texts: string[]): Promise<number[][]> {
  * ingestion). Returns one 1024-dim vector.
  */
 export async function embedQuery(text: string): Promise<number[]> {
-  const [vector] = await embed([text], "query");
-  return vector;
+  return (await embedQueryDetailed(text)).embedding;
+}
+
+/**
+ * Embed a query AND report the tokens Voyage billed for it.
+ *
+ * Added for the eval harness, which computes a per-question cost and must read
+ * usage from the API response rather than re-deriving it — the limiter's
+ * `countTokens` figure is an estimate used for pacing, and quoting it as spend
+ * would put an approximation in a column labelled dollars. `embedQuery` is
+ * unchanged for app callers.
+ */
+export async function embedQueryDetailed(
+  text: string,
+): Promise<{ embedding: number[]; usage: EmbedUsage }> {
+  const { vectors, usage } = await embedBatch([text], "query");
+  return { embedding: vectors[0], usage };
 }
 
 async function embed(texts: string[], inputType: InputType): Promise<number[][]> {
@@ -105,12 +127,15 @@ async function embed(texts: string[], inputType: InputType): Promise<number[][]>
 
   const out: number[][] = [];
   for (const batch of batches) {
-    out.push(...(await embedBatch(batch, inputType)));
+    out.push(...(await embedBatch(batch, inputType)).vectors);
   }
   return out;
 }
 
-async function embedBatch(input: string[], inputType: InputType): Promise<number[][]> {
+async function embedBatch(
+  input: string[],
+  inputType: InputType,
+): Promise<{ vectors: number[][]; usage: EmbedUsage }> {
   const batchTokens = input.reduce((sum, text) => sum + countTokens(text), 0);
 
   for (let attempt = 0; ; attempt++) {
@@ -146,7 +171,12 @@ async function embedBatch(input: string[], inputType: InputType): Promise<number
 
     if (res.ok) {
       const json = (await res.json()) as VoyageResponse;
-      return parseVectors(json, input.length);
+      return {
+        vectors: parseVectors(json, input.length),
+        // Fall back to the local estimate only if Voyage omits usage, so a
+        // missing field understates rather than crashes the run.
+        usage: { totalTokens: json.usage?.total_tokens ?? batchTokens },
+      };
     }
 
     const retryable = res.status === 429 || res.status >= 500;
