@@ -3,26 +3,26 @@
  * before any UI exists. Runs retrieval and generation directly (no HTTP layer).
  *
  *   npm run ask -- "<question>"     Answer one question; print sources + answer.
- *   npm run ask -- --refusals       Acceptance check: the unanswerable questions
- *                                   (u01–u05) must each refuse with the
- *                                   "not covered by these documents" phrase and
- *                                   NO citation markers. Exits non-zero on fail.
+ *   npm run ask -- --refusals       Acceptance check: every `unanswerable`
+ *                                   question in the DEV golden set must refuse
+ *                                   with the "not covered by these documents"
+ *                                   phrase and NO citation markers. Exits
+ *                                   non-zero on failure.
+ *   npm run ask -- --refusals --limit 5    Check only the first N.
+ *
+ * This is a fast smoke test, not the real measurement — the eval harness's
+ * refusal judge (eval/src/metrics/judge.ts) scores this properly. It reads the
+ * DEV split only: the holdout is a one-time measurement and must not be spent
+ * on a smoke test.
  */
 import "../src/lib/loadenv"; // must precede modules that read env
 
-import { readFileSync } from "node:fs";
-
 import { streamAnswer, NOT_COVERED_PHRASE } from "../src/lib/answer";
+import { loadGoldenSet } from "../eval/src/goldenset";
 import { retrieve } from "../src/lib/retrieve";
 import type { RetrievedChunk } from "../src/lib/retrieve";
 
 const CITATION_RE = /\[\d+\]/;
-const REFUSAL_IDS = ["u01", "u02", "u03", "u04", "u05"];
-
-interface EvalQuestion {
-  id: string;
-  question: string;
-}
 
 function printSources(chunks: RetrievedChunk[]): void {
   console.log("Sources:");
@@ -47,27 +47,30 @@ async function ask(question: string, showSources: boolean): Promise<string> {
   return answer;
 }
 
-function loadEvalQuestions(): EvalQuestion[] {
-  const path = "evals/questions.jsonl";
-  return readFileSync(path, "utf8")
-    .split("\n")
-    .filter((line) => line.trim())
-    .map((line) => JSON.parse(line) as EvalQuestion);
-}
-
 /** Acceptance: every unanswerable question refuses cleanly with no citations. */
-async function runRefusals(): Promise<void> {
-  const byId = new Map(loadEvalQuestions().map((q) => [q.id, q]));
+async function runRefusals(limit: number | undefined): Promise<void> {
+  // DEV only, always. A holdout question spent here is a holdout question you
+  // can no longer report honestly at the end.
+  const loaded = loadGoldenSet();
+  const unanswerable = loaded.questions.filter((q) => q.type === "unanswerable");
+
+  if (unanswerable.length === 0) {
+    throw new Error(
+      `No unanswerable questions in ${loaded.file}. ` +
+        `Run: npm run eval:golden, then npm run eval:review`,
+    );
+  }
+
+  const checking = limit === undefined ? unanswerable : unanswerable.slice(0, limit);
+  console.log(
+    `Checking ${checking.length} of ${unanswerable.length} unanswerable ` +
+      `question(s) from ${loaded.file}\n`,
+  );
+
   let failures = 0;
 
-  for (const id of REFUSAL_IDS) {
-    const q = byId.get(id);
-    if (!q) {
-      console.log(`✗ ${id}: not found in evals/questions.jsonl`);
-      failures++;
-      continue;
-    }
-
+  for (const q of checking) {
+    const id = q.id;
     const answer = await ask(q.question, false);
     const refused = answer.toLowerCase().includes(NOT_COVERED_PHRASE);
     const cited = CITATION_RE.test(answer);
@@ -86,17 +89,22 @@ async function runRefusals(): Promise<void> {
 
   console.log();
   if (failures > 0) {
-    console.log(`${failures} of ${REFUSAL_IDS.length} refusal checks FAILED.`);
+    console.log(`${failures} of ${checking.length} refusal checks FAILED.`);
     process.exit(1);
   }
-  console.log(`All ${REFUSAL_IDS.length} refusal checks passed.`);
+  console.log(`All ${checking.length} refusal checks passed.`);
 }
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
   if (args[0] === "--refusals") {
-    await runRefusals();
+    const at = args.indexOf("--limit");
+    const limit = at === -1 ? undefined : Number(args[at + 1]);
+    if (at !== -1 && (!Number.isFinite(limit) || limit! <= 0)) {
+      throw new Error("--limit must be a positive number");
+    }
+    await runRefusals(limit);
     return;
   }
 

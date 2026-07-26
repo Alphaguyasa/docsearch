@@ -23,6 +23,7 @@ import path from "node:path";
 import { createInterface } from "node:readline";
 
 import { mulberry32, shuffle } from "../eval/src/corpus";
+import { DEV_FILE, HOLDOUT_FILE, parseJsonl } from "../eval/src/goldenset";
 import {
   cohensKappa,
   type Agreement,
@@ -32,7 +33,16 @@ import type { Question, QuestionResult } from "../eval/src/types";
 
 const RUNS_DIR = "eval/runs";
 const LABELS_FILE = "eval/golden/judge-calibration.jsonl";
-const GOLDEN_FILE = "eval/golden/questions.jsonl";
+/**
+ * Both halves, keyed by id — this is a LOOKUP, not a sample.
+ *
+ * Calibration labels judge outputs on results a run already produced; it reads
+ * the golden set only to recover each question's text and expected answer. If a
+ * holdout run is ever calibrated, its questions must resolve, and restricting
+ * this to dev would silently drop them from the kappa. No selection happens
+ * here, so there is nothing to leak.
+ */
+const GOLDEN_FILES = [DEV_FILE, HOLDOUT_FILE];
 
 /** One human labelling of one result. Model labels are recorded alongside so a
  *  later prompt change can be compared against the same human judgement. */
@@ -264,7 +274,11 @@ async function main(): Promise<void> {
   const results = readJsonl<StoredResult>(runFile);
   if (results.length === 0) throw new Error(`${runFile} contains no results.`);
 
-  const questions = new Map(readJsonl<Question>(GOLDEN_FILE).map((q) => [q.id, q]));
+  const questions = new Map(
+    GOLDEN_FILES.filter((f) => existsSync(f))
+      .flatMap((f) => parseJsonl<Question>(f).rows)
+      .map((q) => [q.id, q]),
+  );
 
   const rand = mulberry32(args.seed);
   const pool = shuffle(

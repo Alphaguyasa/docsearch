@@ -28,8 +28,11 @@ import "../src/lib/loadenv";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { fetchByIds } from "../src/lib/paginate";
+
 import { cached } from "../eval/src/cache";
 import { existingChunkIds } from "../eval/src/corpus";
+import { loadGoldenSet, warnHoldout } from "../eval/src/goldenset";
 import {
   findUnlabelledNearDuplicates,
   parseVector,
@@ -38,9 +41,8 @@ import {
   type LabelledChunk,
   type NearDuplicate,
 } from "../eval/src/duplicates";
-import type { Question, QuestionType } from "../eval/src/types";
+import type { MultihopKind, Question, QuestionType } from "../eval/src/types";
 
-const DEFAULT_FILE = "eval/golden/questions.jsonl";
 const UNLABELLED_FILE = "eval/golden/unlabelled-candidates.jsonl";
 
 /** Candidate pool depth per question. */
@@ -55,14 +57,41 @@ const RETRIEVAL_DEPTH = 50;
  */
 const DEFAULT_SIMILARITY = 0.85;
 
-/** Composition table from docs/EVAL_HARNESS.md, as percentages. */
+/**
+ * Composition table from docs/EVAL_HARNESS.md, as percentages.
+ *
+ * RETARGETED FROM MEASUREMENT, not from preference. The original table asked for
+ * 35% factoid / 20% multi-hop. Multi-hop cannot reach 20% on this corpus:
+ * cross-document pairs yielded 2 questions from 33 generation attempts, and 0 of
+ * 33 survived review. Multi-hop is set to what the corpus actually supports and
+ * factoid absorbs the difference, because factoid is the bucket the corpus
+ * supplies without limit. See the deviation note in docs/EVAL_HARNESS.md.
+ *
+ * Sums to 100 so the generator's `want()` split adds up to --target.
+ */
 const TARGET_MIX: Record<QuestionType, number> = {
-  factoid: 35,
-  multihop: 20,
+  factoid: 47,
+  multihop: 8,
   aggregation: 10,
   unanswerable: 20,
   paraphrase: 15,
 };
+
+/**
+ * Valid values for `multihopKind`.
+ *
+ * THERE IS NO ENFORCED SPLIT between the two. An earlier version required 40%
+ * cross-document, which the corpus cannot supply at any attempt count: 33
+ * generation attempts produced 2 candidates and review kept 0. A target nobody
+ * can hit is not a standard, it is a permanently red check that teaches
+ * reviewers to ignore the validator.
+ *
+ * The FIELD stays, and the breakdown is still printed, because the distinction
+ * is real and reporting it is the honest thing to do — a same-document question
+ * can often be answered from one well-chosen chunk, so it tests multi-chunk
+ * assembly less severely. It is reported, not required.
+ */
+const VALID_MULTIHOP_KINDS = new Set<MultihopKind>(["cross-doc", "same-doc"]);
 
 /** Relative tolerance on each bucket's share, per the spec. */
 const TOLERANCE = 0.25;
@@ -71,7 +100,8 @@ const VALID_TYPES = new Set<string>(Object.keys(TARGET_MIX));
 const VALID_DIFFICULTIES = new Set(["easy", "medium", "hard"]);
 
 interface Args {
-  file: string;
+  file: string | undefined;
+  holdout: boolean;
   skipDb: boolean;
   duplicates: boolean;
   similarity: number;
@@ -80,7 +110,9 @@ interface Args {
 
 function parseArgs(argv: string[]): Args {
   const args: Args = {
-    file: DEFAULT_FILE,
+    // Undefined means "let loadGoldenSet decide", which defaults to DEV.
+    file: undefined,
+    holdout: false,
     skipDb: false,
     duplicates: false,
     similarity: DEFAULT_SIMILARITY,
@@ -91,6 +123,8 @@ function parseArgs(argv: string[]): Args {
     const flag = argv[i];
     if (flag === "--skip-db") {
       args.skipDb = true;
+    } else if (flag === "--holdout") {
+      args.holdout = true;
     } else if (flag === "--duplicates") {
       args.duplicates = true;
     } else {
@@ -135,7 +169,13 @@ interface MatchRow {
 async function scanForUnlabelled(
   questions: Question[],
   args: Args,
-): Promise<{ rows: UnlabelledRow[]; questionsAffected: number; similarities: number[] }> {
+): Promise<{
+  rows: UnlabelledRow[];
+  questionsAffected: number;
+  similarities: number[];
+  skipped: number;
+  questionsFullySkipped: string[];
+}> {
   // Imported lazily so --skip-db and the pure checks need no credentials.
   const { db } = await import("../src/lib/db");
   const { embedQuery } = await import("../src/lib/embed");
@@ -144,6 +184,8 @@ async function scanForUnlabelled(
   const rows: UnlabelledRow[] = [];
   const allSimilarities: number[] = [];
   let questionsAffected = 0;
+  let skipped = 0;
+  const questionsFullySkipped: string[] = [];
 
   for (const [i, question] of answerable.entries()) {
     process.stdout.write(`\r  scanning ${i + 1}/${answerable.length}...`);
@@ -169,18 +211,26 @@ async function scanForUnlabelled(
       rank: rank + 1,
     }));
 
-    // Embeddings for the labelled chunks and every candidate, in one read.
+    // Embeddings for the labelled chunks and every candidate. Batched rather
+    // than one `.in()`: a question with a large relevantChunkIds list would
+    // otherwise silently lose rows at the 1000-row cap, and a missing embedding
+    // reads as "could not compare" rather than as the read bug it is.
     const wanted = [...new Set([...question.relevantChunkIds, ...candidates.map((c) => c.chunkId)])];
-    const vectorRows = await db
-      .from("chunks")
-      .select("id,document_id,embedding")
-      .in("id", wanted)
-      .returns<{ id: string; document_id: string; embedding: unknown }[]>();
-    if (vectorRows.error) throw new Error(`embedding read failed: ${vectorRows.error.message}`);
+    const vectorRows = await fetchByIds<{
+      id: string;
+      document_id: string;
+      embedding: unknown;
+    }>("chunk embeddings", wanted, (batch) =>
+      db
+        .from("chunks")
+        .select("id,document_id,embedding")
+        .in("id", batch)
+        .returns<{ id: string; document_id: string; embedding: unknown }[]>(),
+    );
 
     const embeddings = new Map<string, number[]>();
     const docOf = new Map<string, string>();
-    for (const row of vectorRows.data) {
+    for (const row of vectorRows) {
       const vector = parseVector(row.embedding);
       if (vector) embeddings.set(row.id, vector);
       docOf.set(row.id, row.document_id);
@@ -193,6 +243,14 @@ async function scanForUnlabelled(
 
     const scan = findUnlabelledNearDuplicates(labelled, candidates, embeddings, args.similarity);
     allSimilarities.push(...scan.similarities);
+    skipped += scan.skipped;
+
+    // A question whose candidates were ALL skipped was never actually checked.
+    // Counting it as clean would report ground truth as verified when nothing
+    // was compared — the exact failure the pure function refuses to hide.
+    if (scan.similarities.length === 0 && scan.skipped > 0) {
+      questionsFullySkipped.push(question.id);
+    }
 
     if (scan.flagged.length > 0) {
       questionsAffected++;
@@ -205,7 +263,13 @@ async function scanForUnlabelled(
   }
 
   process.stdout.write(`\r  scanned ${answerable.length} answerable question(s).        \n`);
-  return { rows, questionsAffected, similarities: allSimilarities };
+  return {
+    rows,
+    questionsAffected,
+    similarities: allSimilarities,
+    skipped,
+    questionsFullySkipped,
+  };
 }
 
 /** One reviewable row: the question, the chunk already labelled, the candidate. */
@@ -256,23 +320,15 @@ function toRow(
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const { file, skipDb } = args;
+  const { skipDb } = args;
 
-  if (!existsSync(file)) {
-    throw new Error(`Golden set not found: ${file}\nRun: npm run eval:golden, then npm run eval:review`);
-  }
+  // Defaults to the DEV split; the holdout needs --holdout, explicitly.
+  const loaded = loadGoldenSet({ holdout: args.holdout, file: args.file });
+  warnHoldout(loaded);
 
-  const lines = readFileSync(file, "utf8").split("\n").filter((l) => l.trim());
-  const questions: Question[] = [];
+  const file = loaded.file;
+  const questions = loaded.questions;
   const errors: string[] = [];
-
-  lines.forEach((line, i) => {
-    try {
-      questions.push(JSON.parse(line) as Question);
-    } catch (err) {
-      errors.push(`line ${i + 1}: not valid JSON — ${errorMessage(err)}`);
-    }
-  });
 
   if (questions.length === 0) {
     throw new Error(`${file} contains no parseable questions.`);
@@ -310,6 +366,24 @@ async function main(): Promise<void> {
       if (!Array.isArray(q.relevantDocIds) || q.relevantDocIds.length === 0) {
         errors.push(`${where}: answerable question has empty relevantDocIds`);
       }
+    }
+
+    // multihopKind must be present on multihop questions and absent elsewhere.
+    // An unlabelled multihop question silently drops out of the Phase 6
+    // breakdown, which is the only place the cross/same distinction is visible.
+    if (q.type === "multihop") {
+      if (!q.multihopKind) {
+        errors.push(
+          `${where}: multihop question has no multihopKind ` +
+            `(expected one of ${[...VALID_MULTIHOP_KINDS].join(", ")})`,
+        );
+      } else if (!VALID_MULTIHOP_KINDS.has(q.multihopKind)) {
+        errors.push(`${where}: invalid multihopKind "${q.multihopKind}"`);
+      }
+    } else if (q.multihopKind) {
+      errors.push(
+        `${where}: multihopKind "${q.multihopKind}" set on a ${q.type} question`,
+      );
     }
 
     if (q.type === "paraphrase" && !q.paraphraseOf) {
@@ -351,10 +425,15 @@ async function main(): Promise<void> {
     distributionRows.push(
       `  ${type.padEnd(13)} ${String(counts[type] ?? 0).padStart(3)}  ` +
         `${actualPct.toFixed(1).padStart(5)}%  target ${String(targetPct).padStart(2)}%  ` +
-        `dev ${(deviation * 100).toFixed(0).padStart(3)}%  ${ok ? "ok" : "OUT OF RANGE"}`,
+        `dev ${(deviation * 100).toFixed(0).padStart(3)}%  ` +
+        `${loaded.isHoldout ? "n/a" : ok ? "ok" : "OUT OF RANGE"}`,
     );
 
-    if (!ok) {
+    // The holdout is deliberately NOT representative — it draws only from
+    // factoid/unanswerable/paraphrase, so multihop and aggregation are 0% by
+    // design. Enforcing the composition table against it would fail every time
+    // and mean nothing. The per-question invariants above still apply.
+    if (!ok && !loaded.isHoldout) {
       errors.push(
         `distribution: ${type} is ${actualPct.toFixed(1)}% of the set but the ` +
           `table targets ${targetPct}% — ${(deviation * 100).toFixed(0)}% deviation ` +
@@ -363,10 +442,41 @@ async function main(): Promise<void> {
     }
   }
 
+  // --- Multi-hop split (REPORTED, never enforced — see VALID_MULTIHOP_KINDS) -
+  const multihop = questions.filter((q) => q.type === "multihop");
+  const multihopRows: string[] = [];
+
+  if (multihop.length > 0) {
+    for (const kind of VALID_MULTIHOP_KINDS) {
+      const n = multihop.filter((q) => q.multihopKind === kind).length;
+      const actualPct = (n / multihop.length) * 100;
+      multihopRows.push(
+        `  ${kind.padEnd(13)} ${String(n).padStart(3)}  ${actualPct.toFixed(1).padStart(5)}%`,
+      );
+    }
+  }
+
   // --- Report --------------------------------------------------------------
   console.log(`\nValidating ${file} — ${questions.length} question(s)\n`);
-  console.log("── Type distribution ───────────────────────────────────");
+  console.log(
+    loaded.isHoldout
+      ? "── Type distribution (reported only — holdout is not representative) ──"
+      : "── Type distribution ───────────────────────────────────",
+  );
   for (const row of distributionRows) console.log(row);
+
+  if (multihopRows.length > 0) {
+    console.log(
+      `\n── Multi-hop split (of ${multihop.length}) — reported, not enforced ──`,
+    );
+    for (const row of multihopRows) console.log(row);
+    if (multihop.length < 10) {
+      console.log(
+        `  n=${multihop.length} is too small to support a per-kind conclusion; ` +
+          `read it as provenance, not as a metric.`,
+      );
+    }
+  }
 
   // --- Unlabelled near-duplicates (opt-in: costs embedding quota) ----------
   if (args.duplicates && !skipDb) {
@@ -393,6 +503,25 @@ async function main(): Promise<void> {
     );
     console.log(`  candidate chunks flagged:                  ${scan.rows.length}`);
 
+    // Surfaced, not swallowed: a skipped candidate is one that was never
+    // compared. Reporting only the flagged count would let a scan that compared
+    // nothing look identical to a scan that found nothing.
+    if (scan.skipped > 0) {
+      console.log(
+        `\n  ⚠ ${scan.skipped} candidate(s) could not be compared — missing or\n` +
+          `    malformed embedding, or a dimension mismatch (two embedding models\n` +
+          `    mixed in one table). These were NOT checked either way.`,
+      );
+    }
+    if (scan.questionsFullySkipped.length > 0) {
+      console.log(
+        `\n  ⚠ ${scan.questionsFullySkipped.length} question(s) had NO comparable ` +
+          `candidate at all —\n    the duplicate check did not run for them: ` +
+          `${scan.questionsFullySkipped.slice(0, 5).join(", ")}` +
+          (scan.questionsFullySkipped.length > 5 ? ", ..." : ""),
+      );
+    }
+
     if (scan.rows.length > 0) {
       const sameDoc = scan.rows.filter((r) => r.sameDocument).length;
       console.log(
@@ -413,8 +542,12 @@ async function main(): Promise<void> {
           `  or reject it. Left unlabelled, a retriever that returns these is\n` +
           `  scored WRONG and recall understates the system.`,
       );
-    } else {
+    } else if (scan.similarities.length > 0) {
       console.log("\n  ✓ No unlabelled near-duplicates above the threshold.");
+    } else {
+      console.log(
+        "\n  ! Nothing was compared — no clean bill of health can be given here.",
+      );
     }
 
     // Advisory — a false negative in the ground truth is not a validation
