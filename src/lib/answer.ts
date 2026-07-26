@@ -8,7 +8,7 @@
  * general knowledge. Generation goes through the provider-agnostic llm.ts — this
  * module never names a concrete provider. Never import into a client component.
  */
-import type { LlmMessage } from "./llm";
+import type { LlmCompletion, LlmMessage } from "./llm";
 import { getLlm } from "./llm";
 import type { RetrievedChunk } from "./retrieve";
 
@@ -68,4 +68,20 @@ export function streamAnswer(
   chunks: RetrievedChunk[],
 ): AsyncIterable<string> {
   return getLlm().stream(buildMessages(question, chunks));
+}
+
+/**
+ * Non-streaming answer with token usage, for the eval harness.
+ *
+ * Uses the SAME `buildMessages` as the streaming path, so the prompt the
+ * harness scores is byte-identical to the one production sends. Only the
+ * transport differs — see the note on `LlmProvider.complete`.
+ */
+export function answerOnce(
+  question: string,
+  chunks: RetrievedChunk[],
+  maxTokens?: number,
+  model?: string,
+): Promise<LlmCompletion> {
+  return getLlm().complete(buildMessages(question, chunks), maxTokens, model);
 }

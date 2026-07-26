@@ -4,7 +4,7 @@
  * validated config. Never import this module into a client component.
  */
 import { db } from "./db";
-import { embedQuery } from "./embed";
+import { embedQueryDetailed, type EmbedUsage } from "./embed";
 
 export type RetrieveMode = "hybrid" | "vector" | "keyword";
 
@@ -12,10 +12,41 @@ export interface RetrieveOptions {
   /** Number of fused results to return. */
   limit?: number;
   mode?: RetrieveMode;
+  /**
+   * Per-source depth fetched before fusion. Defaults to SEARCH_TOP.
+   *
+   * Exposed for the eval harness (eval/src/pipeline.ts), which sweeps it
+   * independently of `limit` — experiment 1 in docs/EVAL_HARNESS.md varies
+   * retrieval depth and returned-k separately, and cannot be expressed if this
+   * stays a module constant. The app passes nothing and behaves exactly as
+   * before.
+   */
+  searchTop?: number;
+  /**
+   * Reciprocal Rank Fusion constant. Defaults to RRF_K. Hybrid mode only.
+   *
+   * Same reason: the harness sweeps it. Production never sets it.
+   */
+  rrfK?: number;
+  /**
+   * Override the query embedder. Defaults to embedQueryDetailed.
+   *
+   * The eval harness injects a disk-cached wrapper so a re-run does not re-embed
+   * the same questions against a 3-request/minute free tier. Production passes
+   * nothing and calls Voyage directly — there is no cache in the request path.
+   */
+  embedder?: (text: string) => Promise<{ embedding: number[]; usage: EmbedUsage }>;
 }
 
 export interface RetrievedChunk {
   id: string;
+  /**
+   * Owning document's id. Surfaced because document-level recall is scored
+   * against it (eval/src/metrics/retrieval.ts docLevelRecallAtK) and the golden
+   * set stores document UUIDs — matching on `filename` instead silently scores
+   * every document-level metric as zero.
+   */
+  documentId: string;
   content: string;
   title: string; // document title
   filename: string;
@@ -36,6 +67,25 @@ export interface RetrieveResult {
    */
   degraded: boolean;
   mode: RetrieveMode;
+  /**
+   * Tokens Voyage billed for embedding the query, or null when no embedding
+   * ran (keyword mode, or the vector branch failed).
+   *
+   * Reported so the eval harness can cost the embed stage WITHOUT embedding the
+   * query a second time. It previously did exactly that, which doubled calls
+   * against a 3-request/minute free tier — the slowest limit in the project —
+   * and doubled the stage it was trying to measure. The app ignores this field.
+   */
+  embedTokens: number | null;
+  /**
+   * Milliseconds spent embedding the query, or null when none ran.
+   *
+   * Reported for the same reason as `embedTokens`: embedding happens INSIDE
+   * this function, so a caller timing `retrieve()` as one span attributes the
+   * embed wait to search. On a rate-limited tier that is most of the latency,
+   * and a breakdown that hides it points at the wrong stage.
+   */
+  embedMs: number | null;
 }
 
 const DEFAULT_LIMIT = 8;
@@ -79,12 +129,22 @@ export async function retrieve(
 ): Promise<RetrieveResult> {
   const limit = opts.limit ?? DEFAULT_LIMIT;
   const mode = opts.mode ?? "hybrid";
+  const searchTop = opts.searchTop ?? SEARCH_TOP;
+  const rrfK = opts.rrfK ?? RRF_K;
 
   // Embedding happens inside the vector branch so an embed failure degrades the
   // same way a vector-search failure does.
-  const runVector = async (): Promise<SearchHit[]> =>
-    vectorSearch(await embedQuery(query));
-  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query);
+  let embedTokens: number | null = null;
+  let embedMs: number | null = null;
+  const embedder = opts.embedder ?? embedQueryDetailed;
+  const runVector = async (): Promise<SearchHit[]> => {
+    const started = performance.now();
+    const { embedding, usage } = await embedder(query);
+    embedMs = performance.now() - started;
+    embedTokens = usage.totalTokens;
+    return vectorSearch(embedding, searchTop);
+  };
+  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query, searchTop);
 
   let vector: SearchHit[] | null = null;
   let keyword: SearchHit[] | null = null;
@@ -112,11 +172,12 @@ export async function retrieve(
     }
   }
 
-  const fused = fuse(vector, keyword).slice(0, limit);
+  const fused = fuse(vector, keyword, rrfK).slice(0, limit);
   const meta = await fetchDocumentMeta(fused.map((f) => f.documentId));
 
   const results: RetrievedChunk[] = fused.map((f) => ({
     id: f.id,
+    documentId: f.documentId,
     content: f.content,
     title: meta.get(f.documentId)?.title ?? "(unknown)",
     filename: meta.get(f.documentId)?.filename ?? "(unknown)",
@@ -126,15 +187,18 @@ export async function retrieve(
     fusedScore: f.fusedScore,
   }));
 
-  return { results, degraded, mode };
+  return { results, degraded, mode, embedTokens, embedMs };
 }
 
-async function vectorSearch(embedding: number[]): Promise<SearchHit[]> {
+async function vectorSearch(
+  embedding: number[],
+  searchTop: number,
+): Promise<SearchHit[]> {
   const { data, error } = await db.rpc("match_chunks", {
     // pgvector needs the "[0.1,0.2,...]" text form; a JS array is not bound
     // as a vector correctly. Verified against the live function.
     query_embedding: JSON.stringify(embedding),
-    match_count: SEARCH_TOP,
+    match_count: searchTop,
   });
   if (error) throw new Error(error.message);
   // The client is untyped (no generated DB types), so assert the row shape.
@@ -157,10 +221,13 @@ function toOrQuery(query: string): string {
   return query.trim().split(/\s+/).filter(Boolean).join(" OR ");
 }
 
-async function keywordSearch(query: string): Promise<SearchHit[]> {
+async function keywordSearch(
+  query: string,
+  searchTop: number,
+): Promise<SearchHit[]> {
   const { data, error } = await db.rpc("keyword_chunks", {
     query_text: toOrQuery(query),
-    match_count: SEARCH_TOP,
+    match_count: searchTop,
   });
   if (error) throw new Error(error.message);
   // The client is untyped (no generated DB types), so assert the row shape.
@@ -192,6 +259,7 @@ interface FusedChunk {
 function fuse(
   vector: SearchHit[] | null,
   keyword: SearchHit[] | null,
+  rrfK: number,
 ): FusedChunk[] {
   const byId = new Map<string, FusedChunk>();
 
@@ -215,7 +283,7 @@ function fuse(
         byId.set(hit.id, entry);
       }
       entry[field] = hit.score;
-      entry.fusedScore += 1 / (RRF_K + hit.rank);
+      entry.fusedScore += 1 / (rrfK + hit.rank);
     }
   };
 
