@@ -19,6 +19,7 @@ import {
   type Chunk,
   type Page,
 } from "../src/lib/chunk";
+import { fetchAllRows } from "../src/lib/paginate";
 import { extractPdf, insertChunks } from "../src/lib/pipeline";
 
 // Lazily-loaded module types (imported only on the live path, see main()).
@@ -177,15 +178,24 @@ async function storeFile(
 
   // Which chunk_index values are already stored? That, not the document row's
   // existence, is what "already done" means.
-  const done = await db
-    .from("chunks")
-    .select("chunk_index")
-    .eq("document_id", documentId)
-    .returns<{ chunk_index: number }[]>();
-  if (done.error) {
-    throw new Error(`Chunk lookup failed for ${parsed.filename}: ${done.error.message}`);
-  }
-  const stored = new Set(done.data.map((r) => r.chunk_index));
+  //
+  // Paged: a document with more than 1000 chunks would otherwise come back
+  // truncated, the resume logic would treat the missing tail as unstored, and
+  // re-inserting it would collide with the unique (document_id, chunk_index)
+  // index — turning a clean resume into a run that cannot finish.
+  const stored = new Set(
+    (
+      await fetchAllRows<{ chunk_index: number }>(`chunks of ${parsed.filename}`, (from, to) =>
+        db
+          .from("chunks")
+          .select("chunk_index")
+          .eq("document_id", documentId)
+          .order("chunk_index")
+          .range(from, to)
+          .returns<{ chunk_index: number }[]>(),
+      )
+    ).map((r) => r.chunk_index),
+  );
 
   const pending = chunks
     .map((chunk, index) => ({ chunk, index }))
