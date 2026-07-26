@@ -41,6 +41,20 @@ export interface Question {
   /** Id of the question this paraphrases, for `paraphrase` items; else null. */
   paraphraseOf: string | null;
   /**
+   * For `multihop` items: whether the two passages come from different documents
+   * ('cross-doc') or from distant sections of one ('same-doc'). Null otherwise.
+   *
+   * Recorded because the two are not equally hard. A same-document question can
+   * often be answered from one well-chosen chunk, so blending them into a single
+   * multihop average would let a good same-doc score mask a poor cross-doc one —
+   * exactly the failure multi-hop questions exist to expose. Phase 6 breaks the
+   * bucket out on this field.
+   *
+   * DEVIATION from docs/EVAL_HARNESS.md, which specifies cross-document only.
+   * See the composition table there and the README's Limitations section.
+   */
+  multihopKind?: MultihopKind | null;
+  /**
    * REVIEW TRIAGE ONLY — advisory, never a rejection. Set by the generator when
    * a candidate reuses its source chunk's distinctive wording ("lexical") or
    * near-restates another question ("duplicate"). Flagged candidates sort last
@@ -53,6 +67,16 @@ export interface Question {
 }
 
 export type SuspectFlag = "lexical" | "duplicate";
+
+/**
+ * Which shape of multi-hop question a pair supports.
+ *
+ * `cross-doc` is the spec's original intent — two papers, one shared subject.
+ * `same-doc` bridges two distant sections of ONE paper (a method and its
+ * results, say). Defined here rather than in entities.ts so this file keeps its
+ * no-imports contract; entities.ts re-exports it.
+ */
+export type MultihopKind = "cross-doc" | "same-doc";
 
 // --- Variants (experiment arms) ----------------------------------------------
 
@@ -117,11 +141,16 @@ export interface RetrievedChunk {
   chunkId: string;
   docId: string;
   /**
-   * SPEC CONFLICT (nullability): the app's chunks.page_number is nullable, but
-   * the spec types this as a plain number. Kept as spec'd; the Phase 4 adapter
-   * decides how to represent a page-less chunk.
+   * SPEC CONFLICT (nullability) — RESOLVED IN PHASE 4, widened to `| null`.
+   *
+   * The spec types this a plain number; the app's chunks.page_number is
+   * nullable (a chunk from a page-less PDF region has no page). The two
+   * alternatives were to map null to 0 or -1, both of which put a page number
+   * in the field that no page has — and citation accuracy is judged partly on
+   * whether a cited page is right, so a fabricated 0 would be scored as a real
+   * claim about page 0. Null says "unknown", which is true.
    */
-  page: number;
+  page: number | null;
   text: string;
   score: number;
   rank: number;
@@ -130,7 +159,8 @@ export interface RetrievedChunk {
 export interface Citation {
   chunkId: string;
   docId: string;
-  page: number;
+  /** Nullable for the same reason as RetrievedChunk.page. */
+  page: number | null;
 }
 
 export interface Latency {
@@ -147,13 +177,24 @@ export interface QuestionResult {
   answer: string;
   citations: Citation[];
   /**
-   * SPEC CONFLICT (nullability): Phase 0 types this `Record<string, number>`,
-   * but Phase 2 requires retrieval metrics to return `null` (not 0) for
-   * unanswerable questions so they are excluded from averages. Left as Phase 0
-   * specifies; widen to `number | null` when Phase 2 lands.
+   * SPEC CONFLICT (nullability) — RESOLVED IN PHASE 4, widened to `| null`.
+   *
+   * Phase 0 typed this `Record<string, number>`; Phase 2 requires retrieval
+   * metrics to return null (not 0) for unanswerable questions so they are
+   * excluded from averages rather than dragging them to zero. Phase 2 has
+   * landed, so the widening it asked for is applied here. Aggregation skips
+   * nulls — see meanIgnoringNull in metrics/retrieval.ts.
    */
-  metrics: Record<string, number>;
+  metrics: Record<string, number | null>;
   costUsd: number;
+  /** Per-stage cost, so a report can attribute spend. Sums to costUsd. */
+  cost?: {
+    embed: number;
+    rerank: number;
+    generate: number;
+    judge: number;
+    total: number;
+  };
   latency: Latency;
   /** Set when the question failed; the runner records and continues. */
   error: string | null;

@@ -21,7 +21,7 @@
  * No judge ever throws. A question that fails every retry comes back as
  * `{ ok: false, error }` so one bad row cannot kill a run.
  */
-import { cached } from "../cache";
+import { cachedDetailed } from "../cache";
 import {
   completeCached,
   getProvider,
@@ -96,16 +96,25 @@ export interface RefusalResult {
   score: number;
 }
 
-/** Never throws — a failed judge is a recorded error, not a dead run. */
+/**
+ * Never throws — a failed judge is a recorded error, not a dead run.
+ *
+ * `costUsd` is on BOTH variants because a judge that failed after three
+ * attempts still spent tokens on those attempts; charging only successes would
+ * understate a run precisely when it went badly. It is 0 for a cache hit and
+ * for the judges that short-circuit without calling a model.
+ */
 export type JudgeOutcome<T> =
-  | { ok: true; value: T }
-  | { ok: false; error: string };
+  | { ok: true; value: T; costUsd: number }
+  | { ok: false; error: string; costUsd: number };
 
 export interface JudgeScores {
   faithfulness: JudgeOutcome<FaithfulnessResult> | null;
   correctness: JudgeOutcome<CorrectnessResult> | null;
   citationAccuracy: JudgeOutcome<CitationResult> | null;
   refusal: JudgeOutcome<RefusalResult> | null;
+  /** Sum over the judges that ran for this question. */
+  costUsd: number;
 }
 
 // --- Citation extraction (pure) ----------------------------------------------
@@ -202,10 +211,13 @@ async function judgeCall<T>(
   parse: (raw: string) => T,
 ): Promise<JudgeOutcome<T>> {
   let lastError = "";
+  // Accumulated across attempts: a retry after a JSON parse failure spent real
+  // tokens on the attempt that failed.
+  let costUsd = 0;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     try {
-      const res = await cached(
+      const { value: res, hit } = await cachedDetailed(
         namespace,
         {
           provider: provider.name,
@@ -223,7 +235,10 @@ async function judgeCall<T>(
             temperature: JUDGE_TEMPERATURE,
           }),
       );
-      return { ok: true, value: parse(res.text) };
+      // A hit re-reads a call that was already paid for; charging it again
+      // would make every re-run cost as much as the first.
+      if (!hit) costUsd += res.costUsd;
+      return { ok: true, value: parse(res.text), costUsd };
     } catch (err) {
       if (err instanceof QuotaExhaustedError) throw err;
       lastError = err instanceof Error ? err.message : String(err);
@@ -233,7 +248,7 @@ async function judgeCall<T>(
     }
   }
 
-  return { ok: false, error: `after ${MAX_ATTEMPTS} attempts: ${lastError}` };
+  return { ok: false, error: `after ${MAX_ATTEMPTS} attempts: ${lastError}`, costUsd };
 }
 
 // --- Judge 1: faithfulness ---------------------------------------------------
@@ -378,7 +393,7 @@ export async function judgeCitationAccuracy(
 ): Promise<JudgeOutcome<CitationResult>> {
   const extracted = extractCitations(answer, retrieved);
   if (extracted.length === 0) {
-    return { ok: true, value: { citations: [], score: 1 } };
+    return { ok: true, value: { citations: [], score: 1 }, costUsd: 0 };
   }
 
   const dangling: CitationJudgement[] = extracted
@@ -393,7 +408,11 @@ export async function judgeCitationAccuracy(
     (c): c is ExtractedCitation & { chunkId: string } => c.chunkId !== null,
   );
   if (resolvable.length === 0) {
-    return { ok: true, value: { citations: dangling, score: citationScore(dangling) } };
+    return {
+      ok: true,
+      value: { citations: dangling, score: citationScore(dangling) },
+      costUsd: 0,
+    };
   }
 
   const prompt = [
@@ -504,10 +523,12 @@ export async function judgeAll(
     correctness: null,
     citationAccuracy: null,
     refusal: null,
+    costUsd: 0,
   };
 
   if (question.type === "unanswerable") {
     scores.refusal = await judgeRefusal(provider, question.question, answer);
+    scores.costUsd = scores.refusal.costUsd;
     return scores;
   }
 
@@ -521,6 +542,11 @@ export async function judgeAll(
       question.expectedAnswer,
     );
   }
+
+  scores.costUsd =
+    (scores.faithfulness?.costUsd ?? 0) +
+    (scores.citationAccuracy?.costUsd ?? 0) +
+    (scores.correctness?.costUsd ?? 0);
   return scores;
 }
 
