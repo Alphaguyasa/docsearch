@@ -15,6 +15,14 @@
  * Anthropic adapter is implemented and selectable, just not the default.
  */
 import { cached } from "./cache";
+import {
+  DEFAULT_LLM_RPM,
+  MAX_RETRIES,
+  RequestPacer,
+  dailyQuotaViolation,
+  retryWaitMs,
+} from "./llmlimit";
+import { recordRequest, requestsToday } from "./usage";
 
 export type ProviderName = "gemini" | "anthropic";
 
@@ -98,7 +106,82 @@ function costOf(model: string, usage: Usage): number {
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const MAX_RETRIES = 5;
+/**
+ * Requests per minute, shared by every provider call in the process.
+ *
+ * Defaults to 12, deliberately under free-tier Gemini's ceiling of 15, so calls
+ * are spaced ~5s apart BEFORE the provider has to reject anything. Pacing at the
+ * ceiling itself was measured peaking at 17/min once retries and jitter were in
+ * play; see DEFAULT_LLM_RPM. Override with LLM_RPM when running a billed key.
+ */
+export const LLM_RPM = Number(process.env.LLM_RPM ?? DEFAULT_LLM_RPM);
+
+/**
+ * One pacer per process. Two pacers would each independently believe they own
+ * the full request budget and together exceed it — the same reason the embedding
+ * limiter in src/lib/ratelimit.ts is a singleton.
+ */
+let pacer: RequestPacer | null = null;
+function getPacer(): RequestPacer {
+  if (!pacer) pacer = new RequestPacer(LLM_RPM);
+  return pacer;
+}
+
+export function pacerState(): { requests: number; waitedMs: number; spacingMs: number } {
+  const p = getPacer();
+  return { ...p.state, spacingMs: p.spacingMs };
+}
+
+/**
+ * Run an LLM call under the shared pacer, retrying rate limits.
+ *
+ * For calls that do NOT go through this module's providers — specifically the
+ * app's own generation path (src/lib/llm.ts), which the pipeline reuses rather
+ * than reimplementing. That path has no rate limiting because production serves
+ * one user at a time; the harness runs several questions concurrently AND fires
+ * judge calls at the same provider, so unpaced generation reliably 429s. A
+ * measured run lost 2 of 6 questions to exactly that.
+ *
+ * Sharing the process-wide pacer is the point: generation, judging, and query
+ * rewriting all draw on one account allowance, so they must queue together.
+ */
+export async function withLlmPacing<T>(label: string, fn: () => Promise<T>): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    await getPacer().acquire();
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      const message = err instanceof Error ? err.message : String(err);
+
+      // A daily cap is a wall — no amount of waiting inside this run clears it.
+      const daily = dailyQuotaViolation(message);
+      if (daily) {
+        throw new QuotaExhaustedError(label, daily.quotaId, daily.quotaValue);
+      }
+
+      const retryable = /\b429\b|\b5\d\d\b|rate limit|overloaded/i.test(message);
+      if (!retryable || attempt >= MAX_RETRIES) throw err;
+
+      const { ms, source } = retryWaitMs(message, attempt);
+      process.stderr.write(
+        `\n  [${label}] rate limited — waiting ${Math.round(ms / 1000)}s ` +
+          `(${source}), retry ${attempt + 1}/${MAX_RETRIES}\n`,
+      );
+      getPacer().penalise(ms);
+      await sleep(ms);
+    }
+  }
+
+  throw lastError;
+}
+
+/** Live requests made today against this model, across all runs. */
+export function dailyRequestCount(provider: string, model: string): number {
+  return requestsToday(provider, model);
+}
 
 /**
  * A per-DAY quota is exhausted. Distinct from an ordinary 429 because no amount
@@ -110,70 +193,101 @@ export class QuotaExhaustedError extends Error {
     readonly model: string,
     readonly quotaId: string,
     readonly quotaValue: string | null,
+    readonly requestsMadeToday = 0,
   ) {
     super(
       `Daily free-tier quota exhausted for ${model} ` +
         `(${quotaId}${quotaValue ? `, limit ${quotaValue}/day` : ""}). ` +
+        (requestsMadeToday > 0
+          ? `This machine made ${requestsMadeToday} live request(s) to it today. `
+          : "") +
         `It resets on Google's schedule — cached calls still replay for free.`,
     );
     this.name = "QuotaExhaustedError";
   }
 }
 
-/** A per-day quota violation, if the 429 body describes one. */
-function dailyQuotaViolation(
-  body: string,
-): { quotaId: string; quotaValue: string | null } | null {
-  if (!/PerDay/i.test(body)) return null;
-  const quotaId = body.match(/"quotaId":\s*"([^"]*PerDay[^"]*)"/i)?.[1];
-  if (!quotaId) return null;
-  return { quotaId, quotaValue: body.match(/"quotaValue":\s*"(\d+)"/)?.[1] ?? null };
-}
-
 /**
- * Retry on 429 and 5xx with exponential backoff, honouring Retry-After — except
- * for per-day quota exhaustion, which fails fast.
+ * Send one request, paced proactively and retried on transient failures.
  *
- * docs/EVAL_HARNESS.md asks for exactly this: sanity-check quota and fail with a
- * clear message rather than dying at question 60. A per-minute 429 is
- * traffic-shaping worth waiting out; a per-day cap is a wall.
+ * Order of precedence on a 429:
+ *   1. per-day quota  -> fail immediately, do not retry (it is a wall)
+ *   2. provider's retryDelay -> wait exactly that long
+ *   3. no retryDelay -> exponential backoff, 120s ceiling
+ *
+ * Step 2 is the fix for the observed failure: backoff peaked at 16s while the
+ * API was asking for 49s, so every retry was sent too early and the call failed
+ * having never once waited long enough to succeed.
  */
 async function fetchWithRetry(
   url: string,
   init: RequestInit,
   model: string,
+  providerName: string,
 ): Promise<Response> {
   for (let attempt = 0; ; attempt++) {
+    // Proactive: wait for our slot BEFORE spending a request.
+    await getPacer().acquire();
+
     let res: Response;
     try {
       res = await fetch(url, init);
     } catch (err) {
       if (attempt >= MAX_RETRIES) throw err;
-      await sleep(1000 * 2 ** attempt);
+      const { ms } = retryWaitMs("", attempt);
+      process.stderr.write(
+        `  [network error — retry ${attempt + 1}/${MAX_RETRIES} in ${Math.round(ms / 1000)}s]\n`,
+      );
+      await sleep(ms);
       continue;
     }
+
+    // Counted here, not on success: a 429 consumed a request against the quota
+    // just as surely as a 200 did, and undercounting is what makes a daily
+    // budget run out earlier than the tracker predicts.
+    recordRequest(providerName, model);
+
     if (res.ok) return res;
 
     const body = await res.text().catch(() => "");
 
     if (res.status === 429) {
       const daily = dailyQuotaViolation(body);
-      if (daily) throw new QuotaExhaustedError(model, daily.quotaId, daily.quotaValue);
+      if (daily) {
+        throw new QuotaExhaustedError(
+          model,
+          daily.quotaId,
+          daily.quotaValue,
+          requestsToday(providerName, model),
+        );
+      }
     }
 
     const retryable = res.status === 429 || res.status >= 500;
     if (!retryable || attempt >= MAX_RETRIES) {
       throw new Error(
-        `LLM request failed: ${res.status} ${res.statusText}${body ? ` — ${body}` : ""}`,
+        `LLM request failed after ${attempt + 1} attempt(s): ` +
+          `${res.status} ${res.statusText}${body ? ` — ${body}` : ""}`,
       );
     }
 
-    const retryAfter = Number(res.headers.get("retry-after"));
+    // Prefer the provider's own retryDelay; the Retry-After header is checked
+    // too, since not every 5xx carries a structured body.
+    const headerSeconds = Number(res.headers.get("retry-after"));
+    const { ms, source } = retryWaitMs(body, attempt);
     const waitMs =
-      Number.isFinite(retryAfter) && retryAfter > 0
-        ? retryAfter * 1000
-        : 1000 * 2 ** attempt;
-    process.stderr.write(`  [rate limited — waiting ${Math.round(waitMs / 1000)}s]\n`);
+      source === "backoff" && Number.isFinite(headerSeconds) && headerSeconds > 0
+        ? headerSeconds * 1000
+        : ms;
+
+    process.stderr.write(
+      `  [${res.status} — waiting ${Math.round(waitMs / 1000)}s ` +
+        `(${source === "provider" ? "provider retryDelay" : "backoff"}), ` +
+        `retry ${attempt + 1}/${MAX_RETRIES}]\n`,
+    );
+    // Hold the pacer back too, so the next slot is not released into a limit the
+    // provider has just told us we are over.
+    getPacer().penalise(waitMs);
     await sleep(waitMs);
   }
 }
@@ -216,6 +330,7 @@ class GeminiProvider implements LLMProvider {
         }),
       },
       this.model,
+      this.name,
     );
 
     const json = (await res.json()) as GeminiResponse;
@@ -243,6 +358,13 @@ class AnthropicProvider implements LLMProvider {
     // Imported lazily so a Gemini-only run never constructs the client.
     const { default: Anthropic } = await import("@anthropic-ai/sdk");
     const client = new Anthropic({ apiKey });
+
+    // Paced and counted on this path too. The SDK does its own retrying, so the
+    // 429 handling above does not apply here — but the request budget and the
+    // daily tally are per-account facts, not per-transport ones, and a provider
+    // that silently skipped both would make the usage readout a lie.
+    await getPacer().acquire();
+    recordRequest(this.name, this.model);
 
     const message = await client.messages.create({
       model: this.model,

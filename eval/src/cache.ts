@@ -61,6 +61,24 @@ export async function cached<T>(
   keyObj: unknown,
   fn: () => Promise<T>,
 ): Promise<T> {
+  return (await cachedDetailed(namespace, keyObj, fn)).value;
+}
+
+/**
+ * As `cached`, but reports whether the value came from disk.
+ *
+ * Callers that track spend need this: a cache hit returns the ORIGINAL call's
+ * recorded `costUsd`, and billing that again would make every re-run look as
+ * expensive as the first. Phase 4's acceptance is "a second identical run costs
+ * approximately $0" — that is only true in the numbers if a hit is charged as
+ * zero. Concurrency rules out inferring it from the global counters, so the
+ * signal has to come back with the value.
+ */
+export async function cachedDetailed<T>(
+  namespace: string,
+  keyObj: unknown,
+  fn: () => Promise<T>,
+): Promise<{ value: T; hit: boolean }> {
   const hash = cacheKey(keyObj);
   const dir = path.join(CACHE_DIR, namespace);
   const file = path.join(dir, `${hash}.json`);
@@ -69,7 +87,7 @@ export async function cached<T>(
     try {
       const hit = JSON.parse(readFileSync(file, "utf8")) as { value: T };
       stats.hits++;
-      return hit.value;
+      return { value: hit.value, hit: true };
     } catch {
       // Missing or unreadable — fall through and recompute.
     }
@@ -83,5 +101,5 @@ export async function cached<T>(
     file,
     JSON.stringify({ key: keyObj, cachedAt: new Date().toISOString(), value }, null, 2),
   );
-  return value;
+  return { value, hit: false };
 }

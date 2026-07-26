@@ -122,10 +122,15 @@ describe("citationScore", () => {
 describe("judgeScoresToMetrics", () => {
   it("flattens successful outcomes to their scores", () => {
     const metrics = judgeScoresToMetrics({
-      faithfulness: { ok: true, value: { claims: [], score: 0.75 } },
-      correctness: { ok: true, value: { verdict: "partial", reasoning: "", score: 0.5 } },
-      citationAccuracy: { ok: true, value: { citations: [], score: 1 } },
+      faithfulness: { ok: true, value: { claims: [], score: 0.75 }, costUsd: 0 },
+      correctness: {
+        ok: true,
+        value: { verdict: "partial", reasoning: "", score: 0.5 },
+        costUsd: 0,
+      },
+      citationAccuracy: { ok: true, value: { citations: [], score: 1 }, costUsd: 0 },
       refusal: null,
+      costUsd: 0,
     });
     expect(metrics).toEqual({
       faithfulness: 0.75,
@@ -139,10 +144,11 @@ describe("judgeScoresToMetrics", () => {
     // A judge that errored produced no evidence. Scoring it 0 would be a claim
     // the model never made, and would drag the mean down as if it had failed.
     const metrics = judgeScoresToMetrics({
-      faithfulness: { ok: false, error: "after 3 attempts: bad JSON" },
+      faithfulness: { ok: false, error: "after 3 attempts: bad JSON", costUsd: 0 },
       correctness: null,
       citationAccuracy: null,
       refusal: null,
+      costUsd: 0,
     });
     expect(metrics.faithfulness).toBeNull();
   });

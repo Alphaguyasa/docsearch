@@ -1,6 +1,6 @@
 {
   "name": "baseline",
-  "description": "The live DocSearch pipeline, unmodified. Every value read from the codebase — see eval/config/README.md for the per-field source. This is the 'before' every experiment is compared against.",
+  "description": "The live DocSearch pipeline. Retrieval, chunking, and prompt settings are read from the codebase and mirror production exactly. ONE deliberate deviation: generation runs on gemini-flash-lite-latest rather than production's gemini-flash-latest, whose free tier allows 20 requests/day and cannot complete a 77-question run. Retrieval experiments are therefore valid as production measurements; generation-quality numbers are not. See eval/config/README.md.",
   "embeddingModel": "voyage-4",
   "chunkStrategy": {
     "size": 800,
@@ -16,7 +16,7 @@
   },
   "queryRewrite": "none",
   "generation": {
-    "model": "gemini-flash-latest",
+    "model": "gemini-flash-lite-latest",
     "promptVersion": "v1",
     "maxTokens": 4096
   }
