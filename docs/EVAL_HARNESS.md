@@ -121,15 +121,101 @@ Results are written **both** to `eval/runs/<run_id>.jsonl` (fast local diffing) 
 
 This is the phase people skip, and it's the phase that determines whether every number afterward means anything. Budget a full day, most of it on review rather than code.
 
-**Target composition (~100 questions):**
+**Target composition (~100 questions) — RETARGETED FROM MEASUREMENT:**
 
-| Type | Count | Why it's there |
-|---|---|---|
-| Factoid | 35 | Baseline retrieval competence |
-| Multi-hop | 20 | Needs 2+ chunks, often across documents — where naive top-k fails |
-| Aggregation | 10 | "How many…", "list all…" — exposes recall ceilings |
-| **Unanswerable** | 20 | Answer is not in the corpus. Measures whether the system refuses or hallucinates. **Do not cut this bucket.** |
-| Paraphrase pairs | 15 | Same intent as an existing factoid, different wording. Measures embedding robustness. |
+| Type | Original target | **Final target** | Why it changed |
+|---|---|---|---|
+| Factoid | 35% | **47%** | Absorbs the multi-hop shortfall. The corpus supplies factoids without limit (49 generated, 43 accepted, 88%) |
+| Multi-hop | 20% | **8%** | The corpus does not contain multi-hop material in quantity. See below |
+| Aggregation | 10% | 10% | unchanged — now built deterministically |
+| **Unanswerable** | 20% | 20% | unchanged. **Do not cut this bucket.** |
+| Paraphrase pairs | 15% | 15% | unchanged |
+
+Targets sum to 100 so the generator's per-bucket `want()` adds up to `--target`.
+
+> ### Deviation 1 — multi-hop is intra-document only, and is 8% not 20%
+>
+> **Measured, not preferred.** Raw numbers from the `--target 140 --per-doc 8`
+> run against the 90-paper corpus:
+>
+> | | Ranked pairs | Attempts | Generated | Survived review |
+> |---|---|---|---|---|
+> | cross-document | 1,286 | 33 | 2 (6%) | **0 (0%)** |
+> | same-document | 550 | 51 | 12 (24%) | 7 (14%) |
+>
+> Cross-document multi-hop yielded **2 questions from 33 attempts, and 0 of 33
+> end-to-end after human review**. This is not a generator defect and no ranking
+> function repairs it. The pairs are ranked by IDF-weighted entity salience and
+> the model declines them correctly: **90 topically unrelated arXiv NLP papers do
+> not contain cross-document joint facts in any quantity.** Two papers that both
+> mention `BERT`, `ICASSP`, or `Vietnamese` share a topic, not a fact. This is a
+> property of *corpus construction* — an arbitrary sample of unrelated papers —
+> and would not hold for a corpus of related documents (one project's filings,
+> successive versions of a standard, a single organisation's reports).
+>
+> Consequences, stated plainly:
+>
+> - **The multi-hop bucket is intra-document only.** All 7 accepted questions
+>   pair two sections of one paper ≥5 chunk-indices apart — typically a method
+>   description and its results. These are genuine two-chunk questions, but a
+>   same-document question can often be answered from one well-chosen chunk, so
+>   the bucket tests multi-chunk assembly **less severely than the original
+>   design intended**.
+> - **There is no enforced cross-doc/same-doc split.** An earlier version
+>   required 40% cross-document. A target the corpus cannot supply at any attempt
+>   count is not a standard — it is a permanently red check that teaches
+>   reviewers to ignore the validator. The requirement is removed.
+> - **`multihopKind` is retained and reported.** The distinction is real, so the
+>   provenance stays visible even though it is not enforced.
+> - **At n=7, this bucket cannot support a per-type conclusion.** Do not report a
+>   multi-hop metric as evidence of anything in Phase 6. One question is 14
+>   percentage points. Report it as descriptive, with the count attached.
+>
+> ### Deviation 2 — aggregation is built, not generated
+>
+> "How many papers mention X" has an exact answer the document-frequency index
+> already holds, so asking a model to invent one adds nothing and gets it wrong:
+> **4 of 10 attempts returned null**, and the rest carried answers nobody had
+> verified. `buildAggregationQuestions` emits them directly from the index over
+> entities appearing in 3–10 documents, with the exact count or document list as
+> `expectedAnswer` and every chunk containing the entity as `relevantChunkIds`
+> (mean 31.8 chunks per question — which is what makes the bucket expose recall
+> ceilings). Ground truth is therefore defined by the entity extractor, making
+> the question precisely "does retrieval surface the chunks the index says
+> contain this entity" — the right question for a retrieval eval, and exactly
+> reproducible. Costs zero LLM calls.
+
+> **Two deviations from this document as originally written.** Both were forced
+> by measurement on the actual corpus (90 unrelated arXiv NLP papers), and both
+> are recorded here rather than left implicit.
+>
+> **1. Multi-hop is no longer cross-document only.** Cross-document pairs — two
+> papers sharing a specific entity — yield a usable question only about **5%** of
+> the time. The generator ranks candidate pairs by IDF-weighted entity salience
+> and the model still declines the overwhelming majority, correctly: two
+> unrelated papers that both mention `BERT` or `ICASSP` share a topic, not a
+> fact. Sixty attempts produced three questions. No ranking function fixes this,
+> because the pairs genuinely do not exist in the corpus.
+>
+> So the bucket is drawn both ways. Same-document pairs take two chunks of one
+> paper at least 5 chunk-indices apart that share a salient entity — a method
+> description and its results, typically — which genuinely do jointly answer a
+> question. Every multi-hop question records which kind it is in `multihopKind`,
+> and Phase 6 must break the bucket out on that field: a same-document question
+> can often be answered from one well-chosen chunk, so blending the two would let
+> a good same-doc score mask a poor cross-doc one. The 40/60 split is enforced by
+> `scripts/validate-golden-set.ts` at the same 25% tolerance as the main table.
+>
+> **2. Aggregation is built, not generated.** "How many papers mention X" has an
+> exact answer the document-frequency index already holds, so asking a model to
+> invent one adds nothing and gets it wrong: 4 of 10 attempts returned null, and
+> the rest carried answers nobody had verified. `buildAggregationQuestions` emits
+> them directly from the index over entities appearing in 3–10 documents, with
+> the exact count or document list as `expectedAnswer` and every chunk containing
+> the entity as `relevantChunkIds`. Ground truth is therefore defined by the
+> entity extractor, which makes the question precisely "does retrieval surface
+> the chunks the index says contain this entity" — the right question for a
+> retrieval eval, and exactly reproducible. Costs zero LLM calls.
 
 Unanswerable questions are the highest-signal and least-common thing in a portfolio eval set. Two sub-flavours: (a) plausible-but-absent — topic fits the corpus, fact isn't there; (b) adversarially near-miss — the corpus contains a *similar* fact that a careless system will confidently substitute.
 

@@ -25,9 +25,54 @@ export interface LlmMessage {
   content: string;
 }
 
+/** Tokens a provider reported for one call. */
+export interface LlmUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
+
+export interface LlmCompletion {
+  text: string;
+  usage: LlmUsage;
+}
+
 export interface LlmProvider {
   /** Stream the completion for `messages` as a sequence of text deltas. */
   stream(messages: LlmMessage[]): AsyncIterable<string>;
+  /**
+   * Non-streaming completion that also reports token usage.
+   *
+   * ADDED RATHER THAN CHANGING `stream()`, deliberately. The eval harness needs
+   * usage to compute costUsd, and `stream()` yields bare strings with nowhere to
+   * put it. Widening `stream()` to yield a union, or making it return a handle,
+   * would touch the live SSE path used by /api/search and scripts/ask.ts — the
+   * one code path in this app where a mistake is visible to a user mid-response.
+   *
+   * So the harness gets its own entry point. Both methods share the provider
+   * selection, the model constants, and the prompt built by answer.ts, which is
+   * what "reuse the app's generation path" has to mean here: the harness cannot
+   * drift from production on anything that affects the answer, only on how the
+   * bytes arrive.
+   */
+  complete(
+    messages: LlmMessage[],
+    maxTokens?: number,
+    /**
+     * Override the provider's default model.
+     *
+     * For the eval harness: `Variant.generation.model` names the model an
+     * experiment arm runs on, and experiment 7 in docs/EVAL_HARNESS.md varies
+     * it directly. Without this the field is decorative — every arm would
+     * silently run whatever the app is configured for, and a "model comparison"
+     * would compare a model against itself. Production passes nothing.
+     */
+    model?: string,
+  ): Promise<LlmCompletion>;
+}
+
+/** The model each provider will use by default, for cost attribution. */
+export function activeGenerationModel(): string {
+  return config.GENERATION_PROVIDER === "anthropic" ? ANTHROPIC_MODEL : GEMINI_MODEL;
 }
 
 const ANTHROPIC_MODEL = "claude-sonnet-5";
@@ -91,6 +136,41 @@ const anthropicProvider: LlmProvider = {
       }
     }
   },
+
+  async complete(
+    messages: LlmMessage[],
+    maxTokens?: number,
+    model?: string,
+  ): Promise<LlmCompletion> {
+    const system = messages
+      .filter((m) => m.role === "system")
+      .map((m) => m.content)
+      .join("\n\n");
+    const turns = messages
+      .filter((m): m is LlmMessage & { role: "user" | "assistant" } =>
+        m.role !== "system",
+      )
+      .map((m) => ({ role: m.role, content: m.content }));
+
+    const message = await getAnthropicClient().messages.create({
+      model: model ?? ANTHROPIC_MODEL,
+      max_tokens: maxTokens ?? MAX_OUTPUT_TOKENS,
+      thinking: { type: "disabled" },
+      ...(system ? { system } : {}),
+      messages: turns,
+    });
+
+    return {
+      text: message.content
+        .filter((b): b is Anthropic.TextBlock => b.type === "text")
+        .map((b) => b.text)
+        .join(""),
+      usage: {
+        inputTokens: message.usage.input_tokens,
+        outputTokens: message.usage.output_tokens,
+      },
+    };
+  },
 };
 
 // --- Gemini (REST, no SDK) ---------------------------------------------------
@@ -105,20 +185,34 @@ interface GeminiStreamChunk {
   candidates?: GeminiCandidate[];
 }
 
+interface GeminiResponse {
+  candidates?: GeminiCandidate[];
+  usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number };
+}
+
+/** Split a message list into Gemini's system_instruction + contents shape. */
+function toGeminiPayload(messages: LlmMessage[]): {
+  systemText: string;
+  contents: { role: string; parts: { text: string }[] }[];
+} {
+  const systemText = messages
+    .filter((m) => m.role === "system")
+    .map((m) => m.content)
+    .join("\n\n");
+  const contents = messages
+    .filter((m) => m.role !== "system")
+    .map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
+  return { systemText, contents };
+}
+
 const geminiProvider: LlmProvider = {
   async *stream(messages: LlmMessage[]): AsyncIterable<string> {
-    const systemText = messages
-      .filter((m) => m.role === "system")
-      .map((m) => m.content)
-      .join("\n\n");
     // Gemini uses "model" for the assistant role and has no system role in
     // `contents` — the system prompt goes in `system_instruction`.
-    const contents = messages
-      .filter((m) => m.role !== "system")
-      .map((m) => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }],
-      }));
+    const { systemText, contents } = toGeminiPayload(messages);
 
     const url =
       `https://generativelanguage.googleapis.com/v1beta/models/` +
@@ -169,5 +263,48 @@ const geminiProvider: LlmProvider = {
         }
       }
     }
+  },
+
+  async complete(
+    messages: LlmMessage[],
+    maxTokens?: number,
+    model?: string,
+  ): Promise<LlmCompletion> {
+    const { systemText, contents } = toGeminiPayload(messages);
+
+    const url =
+      `https://generativelanguage.googleapis.com/v1beta/models/` +
+      `${model ?? GEMINI_MODEL}:generateContent?key=${config.GEMINI_API_KEY}`;
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...(systemText
+          ? { system_instruction: { parts: [{ text: systemText }] } }
+          : {}),
+        contents,
+        generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(
+        `Gemini request failed: ${res.status} ${res.statusText}` +
+          (body ? ` — ${body}` : ""),
+      );
+    }
+
+    const json = (await res.json()) as GeminiResponse;
+    return {
+      text: (json.candidates?.[0]?.content?.parts ?? [])
+        .map((p) => p.text ?? "")
+        .join(""),
+      usage: {
+        inputTokens: json.usageMetadata?.promptTokenCount ?? 0,
+        outputTokens: json.usageMetadata?.candidatesTokenCount ?? 0,
+      },
+    };
   },
 };
