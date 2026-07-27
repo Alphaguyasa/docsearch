@@ -124,6 +124,9 @@ it found, and what it cannot tell you.** The short version:
   retrieval got right were lost when the question was reworded.
 - **Nothing shipped.** The config is unchanged, because the one arm with a real
   recall gain has never been measured on answer quality.
+- **The holdout was audited, then spent once.** Composition-matched, it lands
+  +5.8pp on recall and +3.7pp on correctness against dev — inside an interval 60
+  points wide. It confirms the dev number; at n=10 it could not have done more.
 - **The measurement was wrong three times** — a truncated labelling UI, a
   contaminated unanswerable bucket, and a rubric with no answer for refusals.
   All three are documented, because each one initially looked like a system

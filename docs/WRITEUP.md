@@ -207,6 +207,37 @@ clicks.
 
 ---
 
+### The holdout, spent once
+
+13 questions held back from the start and measured exactly once, after
+everything else was finished (`npm run eval:run -- --variant baseline --holdout`).
+
+| | dev (all) | dev (factoid+paraphrase) | **holdout** |
+|---|---|---|---|
+| recall@10 | 52.8% | 54.2% | **60.0%** |
+| correctness | 52.4% | 56.3% | **60.0%** |
+| n | 63 | 48 | **10** |
+
+The middle column is the one to read. The holdout contains only factoid and
+paraphrase questions — multi-hop and aggregation are dev-only — and aggregation
+questions have a mean of 31.8 relevant chunks each, which drags dev's recall
+down. Comparing the raw 52.8% to 60.0% would credit the system for a difference
+in what it was asked.
+
+Composition-matched, the holdout is **+5.8pp on recall and +3.7pp on
+correctness**, and its 95% interval is **[30.0%, 90.0%]**. At n=10 that interval
+is sixty points wide: this measurement could not have detected anything short of
+a catastrophe, and it did not find one.
+
+**Refusal: 3 of 3 declined correctly.** A count, not a percentage — three
+opportunities cannot support a rate.
+
+**The holdout was never at risk of showing overfitting, because nothing was
+tuned.** No configuration changed as a result of any experiment. What it can
+tell you is whether the dev split misled us about the system, and it did not.
+
+---
+
 ## 7. Limitations, stated plainly
 
 - **n=63 answerable questions cannot detect effects under ~10–14 points**
@@ -223,18 +254,21 @@ clicks.
   self-preference bias the design tried to avoid and did not.
 - **The multi-hop bucket is n=7 and intra-document only.** It supports no
   conclusion.
-- **The holdout has never been measured, and is now 13 questions rather than
-  15.** Auditing its unanswerable bucket before spending it found **2 of 5
-  contaminated** — the same flaw as the dev split, predicted in advance and
+- **The holdout is 13 questions and has now been spent.** Auditing its
+  unanswerable bucket before spending it found **2 of 5 contaminated** — the same flaw as the dev split, predicted in advance and
   confirmed. `q-0095` asks for a Doc2Vec accuracy the source paper reports in
   two separate tables, four candidate values between them; `q-0097` asks the day
   a paper appeared on arXiv, and the extracted text carries
   `arXiv:2301.01269v1 [cs.CL] 3 Jan 2023` in the margin. Both dropped. The
   remaining three survived a passage-by-passage check
-  (`npm run eval:audit-unanswerable -- --holdout`), but three is too few to
-  support a refusal metric — the holdout can report retrieval and correctness,
-  and should say "no refusal failures in 3 opportunities" rather than a
-  percentage.
+  (`npm run eval:audit-unanswerable -- --holdout`). **Its 95% interval is 60
+  points wide**, so it confirms the dev number rather than measuring anything
+  independently, and its three unanswerable questions are reported as a count.
+- **The holdout run's latency is meaningless and is not quoted anywhere.** It
+  ran with a cold cache — 0 hits, 59 misses — against a 3-request/minute
+  embedding tier, so median total latency reads 84.9 seconds against dev's 1.19
+  seconds. Same code, same corpus. This is the cache-state caveat in its most
+  extreme form.
 - **Latency and cost comparisons describe the runs as executed**, cache state
   included. Two runs retrieving byte-identical chunks once differed by 39
   seconds because one ran cold.
