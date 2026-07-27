@@ -238,6 +238,12 @@ async function fetchResults(runId: string): Promise<QuestionResult[]> {
       .returns<ResultRow[]>(),
   );
 
+  // NOTE: `degraded` is deliberately absent here. eval_results has no such
+  // column yet, and adding one means a migration that must be applied before
+  // the next run or every upsert fails. So a Supabase-sourced comparison
+  // cannot raise the degraded-retrieval warning — `--local` can, and disk is
+  // the source of truth for a single run either way. Left undefined rather
+  // than defaulted to false, so "unknown" never reads as "verified healthy".
   return rows.map((row) => ({
     questionId: row.question_id,
     retrieved: [],
@@ -655,6 +661,19 @@ async function main(): Promise<void> {
   }
 
   const rows = computeRows(series, args);
+
+  // A degraded question scores like any other, so a comparison against an arm
+  // containing them attributes a retrieval outage to the variant.
+  for (const [label, run] of [["A", runA], ["B", runB]] as const) {
+    const degraded = run.results.filter((r) => r.degraded === true).length;
+    if (degraded > 0) {
+      console.log(
+        `  ⚠ Run ${label} has ${degraded} degraded question(s) — hybrid retrieval\n` +
+          `    lost a source and fused from the survivor. Any delta below may be\n` +
+          `    that outage rather than the variant. Re-run ${label} before quoting.\n`,
+      );
+    }
+  }
 
   const idsA = new Set(runA.results.map((r) => r.questionId));
   const idsB = new Set(runB.results.map((r) => r.questionId));

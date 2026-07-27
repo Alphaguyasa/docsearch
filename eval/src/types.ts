@@ -196,6 +196,23 @@ export interface QuestionResult {
     total: number;
   };
   latency: Latency;
+  /**
+   * True when hybrid retrieval lost one of its two sources and fused only the
+   * survivor. NOT an error — the question returned results and scored — which
+   * is exactly why it has to be recorded.
+   *
+   * WHY THIS FIELD EXISTS. retrieve.ts handles a failed vector or keyword
+   * search with Promise.allSettled: it logs, sets a `degraded` flag, and
+   * continues on whichever source survived. pipeline.ts propagated that flag
+   * and the runner dropped it, so a run could contain single-source results
+   * with nothing in the JSONL, the database, or the summary to say so. That is
+   * not hypothetical: the first top-k sweep had 2 of 77 questions degrade this
+   * way in one arm, which moved that arm's recall@1 by 3.3 points and broke the
+   * prefix relationship the sweep depends on. The numbers looked completely
+   * ordinary. Optional because runs written before this field existed do not
+   * have it, and absent must not be read as false.
+   */
+  degraded?: boolean;
   /** Set when the question failed; the runner records and continues. */
   error: string | null;
 }
