@@ -380,12 +380,13 @@ function printTable(rows: Row[], args: Args): void {
     // significant cost difference, purely because one ran cold and the other
     // replayed from cache behind a 3-request/minute embedding tier. Both
     // numbers were correct and neither was about the variant.
+    const n = rows.find((r) => isResource(r.series.kind))?.series.ids.length ?? 0;
     console.log(
       `\n  Cost and latency describe the runs AS EXECUTED — cache state and\n` +
         `  rate-limiter pacing included. A cold run against a cached one differs\n` +
         `  enormously on both while retrieving identical chunks. Compare these\n` +
         `  only between runs with the same cache state, and prefer the p50 in the\n` +
-        `  run summary over the mean: one paced wait dominates a mean of 77.`,
+        `  run summary over the mean: one paced wait dominates a mean of ${n}.`,
     );
   }
 }

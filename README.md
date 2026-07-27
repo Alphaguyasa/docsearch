@@ -111,29 +111,36 @@ smoke check against the dev golden set).
 
 An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
 Phases 0–2 (scaffolding, golden set, retrieval metrics), 4 (runner, caching, cost
-and latency instrumentation) and 5 (statistics) are complete. **Phase 3 is not:
-the LLM judge is built but has never been calibrated against human labels, so it
-has no kappa.**
+and latency instrumentation), 5 (statistics) and 6 (eleven experiment arms,
+written up in [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md)) are complete.
+**Phase 3 is not: the LLM judge is built and now records its reasoning, but it
+has never been calibrated against human labels, so it has no kappa.**
 
 What that means for the numbers below, stated plainly:
 
-- **Retrieval numbers are real.** A full 77-question run completes with 0 errors,
+- **Retrieval numbers are real.** A full 76-question run completes with 0 errors,
   and a second identical run reproduces it bit-for-bit.
-- **Generation and judging numbers are not yet trustworthy.** A full-pipeline run
-  has never completed — the free-tier daily quota caps it partway — and until
-  Phase 3's calibration produces a kappa, any judge score is an unvalidated
-  model opinion. Do not quote them.
+- **Generation and judging numbers are not yet trustworthy.** Until Phase 3's
+  calibration produces a kappa, any judge score is an unvalidated model opinion.
+  Do not quote them. A judged 30-question run exists
+  (`npm run eval:calibrate` labels 25 of it), but a judged run of the full dev
+  split has never completed — the free-tier daily quota caps it partway.
 
-Baseline retrieval, dev split, 62 answerable questions (hybrid, topK 8):
+Baseline retrieval, dev split, 63 answerable questions (hybrid, topK 8):
 
 | Metric | @1 | @5 | @10 |
 |---|---|---|---|
-| recall | 19.7% | 47.8% | 52.0% |
-| hit rate | 32.3% | 58.1% | 61.3% |
-| nDCG | 32.3% | 42.4% | 42.0% |
-| doc recall | 48.6% | 64.3% | 68.5% |
+| recall | 19.3% | 47.0% | 51.2% |
+| hit rate | 31.7% | 57.1% | 60.3% |
+| nDCG | 31.7% | 41.7% | 41.3% |
+| doc recall | 47.8% | 63.3% | 67.4% |
 
-MRR is 42.5%. These are the "before" — no tuning has been applied yet.
+MRR is 41.8%. These are the "before" — no tuning has been applied yet.
+
+> Re-measured on the post-audit golden set (76 dev, 63 answerable). The previous
+> table read 62 answerable and was ≤1.3pp different on every cell; it is in git
+> history. Regenerate with
+> `npm run eval:run -- --variant baseline --retrieval-only` — cached, $0.
 
 > An earlier ad-hoc eval (35 questions over a 26-chunk corpus) reported
 > recall@5 = 100%. Those numbers are deleted, not carried forward: they came from
@@ -201,15 +208,15 @@ or from `eval/runs/*.jsonl` with `--local`.
 The comparison is **paired**: both runs answered the same questions, so it joins
 on question id and bootstraps the per-question *differences* rather than
 comparing two means. Question difficulty is the dominant source of variance at
-n=77 and both arms feel it identically, so differencing cancels it. Every row
+n=76 and both arms feel it identically, so differencing cancels it. Every row
 carries a 95% confidence interval and a p-value; `--regressions` lists the
 individual questions a change made worse, with their text, which is the actual
 debugging workflow.
 
-**What this golden set can and cannot detect.** At n=62 answerable questions and
-a baseline recall@10 of 52%, the 95% interval on a single arm's mean is ±12.4pp,
-and the smallest difference two *independent* arms could resolve at 80% power is
-about 25pp. Pairing shrinks that substantially — by a factor of √(1−ρ), and two
+**What this golden set can and cannot detect.** At n=63 answerable questions and
+a baseline recall@10 of 51.2%, the 95% interval on a single arm's mean is
+±12.3pp, and the smallest difference two *independent* arms could resolve at 80%
+power is about 25pp. Pairing shrinks that substantially — by a factor of √(1−ρ), and two
 arms of the same pipeline correlate strongly — but the honest headline is that
 **this set cannot distinguish variants that differ by a few points.** Any such
 result is inconclusive, not negative. The tool prints these figures on every
