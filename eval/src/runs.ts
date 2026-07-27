@@ -24,6 +24,16 @@ export interface LoadedRun {
   /** Where it came from, so a report is traceable to its inputs. */
   source: string;
   results: QuestionResult[];
+  /**
+   * The run's `aggregate` footer, when it wrote one.
+   *
+   * Needed by the Phase 7 gate for resource metrics: a p95 latency is computed
+   * over the whole run and cannot be recovered by pairing per-question values,
+   * so the gate has to read the aggregate the run recorded. Absent on runs that
+   * crashed before writing the footer, which is why it is optional and why the
+   * gate reports such a metric as missing rather than assuming a zero.
+   */
+  aggregate?: Record<string, number>;
 }
 
 export interface LocalRun extends LoadedRun {
@@ -78,10 +88,12 @@ export function readLocalRuns(dir = RUNS_DIR): LocalRun[] {
     if (header.type !== "run" || !header.runId) continue;
 
     const results: QuestionResult[] = [];
+    let aggregate: Record<string, number> | undefined;
     for (const line of lines.slice(1)) {
       try {
         const row = JSON.parse(line);
         if (row.type === "result") results.push(row as QuestionResult);
+        else if (row.type === "aggregate") aggregate = row.aggregate;
       } catch {
         // Partial trailing line from an interrupted append. Keep what parsed.
       }
@@ -94,6 +106,7 @@ export function readLocalRuns(dir = RUNS_DIR): LocalRun[] {
       source: full,
       file: full,
       results,
+      aggregate,
     });
   }
   return runs;
