@@ -7,7 +7,13 @@
  * spec and the live pipeline disagree are marked SPEC CONFLICT below; both are
  * deliberately left as the spec defines them and resolved in a later phase
  * rather than silently "fixed" here.
+ *
+ * The one import is `import type` and therefore erased at compile time: the
+ * judge's own result shapes live next to the judges that produce them, and
+ * QuestionResult carries them verbatim. No runtime dependency is created, so
+ * the "any module can depend on this" property above still holds.
  */
+import type { JudgeScores } from "./metrics/judge";
 
 // --- Golden set --------------------------------------------------------------
 
@@ -223,6 +229,33 @@ export interface QuestionResult {
    * have it, and absent must not be read as false.
    */
   degraded?: boolean;
+  /**
+   * Raw judge output — every claim, verdict, and reason behind the four scores
+   * flattened into `metrics`.
+   *
+   * WHY THIS FIELD EXISTS, and it is the `degraded` story again. The runner
+   * called judgeAll, poured the scores into `metrics`, added up the cost, and
+   * dropped the object. The scores survived as four numbers; the reasoning that
+   * produced them did not.
+   *
+   * That silently disabled Phase 3. scripts/calibrate-judge.ts reads
+   * `result.judge` to recover what the MODEL said, so it can be compared
+   * against what a human says — and `result.judge` was never written. Its
+   * `if (!question || !judge) continue` skipped every result, so calibration
+   * would have shown 25 questions to label and reported kappa over zero pairs.
+   * There is no kappa without this field, and no Phase 3 without a kappa.
+   *
+   * Phase 8's per-question drill-down ("each judge's verdict and reasoning")
+   * has the same dependency.
+   *
+   * JSONL ONLY for now: eval_results has no judge column, and disk is the
+   * documented source of truth for a single run. Adding the column is Phase 8's
+   * job, when something reads it from the database.
+   *
+   * Optional because runs written before this existed do not have it — and,
+   * exactly as with `degraded`, absent must not be read as "not judged".
+   */
+  judge?: JudgeScores | null;
   /** Set when the question failed; the runner records and continues. */
   error: string | null;
 }
