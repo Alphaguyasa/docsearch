@@ -18,12 +18,13 @@
  */
 import "../src/lib/loadenv";
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { createInterface } from "node:readline";
 
 import { mulberry32, shuffle } from "../eval/src/corpus";
 import { DEV_FILE, HOLDOUT_FILE, parseJsonl } from "../eval/src/goldenset";
+import { readLocalRuns } from "../eval/src/runs";
 import {
   cohensKappa,
   type Agreement,
@@ -97,28 +98,68 @@ function readJsonl<T>(file: string): T[] {
     .map((l) => JSON.parse(l) as T);
 }
 
+/** A result carries judge output if any of the four judges scored it. */
+function isJudged(r: QuestionResult): boolean {
+  if (r.error !== null) return false;
+  return (
+    r.metrics?.faithfulness != null ||
+    r.metrics?.correctness != null ||
+    r.metrics?.citationAccuracy != null ||
+    r.metrics?.refusalAccuracy != null
+  );
+}
+
+/**
+ * Pick the run to calibrate against: the most recent one that actually has
+ * judge output.
+ *
+ * PREVIOUS BEHAVIOUR WAS A BUG. This sorted filenames and took the last, with a
+ * comment claiming run ids are timestamp-prefixed. They are `randomUUID()`
+ * (runner.ts), so the "newest" run was whichever uuid sorted highest — and at
+ * the time this was found, that was a run with ZERO results. Calibration with
+ * no `--run` argument would have failed on an empty file.
+ *
+ * Two filters now, both load-bearing. Sorting by the header's `startedAt` makes
+ * "most recent" mean what it says. Requiring judge output matters because most
+ * runs in this project are `--retrieval-only` sweep arms with no judge scores
+ * at all; picking one would present a reviewer with nothing to label.
+ */
 function latestRunFile(runId?: string): string {
-  if (!existsSync(RUNS_DIR)) {
-    throw new Error(
-      `No runs found — ${RUNS_DIR} does not exist.\n` +
-        `Calibration samples from a COMPLETED run, so Phase 4's runner must have\n` +
-        `produced one first:  npm run eval:run -- --variant baseline`,
-    );
-  }
-  const files = readdirSync(RUNS_DIR).filter((f) => f.endsWith(".jsonl"));
-  if (files.length === 0) {
+  const runs = readLocalRuns();
+  if (runs.length === 0) {
     throw new Error(
       `No run files in ${RUNS_DIR}. Produce one first with Phase 4's runner:\n` +
-        `  npm run eval:run -- --variant baseline`,
+        `  npm run eval:run -- --variant baseline --subset 30`,
     );
   }
+
   if (runId) {
-    const match = files.find((f) => f.startsWith(runId));
+    const match = runs.find((r) => r.runId.startsWith(runId));
     if (!match) throw new Error(`No run file for id "${runId}" in ${RUNS_DIR}`);
-    return path.join(RUNS_DIR, match);
+    return match.file;
   }
-  // Newest by filename — run ids are timestamp-prefixed by the runner.
-  return path.join(RUNS_DIR, files.sort().reverse()[0]);
+
+  const judged = runs
+    .filter((r) => r.results.some(isJudged))
+    .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+
+  if (judged.length === 0) {
+    throw new Error(
+      `No run in ${RUNS_DIR} contains judge output.\n` +
+        `  ${runs.length} run(s) found, all retrieval-only or empty.\n` +
+        `  Calibration compares MODEL judgements against yours, so it needs a run\n` +
+        `  that was judged:  npm run eval:run -- --variant baseline --subset 30`,
+    );
+  }
+
+  const chosen = judged[0];
+  console.log(
+    `Calibrating against ${chosen.runId} (${chosen.variantName}, ` +
+      `${chosen.results.filter(isJudged).length} judged of ${chosen.results.length}, ` +
+      `started ${chosen.startedAt}).\n` +
+      `Pass --run <id> to choose a different one.\n`,
+  );
+  return chosen.file;
 }
 
 function ask(prompt: string): Promise<string> {
@@ -271,8 +312,21 @@ async function main(): Promise<void> {
 
   const runFile = latestRunFile(args.runId);
   const runId = path.basename(runFile, ".jsonl");
-  const results = readJsonl<StoredResult>(runFile);
-  if (results.length === 0) throw new Error(`${runFile} contains no results.`);
+
+  // Filter to RESULT lines. A run file also carries a `run` header and an
+  // `aggregate` footer, and neither has an `error` field — so the pool filter
+  // below (`!r.error`) let them through. The labelling loop skips them via its
+  // `!question || !judge` guard, so nothing crashed; the sample just came back
+  // silently short. Asking for 25 and labelling 23 matters when the acceptance
+  // criterion is 25.
+  const results = readJsonl<StoredResult & { type?: string }>(runFile).filter(
+    (r) => r.type === "result",
+  );
+  if (results.length === 0) {
+    throw new Error(
+      `${runFile} contains no result lines — the run produced nothing to label.`,
+    );
+  }
 
   const questions = new Map(
     GOLDEN_FILES.filter((f) => existsSync(f))
