@@ -1,10 +1,12 @@
 # Retrieval experiments: four things that didn't work, and one that did
 
 **Phase 6 of [`EVAL_HARNESS.md`](EVAL_HARNESS.md).** Eleven experiment arms over a
-2,134-chunk / 90-document corpus, measured against a 77-question human-reviewed
-golden set. 847 question-runs. Total API cost: **$0.00.**
+2,134-chunk / 90-document corpus, measured against a 76-question human-reviewed
+golden set. 760 question-runs. Total API cost: **$0.00.**
 
-Measured at commit `7ec8446`. Every number here is retrieval-only — no
+Measured at commit `6a3905e`, on the post-audit golden set. Every table here is
+regenerable with `npm run eval:sweep` — see [`SWEEP.md`](SWEEP.md), its
+machine-generated companion. Every number here is retrieval-only — no
 generation, no LLM judging. See [What this does not measure](#what-this-does-not-measure)
 before quoting anything.
 
@@ -19,8 +21,8 @@ failure mode worth more than all four experiments put together.
 | Experiment | Result |
 |---|---|
 | **top-k** (3 → 20) | Every step significant. Recall never saturates. |
-| **searchTop** (10 → 80) | Nothing, and non-monotonic. 8× the depth, +461ms, no gain. |
-| **dense vs hybrid** | Nothing, on any of 31 metrics — while changing 77/77 result sets. |
+| **searchTop** (10 → 80) | Nothing, and non-monotonic. 8× the depth, +300ms, no gain. |
+| **dense vs hybrid** | Nothing, on any of 31 metrics — while changing 76/76 result sets. |
 | **keyword-only** | Significantly worse than both. This is what explains the null above. |
 | **Per-type breakdown** | **4 of 6 questions retrieval got right were lost when reworded.** |
 | **Unanswerable audit** | **4 of 15 "unanswerable" questions were answerable.** Refusal is 100%, not 50%. |
@@ -45,17 +47,16 @@ varied.**
   assert a refusal; retrieval metrics return `null` for them rather than 0, so
   they are excluded from retrieval means instead of dragging them down.
 
-> The retrieval experiments below were measured on the pre-audit set (77 dev,
-> 62 answerable). The [audit](#the-unanswerable-bucket-was-contaminated) changed
-> one unanswerable question into a factoid and removed another; it does not
-> affect any retrieval comparison here, because all of them exclude unanswerable
-> questions by construction.
+> Every arm was re-run on the post-audit set after the
+> [unanswerable audit](#the-unanswerable-bucket-was-contaminated). No conclusion
+> changed; magnitudes moved by ≤1.2pp. The pre-audit numbers are in this
+> document's git history.
 
 Baseline is production exactly: hybrid, topK 8, searchTop 20, rrfK 60.
 
 ### Method: paired, not independent
 
-At n=62, the 95% confidence interval on a single arm's recall is roughly
+At n=63, the 95% confidence interval on a single arm's recall is roughly
 **±12 percentage points**. Every arm below overlaps every other arm on that
 basis. Reporting one mean per variant and declaring a winner would be
 meaningless.
@@ -78,24 +79,24 @@ Recall over everything each arm returned, with 95% bootstrap CIs:
 
 | arm | recall | 95% CI | nDCG@10 | MRR | search p50 |
 |---|---|---|---|---|---|
-| topk-3 | 33.7% | [22.6, 45.1] | 32.8% | 39.2% | 969ms |
-| topk-5 | 47.8% | [35.8, 59.6] | 39.8% | 42.0% | 929ms |
-| topk-10 | 54.6% | [42.7, 66.6] | 43.2% | 42.6% | 975ms |
-| topk-20 | 63.4% | [51.8, 74.9] | 43.2% | 43.3% | 930ms |
-| searchtop-10 | 55.1% | [43.0, 66.9] | 42.7% | 42.7% | 936ms |
-| searchtop-20 | 52.0% | [39.6, 64.2] | 42.0% | 42.5% | 1016ms |
-| searchtop-40 | 54.0% | [41.8, 65.8] | 44.2% | 43.4% | 1070ms |
-| searchtop-80 | 50.9% | [38.9, 62.7] | 44.0% | 43.7% | 1523ms |
-| mode-hybrid *(= baseline)* | 52.0% | [40.0, 63.6] | 42.0% | 42.5% | 1067ms |
-| mode-dense | 51.7% | [39.4, 63.7] | 44.1% | 43.3% | 1110ms |
-| mode-keyword | 41.3% | [29.4, 52.9] | 31.2% | 30.2% | 832ms |
+| topk-3 | 34.7% | [23.8, 46.0] | 33.9% | 40.2% | 941ms |
+| topk-5 | 48.6% | [36.8, 60.3] | 40.8% | 42.9% | 986ms |
+| topk-10 | 55.3% | [43.2, 67.4] | 44.1% | 43.5% | 946ms |
+| topk-20 | 64.0% | [52.5, 75.4] | 44.1% | 44.2% | 1006ms |
+| searchtop-10 | 55.8% | [44.0, 67.6] | 43.6% | 43.6% | 858ms |
+| searchtop-20 *(= mode-hybrid)* | 52.8% | [40.5, 64.7] | 42.9% | 43.4% | 950ms |
+| searchtop-40 | 54.8% | [42.9, 66.5] | 45.1% | 44.3% | 999ms |
+| searchtop-80 | 51.7% | [39.8, 63.4] | 44.9% | 44.6% | 1157ms |
+| mode-hybrid *(= baseline)* | 52.8% | [40.5, 64.7] | 42.9% | 43.4% | 950ms |
+| mode-dense | 52.4% | [40.3, 64.6] | 45.0% | 44.2% | 869ms |
+| mode-keyword | 42.2% | [30.4, 54.1] | 31.7% | 30.5% | 876ms |
 
 Look at how much those intervals overlap. That table on its own supports almost
 no conclusion — which is the point of the rest of this document.
 
 Three of those arms (`searchtop-20`, `mode-hybrid`, and the original baseline
 run) are the same configuration measured independently. All three reproduce
-byte-identically across all 77 questions, including per-chunk scores to six
+byte-identically across all 76 questions, including per-chunk scores to six
 decimal places. That is the control, and it passed three times.
 
 ---
@@ -106,12 +107,12 @@ Vary how many chunks are returned; hold the candidate pool at 20.
 
 | step | recall | 95% CI | precision | latency |
 |---|---|---|---|---|
-| 3 → 5 | **+14.1pp** | [+6.7, +22.8] \*\*\* | −2.9pp (ns) | — |
-| 5 → 10 | **+6.8pp** | [+1.9, +13.1] \*\*\* | −6.6pp \*\*\* | +52ms \* |
-| 10 → 20 | **+8.8pp** | [+2.4, +16.3] \*\*\* | −3.9pp \*\*\* | +38ms (ns) |
+| 3 → 5 | **+13.9pp** | [+6.5, +22.5] \*\*\* | −3.1pp \* | — |
+| 5 → 10 | **+6.7pp** | [+1.9, +13.1] \*\*\* | −6.7pp \*\*\* | ns |
+| 10 → 20 | **+8.7pp** | [+2.5, +16.1] \*\*\* | −3.9pp \*\*\* | ns |
 
-Recall 33.7% → 47.8% → 54.6% → 63.4%. Precision 21.0% → 7.6%. nDCG@20 climbs
-monotonically (31.5 → 44.3), so the extra chunks land in useful positions rather
+Recall 34.7% → 48.6% → 55.3% → 64.0%. Precision 21.2% → 7.5%. nDCG@20 climbs
+monotonically (32.6 → 45.2), so the extra chunks land in useful positions rather
 than padding the tail.
 
 **Every step is significant, including the last — recall never saturates.** This
@@ -120,9 +121,9 @@ is the most robust result in the report: on the widest contrast (k=3 vs k=20),
 nDCG, MRR, hit rate, and the precision decline. Nothing else here comes close.
 
 **But this experiment cannot answer the question it appears to.** `searchTop` is
-20, so at k=20 the arm returns the *entire* fused pool. 63.4% is a ceiling
+20, so at k=20 the arm returns the *entire* fused pool. 64.0% is a ceiling
 imposed by the pool size, not a property of k. I verified the mechanism
-directly: every arm is an **exact prefix** of the k=20 arm on all 77 questions.
+directly: every arm is an **exact prefix** of the k=20 arm on all 76 questions.
 This is a truncation curve. It tells you how much of a fixed candidate list to
 return — all of it, on recall — not where retrieval depth stops paying.
 
@@ -135,24 +136,31 @@ hold what's returned at 8 (production's value).
 
 | step | recall | 95% CI | latency |
 |---|---|---|---|
-| 10 → 20 | −3.1pp | [−8.7, +1.1] ns | +16ms ns |
-| 20 → 40 | +2.0pp | [−3.0, +7.4] ns | −9ms ns |
-| 40 → 80 | −3.1pp | [−9.6, +3.2] ns | **+461ms \*\*\*** |
-| **10 → 80** | **−4.2pp** | **[−14.3, +5.4] ns** | **+467ms \*\*\*** |
+| 10 → 20 | −3.0pp | [−8.6, +1.0] ns | +141ms \*\*\* |
+| 20 → 40 | +2.0pp | [−2.9, +8.0] ns | ns |
+| 40 → 80 | −3.1pp | [−9.5, +3.2] ns | **+142ms \*\*\*** |
+| **10 → 80** | **−4.1pp** | **[−13.9, +5.3] ns** | **+300ms \*\*\*** |
 
 An eight-fold increase in retrieval depth buys nothing measurable and costs
-461ms at p50. The curve isn't flat, it's **non-monotonic** — 55.1, 52.0, 54.0,
-50.9 — which is what noise looks like.
+300ms. The curve isn't flat, it's **non-monotonic** — 55.8, 52.8, 54.8, 51.7 —
+which is what noise looks like.
 
-Not because the deeper pool is ignored: the returned top-8 **changes on 51–61 of
-77 questions** between adjacent arms. Retrieval churns heavily and quality
+> **The latency figures moved between measurement rounds and the recall figures
+> did not.** An earlier round put 40→80 at +461ms; re-running every arm on the
+> post-audit set put it at +142ms. Same configs, same corpus. That is the
+> caveat further down demonstrating itself: a paired latency delta is a fact
+> about two *runs*, not about two variants. The stable statement is the p50
+> column in the arm summary, where searchtop-80 is consistently the slowest arm.
+
+Not because the deeper pool is ignored: the returned top-8 **changes on most
+questions** between adjacent arms. Retrieval churns heavily and quality
 doesn't move. Deeper fusion reorders the head slightly better while dropping
 relevant chunks out of the tail of the 8, and the two cancel.
 
 **Three results in this experiment came back significant and none survive
 multiple-comparison correction.** Of 33 tests in the widest contrast (10→80),
-**exactly one clears Holm — the 467ms latency penalty.** The only effect this
-sweep establishes is its own cost. See
+**exactly one clears Holm — the latency penalty.** The only effect this sweep
+establishes is its own cost. See
 [Statistical discipline](#statistical-discipline).
 
 **Actionable:** leave `SEARCH_TOP` at 20. Nothing argues for moving it in either
@@ -164,17 +172,18 @@ for nothing.
 The guide predicts hybrid is "usually the biggest single win, especially for
 names, IDs, and rare terms." On this corpus it is not a win at all.
 
-**Dense vs hybrid: no significant difference on any of 31 metrics, and 0 of 33
-tests survive Holm.** This is the cleanest null in the report.
+**Dense vs hybrid: no significant difference on any of 31 quality metrics, and
+1 of 33 tests survives Holm — a latency difference, not a quality one.** This is
+the cleanest null in the report.
 
 | metric | hybrid | dense | delta | 95% CI |
 |---|---|---|---|---|
-| recall@1 | 19.7% | 25.9% | +6.2pp | [−1.3, +14.3] ns |
-| recall@10 | 52.0% | 51.7% | −0.4pp | [−8.4, +7.8] ns |
-| nDCG@10 | 42.0% | 44.1% | +2.2pp | [−3.9, +8.3] ns |
-| latency | 1184ms | 1225ms | +41ms | ns |
+| recall@1 | 20.9% | 27.1% | +6.1pp | [−1.6, +14.1] ns |
+| recall@20 | 52.8% | 52.4% | −0.3pp | [−8.4, +7.7] ns |
+| nDCG@10 | 42.9% | 45.0% | +2.1pp | [−3.8, +8.2] ns |
+| latency p50 | 950ms | 869ms | — | ns |
 
-And the returned top-8 differs on **77 of 77 questions**. Fusion reorders every
+And the returned top-8 differs on **76 of 76 questions**. Fusion reorders every
 single result list and moves nothing measurable.
 
 That result is ambiguous on its own — fusing two comparable signals and fusing a
@@ -188,8 +197,8 @@ well established.** Holm-adjusted over the 33 tests in each:
 
 | comparison | raw | survives Holm |
 |---|---|---|
-| keyword → hybrid | precision@5 +5.8pp \*\*\*, nDCG@5 +12.6pp \*\*, hitRate@5 +16.1pp \*\*, nDCG@10 +10.7pp \*\*, recall@5 +12.4pp \*\* | **5 quality metrics** (precision@5 adj 0.019, nDCG@5 and hitRate@5 adj 0.037, nDCG@10 and @20 adj 0.046) |
-| keyword → dense | MRR +13.2pp \*, nDCG@10 +12.9pp \*, recall@1 +12.9pp \* | **none** — only the latency difference clears |
+| keyword → hybrid | precision@5 +5.7pp \*\*\*, MRR +12.9pp \*\*, nDCG@10 +11.2pp \*\*\*, recall@20 +10.5pp \* | **10 of 33**, including precision@5 (adj 0.007), nDCG@10 (adj 0.012), MRR (adj 0.034) |
+| keyword → dense | recall@1 +14.3pp \*\*, MRR +13.8pp \*, nDCG@10 +13.3pp \* | **none** |
 
 The effect sizes are near-identical across both comparisons (+12–15pp), so the
 difference in survival is about *consistency*, not magnitude: the
@@ -230,7 +239,7 @@ found more.
 
 | type | n | keyword | dense | hybrid | ceiling |
 |---|---|---|---|---|---|
-| factoid | 36 | 47.2% | 63.9% | 63.9% | 100% |
+| factoid | 37 | 48.6% | 64.9% | 64.9% | 100% |
 | multihop | 7 | 85.7% | 92.9% | 92.9% | 100% |
 | paraphrase | 11 | 18.2% | 18.2% | 18.2% | 100% |
 | aggregation | 8 | 7.6% | 6.6% | 9.3% | **31.4%** |
@@ -355,8 +364,8 @@ spends it. Left untouched deliberately.
 
 Stated up front rather than left for a reader to ask about:
 
-- **95% CI half-width on one arm's mean: ±12.4pp** at n=62.
-- **Minimum detectable effect, unpaired:** 25.1pp at 80% power, α=0.05.
+- **95% CI half-width on one arm's mean: ±12.3pp** at n=63.
+- **Minimum detectable effect, unpaired:** 24.9pp at 80% power, α=0.05.
 - **Minimum detectable effect, paired:** 10–14pp depending on arm correlation
   (ρ ranged 0.67 to 0.84).
 
@@ -406,10 +415,10 @@ comparison and marks which survive. The whole report, corrected:
 | comparison | survives Holm | of |
 |---|---|---|
 | topk-3 → topk-20 | **18** | 33 |
-| keyword → hybrid | **6** (5 quality + latency) | 33 |
-| keyword → dense | 1 (latency only) | 33 |
+| keyword → hybrid | **10** | 33 |
+| keyword → dense | **0** | 33 |
 | searchtop-10 → searchtop-80 | 1 (latency only) | 33 |
-| hybrid → dense | **0** | 33 |
+| hybrid → dense | 1 (latency only) | 33 |
 
 That table is the report in one glance, and it is more honest than the prose
 around it. The top-k result is overwhelming. The keyword result is real against
@@ -437,7 +446,7 @@ otherwise.
    against human labels. Any judged number this project produces today is an
    unvalidated model opinion and should not be quoted. That is the single
    biggest gap in the project and is blocked on a free-tier daily quota.
-3. **n=62 answerable questions.** Small. See the power section.
+3. **n=63 answerable questions.** Small. See the power section.
 4. **Dev split only.** The 15-question holdout is untouched and stays that way
    until a final measurement.
 5. **Aggregation recall is ceiling-limited** at 31.4% and is arguably the wrong
@@ -447,7 +456,7 @@ otherwise.
    latency reflect cache state and rate-limiter pacing as executed. Two runs
    retrieving byte-identical chunks showed a 39-second mean latency difference
    purely because one ran cold. Compare these only between runs with matched
-   cache state, and prefer p50 over mean — one paced wait dominates a mean of 77.
+   cache state, and prefer p50 over mean — one paced wait dominates a mean of 76.
 8. **Holm is conservative under correlated metrics**, and the decision to
    believe a result that fails it remains a human judgment. See above.
 
