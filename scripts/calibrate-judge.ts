@@ -506,6 +506,9 @@ function distribution(labels: string[]): string {
 /** Above this share in one category, kappa is reporting the skew, not the judge. */
 const SKEW_LIMIT = 0.9;
 
+/** One-directional disagreement is only reported when the sign test clears this. */
+const BIAS_ALPHA = 0.05;
+
 /**
  * Are the disagreements one-directional?
  *
@@ -555,6 +558,14 @@ function directionalBias(
     isTop,
     isTop.map((t) => !t),
   );
+
+  // A MAJORITY IS NOT A DIRECTION. Returning on `topCount > others` alone called
+  // citations "SYSTEMATIC DISAGREEMENT" at 6 versus 4 — a split whose two-sided
+  // exact p is 0.754, which is what a coin looks like. Flagging that as a defect
+  // sends someone to fix a judge that is merely disagreeing at random, and it
+  // devalues the flag on the case that is real: faithfulness at 7 versus 0,
+  // p=0.016. The test decides, not the raw counts.
+  if (pValue >= BIAS_ALPHA) return null;
 
   return {
     summary: `${topCount}:${others} — ${topWay}`,
@@ -772,7 +783,13 @@ function report(
     );
   }
 
-  if (weak.length === 0 && skewed.length === 0 && labels.length > 0) {
+  // EVERY problem list, not two of the four. The first version checked `weak`
+  // and `skewed` only, so a run that had just flagged systematic disagreement on
+  // three of four judges went on to print "✓ Every judge is at or above kappa
+  // 0.6. Report these in the writeup." A green tick under a red warning is worse
+  // than no tick: it is the line a reader believes.
+  const problems = [...weak, ...skewed, ...biased, ...degenerate];
+  if (problems.length === 0 && labels.length > 0) {
     console.log("\n✓ Every judge is at or above kappa 0.6. Report these in the writeup.");
   }
 
@@ -932,6 +949,72 @@ const FAITHFULNESS_OPTIONS = [
     echo: "the answer asserted nothing: not a faithfulness judgement, excluded",
   },
 ];
+
+/**
+ * The refusal question, with a confirmation step when the label contradicts the
+ * text on screen.
+ *
+ * THIS SLIP HAS NOW HAPPENED THREE TIMES, under two different key layouts: an
+ * answer reading exactly "This question is not covered by these documents." was
+ * labelled "it asserted an answer" — four times of five under [r]/[a], then
+ * three times of twelve under [y]/[n] with the choice echoed back in words.
+ * Rewording the prompt has been tried twice and has not worked, so the guard
+ * stops being about wording.
+ *
+ * What it does NOT do is decide. The reviewer's label always stands if they
+ * confirm it. It re-displays the answer text and asks once, because the
+ * disagreement is with something visible on the page rather than with the
+ * model's opinion — checking a label against the artifact it describes is data
+ * entry, not anchoring, and it is the only one of these signals that cannot
+ * bias the kappa toward the judge.
+ */
+async function askRefusal(answer: string): Promise<"refused" | "answered" | null> {
+  const label = await askLabel(
+    "Did the answer DECLINE to answer? (it should have — this question is unanswerable)",
+    [
+      {
+        key: "y",
+        value: "refused" as const,
+        label: "yes, it declined",
+        echo: "the answer declined / said it could not answer",
+      },
+      {
+        key: "n",
+        value: "answered" as const,
+        label: "no, it asserted an answer",
+        echo: "the answer asserted a substantive answer",
+      },
+    ],
+  );
+
+  if (label !== "answered") return label;
+
+  // Only fires on an answer that states no fact at all. Deliberately narrow:
+  // a genuine hallucination must never trigger a "are you sure?" nudge.
+  const declines =
+    /not covered by these documents|do(?:es)? not (?:contain|say|mention|provide)|cannot (?:be )?answer|no information (?:about|on)|not (?:mentioned|provided|found|available) in/i;
+  if (!declines.test(answer) || answer.length > 400) return label;
+
+  console.log(`\n  The answer, in full:\n\n      "${answer.trim()}"\n`);
+  const confirmed = await askLabel(
+    "That text declines to answer. Keep your label of 'it asserted an answer'?",
+    [
+      {
+        key: "n",
+        value: "refused" as const,
+        label: "no — it declined, change it",
+        echo: "changed to: the answer declined",
+      },
+      {
+        key: "y",
+        value: "answered" as const,
+        label: "yes, keep 'asserted an answer'",
+        echo: "kept: the answer asserted something substantive",
+      },
+    ],
+  );
+  return confirmed ?? label;
+}
 
 /** Did any judge score this result below perfect? */
 function judgeFlagsFailure(result: StoredResult): boolean {
@@ -1135,7 +1218,7 @@ async function main(): Promise<void> {
     writeFileSync(archive, existing.map((l) => JSON.stringify(l)).join("\n") + "\n");
     console.log(`\nPrevious labels archived → ${archive}`);
 
-    const updated = await relabel(target, existing, byId, questions, args, async (question) => {
+    const updated = await relabel(target, existing, byId, questions, args, async (_q, result) => {
       if (target === "faithfulness") {
         return askLabel(FAITHFULNESS_QUESTION, FAITHFULNESS_OPTIONS);
       }
@@ -1162,18 +1245,7 @@ async function main(): Promise<void> {
           { key: "i", value: "incorrect" as const, label: "incorrect", echo: "wrong" },
         ]);
       }
-      return askLabel(
-        "Did the answer DECLINE to answer? (it should have — this question is unanswerable)",
-        [
-          { key: "y", value: "refused" as const, label: "yes, it declined", echo: "it declined" },
-          {
-            key: "n",
-            value: "answered" as const,
-            label: "no, it asserted an answer",
-            echo: "it asserted a substantive answer",
-          },
-        ],
-      );
+      return askRefusal(result.answer);
     });
 
     report(updated, `Judge agreement — ${target} relabelled on full context`);
@@ -1289,23 +1361,7 @@ async function main(): Promise<void> {
       // so never adjacent to itself. Four of five came back saying an answer
       // reading "This question is not covered by these documents" had asserted
       // something, which is not a judgement anyone makes about that sentence.
-      human.refused = await askLabel(
-        "Did the answer DECLINE to answer? (it should have — this question is unanswerable)",
-        [
-          {
-            key: "y",
-            value: "refused" as const,
-            label: "yes, it declined",
-            echo: "the answer declined / said it could not answer",
-          },
-          {
-            key: "n",
-            value: "answered" as const,
-            label: "no, it asserted an answer",
-            echo: "the answer asserted a substantive answer",
-          },
-        ],
-      );
+      human.refused = await askRefusal(result.answer);
     } else {
       human.faithful = await askLabel(
         FAITHFULNESS_QUESTION,
