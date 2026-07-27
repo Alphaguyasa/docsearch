@@ -5,6 +5,12 @@
  *                       [--subset 10] [--types factoid,multihop]
  *                       [--concurrency 4] [--no-cache] [--notes "..."]
  *                       [--no-judge] [--retrieval-only] [--holdout] [--skip-db]
+ *                       [--gate <runId|variant>]
+ *
+ * `--gate` compares the finished run against a baseline and exits non-zero if a
+ * guarded metric regressed — Phase 7. Thresholds live in eval/config/gate.json.
+ * A drop only counts when its paired 95% CI excludes zero, so noise cannot fail
+ * a build; see eval/src/gate.ts for why that rule is the whole design.
  *
  * `--retrieval-only` stops after retrieval: no generation, no judging, no LLM
  * quota beyond an optional query rewrite. Most Phase 6 experiments change
@@ -24,13 +30,20 @@ import "../../src/lib/loadenv";
 
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { aggregate, flattenAggregate, type Aggregate } from "./aggregate";
 import { cacheStats, setCacheEnabled } from "./cache";
 import { loadVariant } from "./config";
+import {
+  DEFAULT_GATE,
+  evaluateGate,
+  worstRegressions,
+  type GateConfig,
+} from "./gate";
+import { readLocalRuns, resolveLocal } from "./runs";
 import { loadGoldenSet, warnHoldout } from "./goldenset";
 import { judgeAll, judgeScoresToMetrics, type JudgeScores } from "./metrics/judge";
 import { scoreRetrieval } from "./metrics/retrieval";
@@ -51,6 +64,8 @@ interface Args {
   judge: boolean;
   holdout: boolean;
   skipDb: boolean;
+  /** Baseline run id or variant name to gate against. */
+  gate: string | null;
   retrievalOnly: boolean;
 }
 
@@ -65,6 +80,7 @@ function parseArgs(argv: string[]): Args {
     judge: true,
     holdout: false,
     skipDb: false,
+    gate: null,
     retrievalOnly: false,
   };
 
@@ -85,7 +101,8 @@ function parseArgs(argv: string[]): Args {
       if (value === undefined || value.startsWith("--")) {
         throw new Error(`${flag} requires a value`);
       }
-      if (flag === "--variant") args.variant = value;
+      if (flag === "--gate") args.gate = value;
+      else if (flag === "--variant") args.variant = value;
       else if (flag === "--notes") args.notes = value;
       else if (flag === "--subset") args.subset = requirePositive(value, flag);
       else if (flag === "--concurrency") args.concurrency = requirePositive(value, flag);
@@ -392,6 +409,108 @@ function printSummary(
   }
 }
 
+/**
+ * Compare this run against a baseline and print a pass/fail summary.
+ *
+ * Returns whether the run may land. Everything printed here is for a human;
+ * the caller turns the boolean into an exit code, which is what CI reads.
+ */
+function runGate(
+  baselineRef: string,
+  current: { results: QuestionResult[]; aggregate: Record<string, number | null> },
+  cache: { hits: number; misses: number },
+): boolean {
+  const runs = readLocalRuns();
+  let baseline;
+  try {
+    baseline = resolveLocal(baselineRef, runs);
+  } catch (err) {
+    console.log(
+      `\n── Gate ────────────────────────────────────────────────\n` +
+        `  CANNOT GATE: ${errorMessage(err)}\n` +
+        `  A gate that cannot find its baseline must not pass by default.\n`,
+    );
+    return false;
+  }
+
+  const numeric = (o: Record<string, number | null>): Record<string, number> =>
+    Object.fromEntries(
+      Object.entries(o).filter((e): e is [string, number] => typeof e[1] === "number"),
+    );
+
+  const config = loadGateConfig();
+  const total = cache.hits + cache.misses;
+  const verdict = evaluateGate({
+    baseline: { results: baseline.results, aggregate: baseline.aggregate ?? {} },
+    run: { results: current.results, aggregate: numeric(current.aggregate) },
+    config,
+    // The baseline's cache state is not recoverable from its file, so this is
+    // deliberately one-sided: it reports what THIS run did and lets the reader
+    // judge. Claiming to know both would be worse than admitting to one.
+    runCacheHitRate: total > 0 ? cache.hits / total : undefined,
+  });
+
+  console.log(`\n── Gate ────────────────────────────────────────────────`);
+  console.log(`  baseline ${baseline.runId.slice(0, 8)} (${baseline.variantName})`);
+  if (verdict.warning) console.log(`\n  ⚠ ${verdict.warning}`);
+
+  for (const f of verdict.findings) {
+    const mark = f.failed ? "FAIL" : "ok  ";
+    const shown =
+      f.kind === "quality"
+        ? `${(f.before * 100).toFixed(1)}% → ${(f.after * 100).toFixed(1)}%  ` +
+          `${f.delta >= 0 ? "+" : ""}${(f.delta * 100).toFixed(1)}pp` +
+          (f.ci ? `  95% CI [${(f.ci.lo * 100).toFixed(1)}, ${(f.ci.hi * 100).toFixed(1)}]pp` : "")
+        : `${f.before.toFixed(f.before < 1 ? 4 : 0)} → ${f.after.toFixed(f.after < 1 ? 4 : 0)}  ` +
+          `${f.delta >= 0 ? "+" : ""}${(f.delta * 100).toFixed(1)}%`;
+    console.log(`  ${mark} ${f.metric.padEnd(16)} ${shown}`);
+    if (f.note) console.log(`       ${f.note}`);
+  }
+
+  if (verdict.missing.length > 0) {
+    console.log(
+      `\n  NOT GATED (neither run measured them): ${verdict.missing.join(", ")}\n` +
+        `  A retrieval-only run has no judge metrics, so this is expected there —\n` +
+        `  but a metric silently absent from a gate is a metric nobody is guarding.`,
+    );
+  }
+
+  for (const f of verdict.findings.filter((x) => x.failed && x.kind === "quality")) {
+    const worst = worstRegressions(f.metric, { results: baseline.results }, current, 5);
+    if (worst.length === 0) continue;
+    console.log(`\n  Worst on ${f.metric}:`);
+    for (const w of worst) {
+      console.log(
+        `    ${w.questionId}  ${(w.before * 100).toFixed(0)}% → ${(w.after * 100).toFixed(0)}%` +
+          `  (${(w.delta * 100).toFixed(0)}pp)`,
+      );
+    }
+  }
+
+  console.log(
+    verdict.passed
+      ? `\n  PASS — nothing regressed past its threshold with a CI excluding zero.\n`
+      : `\n  FAIL — ${verdict.findings.filter((f) => f.failed).length} metric(s) regressed.\n`,
+  );
+  return verdict.passed;
+}
+
+/** Thresholds from eval/config/gate.json, falling back to the documented defaults. */
+function loadGateConfig(): GateConfig {
+  const file = "eval/config/gate.json";
+  if (!existsSync(file)) {
+    console.log(`  (${file} not found — using built-in defaults)`);
+    return DEFAULT_GATE;
+  }
+  const parsed = JSON.parse(readFileSync(file, "utf8")) as Partial<GateConfig>;
+  return {
+    quality: parsed.quality ?? DEFAULT_GATE.quality,
+    resource: parsed.resource ?? DEFAULT_GATE.resource,
+    iters: parsed.iters ?? DEFAULT_GATE.iters,
+    seed: parsed.seed ?? DEFAULT_GATE.seed,
+  };
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   setCacheEnabled(args.useCache);
@@ -533,6 +652,13 @@ async function main(): Promise<void> {
   }
 
   console.log(`\nWrote ${outFile}\n`);
+
+  if (args.gate) {
+    const passed = runGate(args.gate, { results, aggregate: flat }, cacheStats());
+    // The exit code is the entire product of a gate. Everything above is for a
+    // human; this is what CI reads.
+    if (!passed) process.exitCode = 1;
+  }
 }
 
 /**

@@ -1,0 +1,40 @@
+{
+  "$comment": [
+    "Regression gate thresholds — Phase 7 of docs/EVAL_HARNESS.md.",
+    "quality: absolute drop tolerated, as a positive number. 0.03 = fail if it falls >3 points.",
+    "         A quality metric fails only when the drop clears the threshold AND the paired",
+    "         95% CI excludes zero, so a drop inside the noise band cannot fail a build.",
+    "The spec names the latency key p95TotalMs; the harness writes totalMs.p95. The real",
+    "key is used, because gating on a metric that does not exist guards nothing quietly.",
+    "",
+    "resource: relative rise tolerated. 0.25 = fail if it grows >25%. No CI: a p95 is an",
+    "          aggregate, not a per-question value, and cannot be paired. These compare the",
+    "          runs AS EXECUTED, so a cold run against a cached one differs enormously while",
+    "          doing identical work — the gate warns when cache hit rates diverge.",
+    "",
+    "correctness IS ADDED to the spec's default list, because it is the only judge Phase 3",
+    "actually validated (kappa 0.86, n=55) and it is the one with real variance: 52.4% on",
+    "the dev split, tracking recall almost exactly. A gate whose judge metrics are all",
+    "pinned at 1.0 guards nothing; this is the one that can move when generation breaks.",
+    "",
+    "ON faithfulness, DELIBERATELY LEFT IN AT 0.05: it scored 1.0 on all 39 non-refusal",
+    "answers of the full dev split, so it currently has no variance and this threshold can",
+    "only catch a collapse, not a drift. Kept because a collapse is worth catching and the",
+    "cost of carrying it is zero. Do not read a green faithfulness gate as evidence.",
+    "",
+    "refusalAccuracy sits at 1.0 on all 13 unanswerable questions for the same reason."
+  ],
+  "quality": {
+    "recall@10": 0.03,
+    "correctness": 0.05,
+    "faithfulness": 0.05,
+    "citationAccuracy": 0.05,
+    "refusalAccuracy": 0.05
+  },
+  "resource": {
+    "totalMs.p95": 0.25,
+    "costPerQuery": 0.2
+  },
+  "iters": 10000,
+  "seed": 42
+}

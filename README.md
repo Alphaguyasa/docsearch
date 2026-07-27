@@ -111,20 +111,40 @@ smoke check against the dev golden set).
 
 An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
 Phases 0–2 (scaffolding, golden set, retrieval metrics), 4 (runner, caching, cost
-and latency instrumentation), 5 (statistics) and 6 (eleven experiment arms,
-written up in [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md)) are complete.
-**Phase 3 is not: the LLM judge is built and now records its reasoning, but it
-has never been calibrated against human labels, so it has no kappa.**
+and latency instrumentation), 5 (statistics), 6 (eleven experiment arms, written
+up in [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md)) and 7 (the regression gate)
+are complete.
+
+**Phase 3 is complete in form and honest about its substance.** 68 human labels
+against two runs give a kappa per judge, but only one of the four is a validated
+judge:
+
+| judge | n | raw agreement | kappa | |
+|---|---|---|---|---|
+| correctness | 55 | 93% | **0.86** | validated |
+| faithfulness | 24 | 92% | 0.00 | agreement real, kappa is arithmetic — the judge called 24 of 24 faithful, so there is no variance to measure |
+| citations | 46 | 78% | 0.05 | disagreements run both ways (6:4, p=0.75) — noise, needs more items |
+| refusal | 12 | 100% | 1.00 | no refusal failure exists anywhere in the dev split to disagree about |
+
+Two corrections that came out of calibrating rather than of the judges, both
+recorded because they change how the numbers should be read: a reviewer marked
+six answers unfaithful whose every claim was in the passages (the labelling UI
+truncated passages to 600 characters, ~24% of what the judge reads), and a
+"systematic 7:0 bias" against the faithfulness judge turned out to be five stale
+verdicts for refusals the judge had already stopped scoring.
 
 What that means for the numbers below, stated plainly:
 
 - **Retrieval numbers are real.** A full 76-question run completes with 0 errors,
   and a second identical run reproduces it bit-for-bit.
-- **Generation and judging numbers are not yet trustworthy.** Until Phase 3's
-  calibration produces a kappa, any judge score is an unvalidated model opinion.
-  Do not quote them. A judged 30-question run exists
-  (`npm run eval:calibrate` labels 25 of it), but a judged run of the full dev
-  split has never completed — the free-tier daily quota caps it partway.
+- **A full judged run of the dev split completes**: 76 questions, 0 errors, $0 on
+  a cached re-run. `correctness` 52.4%, and it tracks recall@10 (52.8%) almost
+  exactly — the system answers when retrieval finds the chunk and declines when
+  it does not. 24 of 63 answerable questions get a refusal.
+- **Quote `correctness`; do not quote the other three.** Only correctness has a
+  meaningful kappa. `faithfulness` scored 1.0 on all 39 non-refusal answers, so
+  it is pinned and cannot detect a regression — the gate guards it anyway, as a
+  tripwire for collapse rather than drift.
 
 Baseline retrieval, dev split, 63 answerable questions (hybrid, topK 8):
 
