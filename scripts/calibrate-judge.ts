@@ -31,6 +31,7 @@ import {
   type Agreement,
   type JudgeScores,
 } from "../eval/src/metrics/judge";
+import { mcNemar } from "../eval/src/metrics/stats";
 import type { Question, QuestionResult } from "../eval/src/types";
 
 const RUNS_DIR = "eval/runs";
@@ -305,14 +306,18 @@ interface Args {
   runId?: string;
   sample: number;
   seed: number;
+  /** Re-render agreement over the saved labels, labelling nothing. */
+  reportOnly: boolean;
 }
 
 function parseArgs(argv: string[]): Args {
-  const args: Args = { sample: 25, seed: 42 };
+  const args: Args = { sample: 25, seed: 42, reportOnly: false };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     const value = argv[i + 1];
-    if (flag === "--run") {
+    if (flag === "--report-only") {
+      args.reportOnly = true;
+    } else if (flag === "--run") {
       if (!value) throw new Error("--run requires a value");
       args.runId = value;
       i++;
@@ -363,6 +368,64 @@ function distribution(labels: string[]): string {
 /** Above this share in one category, kappa is reporting the skew, not the judge. */
 const SKEW_LIMIT = 0.9;
 
+/**
+ * Are the disagreements one-directional?
+ *
+ * THIS IS THE DISTINCTION KAPPA CANNOT MAKE, and getting it wrong sends you to
+ * fix the wrong thing. A judge that disagrees with you at random is noisy; a
+ * judge that disagrees with you ALWAYS IN THE SAME DIRECTION is systematically
+ * lenient or strict, which is a defect with a size and a direction — and it can
+ * hide under a low kappa that looks like the prevalence paradox.
+ *
+ * Measured here on the real first calibration: faithfulness disagreed 8 times
+ * out of 20, and 7 of those 8 were "you say unsupported, judge says supported".
+ * That is not chance agreement being eaten by skew. That is a judge accepting
+ * claims a reviewer rejects, seven times to one.
+ *
+ * McNemar over the discordant pairs is the right test — the agreements carry no
+ * information about direction — and it is the harness's own exact-binomial
+ * implementation, which does not need the 25-discordant-pair floor the
+ * chi-square version has.
+ */
+function directionalBias(
+  pairs: { human: string; model: string }[],
+): { summary: string; detail: string } | null {
+  const discordant = pairs.filter((p) => p.human !== p.model);
+  if (discordant.length < 3) return null;
+
+  // Group by which way the disagreement went, then take the most common pattern.
+  const ways = new Map<string, number>();
+  for (const p of discordant) {
+    const key = `you ${p.human} / judge ${p.model}`;
+    ways.set(key, (ways.get(key) ?? 0) + 1);
+  }
+  const [topWay, topCount] = [...ways.entries()].sort((a, b) => b[1] - a[1])[0];
+  const others = discordant.length - topCount;
+
+  if (topCount <= others) return null;
+
+  // The sign test the harness already owns: does one direction dominate?
+  //
+  // The two arrays must put the dominant direction in b01 and EVERY OTHER
+  // disagreement in b10. Marking the first array all-true instead lands the
+  // other directions on the diagonal, where McNemar treats them as ties and
+  // drops them — which turned 7-versus-1 into 7-versus-0 and reported p=0.016
+  // for a split whose real two-sided exact p is 0.070. The difference is the
+  // whole verdict at α=0.05.
+  const isTop = discordant.map((p) => `you ${p.human} / judge ${p.model}` === topWay);
+  const { pValue } = mcNemar(
+    isTop,
+    isTop.map((t) => !t),
+  );
+
+  return {
+    summary: `${topCount}:${others} — ${topWay}`,
+    detail:
+      `disagreements: ${topCount} of ${discordant.length} are "${topWay}"` +
+      `  (McNemar p=${pValue < 0.001 ? "<0.001" : pValue.toFixed(3)})`,
+  };
+}
+
 function report(labels: CalibrationLabel[]): void {
   const judges: {
     name: string;
@@ -380,6 +443,10 @@ function report(labels: CalibrationLabel[]): void {
   const weak: string[] = [];
   /** Low kappa caused by the label distribution rather than by the judge. */
   const skewed: string[] = [];
+  /** Disagreements that all run one way — a judge defect with a direction. */
+  const biased: string[] = [];
+  /** Kappa high only because neither rater ever used the other category. */
+  const degenerate: string[] = [];
   for (const judge of judges) {
     const pairs = labels
       .map(judge.pick)
@@ -394,19 +461,78 @@ function report(labels: CalibrationLabel[]): void {
     const modelLabelValues = pairs.map((p) => p.model);
     const agreement: Agreement = cohensKappa(humanLabels, modelLabelValues);
     const skew = Math.max(prevalence(humanLabels), prevalence(modelLabelValues));
+    const bias = directionalBias(pairs);
+
+    // Four outcomes, and only the first is a judge that has been validated.
+    //   ok        both raters used the categories and they agree
+    //   BIASED    they disagree ONE WAY — the judge is systematically lenient
+    //             or strict. A real defect with a direction, whatever kappa says
+    //   SKEWED    agreement is high but one rater used a single category, so
+    //             chance agreement eats it and kappa means nothing
+    //   WEAK      they disagree in both directions: noise, not bias
+    let flag = "";
+    if (bias) {
+      flag = "   ⚠ BIASED";
+      biased.push(`${judge.name} (${bias.summary})`);
+    } else if (agreement.weak && skew >= SKEW_LIMIT) {
+      flag = "   ⚠ SKEWED";
+      skewed.push(judge.name);
+    } else if (agreement.weak) {
+      flag = "   ⚠ WEAK";
+      weak.push(judge.name);
+    } else if (skew >= SKEW_LIMIT) {
+      // Kappa at or above 0.6 is normally the pass condition, but unanimity is
+      // not evidence: 5 of 5 refusals labelled "refused" by both raters scores
+      // kappa 1.00 while containing no case that could have separated a working
+      // judge from one that always says "refused".
+      flag = "   ⚠ NO NEGATIVES";
+      degenerate.push(judge.name);
+    }
 
     console.log(
       `  ${judge.name.padEnd(13)} ${String(agreement.n).padStart(2)}   ` +
         `${(agreement.rawAgreement * 100).toFixed(0).padStart(6)}%   ` +
-        `${agreement.kappa.toFixed(2).padStart(6)}` +
-        (agreement.weak ? (skew >= SKEW_LIMIT ? "   ⚠ SKEWED" : "   ⚠ WEAK") : ""),
+        `${agreement.kappa.toFixed(2).padStart(6)}${flag}`,
     );
     console.log(
       `                    you: ${distribution(humanLabels)}\n` +
-        `                  judge: ${distribution(modelLabelValues)}`,
+        `                  judge: ${distribution(modelLabelValues)}` +
+        (bias ? `\n                 ${bias.detail}` : ""),
     );
+  }
 
-    if (agreement.weak) (skew >= SKEW_LIMIT ? skewed : weak).push(judge.name);
+  if (biased.length > 0) {
+    console.log(
+      `\n⚠ SYSTEMATIC DISAGREEMENT, one direction: ${biased.join("; ")}\n` +
+        wrap(
+          "The disagreements are not spread both ways, so this is a judge that " +
+            "reads the rubric differently from you rather than a noisy one — and " +
+            "it is a real defect no matter what kappa says, because a lenient " +
+            "faithfulness judge inflates every faithfulness number downstream by " +
+            "roughly the rate shown above. For faithfulness the fix is usually to " +
+            "make the atomic-claim decomposition more explicit: a judge that " +
+            "bundles several facts into one claim cannot mark part of it " +
+            "unsupported, so it labels the whole thing supported. Tighten the " +
+            "prompt, then re-run against these same saved labels — that is what " +
+            "the file is for, and it is the only way to tell a real improvement " +
+            "from a judge that drifted somewhere else.",
+        ),
+    );
+  }
+
+  if (degenerate.length > 0) {
+    console.log(
+      `\n⚠ NOTHING TO DISAGREE ABOUT: ${degenerate.join(", ")}\n` +
+        wrap(
+          "Both raters put nearly everything in one category, so the kappa is " +
+            "high by arithmetic rather than by evidence — unanimity scores 1.00 " +
+            "whatever the judge is doing. This is NOT a validated judge and must " +
+            "not be reported as one. It needs cases in the sample where the " +
+            "system failed: for refusal, unanswerable questions the system " +
+            "actually answered. If the system never fails that way, say THAT, " +
+            "with the count, instead of quoting a kappa.",
+        ),
+    );
   }
 
   if (skewed.length > 0) {
@@ -462,6 +588,18 @@ async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
   const existing = readJsonl<CalibrationLabel>(LABELS_FILE);
+
+  // Re-score the saved labels without labelling anything. This is what makes
+  // "tighten the judge prompt, then re-measure against the SAME human labels"
+  // an actual workflow rather than an instruction with no command behind it.
+  if (args.reportOnly) {
+    if (existing.length === 0) {
+      throw new Error(`No labels in ${LABELS_FILE} — nothing to report on.`);
+    }
+    console.log(`\n${existing.length} saved label(s) from ${LABELS_FILE}`);
+    report(existing);
+    return;
+  }
   // Re-running after a prompt change must re-measure against the SAME human
   // labels, so previously labelled questions are never re-asked.
   const alreadyLabelled = new Set(existing.map((l) => `${l.runId}:${l.questionId}`));
