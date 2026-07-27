@@ -40,6 +40,7 @@ import { loadGoldenSet, HOLDOUT_FILE, DEV_FILE } from "../eval/src/goldenset";
 import {
   correlation,
   DEFAULT_SEED,
+  holmBonferroni,
   mcNemar,
   minDetectableEffect,
   pairedBootstrap,
@@ -400,7 +401,12 @@ function computeRows(series: Series[], args: Args): Row[] {
 
 function printTable(rows: Row[], args: Args): void {
   const ciLabel = `${Math.round((1 - args.alpha) * 100)}% CI`;
-  const widths = { metric: 22, n: 4, val: 12, delta: 12, ci: 27, p: 8, sig: 4 };
+  const widths = { metric: 22, n: 4, val: 12, delta: 12, ci: 27, p: 8, sig: 4, holm: 9 };
+
+  // Holm over EVERY metric in this table, quality and resource alike — they are
+  // all tests run against the same pair of runs, which is what makes them one
+  // family. Computed once here rather than per row.
+  const holm = holmBonferroni(rows.map((r) => r.paired.pValue), args.alpha);
 
   const header =
     padEnd("metric", widths.metric) +
@@ -410,13 +416,14 @@ function printTable(rows: Row[], args: Args): void {
     pad("delta", widths.delta) +
     pad(`${ciLabel} (B−A)`, widths.ci) +
     pad("p", widths.p) +
-    pad("sig", widths.sig);
+    pad("sig", widths.sig) +
+    pad("holm", widths.holm);
 
   console.log(header);
   console.log("─".repeat(header.length));
 
   let lastKind: SeriesKind | null = null;
-  for (const { series, paired } of rows) {
+  rows.forEach(({ series, paired }, i) => {
     // A rule between the quality metrics and the cost/latency block, which are
     // read in the opposite direction.
     if (lastKind !== null && !isResource(lastKind) && isResource(series.kind)) {
@@ -436,13 +443,28 @@ function printTable(rows: Row[], args: Args): void {
         pad(formatDelta(series.kind, paired.meanDiff), widths.delta) +
         pad(ci, widths.ci) +
         pad(formatP(paired.pValue), widths.p) +
-        pad(marker(paired), widths.sig),
+        pad(marker(paired), widths.sig) +
+        pad(
+          holm[i].reject ? `${formatP(holm[i].adjusted)} ✓` : formatP(holm[i].adjusted),
+          widths.holm,
+        ),
     );
-  }
+  });
 
+  const survivors = holm.filter((h) => h.reject).length;
   console.log(
     `\n  * CI excludes 0 · ** p<0.01 · *** p<0.001 · ns = not distinguishable\n` +
-      `  Quality metrics: higher is better. Cost and latency: lower is better.`,
+      `  Quality metrics: higher is better. Cost and latency: lower is better.\n` +
+      `\n  holm = Holm–Bonferroni adjusted p across all ${rows.length} tests above; ` +
+      `✓ survives at α=${args.alpha}.\n` +
+      `  ${survivors} of ${rows.length} survive. Testing ${rows.length} metrics at ` +
+      `α=${args.alpha} expects ~${(rows.length * args.alpha).toFixed(1)} false\n` +
+      `  positives by chance, so an unadjusted * on its own is weak evidence.\n` +
+      `  CONSERVATIVE HERE: recall@1…@20 are one metric at five cutoffs, not five\n` +
+      `  independent hypotheses. Holm assumes the worst about that dependence, so\n` +
+      `  failing it is "not established by this test alone", NOT refuted. A result\n` +
+      `  that fails Holm but moves consistently across related metrics and widens\n` +
+      `  with contrast is still worth believing — that judgment stays yours.`,
   );
 
   if (rows.some((r) => isResource(r.series.kind))) {

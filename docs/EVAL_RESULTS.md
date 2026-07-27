@@ -107,7 +107,10 @@ Recall 33.7% → 47.8% → 54.6% → 63.4%. Precision 21.0% → 7.6%. nDCG@20 cl
 monotonically (31.5 → 44.3), so the extra chunks land in useful positions rather
 than padding the tail.
 
-**Every step is significant, including the last — recall never saturates.**
+**Every step is significant, including the last — recall never saturates.** This
+is the most robust result in the report: on the widest contrast (k=3 vs k=20),
+**18 of 33 tests survive Holm correction**, including recall at every cutoff,
+nDCG, MRR, hit rate, and the precision decline. Nothing else here comes close.
 
 **But this experiment cannot answer the question it appears to.** `searchTop` is
 20, so at k=20 the arm returns the *entire* fused pool. 63.4% is a ceiling
@@ -139,8 +142,11 @@ Not because the deeper pool is ignored: the returned top-8 **changes on 51–61 
 doesn't move. Deeper fusion reorders the head slightly better while dropping
 relevant chunks out of the tail of the 8, and the two cancel.
 
-**Three results in this experiment came back significant and I don't believe
-any of them.** See [Statistical discipline](#statistical-discipline).
+**Three results in this experiment came back significant and none survive
+multiple-comparison correction.** Of 33 tests in the widest contrast (10→80),
+**exactly one clears Holm — the 467ms latency penalty.** The only effect this
+sweep establishes is its own cost. See
+[Statistical discipline](#statistical-discipline).
 
 **Actionable:** leave `SEARCH_TOP` at 20. Nothing argues for moving it in either
 direction — 10 is no faster in wall-clock terms (ns) and 80 is materially slower
@@ -151,7 +157,8 @@ for nothing.
 The guide predicts hybrid is "usually the biggest single win, especially for
 names, IDs, and rare terms." On this corpus it is not a win at all.
 
-**Dense vs hybrid: no significant difference on any of 31 metrics.**
+**Dense vs hybrid: no significant difference on any of 31 metrics, and 0 of 33
+tests survive Holm.** This is the cleanest null in the report.
 
 | metric | hybrid | dense | delta | 95% CI |
 |---|---|---|---|---|
@@ -169,12 +176,25 @@ imply opposite things about whether the keyword arm should exist. So I added a
 keyword-only arm. (This required widening the harness's `RetrievalMode`, a
 documented deviation from the spec, which defines `dense | hybrid` only.)
 
-**Keyword-only is significantly worse than both:**
+**Keyword-only is worse than both — but the two comparisons are not equally
+well established.** Holm-adjusted over the 33 tests in each:
 
-| comparison | result |
-|---|---|
-| keyword → dense | MRR +13.2pp \*, nDCG@10 +12.9pp \*, recall@1 +12.9pp \* |
-| keyword → hybrid | precision@5 +5.8pp \*\*\*, MRR +12.3pp \*\*, nDCG@10 +10.7pp \*\*, recall@5 +12.4pp \*\*, recall@10 +10.7pp \* |
+| comparison | raw | survives Holm |
+|---|---|---|
+| keyword → hybrid | precision@5 +5.8pp \*\*\*, nDCG@5 +12.6pp \*\*, hitRate@5 +16.1pp \*\*, nDCG@10 +10.7pp \*\*, recall@5 +12.4pp \*\* | **5 quality metrics** (precision@5 adj 0.019, nDCG@5 and hitRate@5 adj 0.037, nDCG@10 and @20 adj 0.046) |
+| keyword → dense | MRR +13.2pp \*, nDCG@10 +12.9pp \*, recall@1 +12.9pp \* | **none** — only the latency difference clears |
+
+The effect sizes are near-identical across both comparisons (+12–15pp), so the
+difference in survival is about *consistency*, not magnitude: the
+keyword-vs-hybrid differences vary less per question, because hybrid contains
+the keyword arm and the two are more correlated. Same effect, tighter interval,
+smaller p.
+
+**What that means in practice:** keyword-only being weaker than hybrid is
+established under family-wise error control. Keyword-only being weaker than
+*dense* is supported by 13 metrics moving +12–15pp in the same direction, and
+by the hybrid comparison replicating it, but does not survive correction on its
+own.
 
 **Mechanism: vector similarity is doing all the work.** Lexical search is a
 ~11pp weaker signal, and hybrid blends it into the stronger one to land
@@ -293,20 +313,39 @@ are treated as real, and the distinction matters:
 | | searchTop sweep | keyword arm |
 |---|---|---|
 | Directions | inconsistent, sign flips | all metrics agree |
-| Magnitude | scattered 1–4pp | consistent 10–13pp |
+| Magnitude | scattered 1–4pp | consistent 10–15pp |
 | Effect vs MDE | below | at or above |
 | Widest contrast | effect disappears | effect strongest |
 | Independent replication | — | holds vs *both* dense and hybrid |
+| Survives Holm | no | vs hybrid yes, vs dense no |
 
-Individually the keyword-vs-dense results would not survive Bonferroni over 31
-tests. Collectively they are one coherent effect rather than a hunt for
-significance.
+### Holm–Bonferroni, applied
 
-**The harness does not correct for multiplicity.** That judgment above is
-manual, and a reader should treat it as a judgment. Holm–Bonferroni over the
-p-values `compare-runs` already computes is the obvious fix and is not yet
-built — a real gap, and the most likely place for a future sweep with more arms
-to fool someone.
+`compare-runs` now reports a Holm-adjusted p-value for every metric in a
+comparison and marks which survive. The whole report, corrected:
+
+| comparison | survives Holm | of |
+|---|---|---|
+| topk-3 → topk-20 | **18** | 33 |
+| keyword → hybrid | **6** (5 quality + latency) | 33 |
+| keyword → dense | 1 (latency only) | 33 |
+| searchtop-10 → searchtop-80 | 1 (latency only) | 33 |
+| hybrid → dense | **0** | 33 |
+
+That table is the report in one glance, and it is more honest than the prose
+around it. The top-k result is overwhelming. The keyword result is real against
+hybrid and merely suggestive against dense. Everything else establishes nothing
+except its own latency cost.
+
+**Holm is conservative here and the numbers should be read with that in mind.**
+`recall@1 … recall@20` are one metric at five cutoffs, not five independent
+hypotheses; `mrr` and `mrr@20` are frequently the same number. Holm assumes the
+worst about that dependence, so failing it means "not established by this test
+alone," not "refuted." A result that fails Holm while moving consistently across
+related metrics and strengthening with contrast — which is exactly the
+keyword-vs-dense case — is still worth believing. That judgment remains human,
+and the tool prints a note saying so rather than letting a ✓ column imply
+otherwise.
 
 ---
 
@@ -330,7 +369,8 @@ to fool someone.
    retrieving byte-identical chunks showed a 39-second mean latency difference
    purely because one ran cold. Compare these only between runs with matched
    cache state, and prefer p50 over mean — one paced wait dominates a mean of 77.
-8. **Multiplicity is handled by hand.** See above.
+8. **Holm is conservative under correlated metrics**, and the decision to
+   believe a result that fails it remains a human judgment. See above.
 
 ---
 

@@ -363,6 +363,69 @@ export function zQuantile(p: number): number {
   );
 }
 
+export interface HolmResult {
+  /** Position in the input array — results come back in input order. */
+  index: number;
+  pValue: number;
+  /** Holm-adjusted p-value, monotone non-decreasing in rank. */
+  adjusted: number;
+  /** Survives the family-wise error rate at `alpha`. */
+  reject: boolean;
+}
+
+/**
+ * Holm–Bonferroni step-down correction for testing many metrics at once.
+ *
+ * WHY THIS EXISTS. A single comparison run tests ~31 metrics at alpha=0.05, so
+ * roughly 1.5 of them are expected to come back "significant" on pure noise.
+ * That is not hypothetical here: a searchTop sweep produced three significant
+ * results that pointed in inconsistent directions and vanished when the
+ * contrast widened — every one a false positive, caught by hand because that
+ * sweep happened to have a monotonicity expectation to violate. Sweeps with
+ * more arms will not offer that luxury.
+ *
+ * Holm rather than plain Bonferroni: uniformly more powerful, controls the same
+ * family-wise error rate, and needs no independence assumption. Sort ascending,
+ * compare the i-th smallest against alpha/(m-i+1), and stop at the first
+ * failure. Adjusted p-values are (m-i+1)*p(i) with a running maximum so they
+ * stay monotone — without that, a later test could report a smaller adjusted
+ * value than an earlier one, which is incoherent.
+ *
+ * CONSERVATIVE UNDER CORRELATION, which is exactly this harness's situation:
+ * recall@1 … recall@20 are not 5 independent hypotheses, they are one metric
+ * measured at 5 cutoffs. Holm still controls the error rate, but the true
+ * family-wise risk is lower than it assumes, so a metric that fails Holm here
+ * is not thereby refuted. Treat rejection as strong evidence and non-rejection
+ * as "not established by this test alone" — the callers print exactly that.
+ */
+export function holmBonferroni(pValues: number[], alpha = 0.05): HolmResult[] {
+  if (!(alpha > 0 && alpha < 1)) {
+    throw new Error(`holmBonferroni: alpha must be in (0,1), got ${alpha}`);
+  }
+  const m = pValues.length;
+  if (m === 0) return [];
+
+  const order = pValues
+    .map((pValue, index) => ({ index, pValue }))
+    .sort((a, b) => a.pValue - b.pValue);
+
+  const out: HolmResult[] = new Array(m);
+  let runningMax = 0;
+
+  order.forEach(({ index, pValue }, rank) => {
+    const scaled = Math.min(1, (m - rank) * pValue);
+    // The running maximum IS the step-down rule, not merely a cosmetic fix for
+    // monotonicity. Because adjusted values are non-decreasing in rank, once
+    // one exceeds alpha every larger one does too — so a test whose own scaled
+    // value would have passed is correctly blocked by an earlier failure.
+    // A separate "stop rejecting" flag would be redundant with this.
+    runningMax = Math.max(runningMax, scaled);
+    out[index] = { index, pValue, adjusted: runningMax, reject: runningMax <= alpha };
+  });
+
+  return out;
+}
+
 export interface MdeOptions {
   alpha?: number;
   power?: number;
