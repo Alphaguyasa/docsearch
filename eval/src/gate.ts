@@ -282,6 +282,70 @@ export function evaluateGate(input: GateInput): GateVerdict {
 }
 
 /**
+ * The verdict as a markdown table, for a pull request comment.
+ *
+ * Kept here rather than in the workflow because a shell script assembling this
+ * from grepped console output would break the first time a label changed, and
+ * break silently — a comment that renders is not a comment that is correct.
+ */
+export function gateMarkdown(
+  verdict: GateVerdict,
+  context: { baselineId: string; runId: string; variant: string },
+): string {
+  const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
+  const pp = (v: number) => `${v >= 0 ? "+" : ""}${(v * 100).toFixed(1)}pp`;
+
+  const rows = verdict.findings.map((f) => {
+    const cells =
+      f.kind === "quality"
+        ? [
+            `\`${f.metric}\``,
+            pct(f.before),
+            pct(f.after),
+            pp(f.delta),
+            f.ci ? `[${pp(f.ci.lo)}, ${pp(f.ci.hi)}]` : "—",
+            f.failed ? "**FAIL**" : "ok",
+          ]
+        : [
+            `\`${f.metric}\``,
+            f.before < 1 ? f.before.toFixed(4) : f.before.toFixed(0),
+            f.after < 1 ? f.after.toFixed(4) : f.after.toFixed(0),
+            `${f.delta >= 0 ? "+" : ""}${(f.delta * 100).toFixed(1)}%`,
+            "— (aggregate)",
+            f.failed ? "**FAIL**" : "ok",
+          ];
+    return `| ${cells.join(" | ")} |`;
+  });
+
+  const lines = [
+    verdict.passed
+      ? "### ✅ Eval gate passed"
+      : `### ❌ Eval gate failed — ${verdict.findings.filter((f) => f.failed).length} metric(s) regressed`,
+    "",
+    `\`${context.variant}\` · run \`${context.runId.slice(0, 8)}\` vs baseline \`${context.baselineId.slice(0, 8)}\``,
+    "",
+    "| metric | baseline | this run | delta | 95% CI (paired) | |",
+    "|---|---|---|---|---|---|",
+    ...rows,
+    "",
+    "A quality metric fails only when the drop clears its threshold **and** the",
+    "paired 95% CI excludes zero — a drop inside the noise band is not a regression.",
+  ];
+
+  if (verdict.warning) lines.push("", `> ⚠️ ${verdict.warning}`);
+  if (verdict.missing.length > 0) {
+    lines.push(
+      "",
+      `> Not gated, because neither run measured them: ${verdict.missing
+        .map((m) => `\`${m}\``)
+        .join(", ")}`,
+    );
+  }
+
+  return lines.join("\n");
+}
+
+/**
  * The questions a regressed metric got worse on, worst first.
  *
  * A gate that only says "recall@10 fell 6 points" tells you the build is red.

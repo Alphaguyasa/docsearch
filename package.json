@@ -17,6 +17,7 @@
     "eval:validate": "tsx scripts/validate-golden-set.ts",
     "eval:split": "tsx scripts/split-golden-set.ts",
     "eval:cache:clear": "tsx scripts/clear-cache.ts",
+    "eval:baseline": "tsx scripts/snapshot-baseline.ts",
     "test": "node --import tsx --test \"tests/**/*.test.ts\"",
     "test:eval": "vitest run",
     "test:eval:cov": "vitest run --coverage",

@@ -1,0 +1,219 @@
+name: eval
+
+# Phase 9 of docs/EVAL_HARNESS.md.
+#
+# TWO JOBS, NOT ONE, and the split is deliberate. Retrieval can be checked for
+# free and deterministically; generation cannot. Running both on every PR would
+# put a quota-bound, rate-limited job on the critical path of every change,
+# and a required check that fails for reasons unrelated to the diff is a check
+# people learn to ignore.
+#
+#   retrieval-smoke   every eval-relevant PR. 30 questions, no LLM calls, no
+#                     quota, seconds. Gates recall@10 and friends.
+#   generation-smoke  only when generation or prompt paths change. 30 questions
+#                     with all four judges. Gates correctness — the one judge
+#                     Phase 3 validated (kappa 0.86) and the only one with
+#                     variance on this corpus.
+#
+# THE BASELINE IS COMMITTED, at eval/baselines/ci-smoke.jsonl, because
+# eval/runs/ is gitignored and a fresh checkout has nothing to compare against.
+# Regenerate it with `npm run eval:baseline -- <runId>` whenever the pipeline
+# legitimately improves, and say so in the PR that does.
+
+on:
+  pull_request:
+    paths:
+      - "src/lib/retrieve.ts"
+      - "src/lib/embed.ts"
+      - "src/lib/answer.ts"
+      - "src/lib/llm.ts"
+      - "src/lib/paginate.ts"
+      - "scripts/ingest.ts"
+      - "eval/**"
+      - ".github/workflows/eval.yml"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Run the full dev split with judges instead of the 30-question smoke"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  # The sticky comment needs it; nothing else here writes to the repo.
+  pull-requests: write
+
+concurrency:
+  # A second push supersedes the first: the gate's verdict is only interesting
+  # for the head of the branch.
+  group: eval-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  GENERATION_PROVIDER: gemini
+
+jobs:
+  changed:
+    name: what changed
+    runs-on: ubuntu-latest
+    outputs:
+      generation: ${{ steps.paths.outputs.generation }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: paths
+        # Plain git rather than a third-party filter action: one less dependency
+        # with write access to the workflow, and the logic is three lines.
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "generation=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          BASE="${{ github.event.pull_request.base.sha }}"
+          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/lib/(answer|llm)\.ts|eval/src/(pipeline|rewrite)\.ts|eval/src/metrics/judge\.ts|eval/config/)'; then
+            echo "generation=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "generation=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  retrieval-smoke:
+    name: retrieval smoke (30 questions)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+
+      # Keyed on the golden set: the question embeddings cached here are keyed
+      # by question text, so a change to the golden set is exactly when they
+      # stop being reusable.
+      - uses: actions/cache@v4
+        with:
+          path: eval/.cache
+          key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}
+          restore-keys: eval-cache-
+
+      - name: Unit tests
+        run: npm run test:eval
+
+      - name: Gated smoke run
+        id: gate
+        run: |
+          npm run eval:run -- \
+            --variant baseline \
+            --subset 30 \
+            --retrieval-only \
+            --skip-db \
+            --gate eval/baselines/ci-smoke.jsonl \
+            --gate-md gate-retrieval.md
+        continue-on-error: true
+
+      - name: Comment
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash .github/scripts/sticky-comment.sh gate-retrieval.md "eval-gate-retrieval"
+
+      # The gate's verdict decides the check, but a PR labelled eval-exempt is
+      # allowed through — for a change that knowingly moves the numbers, where
+      # the right response is a new baseline rather than a red check.
+      - name: Enforce
+        if: steps.gate.outcome == 'failure'
+        run: |
+          if [ "${{ contains(github.event.pull_request.labels.*.name, 'eval-exempt') }}" = "true" ]; then
+            echo "::warning::Eval gate failed, but this PR is labelled eval-exempt."
+          else
+            echo "::error::Eval gate failed. See the PR comment for which metric moved."
+            exit 1
+          fi
+
+  generation-smoke:
+    name: generation smoke (30 questions, judged)
+    needs: changed
+    if: needs.changed.outputs.generation == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+
+      - uses: actions/cache@v4
+        with:
+          path: eval/.cache
+          key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}
+          restore-keys: eval-cache-
+
+      - name: Gated smoke run with judges
+        id: gate
+        # Concurrency 2 and the pacer keep this inside a free-tier rate limit;
+        # see eval/src/llmlimit.ts. Most calls are cache hits after the first
+        # run on a branch, so this is far cheaper than it looks.
+        run: |
+          npm run eval:run -- \
+            --variant baseline \
+            --subset 30 \
+            --concurrency 2 \
+            --skip-db \
+            --gate eval/baselines/ci-smoke.jsonl \
+            --gate-md gate-generation.md
+        continue-on-error: true
+
+      - name: Comment
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash .github/scripts/sticky-comment.sh gate-generation.md "eval-gate-generation"
+
+      - name: Enforce
+        if: steps.gate.outcome == 'failure'
+        run: |
+          if [ "${{ contains(github.event.pull_request.labels.*.name, 'eval-exempt') }}" = "true" ]; then
+            echo "::warning::Eval gate failed, but this PR is labelled eval-exempt."
+          else
+            echo "::error::Eval gate failed. See the PR comment for which metric moved."
+            exit 1
+          fi
+
+  full:
+    name: full dev split (judged)
+    if: github.event_name == 'workflow_dispatch' && inputs.full
+    runs-on: ubuntu-latest
+    # The pacer spaces LLM calls below the free-tier limit, so a 76-question
+    # judged run is mostly waiting. 686s of it on the last local run.
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: eval/.cache
+          key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}
+          restore-keys: eval-cache-
+      - name: Full judged run
+        run: |
+          npm run eval:run -- \
+            --variant baseline \
+            --concurrency 2 \
+            --skip-db \
+            --gate eval/baselines/ci-smoke.jsonl \
+            --gate-md gate-full.md
+      - name: Summary
+        if: always()
+        run: cat gate-full.md >> "$GITHUB_STEP_SUMMARY" || true

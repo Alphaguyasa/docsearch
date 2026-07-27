@@ -40,6 +40,7 @@ import { loadVariant } from "./config";
 import {
   DEFAULT_GATE,
   evaluateGate,
+  gateMarkdown,
   worstRegressions,
   type GateConfig,
 } from "./gate";
@@ -66,6 +67,8 @@ interface Args {
   skipDb: boolean;
   /** Baseline run id or variant name to gate against. */
   gate: string | null;
+  /** Where to write the gate summary as markdown, for a PR comment. */
+  gateMarkdown: string | null;
   retrievalOnly: boolean;
 }
 
@@ -81,6 +84,7 @@ function parseArgs(argv: string[]): Args {
     holdout: false,
     skipDb: false,
     gate: null,
+    gateMarkdown: null,
     retrievalOnly: false,
   };
 
@@ -102,6 +106,7 @@ function parseArgs(argv: string[]): Args {
         throw new Error(`${flag} requires a value`);
       }
       if (flag === "--gate") args.gate = value;
+      else if (flag === "--gate-md") args.gateMarkdown = value;
       else if (flag === "--variant") args.variant = value;
       else if (flag === "--notes") args.notes = value;
       else if (flag === "--subset") args.subset = requirePositive(value, flag);
@@ -419,6 +424,9 @@ function runGate(
   baselineRef: string,
   current: { results: QuestionResult[]; aggregate: Record<string, number | null> },
   cache: { hits: number; misses: number },
+  markdownFile: string | null,
+  currentRunId: string,
+  variantName: string,
 ): boolean {
   const runs = readLocalRuns();
   let baseline;
@@ -492,6 +500,19 @@ function runGate(
       ? `\n  PASS — nothing regressed past its threshold with a CI excluding zero.\n`
       : `\n  FAIL — ${verdict.findings.filter((f) => f.failed).length} metric(s) regressed.\n`,
   );
+
+  if (markdownFile) {
+    writeFileSync(
+      markdownFile,
+      gateMarkdown(verdict, {
+        baselineId: baseline.runId,
+        runId: currentRunId,
+        variant: variantName,
+      }) + "\n",
+    );
+    console.log(`  Gate summary → ${markdownFile}\n`);
+  }
+
   return verdict.passed;
 }
 
@@ -654,7 +675,14 @@ async function main(): Promise<void> {
   console.log(`\nWrote ${outFile}\n`);
 
   if (args.gate) {
-    const passed = runGate(args.gate, { results, aggregate: flat }, cacheStats());
+    const passed = runGate(
+      args.gate,
+      { results, aggregate: flat },
+      cacheStats(),
+      args.gateMarkdown,
+      runId,
+      variant.name,
+    );
     // The exit code is the entire product of a gate. Everything above is for a
     // human; this is what CI reads.
     if (!passed) process.exitCode = 1;

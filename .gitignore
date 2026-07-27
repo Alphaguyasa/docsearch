@@ -38,3 +38,6 @@ corpus/*
 !corpus/manifest.json
 !corpus/failed.json
 ingest-failures.json
+
+# Phase 9 CI writes these next to the workspace root.
+gate-*.md
