@@ -308,7 +308,9 @@ An unvalidated LLM judge is a random number generator with good manners. The cal
 >
 > Aggregates: mean of each retrieval metric over answerable questions only; mean faithfulness, correctness, citation accuracy; refusal accuracy over unanswerable only; total and per-question cost; p50/p95 latency per stage; error count.
 
-**Acceptance:** `npm run eval:run -- --variant baseline` completes all ~100 questions, prints the summary, writes JSONL and Supabase rows. A second identical run costs approximately $0 and finishes in seconds. Note your baseline numbers — this is the "before" in your story.
+**Acceptance:** `npm run eval:run -- --variant baseline` completes the full dev split (77 questions), prints the summary, writes JSONL and Supabase rows. A second identical run costs approximately $0 and finishes in seconds. Note your baseline numbers — this is the "before" in your story.
+
+> **Why 77 and not ~100.** This line originally read "all ~100 questions", written before Phase 1 carved the golden set into a dev split and a held-out test set. The dev split is 77 of the 92 reviewed questions; the remaining 15 are the holdout, and the runner only touches them behind an explicit `--holdout` flag. Leaving the old number in place would have made this phase's acceptance permanently unmeetable — a run that does exactly the right thing would still look 23 questions short — and the obvious way to "fix" that is to run the holdout, which is precisely what the split exists to prevent. **The holdout is excluded until the final measurement in Phase 10.** A full-pipeline run of 77 is this phase passing, not this phase falling short.
 
 ---
 

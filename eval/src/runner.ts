@@ -286,6 +286,7 @@ async function runQuestion(
       costUsd: cost.total,
       cost,
       latency: pipeline.latency,
+      degraded: pipeline.degraded,
       error: null,
     };
   } catch (err) {
@@ -323,6 +324,21 @@ function printSummary(
   console.log(
     `  questions ${agg.questions}${agg.errors > 0 ? `   ⚠ ${agg.errors} error(s)` : ""}`,
   );
+
+  if (agg.degraded > 0) {
+    // Loud, because the failure this catches is invisible in every other line
+    // of the summary: a degraded question scores like any other, just worse.
+    console.log(
+      `\n╔══════════════════════════════════════════════════════════════════╗\n` +
+        `║  DEGRADED RETRIEVAL — THIS RUN IS NOT COMPARABLE TO A CLEAN ONE  ║\n` +
+        `╚══════════════════════════════════════════════════════════════════╝\n` +
+        `  ${agg.degraded} of ${agg.questions} question(s) lost one of hybrid retrieval's\n` +
+        `  two sources and were fused from the survivor alone. They still\n` +
+        `  scored, and their scores are in every mean below.\n` +
+        `  Re-run before quoting these numbers — the cache replays the healthy\n` +
+        `  questions for free, so only the failures cost anything.`,
+    );
+  }
 
   console.log("\n── Retrieval — answerable questions only ───────────────");
   for (const key of Object.keys(agg.retrieval).sort()) {

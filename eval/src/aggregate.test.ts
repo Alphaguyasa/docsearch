@@ -94,6 +94,45 @@ describe("aggregate", () => {
     expect(agg.retrieval["recall@10"]).toBe(1);
   });
 
+  it("counts degraded questions separately from errors, and still scores them", () => {
+    // A degraded question lost one of hybrid retrieval's two sources. It is NOT
+    // an error — it returned results and belongs in the means — which is why it
+    // needs its own count. A real sweep arm had 2 of 77 degrade silently and
+    // the numbers looked entirely ordinary.
+    const agg = aggregate(
+      [
+        result("q1", { "recall@10": 1 }),
+        result("q2", { "recall@10": 0 }, { degraded: true }),
+        result("q3", { refusalAccuracy: 1 }),
+      ],
+      questions,
+    );
+    expect(agg.degraded).toBe(1);
+    expect(agg.errors).toBe(0);
+    expect(agg.retrieval["recall@10"]).toBe(0.5);
+    expect(flattenAggregate(agg).degraded).toBe(1);
+  });
+
+  it("does not count a degraded question that also errored", () => {
+    // Errors are already excluded from every mean; counting the question twice
+    // would overstate how much of the run was merely degraded.
+    const agg = aggregate(
+      [result("q1", {}, { degraded: true, error: "boom" }), result("q2", { "recall@10": 1 })],
+      questions,
+    );
+    expect(agg.errors).toBe(1);
+    expect(agg.degraded).toBe(0);
+  });
+
+  it("does not count a result that omits the degraded field", () => {
+    // `degraded` is optional, so a run written before the field existed counts
+    // as 0 here. That is an UNDERCOUNT, not a clean bill of health: those runs
+    // carry no record either way. Only runs written after this field landed can
+    // have their 0 read as "verified healthy".
+    const agg = aggregate([result("q1", { "recall@10": 1 })], questions);
+    expect(agg.degraded).toBe(0);
+  });
+
   it("returns null, not 0, when a metric has no data at all", () => {
     const agg = aggregate([result("q3", { refusalAccuracy: 1 })], questions);
     expect(agg.faithfulness).toBeNull();

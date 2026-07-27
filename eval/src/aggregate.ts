@@ -16,6 +16,15 @@ import type { Question, QuestionResult } from "./types";
 export interface Aggregate {
   questions: number;
   errors: number;
+  /**
+   * Questions that scored, but from only one of hybrid retrieval's two sources.
+   *
+   * Counted separately from errors because they are not errors — they produced
+   * results and entered every mean above. A nonzero value means the run's
+   * numbers describe a partly-degraded system and are not comparable to a clean
+   * run of the same variant.
+   */
+  degraded: number;
   /** Mean of each retrieval metric over answerable, non-errored questions. */
   retrieval: Record<string, number | null>;
   faithfulness: number | null;
@@ -94,6 +103,7 @@ export function aggregate(
   return {
     questions: results.length,
     errors: results.length - ok.length,
+    degraded: ok.filter((r) => r.degraded === true).length,
     retrieval,
     faithfulness: judgeMean("faithfulness", answerable),
     correctness: judgeMean("correctness", answerable),
@@ -111,6 +121,7 @@ export function flattenAggregate(agg: Aggregate): Record<string, number | null> 
   const flat: Record<string, number | null> = {
     questions: agg.questions,
     errors: agg.errors,
+    degraded: agg.degraded,
     faithfulness: agg.faithfulness,
     correctness: agg.correctness,
     citationAccuracy: agg.citationAccuracy,

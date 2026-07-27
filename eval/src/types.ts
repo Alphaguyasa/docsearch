@@ -84,8 +84,18 @@ export type MultihopKind = "cross-doc" | "same-doc";
  * SPEC CONFLICT (naming): the spec's `dense` is the app's `vector` mode
  * (src/lib/retrieve.ts `RetrieveMode`). The Phase 4 adapter maps between them;
  * the harness speaks the spec's vocabulary.
+ *
+ * DEVIATION from docs/EVAL_HARNESS.md, which defines `dense | hybrid` only.
+ * `keyword` is added because dense-vs-hybrid on its own cannot say WHY the two
+ * tie. Hybrid reorders 77 of 77 result sets and moves no metric; that is
+ * consistent with fusing two comparable signals, and equally consistent with
+ * fusing a strong vector ranking with a weak lexical one. Those have opposite
+ * implications for whether the keyword arm should exist, and only a
+ * keyword-only measurement separates them. The app has supported this mode all
+ * along (retrieve.ts `RetrieveMode`); only the harness's vocabulary was
+ * narrower.
  */
-export type RetrievalMode = "dense" | "hybrid";
+export type RetrievalMode = "dense" | "hybrid" | "keyword";
 
 export type QueryRewrite = "none" | "hyde" | "decompose";
 
@@ -196,6 +206,23 @@ export interface QuestionResult {
     total: number;
   };
   latency: Latency;
+  /**
+   * True when hybrid retrieval lost one of its two sources and fused only the
+   * survivor. NOT an error — the question returned results and scored — which
+   * is exactly why it has to be recorded.
+   *
+   * WHY THIS FIELD EXISTS. retrieve.ts handles a failed vector or keyword
+   * search with Promise.allSettled: it logs, sets a `degraded` flag, and
+   * continues on whichever source survived. pipeline.ts propagated that flag
+   * and the runner dropped it, so a run could contain single-source results
+   * with nothing in the JSONL, the database, or the summary to say so. That is
+   * not hypothetical: the first top-k sweep had 2 of 77 questions degrade this
+   * way in one arm, which moved that arm's recall@1 by 3.3 points and broke the
+   * prefix relationship the sweep depends on. The numbers looked completely
+   * ordinary. Optional because runs written before this field existed do not
+   * have it, and absent must not be read as false.
+   */
+  degraded?: boolean;
   /** Set when the question failed; the runner records and continues. */
   error: string | null;
 }
