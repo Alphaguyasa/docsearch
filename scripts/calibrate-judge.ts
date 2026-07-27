@@ -406,6 +406,16 @@ interface Args {
   seed: number;
   /** Re-render agreement over the saved labels, labelling nothing. */
   reportOnly: boolean;
+  /**
+   * Report only labels drawn this way.
+   *
+   * The pooled table warns that mixing designs is wrong for a headline number,
+   * and then leaves the reader with no way to obey it. A stratified sample
+   * over-represents flagged failures on purpose; a random one does not; a kappa
+   * over both describes neither. The writeup quotes these separately, so the
+   * split has to be a command rather than a calculation someone did once.
+   */
+  design?: "random" | "stratified";
   /** Re-run the judges with current prompts and re-score against saved labels. */
   rejudge: boolean;
   /** Re-ask one judge's question on items already labelled for it. */
@@ -451,6 +461,12 @@ function parseArgs(argv: string[]): Args {
       args.reportOnly = true;
     } else if (flag === "--stratify") {
       args.stratify = true;
+    } else if (flag === "--design") {
+      if (value !== "random" && value !== "stratified") {
+        throw new Error("--design must be random or stratified");
+      }
+      args.design = value;
+      i++;
     } else if (flag === "--write") {
       args.write = true;
     } else if (flag === "--rejudge") {
@@ -1186,12 +1202,22 @@ async function main(): Promise<void> {
     if (existing.length === 0) {
       throw new Error(`No labels in ${LABELS_FILE} — nothing to report on.`);
     }
+    // `sampling` is absent on the first 25 labels, which predate the field and
+    // were drawn at random — so absent means random, and filtering has to say
+    // so rather than dropping them.
+    const selected = args.design
+      ? existing.filter((l) => (l.sampling ?? "random") === args.design)
+      : existing;
+    if (selected.length === 0) {
+      throw new Error(`No ${args.design} labels in ${LABELS_FILE}.`);
+    }
     console.log(
-      `\n${existing.length} saved label(s) from ${LABELS_FILE}` +
+      `\n${selected.length} saved label(s) from ${LABELS_FILE}` +
+        (args.design ? `, ${args.design} sample only` : "") +
         `\nModel verdicts as recorded at labelling time. To measure a judge` +
         ` prompt change, use --rejudge.`,
     );
-    report(existing);
+    report(selected, args.design ? `Judge agreement — ${args.design} sample` : undefined);
     return;
   }
   // Re-running after a prompt change must re-measure against the SAME human

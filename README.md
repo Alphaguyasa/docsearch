@@ -109,58 +109,58 @@ smoke check against the dev golden set).
 
 ## Evaluation
 
-An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
-Phases 0–2 (scaffolding, golden set, retrieval metrics), 4 (runner, caching, cost
-and latency instrumentation), 5 (statistics), 6 (eleven experiment arms, written
-up in [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md)) and 7 (the regression gate)
-are complete.
+**→ [`docs/WRITEUP.md`](docs/WRITEUP.md) is the argument: what was measured, what
+it found, and what it cannot tell you.** The short version:
 
-**Phase 3 is complete in form and honest about its substance.** 68 human labels
-against two runs give a kappa per judge, but only one of the four is a validated
-judge:
+- **91 human-reviewed questions**, 28% of candidates dropped, 17% deliberately
+  unanswerable — the bucket that separates a retriever from a fabricator.
+- **One of four LLM judges is validated.** `correctness` at Cohen's kappa 0.80
+  (random sample) and 0.89 (stratified). The other three agree with me
+  67&ndash;100% of the time on samples containing almost no negatives, which is
+  agreement without evidence — and the writeup says so rather than printing four
+  green numbers.
+- **Three of four retrieval experiments did nothing**, and the one finding worth
+  more than all of them came from the per-type breakdown: 4 of 6 questions
+  retrieval got right were lost when the question was reworded.
+- **Nothing shipped.** The config is unchanged, because the one arm with a real
+  recall gain has never been measured on answer quality.
+- **The measurement was wrong three times** — a truncated labelling UI, a
+  contaminated unanswerable bucket, and a rubric with no answer for refusals.
+  All three are documented, because each one initially looked like a system
+  failure.
 
-| judge | n | raw agreement | kappa | |
-|---|---|---|---|---|
-| correctness | 55 | 93% | **0.86** | validated |
-| faithfulness | 24 | 92% | 0.00 | agreement real, kappa is arithmetic — the judge called 24 of 24 faithful, so there is no variance to measure |
-| citations | 46 | 78% | 0.05 | disagreements run both ways (6:4, p=0.75) — noise, needs more items |
-| refusal | 12 | 100% | 1.00 | no refusal failure exists anywhere in the dev split to disagree about |
+The harness is built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md). All ten
+phases are complete: scaffolding, golden set, retrieval metrics, judge
+calibration, runner and caching, statistics, [eleven experiment
+arms](docs/EVAL_RESULTS.md), the regression gate, the `/evals` dashboard, and CI.
 
-Two corrections that came out of calibrating rather than of the judges, both
-recorded because they change how the numbers should be read: a reviewer marked
-six answers unfaithful whose every claim was in the passages (the labelling UI
-truncated passages to 600 characters, ~24% of what the judge reads), and a
-"systematic 7:0 bias" against the faithfulness judge turned out to be five stale
-verdicts for refusals the judge had already stopped scoring.
+The judge calibration is in
+[the writeup](docs/WRITEUP.md#3-how-the-judge-was-validated--and-why-only-one-of-four-survived),
+reported per sampling design, because pooling a random sample with a stratified
+one describes a population that never existed. Regenerate either half with
+`npm run eval:calibrate -- --report-only --design random|stratified`.
 
-What that means for the numbers below, stated plainly:
-
-- **Retrieval numbers are real.** A full 76-question run completes with 0 errors,
-  and a second identical run reproduces it bit-for-bit.
-- **A full judged run of the dev split completes**: 76 questions, 0 errors, $0 on
-  a cached re-run. `correctness` 52.4%, and it tracks recall@10 (52.8%) almost
-  exactly — the system answers when retrieval finds the chunk and declines when
-  it does not. 24 of 63 answerable questions get a refusal.
-- **Quote `correctness`; do not quote the other three.** Only correctness has a
-  meaningful kappa. `faithfulness` scored 1.0 on all 39 non-refusal answers, so
-  it is pinned and cannot detect a regression — the gate guards it anyway, as a
-  tripwire for collapse rather than drift.
-
-Baseline retrieval, dev split, 63 answerable questions (hybrid, topK 8):
+Baseline, full pipeline on the 76-question dev split, 0 errors, $0
+(`npm run eval:run -- --variant baseline`):
 
 | Metric | @1 | @5 | @10 |
 |---|---|---|---|
-| recall | 19.3% | 47.0% | 51.2% |
-| hit rate | 31.7% | 57.1% | 60.3% |
-| nDCG | 31.7% | 41.7% | 41.3% |
-| doc recall | 47.8% | 63.3% | 67.4% |
+| recall | 20.9% | 48.6% | 52.8% |
+| hit rate | — | — | 61.9% |
+| nDCG | — | — | 42.9% |
+| doc recall | — | — | 69.0% |
 
-MRR is 41.8%. These are the "before" — no tuning has been applied yet.
+MRR 43.4%, median latency 1,190 ms. `correctness` 52.4% — the only judged
+number with a validated judge behind it, and it tracks recall@10 almost exactly:
+the system answers when retrieval finds the chunk and declines when it does not.
+**24 of 63 answerable questions get a refusal.**
 
-> Re-measured on the post-audit golden set (76 dev, 63 answerable). The previous
-> table read 62 answerable and was ≤1.3pp different on every cell; it is in git
-> history. Regenerate with
-> `npm run eval:run -- --variant baseline --retrieval-only` — cached, $0.
+> **On reproducibility, precisely.** Retrieval is deterministic given the corpus
+> and the cache, but two `baseline` runs on these 76 questions reported 51.2% and
+> 52.8%. The difference is one question where hybrid retrieval lost one of its
+> two sources and fused only the survivor. The runner records that as `degraded`
+> and `eval:compare` prints it, which is why this is a footnote rather than an
+> unexplained 1.6pp. The table above is the run with none.
 
 > An earlier ad-hoc eval (35 questions over a 26-chunk corpus) reported
 > recall@5 = 100%. Those numbers are deleted, not carried forward: they came from
