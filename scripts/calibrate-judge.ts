@@ -276,17 +276,27 @@ function wrap(text: string, width = 76, indent = "  "): string {
  * Ask for one label. The model's verdict is deliberately NOT shown — seeing it
  * first anchors the human to it, and an anchored label inflates agreement while
  * measuring nothing.
+ *
+ * WHAT IS SHOWN is an echo of the choice in plain words: "recorded: the answer
+ * asserted a substantive answer". The first calibration pass produced four
+ * labels saying exactly that about four IDENTICAL answers reading "This
+ * question is not covered by these documents" — a misread of the prompt, held
+ * for 25 items because nothing ever played the choice back. The echo reveals a
+ * misunderstanding immediately and reveals nothing about what the model said.
  */
 async function askLabel<T extends string>(
   question: string,
-  options: { key: string; value: T; label: string }[],
+  options: { key: string; value: T; label: string; echo: string }[],
 ): Promise<T | null> {
   const menu = options.map((o) => `[${o.key}] ${o.label}`).join("   ");
   for (;;) {
     const answer = await ask(`\n  ${question}\n  ${menu}   [?] skip\n  > `);
     if (answer === "?" || answer === "") return null;
     const chosen = options.find((o) => o.key === answer);
-    if (chosen) return chosen.value;
+    if (chosen) {
+      console.log(`  recorded: ${chosen.echo}`);
+      return chosen.value;
+    }
     console.log("  Not one of the options.");
   }
 }
@@ -323,6 +333,36 @@ function parseArgs(argv: string[]): Args {
   return args;
 }
 
+/**
+ * Share of labels in the most-used category, per rater.
+ *
+ * Kappa corrects for agreement expected by chance, and chance agreement rises
+ * with skew: when one rater says "faithful" to everything, two raters agreeing
+ * 85% of the time is no better than they would do at random, so kappa reads 0.
+ * A low kappa therefore has two completely different causes with completely
+ * different fixes, and the number alone does not distinguish them. This is what
+ * tells them apart.
+ */
+function prevalence(labels: string[]): number {
+  if (labels.length === 0) return 1;
+  const counts = new Map<string, number>();
+  for (const l of labels) counts.set(l, (counts.get(l) ?? 0) + 1);
+  return Math.max(...counts.values()) / labels.length;
+}
+
+/** `faithful 18, unfaithful 2` — the marginals, printed rather than inferred. */
+function distribution(labels: string[]): string {
+  const counts = new Map<string, number>();
+  for (const l of labels) counts.set(l, (counts.get(l) ?? 0) + 1);
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, n]) => `${label} ${n}`)
+    .join(", ");
+}
+
+/** Above this share in one category, kappa is reporting the skew, not the judge. */
+const SKEW_LIMIT = 0.9;
+
 function report(labels: CalibrationLabel[]): void {
   const judges: {
     name: string;
@@ -338,6 +378,8 @@ function report(labels: CalibrationLabel[]): void {
   console.log("  judge          n   raw agree    kappa");
 
   const weak: string[] = [];
+  /** Low kappa caused by the label distribution rather than by the judge. */
+  const skewed: string[] = [];
   for (const judge of judges) {
     const pairs = labels
       .map(judge.pick)
@@ -348,31 +390,59 @@ function report(labels: CalibrationLabel[]): void {
       continue;
     }
 
-    const agreement: Agreement = cohensKappa(
-      pairs.map((p) => p.human),
-      pairs.map((p) => p.model),
-    );
+    const humanLabels = pairs.map((p) => p.human);
+    const modelLabelValues = pairs.map((p) => p.model);
+    const agreement: Agreement = cohensKappa(humanLabels, modelLabelValues);
+    const skew = Math.max(prevalence(humanLabels), prevalence(modelLabelValues));
+
     console.log(
       `  ${judge.name.padEnd(13)} ${String(agreement.n).padStart(2)}   ` +
         `${(agreement.rawAgreement * 100).toFixed(0).padStart(6)}%   ` +
         `${agreement.kappa.toFixed(2).padStart(6)}` +
-        (agreement.weak ? "   ⚠ WEAK" : ""),
+        (agreement.weak ? (skew >= SKEW_LIMIT ? "   ⚠ SKEWED" : "   ⚠ WEAK") : ""),
     );
-    if (agreement.weak) weak.push(judge.name);
+    console.log(
+      `                    you: ${distribution(humanLabels)}\n` +
+        `                  judge: ${distribution(modelLabelValues)}`,
+    );
+
+    if (agreement.weak) (skew >= SKEW_LIMIT ? skewed : weak).push(judge.name);
+  }
+
+  if (skewed.length > 0) {
+    console.log(
+      `\n⚠ kappa is not interpretable for: ${skewed.join(", ")}\n` +
+        wrap(
+          `One rater put ${Math.round(SKEW_LIMIT * 100)}%+ of items in a single ` +
+            "category, so chance agreement is nearly as high as the agreement " +
+            "actually observed and kappa collapses toward zero however good the " +
+            "judge is. THIS IS THE KAPPA PARADOX, not a broken judge: with 20 of 20 " +
+            "answers labelled faithful by you and 17 of 20 by the judge, raw " +
+            "agreement is 85% and kappa is exactly 0.00. Tightening the prompt " +
+            "cannot move a number that is measuring the label distribution rather " +
+            "than the judge. What fixes it is a calibration sample with real " +
+            "negatives in it — deliberately include results you expect to be " +
+            "unfaithful or wrong — and reporting raw agreement and both marginals " +
+            "next to the kappa so a reader can see which case they are in.",
+        ),
+    );
   }
 
   if (weak.length > 0) {
     console.log(
       `\n⚠ kappa below 0.6 for: ${weak.join(", ")}\n` +
         wrap(
-          "That judge is not reliable enough to quote. For faithfulness the fix " +
-            "is usually to make the atomic-claim decomposition more explicit in " +
-            "the prompt — a judge that bundles several facts into one claim " +
-            "cannot mark part of it unsupported. Tighten the prompt, then re-run " +
-            "this against the same saved labels to see whether it actually moved.",
+          "Both raters used the categories, so this one is about the judge. For " +
+            "faithfulness the fix is usually to make the atomic-claim " +
+            "decomposition more explicit in the prompt — a judge that bundles " +
+            "several facts into one claim cannot mark part of it unsupported. " +
+            "Tighten the prompt, then re-run this against the same saved labels to " +
+            "see whether it actually moved.",
         ),
     );
-  } else if (labels.length > 0) {
+  }
+
+  if (weak.length === 0 && skewed.length === 0 && labels.length > 0) {
     console.log("\n✓ Every judge is at or above kappa 0.6. Report these in the writeup.");
   }
 
@@ -497,28 +567,82 @@ async function main(): Promise<void> {
     };
 
     if (question.type === "unanswerable") {
-      human.refused = await askLabel("Did the answer decline, or assert an answer?", [
-        { key: "r", value: "refused" as const, label: "refused" },
-        { key: "a", value: "answered" as const, label: "asserted an answer" },
-      ]);
+      // PHRASED AS A YES/NO ON y/n, like every other prompt here. It used to ask
+      // "decline, or assert an answer?" on [r]/[a] — the one prompt in the tool
+      // where neither key was y or n, reached only on unanswerable questions and
+      // so never adjacent to itself. Four of five came back saying an answer
+      // reading "This question is not covered by these documents" had asserted
+      // something, which is not a judgement anyone makes about that sentence.
+      human.refused = await askLabel(
+        "Did the answer DECLINE to answer? (it should have — this question is unanswerable)",
+        [
+          {
+            key: "y",
+            value: "refused" as const,
+            label: "yes, it declined",
+            echo: "the answer declined / said it could not answer",
+          },
+          {
+            key: "n",
+            value: "answered" as const,
+            label: "no, it asserted an answer",
+            echo: "the answer asserted a substantive answer",
+          },
+        ],
+      );
     } else {
       human.faithful = await askLabel(
         "Is EVERY claim in the answer supported by the passages above?",
         [
-          { key: "y", value: "faithful" as const, label: "yes, all supported" },
-          { key: "n", value: "unfaithful" as const, label: "no, something is not" },
+          {
+            key: "y",
+            value: "faithful" as const,
+            label: "yes, all supported",
+            echo: "every claim is supported by the passages",
+          },
+          {
+            key: "n",
+            value: "unfaithful" as const,
+            label: "no, something is not",
+            echo: "at least one claim is NOT supported by the passages",
+          },
         ],
       );
       if (question.expectedAnswer) {
         human.correctness = await askLabel("How does it compare to the reference answer?", [
-          { key: "c", value: "correct" as const, label: "correct" },
-          { key: "p", value: "partial" as const, label: "partial" },
-          { key: "i", value: "incorrect" as const, label: "incorrect" },
+          {
+            key: "c",
+            value: "correct" as const,
+            label: "correct",
+            echo: "same as the reference answer in substance",
+          },
+          {
+            key: "p",
+            value: "partial" as const,
+            label: "partial",
+            echo: "partly right — some of the reference answer, not all",
+          },
+          {
+            key: "i",
+            value: "incorrect" as const,
+            label: "incorrect",
+            echo: "wrong, or not the reference answer at all",
+          },
         ]);
       }
       human.citations = await askLabel("Does every [n] point at a passage that supports it?", [
-        { key: "y", value: "all-valid" as const, label: "yes, all valid" },
-        { key: "n", value: "has-invalid" as const, label: "no, at least one is wrong" },
+        {
+          key: "y",
+          value: "all-valid" as const,
+          label: "yes, all valid",
+          echo: "every citation points at a passage that supports its sentence",
+        },
+        {
+          key: "n",
+          value: "has-invalid" as const,
+          label: "no, at least one is wrong",
+          echo: "at least one citation points somewhere that does NOT support it",
+        },
       ]);
     }
 
