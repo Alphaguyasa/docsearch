@@ -53,6 +53,10 @@ export async function upsertResults(
       answer: r.answer,
       citations: r.citations,
       metrics: r.metrics,
+      // Raw judge output — the claims, verdicts and reasoning behind the four
+      // flattened scores. Phase 8's drill-down reads it; without it, "why did
+      // faithfulness drop" is only answerable from the JSONL on someone's disk.
+      judge: r.judge ?? null,
       cost_usd: r.costUsd,
       latency: r.latency,
       error: r.error,

@@ -19,7 +19,16 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      /*
+       * The eval dashboard reuses the harness's PURE modules — stats.ts for
+       * confidence intervals, compare.ts for the paired join — so a chart and
+       * the CLI cannot drift into reporting different numbers for the same run.
+       * Only modules with no I/O and no env validation may be imported this
+       * way; anything touching the database or a provider stays out of the app
+       * bundle.
+       */
+      "@eval/*": ["./eval/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
