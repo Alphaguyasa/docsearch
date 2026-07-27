@@ -81,7 +81,11 @@ function modelLabels(scores: JudgeScores): CalibrationLabel["model"] {
   const ref = scores.refusal?.ok ? scores.refusal.value : null;
 
   return {
-    faithful: faith ? (faith.score === 1 ? "faithful" : "unfaithful") : null,
+    // score === null means the answer made no factual claims — a refusal. There
+    // is nothing for grounding to be true of, so it is not a faithfulness
+    // judgement at all and must not enter the kappa as one.
+    faithful:
+      faith && faith.score !== null ? (faith.score === 1 ? "faithful" : "unfaithful") : null,
     correctness: corr ? corr.verdict : null,
     citations: cite ? (cite.score === 1 ? "all-valid" : "has-invalid") : null,
     refused: ref ? (ref.refused ? "refused" : "answered") : null,
@@ -288,7 +292,9 @@ function wrap(text: string, width = 76, indent = "  "): string {
  */
 async function askLabel<T extends string>(
   question: string,
-  options: { key: string; value: T; label: string; echo: string }[],
+  // `value: null` is a real choice, not a missing one: a refusal is not a
+  // faithfulness judgement, and the reviewer needs a way to say so.
+  options: { key: string; value: T | null; label: string; echo: string }[],
 ): Promise<T | null> {
   const menu = options.map((o) => `[${o.key}] ${o.label}`).join("   ");
   for (;;) {
@@ -739,6 +745,41 @@ async function rejudge(
   return refreshed;
 }
 
+const FAITHFULNESS_QUESTION = "Is EVERY claim in the answer supported by the passages above?";
+
+/**
+ * "No claims" is an option because a refusal is not a faithfulness judgement.
+ *
+ * An answer reading "This question is not covered by these documents" asserts
+ * nothing about the subject, so there is nothing for grounding to be true or
+ * false of. Forcing it into yes/no made reviewers pick "no, something is not
+ * supported" — reasonably, since nothing was supported — and that single choice
+ * accounted for 5 of the 11 human/judge disagreements. The judge now returns an
+ * empty claim list and a null score for the same case, so both sides say "not
+ * applicable" and the item drops out of the kappa instead of landing in it as a
+ * disagreement neither rater intended.
+ */
+const FAITHFULNESS_OPTIONS = [
+  {
+    key: "y",
+    value: "faithful" as const,
+    label: "yes, all supported",
+    echo: "every claim is supported by the passages",
+  },
+  {
+    key: "n",
+    value: "unfaithful" as const,
+    label: "no, something is not",
+    echo: "at least one claim is NOT supported by the passages",
+  },
+  {
+    key: "x",
+    value: null,
+    label: "n/a — it made no claims (a refusal)",
+    echo: "the answer asserted nothing: not a faithfulness judgement, excluded",
+  },
+];
+
 /** Which human field each judge's label lives in. */
 const HUMAN_FIELD = {
   faithfulness: "faithful",
@@ -871,20 +912,7 @@ async function main(): Promise<void> {
 
     const updated = await relabel(target, existing, byId, questions, args, async (question) => {
       if (target === "faithfulness") {
-        return askLabel("Is EVERY claim in the answer supported by the passages above?", [
-          {
-            key: "y",
-            value: "faithful" as const,
-            label: "yes, all supported",
-            echo: "every claim is supported by the passages",
-          },
-          {
-            key: "n",
-            value: "unfaithful" as const,
-            label: "no, something is not",
-            echo: "at least one claim is NOT supported by the passages",
-          },
-        ]);
+        return askLabel(FAITHFULNESS_QUESTION, FAITHFULNESS_OPTIONS);
       }
       if (target === "citations") {
         return askLabel("Does every [n] point at a passage that supports it?", [
@@ -1053,21 +1081,8 @@ async function main(): Promise<void> {
       );
     } else {
       human.faithful = await askLabel(
-        "Is EVERY claim in the answer supported by the passages above?",
-        [
-          {
-            key: "y",
-            value: "faithful" as const,
-            label: "yes, all supported",
-            echo: "every claim is supported by the passages",
-          },
-          {
-            key: "n",
-            value: "unfaithful" as const,
-            label: "no, something is not",
-            echo: "at least one claim is NOT supported by the passages",
-          },
-        ],
+        FAITHFULNESS_QUESTION,
+        FAITHFULNESS_OPTIONS,
       );
       if (question.expectedAnswer) {
         human.correctness = await askLabel("How does it compare to the reference answer?", [

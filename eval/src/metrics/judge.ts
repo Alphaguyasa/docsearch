@@ -69,7 +69,8 @@ export interface Claim {
 
 export interface FaithfulnessResult {
   claims: Claim[];
-  score: number;
+  /** Null when the answer made no factual claims — a refusal. See faithfulnessScore. */
+  score: number | null;
 }
 
 export type CorrectnessVerdict = "correct" | "partial" | "incorrect";
@@ -164,8 +165,28 @@ export function extractCitations(
 // --- Score derivation (pure) -------------------------------------------------
 
 /** supported / total. An answer with no claims is vacuously faithful (1). */
-export function faithfulnessScore(claims: Claim[]): number {
-  if (claims.length === 0) return 1;
+/**
+ * supported / total, or NULL when the answer asserted nothing.
+ *
+ * IT USED TO RETURN 1 FOR AN EMPTY CLAIM LIST — "nothing unsupported was said",
+ * which is true and useless. An answer that declines ("This question is not
+ * covered by these documents.") makes no claim about the domain, so there is
+ * nothing for grounding to be true or false OF. Scoring it 1 puts a free point
+ * into the faithfulness mean for every question the system refused, and the
+ * refusals are disproportionately the questions it did worst on.
+ *
+ * Null is the same convention recallAtK already uses for unanswerable
+ * questions: not measurable here, so excluded from the mean rather than
+ * averaged in as a number nobody meant.
+ *
+ * MEASURED, on the 20 answerable questions of run 414ed084: seven were
+ * refusals, and the judge called the identical sentence "supported" five times
+ * and "unsupported" twice — at temperature 0. That spread is not the judge
+ * being unreliable so much as being asked an undefined question, and it caused
+ * 5 of the 11 human/judge disagreements in calibration.
+ */
+export function faithfulnessScore(claims: Claim[]): number | null {
+  if (claims.length === 0) return null;
   return claims.filter((c) => c.label === "supported").length / claims.length;
 }
 
@@ -282,6 +303,14 @@ export async function judgeFaithfulness(
     "  on its own. Split every conjunction, list, and multi-part sentence.",
     '  "Leave is 25 days and carries over" is TWO claims, not one.',
     "  Ignore pure hedging, restatements of the question, and citation markers.",
+    "",
+    "  A REFUSAL IS NOT A CLAIM. If the answer declines — \"this question is not",
+    "  covered by these documents\", \"the passages do not say\" — it asserts",
+    "  nothing about the subject matter, only about the passages. Return an",
+    "  EMPTY claims array. Do not treat the refusal sentence as a claim and try",
+    "  to decide whether the passages support it; that question has no answer,",
+    "  and asking it produced \"supported\" and \"unsupported\" verdicts on the",
+    "  identical sentence in the same run.",
     "",
     "Step 2 — label each claim using the CONTEXT PASSAGES ONLY:",
     '  "supported"    — the passages state or directly entail it',
@@ -552,7 +581,7 @@ export async function judgeAll(
 
 /** Flatten judge outcomes into the metrics record, nulling out failures. */
 export function judgeScoresToMetrics(scores: JudgeScores): Record<string, number | null> {
-  const value = <T extends { score: number }>(
+  const value = <T extends { score: number | null }>(
     outcome: JudgeOutcome<T> | null,
   ): number | null => (outcome && outcome.ok ? outcome.value.score : null);
 
