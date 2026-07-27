@@ -28,6 +28,7 @@ import { DEV_FILE, HOLDOUT_FILE, parseJsonl } from "../eval/src/goldenset";
 import { readLocalRuns } from "../eval/src/runs";
 import {
   cohensKappa,
+  judgeAll,
   type Agreement,
   type JudgeScores,
 } from "../eval/src/metrics/judge";
@@ -308,15 +309,49 @@ interface Args {
   seed: number;
   /** Re-render agreement over the saved labels, labelling nothing. */
   reportOnly: boolean;
+  /** Re-run the judges with current prompts and re-score against saved labels. */
+  rejudge: boolean;
+  /**
+   * Characters of each passage shown before truncation. Effectively unlimited
+   * by default, and that is the point.
+   *
+   * IT USED TO BE A HARDCODED 600, which on this corpus is about a QUARTER of
+   * what the judge reads — chunks average ~2,000 characters and a question
+   * retrieves eight of them. The reviewer was asked "is every claim supported
+   * by the passages above?" while being shown a quarter of the passages.
+   *
+   * That is not a cosmetic difference, and it is not symmetric: truncation can
+   * only remove support, never invent it, so every label it changes moves the
+   * same direction. Measured on the first calibration, the evidence for
+   * q-0052's second F1 score and for q-0007's "overfitting" both sat past the
+   * cut — labelled unsupported by a reviewer who could not see them, supported
+   * by a judge who could. That reads as a lenient judge in the agreement table
+   * and is nothing of the kind.
+   */
+  contextChars: number;
 }
 
 function parseArgs(argv: string[]): Args {
-  const args: Args = { sample: 25, seed: 42, reportOnly: false };
+  const args: Args = {
+    rejudge: false,
+    sample: 25,
+    seed: 42,
+    reportOnly: false,
+    contextChars: Number.MAX_SAFE_INTEGER,
+  };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     const value = argv[i + 1];
     if (flag === "--report-only") {
       args.reportOnly = true;
+    } else if (flag === "--rejudge") {
+      args.rejudge = true;
+    } else if (flag === "--context") {
+      args.contextChars = Number(value);
+      i++;
+      if (!Number.isFinite(args.contextChars) || args.contextChars <= 0) {
+        throw new Error("--context must be a positive number of characters");
+      }
     } else if (flag === "--run") {
       if (!value) throw new Error("--run requires a value");
       args.runId = value;
@@ -426,7 +461,11 @@ function directionalBias(
   };
 }
 
-function report(labels: CalibrationLabel[]): void {
+function report(
+  labels: CalibrationLabel[],
+  title = "Judge agreement",
+): Record<string, Agreement> {
+  const scored: Record<string, Agreement> = {};
   const judges: {
     name: string;
     pick: (l: CalibrationLabel) => { human: string | null; model: string | null };
@@ -437,7 +476,7 @@ function report(labels: CalibrationLabel[]): void {
     { name: "refusal", pick: (l) => ({ human: l.human.refused, model: l.model.refused }) },
   ];
 
-  console.log("\n── Judge agreement ─────────────────────────────────────");
+  console.log(`\n── ${title} ${"─".repeat(Math.max(3, 54 - title.length))}`);
   console.log("  judge          n   raw agree    kappa");
 
   const weak: string[] = [];
@@ -462,6 +501,7 @@ function report(labels: CalibrationLabel[]): void {
     const agreement: Agreement = cohensKappa(humanLabels, modelLabelValues);
     const skew = Math.max(prevalence(humanLabels), prevalence(modelLabelValues));
     const bias = directionalBias(pairs);
+    scored[judge.name] = agreement;
 
     // Four outcomes, and only the first is a judge that has been validated.
     //   ok        both raters used the categories and they agree
@@ -582,6 +622,45 @@ function report(labels: CalibrationLabel[]): void {
       ) +
       "\n",
   );
+
+  return scored;
+}
+
+/**
+ * Re-run the judges with the CURRENT prompts over the already-labelled results,
+ * and score the fresh verdicts against the SAME human labels.
+ *
+ * This is the half of "tighten the prompt, then re-measure" that did not exist.
+ * --report-only re-reads verdicts recorded at labelling time, so it prints the
+ * same table forever however much a prompt changes; the human labels are the
+ * fixed point, and it is the MODEL side that has to move.
+ *
+ * Costs real quota: a changed prompt is a different cache key by construction,
+ * so every call is a miss. That is the point of it — an unchanged prompt is
+ * free, because every call hits.
+ */
+async function rejudge(
+  labels: CalibrationLabel[],
+  results: Map<string, StoredResult>,
+  questions: Map<string, Question>,
+): Promise<CalibrationLabel[]> {
+  const refreshed: CalibrationLabel[] = [];
+
+  for (const [i, label] of labels.entries()) {
+    const result = results.get(label.questionId);
+    const question = questions.get(label.questionId);
+    if (!result || !question) {
+      console.log(`  ${label.questionId}: skipped — not in the run or the golden set`);
+      continue;
+    }
+
+    process.stdout.write(`\r  re-judging ${i + 1}/${labels.length}  ${label.questionId}   `);
+    const scores = await judgeAll(question, result.answer, result.retrieved);
+    refreshed.push({ ...label, model: modelLabels(scores) });
+  }
+
+  process.stdout.write("\r".padEnd(60) + "\r");
+  return refreshed;
 }
 
 async function main(): Promise<void> {
@@ -589,14 +668,23 @@ async function main(): Promise<void> {
 
   const existing = readJsonl<CalibrationLabel>(LABELS_FILE);
 
-  // Re-score the saved labels without labelling anything. This is what makes
-  // "tighten the judge prompt, then re-measure against the SAME human labels"
-  // an actual workflow rather than an instruction with no command behind it.
+  // Re-score the saved labels without labelling anything.
+  //
+  // NOTE WHAT THIS DOES NOT DO. The `model` verdicts in the labels file were
+  // captured when the labels were made. Re-running this after changing a judge
+  // prompt re-reads those stored verdicts and prints the identical table — the
+  // agreement cannot move, because nothing re-judged anything. Measuring a
+  // prompt change needs --rejudge, below, which calls the judges again with the
+  // current prompts and scores the NEW verdicts against the SAME human labels.
   if (args.reportOnly) {
     if (existing.length === 0) {
       throw new Error(`No labels in ${LABELS_FILE} — nothing to report on.`);
     }
-    console.log(`\n${existing.length} saved label(s) from ${LABELS_FILE}`);
+    console.log(
+      `\n${existing.length} saved label(s) from ${LABELS_FILE}` +
+        `\nModel verdicts as recorded at labelling time. To measure a judge` +
+        ` prompt change, use --rejudge.`,
+    );
     report(existing);
     return;
   }
@@ -629,6 +717,49 @@ async function main(): Promise<void> {
   );
 
   warnIfPredatesGoldenSet(runHeader?.gitSha);
+
+  if (args.rejudge) {
+    const forThisRun = existing.filter((l) => l.runId === runId);
+    if (forThisRun.length === 0) {
+      throw new Error(
+        `No saved labels for run ${runId}. --rejudge re-scores labels you have ` +
+          `already made; pass --run <id> for the run they were made against.`,
+      );
+    }
+
+    console.log(
+      `\nRe-judging ${forThisRun.length} labelled result(s) with the CURRENT ` +
+        `judge prompts.\nHuman labels are held fixed — only the model side moves.\n`,
+    );
+
+    const before = report(forThisRun, "BEFORE — verdicts recorded at labelling time");
+    const after = report(
+      await rejudge(forThisRun, new Map(results.map((r) => [r.questionId, r])), questions),
+      "AFTER — verdicts from the current prompts",
+    );
+
+    console.log("\n── Movement ────────────────────────────────────────────");
+    for (const name of Object.keys(before)) {
+      const b = before[name];
+      const a = after[name];
+      if (!b || !a) continue;
+      const d = a.kappa - b.kappa;
+      console.log(
+        `  ${name.padEnd(13)} kappa ${b.kappa.toFixed(2)} → ${a.kappa.toFixed(2)}` +
+          `  (${d >= 0 ? "+" : ""}${d.toFixed(2)})   ` +
+          `agreement ${(b.rawAgreement * 100).toFixed(0)}% → ${(a.rawAgreement * 100).toFixed(0)}%`,
+      );
+    }
+    console.log(
+      "\n" +
+        wrap(
+          "The human labels did not change, so any movement here is the judge " +
+            "and nothing else. That is the whole point of keeping them.",
+        ) +
+        "\n",
+    );
+    return;
+  }
 
   const stale = new Map<string, string>();
   const labelable = results.filter((r) => {
@@ -687,10 +818,38 @@ async function main(): Promise<void> {
     console.log(wrap(result.answer || "(empty)"));
 
     if (result.retrieved.length > 0) {
-      console.log("\nRETRIEVED PASSAGES (as numbered in the prompt)");
+      const shown = result.retrieved.reduce(
+        (n, c) => n + Math.min(c.text.length, args.contextChars),
+        0,
+      );
+      const full = result.retrieved.reduce((n, c) => n + c.text.length, 0);
+
+      console.log(
+        `\nRETRIEVED PASSAGES (as numbered in the prompt) — ` +
+          `the SAME text the judge was given` +
+          (shown < full
+            ? `, TRUNCATED to ${Math.round((100 * shown) / full)}% of it ` +
+              `by --context ${args.contextChars}`
+            : ""),
+      );
       for (const [j, chunk] of result.retrieved.entries()) {
         console.log(`\n  [${j + 1}] p.${chunk.page}  ${chunk.chunkId}`);
-        console.log(wrap(chunk.text.slice(0, 600), 74, "      "));
+        console.log(wrap(chunk.text.slice(0, args.contextChars), 74, "      "));
+        if (chunk.text.length > args.contextChars) {
+          console.log(
+            `      … ${chunk.text.length - args.contextChars} more characters HIDDEN`,
+          );
+        }
+      }
+      if (shown < full) {
+        console.log(
+          "\n" +
+            wrap(
+              "⚠ You are judging on less evidence than the judge had. Truncation " +
+                "can only ever REMOVE support, never add it, so every label it " +
+                "changes moves the same way — toward unsupported.",
+            ),
+        );
       }
     }
 
