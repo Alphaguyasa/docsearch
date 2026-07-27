@@ -311,6 +311,8 @@ interface Args {
   reportOnly: boolean;
   /** Re-run the judges with current prompts and re-score against saved labels. */
   rejudge: boolean;
+  /** Re-ask one judge's question on items already labelled for it. */
+  relabel?: RelabelTarget;
   /**
    * Characters of each passage shown before truncation. Effectively unlimited
    * by default, and that is the point.
@@ -346,6 +348,14 @@ function parseArgs(argv: string[]): Args {
       args.reportOnly = true;
     } else if (flag === "--rejudge") {
       args.rejudge = true;
+    } else if (flag === "--relabel") {
+      if (!value || !(value in HUMAN_FIELD)) {
+        throw new Error(
+          `--relabel needs one of: ${Object.keys(HUMAN_FIELD).join(", ")}`,
+        );
+      }
+      args.relabel = value as RelabelTarget;
+      i++;
     } else if (flag === "--context") {
       args.contextChars = Number(value);
       i++;
@@ -627,6 +637,72 @@ function report(
 }
 
 /**
+ * Print one result exactly as a reviewer must see it before judging it.
+ *
+ * Shared by first-pass labelling and by --relabel, deliberately: a relabelled
+ * item has to be shown the same way a fresh one is, or the two labels are not
+ * comparable and the calibration set becomes a mixture of two tasks.
+ */
+function showItem(
+  question: Question,
+  result: StoredResult,
+  args: Args,
+  position: string,
+): void {
+  console.clear();
+  console.log("═".repeat(80));
+  console.log(`  ${result.questionId}   ${question.type}   ${position}`);
+  console.log("═".repeat(80));
+  console.log("\nQUESTION");
+  console.log(wrap(question.question));
+
+  if (question.expectedAnswer) {
+    console.log("\nREFERENCE ANSWER");
+    console.log(wrap(question.expectedAnswer));
+  }
+
+  console.log("\nGENERATED ANSWER");
+  console.log(wrap(result.answer || "(empty)"));
+
+  if (result.retrieved.length > 0) {
+    const shown = result.retrieved.reduce(
+      (n, c) => n + Math.min(c.text.length, args.contextChars),
+      0,
+    );
+    const full = result.retrieved.reduce((n, c) => n + c.text.length, 0);
+
+    console.log(
+      `\nRETRIEVED PASSAGES (as numbered in the prompt) — ` +
+        `the SAME text the judge was given` +
+        (shown < full
+          ? `, TRUNCATED to ${Math.round((100 * shown) / full)}% of it ` +
+            `by --context ${args.contextChars}`
+          : ""),
+    );
+    for (const [j, chunk] of result.retrieved.entries()) {
+      console.log(`\n  [${j + 1}] p.${chunk.page}  ${chunk.chunkId}`);
+      console.log(wrap(chunk.text.slice(0, args.contextChars), 74, "      "));
+      if (chunk.text.length > args.contextChars) {
+        console.log(`      … ${chunk.text.length - args.contextChars} more characters HIDDEN`);
+      }
+    }
+    if (shown < full) {
+      console.log(
+        "\n" +
+          wrap(
+            "⚠ You are judging on less evidence than the judge had. Truncation " +
+              "can only ever REMOVE support, never add it, so every label it " +
+              "changes moves the same way — toward unsupported.",
+          ),
+      );
+    }
+  }
+
+  console.log("\n" + "─".repeat(80));
+  console.log("  Label what YOU think. The model's verdict is hidden until after.");
+}
+
+/**
  * Re-run the judges with the CURRENT prompts over the already-labelled results,
  * and score the fresh verdicts against the SAME human labels.
  *
@@ -661,6 +737,68 @@ async function rejudge(
 
   process.stdout.write("\r".padEnd(60) + "\r");
   return refreshed;
+}
+
+/** Which human field each judge's label lives in. */
+const HUMAN_FIELD = {
+  faithfulness: "faithful",
+  correctness: "correctness",
+  citations: "citations",
+  refusal: "refused",
+} as const;
+
+type RelabelTarget = keyof typeof HUMAN_FIELD;
+
+/**
+ * Re-ask ONE judge's question on items that already carry a label for it.
+ *
+ * WHY ONE AND NOT ALL FOUR. The truncation bug contaminated exactly the
+ * judgements that depend on reading the passages — faithfulness and citations.
+ * Correctness compares the answer against a reference answer, both of which
+ * were always shown in full, so its labels are sound and its kappa of 0.80 is
+ * the one real result Phase 3 has. Re-asking it would put a validated number
+ * back at risk to fix a different judge's problem.
+ *
+ * The previous answer is NOT shown. A reviewer reminded of what they said last
+ * time is being asked to agree with themselves, and the point of relabelling is
+ * a judgement formed again from the evidence — this time all of it.
+ */
+async function relabel(
+  target: RelabelTarget,
+  labels: CalibrationLabel[],
+  results: Map<string, StoredResult>,
+  questions: Map<string, Question>,
+  args: Args,
+  ask: (question: Question, result: StoredResult) => Promise<string | null>,
+): Promise<CalibrationLabel[]> {
+  const field = HUMAN_FIELD[target];
+  const todo = labels.filter((l) => l.human[field] !== null && results.has(l.questionId));
+
+  console.log(
+    `\nRelabelling ${target} on ${todo.length} item(s), full context, previous ` +
+      `answers hidden.\nEverything else in each label is kept as it is.\n`,
+  );
+
+  let done = 0;
+  const updated = labels.map((l) => ({ ...l, human: { ...l.human } }));
+
+  for (const label of updated) {
+    if (label.human[field] === null) continue;
+    const result = results.get(label.questionId);
+    const question = questions.get(label.questionId);
+    if (!result || !question) continue;
+
+    done++;
+    showItem(question, result, args, `${target}  [${done} of ${todo.length}]`);
+    const answer = await ask(question, result);
+    if (answer !== null) (label.human as Record<string, string | null>)[field] = answer;
+
+    writeFileSync(LABELS_FILE, updated.map((l) => JSON.stringify(l)).join("\n") + "\n");
+  }
+
+  console.clear();
+  console.log(`\nRelabelled ${done} ${target} judgement(s) → ${LABELS_FILE}`);
+  return updated;
 }
 
 async function main(): Promise<void> {
@@ -717,6 +855,84 @@ async function main(): Promise<void> {
   );
 
   warnIfPredatesGoldenSet(runHeader?.gitSha);
+
+  if (args.relabel) {
+    const target = args.relabel;
+    const byId = new Map(results.map((r) => [r.questionId, r]));
+
+    // Archived before anything is overwritten. The superseded labels are the
+    // evidence for WHY the relabel happened — the 7:1 split that turned out to
+    // be a truncated display — and a calibration set that quietly rewrites
+    // itself cannot be audited later.
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const archive = LABELS_FILE.replace(/\.jsonl$/, `.before-${target}-${stamp}.jsonl`);
+    writeFileSync(archive, existing.map((l) => JSON.stringify(l)).join("\n") + "\n");
+    console.log(`\nPrevious labels archived → ${archive}`);
+
+    const updated = await relabel(target, existing, byId, questions, args, async (question) => {
+      if (target === "faithfulness") {
+        return askLabel("Is EVERY claim in the answer supported by the passages above?", [
+          {
+            key: "y",
+            value: "faithful" as const,
+            label: "yes, all supported",
+            echo: "every claim is supported by the passages",
+          },
+          {
+            key: "n",
+            value: "unfaithful" as const,
+            label: "no, something is not",
+            echo: "at least one claim is NOT supported by the passages",
+          },
+        ]);
+      }
+      if (target === "citations") {
+        return askLabel("Does every [n] point at a passage that supports it?", [
+          {
+            key: "y",
+            value: "all-valid" as const,
+            label: "yes, all valid",
+            echo: "every citation points at a passage that supports its sentence",
+          },
+          {
+            key: "n",
+            value: "has-invalid" as const,
+            label: "no, at least one is wrong",
+            echo: "at least one citation points somewhere that does NOT support it",
+          },
+        ]);
+      }
+      if (target === "correctness") {
+        return askLabel("How does it compare to the reference answer?", [
+          { key: "c", value: "correct" as const, label: "correct", echo: "same in substance" },
+          { key: "p", value: "partial" as const, label: "partial", echo: "partly right" },
+          { key: "i", value: "incorrect" as const, label: "incorrect", echo: "wrong" },
+        ]);
+      }
+      return askLabel(
+        "Did the answer DECLINE to answer? (it should have — this question is unanswerable)",
+        [
+          { key: "y", value: "refused" as const, label: "yes, it declined", echo: "it declined" },
+          {
+            key: "n",
+            value: "answered" as const,
+            label: "no, it asserted an answer",
+            echo: "it asserted a substantive answer",
+          },
+        ],
+      );
+    });
+
+    report(updated, `Judge agreement — ${target} relabelled on full context`);
+    console.log(
+      wrap(
+        `The ${target} labels above were made a second time, on the complete ` +
+          `passages. The model verdicts are unchanged, so any movement against ` +
+          `the previous table is the reviewer seeing what the judge saw.`,
+      ) + "\n",
+    );
+    return;
+  }
 
   if (args.rejudge) {
     const forThisRun = existing.filter((l) => l.runId === runId);
@@ -802,59 +1018,7 @@ async function main(): Promise<void> {
     const judge = result.judge;
     if (!question || !judge) continue;
 
-    console.clear();
-    console.log("═".repeat(80));
-    console.log(`  ${result.questionId}   ${question.type}   [${i + 1} of ${pool.length}]`);
-    console.log("═".repeat(80));
-    console.log("\nQUESTION");
-    console.log(wrap(question.question));
-
-    if (question.expectedAnswer) {
-      console.log("\nREFERENCE ANSWER");
-      console.log(wrap(question.expectedAnswer));
-    }
-
-    console.log("\nGENERATED ANSWER");
-    console.log(wrap(result.answer || "(empty)"));
-
-    if (result.retrieved.length > 0) {
-      const shown = result.retrieved.reduce(
-        (n, c) => n + Math.min(c.text.length, args.contextChars),
-        0,
-      );
-      const full = result.retrieved.reduce((n, c) => n + c.text.length, 0);
-
-      console.log(
-        `\nRETRIEVED PASSAGES (as numbered in the prompt) — ` +
-          `the SAME text the judge was given` +
-          (shown < full
-            ? `, TRUNCATED to ${Math.round((100 * shown) / full)}% of it ` +
-              `by --context ${args.contextChars}`
-            : ""),
-      );
-      for (const [j, chunk] of result.retrieved.entries()) {
-        console.log(`\n  [${j + 1}] p.${chunk.page}  ${chunk.chunkId}`);
-        console.log(wrap(chunk.text.slice(0, args.contextChars), 74, "      "));
-        if (chunk.text.length > args.contextChars) {
-          console.log(
-            `      … ${chunk.text.length - args.contextChars} more characters HIDDEN`,
-          );
-        }
-      }
-      if (shown < full) {
-        console.log(
-          "\n" +
-            wrap(
-              "⚠ You are judging on less evidence than the judge had. Truncation " +
-                "can only ever REMOVE support, never add it, so every label it " +
-                "changes moves the same way — toward unsupported.",
-            ),
-        );
-      }
-    }
-
-    console.log("\n" + "─".repeat(80));
-    console.log("  Label what YOU think. The model's verdict is hidden until after.");
+    showItem(question, result, args, `[${i + 1} of ${pool.length}]`);
 
     const human: CalibrationLabel["human"] = {
       faithful: null,
