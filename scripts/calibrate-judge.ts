@@ -96,6 +96,15 @@ interface CalibrationLabel {
    * Absent means random — the first 25 labels predate this field.
    */
   sampling?: "random" | "stratified";
+  /**
+   * When the model verdicts above were last recomputed, if ever.
+   *
+   * Absent means they are as captured at labelling time. Present means a
+   * --rejudge --write refreshed them against the judge prompts of that moment,
+   * which is what keeps --report-only from citing verdicts the current judge
+   * would not produce.
+   */
+  modelJudgedAt?: string;
 }
 
 /**
@@ -403,6 +412,8 @@ interface Args {
   relabel?: RelabelTarget;
   /** Draw half the sample from results the judge flagged as failures. */
   stratify: boolean;
+  /** Persist refreshed model verdicts back to the labels file (with --rejudge). */
+  write: boolean;
   /**
    * Characters of each passage shown before truncation. Effectively unlimited
    * by default, and that is the point.
@@ -426,6 +437,7 @@ interface Args {
 function parseArgs(argv: string[]): Args {
   const args: Args = {
     stratify: false,
+    write: false,
     rejudge: false,
     sample: 25,
     seed: 42,
@@ -439,6 +451,8 @@ function parseArgs(argv: string[]): Args {
       args.reportOnly = true;
     } else if (flag === "--stratify") {
       args.stratify = true;
+    } else if (flag === "--write") {
+      args.write = true;
     } else if (flag === "--rejudge") {
       args.rejudge = true;
     } else if (flag === "--relabel") {
@@ -773,13 +787,25 @@ function report(
     console.log(
       `\n⚠ kappa below 0.6 for: ${weak.join(", ")}\n` +
         wrap(
-          "Both raters used the categories, so this one is about the judge. For " +
-            "faithfulness the fix is usually to make the atomic-claim " +
-            "decomposition more explicit in the prompt — a judge that bundles " +
-            "several facts into one claim cannot mark part of it unsupported. " +
-            "Tighten the prompt, then re-run this against the same saved labels to " +
-            "see whether it actually moved.",
-        ),
+          "Both raters used both categories and the disagreements run BOTH ways, " +
+            "so this is noise rather than a rubric difference: you agree often, " +
+            "but not on the same items. More labelled items is what separates a " +
+            "genuinely noisy judge from a small sample — a prompt change measured " +
+            "on this many will look like it worked about half the time by chance.",
+        ) +
+        // Was printed for every weak judge regardless of which one. Claim
+        // bundling is a faithfulness failure mode; offering it as the fix for
+        // citations sends the reader to edit a prompt that has no claims in it.
+        (weak.includes("faithfulness")
+          ? "\n\n" +
+            wrap(
+              "For faithfulness specifically the usual cause is claim bundling: a " +
+                "judge that packs several facts into one claim cannot mark part of " +
+                "it unsupported, so it calls the whole thing supported. Make the " +
+                "atomic-claim decomposition more explicit, then --rejudge against " +
+                "these same labels.",
+            )
+          : ""),
     );
   }
 
@@ -1274,10 +1300,45 @@ async function main(): Promise<void> {
     );
 
     const before = report(forThisRun, "BEFORE — verdicts recorded at labelling time");
-    const after = report(
-      await rejudge(forThisRun, new Map(results.map((r) => [r.questionId, r])), questions),
-      "AFTER — verdicts from the current prompts",
+    const refreshed = await rejudge(
+      forThisRun,
+      new Map(results.map((r) => [r.questionId, r])),
+      questions,
     );
+    const after = report(refreshed, "AFTER — verdicts from the current prompts");
+
+    // --write makes the refresh stick.
+    //
+    // WITHOUT IT the stored verdicts stay frozen at labelling time, so
+    // --report-only keeps printing findings the current judge no longer
+    // produces. That is how the pooled table went on flagging faithfulness at
+    // "7:0 systematic disagreement" when five of the seven were refusals the
+    // judge had already stopped scoring — a phantom defect, reported in bold,
+    // that no longer existed anywhere but in the cache of an old opinion.
+    //
+    // Safe to overwrite because the model side is a REPRODUCIBLE computation:
+    // the judges are deterministic at temperature 0 and every call is cached by
+    // content. The human labels are the irreplaceable half and this never
+    // touches them.
+    if (args.write) {
+      const byQuestion = new Map(refreshed.map((l) => [l.questionId, l]));
+      const merged = existing.map((l) => {
+        const fresh = byQuestion.get(l.questionId);
+        return fresh && l.runId === runId
+          ? { ...l, model: fresh.model, modelJudgedAt: new Date().toISOString() }
+          : l;
+      });
+      writeFileSync(LABELS_FILE, merged.map((l) => JSON.stringify(l)).join("\n") + "\n");
+      console.log(
+        `\nWrote ${refreshed.length} refreshed model verdict(s) to ${LABELS_FILE}.\n` +
+          `Human labels untouched.`,
+      );
+    } else {
+      console.log(
+        `\nNot written. Re-run with --write to store these verdicts, so\n` +
+          `--report-only stops reporting the old ones.`,
+      );
+    }
 
     console.log("\n── Movement ────────────────────────────────────────────");
     for (const name of Object.keys(before)) {
