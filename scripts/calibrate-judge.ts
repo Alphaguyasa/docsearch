@@ -84,6 +84,18 @@ interface CalibrationLabel {
     evidence: string;
     at: string;
   }[];
+  /**
+   * How this item was drawn — and it is not bookkeeping.
+   *
+   * A stratified sample is deliberately unrepresentative: half its items were
+   * chosen BECAUSE the judge flagged them. Pooling those with a random sample
+   * and reporting one kappa describes a population that never existed, and the
+   * raw agreement percentage becomes uninterpretable. Recorded per label so the
+   * report can refuse to blend them silently.
+   *
+   * Absent means random — the first 25 labels predate this field.
+   */
+  sampling?: "random" | "stratified";
 }
 
 /**
@@ -389,6 +401,8 @@ interface Args {
   rejudge: boolean;
   /** Re-ask one judge's question on items already labelled for it. */
   relabel?: RelabelTarget;
+  /** Draw half the sample from results the judge flagged as failures. */
+  stratify: boolean;
   /**
    * Characters of each passage shown before truncation. Effectively unlimited
    * by default, and that is the point.
@@ -411,6 +425,7 @@ interface Args {
 
 function parseArgs(argv: string[]): Args {
   const args: Args = {
+    stratify: false,
     rejudge: false,
     sample: 25,
     seed: 42,
@@ -422,6 +437,8 @@ function parseArgs(argv: string[]): Args {
     const value = argv[i + 1];
     if (flag === "--report-only") {
       args.reportOnly = true;
+    } else if (flag === "--stratify") {
+      args.stratify = true;
     } else if (flag === "--rejudge") {
       args.rejudge = true;
     } else if (flag === "--relabel") {
@@ -579,6 +596,25 @@ function report(
     l.adjudicated?.some((a) => a.field === field) ?? false;
 
   console.log(`\n── ${title} ${"─".repeat(Math.max(3, 54 - title.length))}`);
+
+  // A stratified sample over-represents flagged failures BY DESIGN. Averaging it
+  // together with a random one produces a kappa for a population that never
+  // existed and a raw agreement percentage that describes neither sample.
+  const stratified = labels.filter((l) => l.sampling === "stratified").length;
+  const random = labels.length - stratified;
+  if (stratified > 0 && random > 0) {
+    console.log(
+      `  ⚠ MIXED SAMPLE DESIGNS: ${random} random + ${stratified} stratified.\n` +
+        `  The figures below pool them, which is wrong for a headline number —\n` +
+        `  report the two designs separately, or re-run with one of them.`,
+    );
+  } else if (stratified > 0) {
+    console.log(
+      `  Stratified sample: flagged failures are over-represented on purpose, so\n` +
+        `  raw agreement is NOT this run's agreement rate. Say so with the number.`,
+    );
+  }
+
   if (adjudicatedCount > 0) {
     console.log(
       `  ${adjudicatedCount} adjudicated judgement(s) excluded from the judge they\n` +
@@ -897,6 +933,71 @@ const FAITHFULNESS_OPTIONS = [
   },
 ];
 
+/** Did any judge score this result below perfect? */
+function judgeFlagsFailure(result: StoredResult): boolean {
+  return ["faithfulness", "correctness", "citationAccuracy", "refusalAccuracy"].some((key) => {
+    const v = result.metrics?.[key];
+    return typeof v === "number" && v < 1;
+  });
+}
+
+/**
+ * Half the sample from results the judge flagged, half from results it did not.
+ *
+ * WHY A RANDOM SAMPLE WAS NOT ENOUGH. Kappa needs both categories to appear. A
+ * random 25 drawn from this run gave 19 of 19 citations "all-valid" and 5 of 5
+ * refusals "refused" — no negatives, so no disagreement was possible and the
+ * kappa measured the label distribution instead of the judge. The failures do
+ * exist: the full dev split has 7 imperfect citation scores out of 57. They are
+ * simply too rare to land in a small random draw.
+ *
+ * WHAT THIS COSTS, AND IT MUST BE REPORTED. Stratifying on the MODEL's verdict
+ * makes the sample deliberately unrepresentative of the run. The resulting kappa
+ * estimates agreement in a balanced population, not in production, and the raw
+ * agreement percentage is NOT the run's agreement rate. That is the standard
+ * treatment for rare-event agreement studies and it is only honest if the design
+ * travels with the number — so each label records how it was drawn, and the
+ * report says so.
+ *
+ * Note the one thing stratification cannot fix: refusal has 13 opportunities and
+ * zero failures in the whole split. There is no negative stratum to draw from.
+ * The honest statement there is the count, not a kappa.
+ */
+function stratifiedSample(
+  pool: StoredResult[],
+  size: number,
+  rand: () => number,
+): StoredResult[] {
+  const flagged = shuffle(pool.filter(judgeFlagsFailure), rand);
+  const clean = shuffle(pool.filter((r) => !judgeFlagsFailure(r)), rand);
+
+  const wantFlagged = Math.min(flagged.length, Math.ceil(size / 2));
+  const wantClean = Math.min(clean.length, size - wantFlagged);
+  // Whichever stratum ran short, refill from the other rather than returning a
+  // short sample: 25 asked for is 25 labelled.
+  const picked = [
+    ...flagged.slice(0, wantFlagged),
+    ...clean.slice(0, wantClean),
+    ...flagged.slice(wantFlagged),
+    ...clean.slice(wantClean),
+  ].slice(0, size);
+
+  console.log(
+    `\nSTRATIFIED SAMPLE: ${picked.filter(judgeFlagsFailure).length} the judge flagged, ` +
+      `${picked.filter((r) => !judgeFlagsFailure(r)).length} it did not.\n` +
+      wrap(
+        "Drawn deliberately unrepresentative so both categories appear — a random " +
+          "draw from this run produced no negatives at all for citations or " +
+          "refusal, and kappa cannot be computed against a category nobody used. " +
+          "The agreement percentage below is therefore NOT this run's agreement " +
+          "rate, and the kappa describes a balanced population rather than " +
+          "production. Both facts belong next to the number in the writeup.",
+      ),
+  );
+
+  return picked;
+}
+
 /** Which human field each judge's label lives in. */
 const HUMAN_FIELD = {
   faithfulness: "faithful",
@@ -986,7 +1087,14 @@ async function main(): Promise<void> {
   }
   // Re-running after a prompt change must re-measure against the SAME human
   // labels, so previously labelled questions are never re-asked.
-  const alreadyLabelled = new Set(existing.map((l) => `${l.runId}:${l.questionId}`));
+  //
+  // KEYED BY QUESTION, NOT BY RUN. It used to be `${runId}:${questionId}`, which
+  // meant a question labelled in one run came back for labelling in the next —
+  // and because generation is cached, "the next run" usually shows the reviewer
+  // the identical answer to the identical question. That is not a second
+  // independent judgement, it is the same one recalled, and it would quietly
+  // pollute exactly the fresh sample this exists to produce.
+  const alreadyLabelled = new Set(existing.map((l) => l.questionId));
 
   const runFile = latestRunFile(args.runId);
   const runId = path.basename(runFile, ".jsonl");
@@ -1124,7 +1232,7 @@ async function main(): Promise<void> {
 
   const stale = new Map<string, string>();
   const labelable = results.filter((r) => {
-    if (alreadyLabelled.has(`${runId}:${r.questionId}`) || r.error) return false;
+    if (alreadyLabelled.has(r.questionId) || r.error) return false;
     const reason = staleness(r, questions);
     if (reason) {
       stale.set(r.questionId, reason);
@@ -1134,7 +1242,9 @@ async function main(): Promise<void> {
   });
 
   const rand = mulberry32(args.seed);
-  const pool = shuffle(labelable, rand).slice(0, args.sample);
+  const pool = args.stratify
+    ? stratifiedSample(labelable, args.sample, rand)
+    : shuffle(labelable, rand).slice(0, args.sample);
 
   console.log(`\nRun: ${runId}  —  ${results.length} result(s)`);
   if (stale.size > 0) {
@@ -1245,6 +1355,7 @@ async function main(): Promise<void> {
       labelledAt: new Date().toISOString(),
       human,
       model: modelLabels(judge),
+      sampling: args.stratify ? ("stratified" as const) : ("random" as const),
     };
     collected.push(label);
 
