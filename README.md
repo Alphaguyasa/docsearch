@@ -144,13 +144,22 @@ MRR is 42.5%. These are the "before" — no tuning has been applied yet.
 
 ### The golden set
 
-92 human-reviewed questions over a 2,134-chunk / 90-document corpus, split into
+91 human-reviewed questions over a 2,134-chunk / 90-document corpus, split into
 two files that are **never** used interchangeably:
 
 | File | Questions | Purpose |
 |---|---|---|
-| `eval/golden/questions.dev.jsonl` | 77 | Tune against this. The default everywhere. |
+| `eval/golden/questions.dev.jsonl` | 76 | Tune against this. The default everywhere. |
 | `eval/golden/questions.holdout.jsonl` | 15 | Touched once, at the end. Requires `--holdout`. |
+
+> **Dev was 77 until a 2026-07-27 audit of the unanswerable bucket.** 4 of its 15
+> unanswerable questions turned out to be answerable from the corpus: each had
+> been drafted as absent from *one* paper and phrased generically, so other
+> documents answered them. Two were re-anchored to their intended paper, one was
+> reclassified as a factoid, one was removed. Refusal accuracy went from an
+> apparent 50% to a true 100%. See [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md).
+> The same drafting flaw likely affects 1–2 of the holdout's 5 unanswerable
+> questions, which have been left untouched rather than spending the holdout.
 
 The split is seeded (seed 42) and reproducible via `npm run eval:split`; the seed
 and rule are written into both files' `#` headers so any number can be traced
@@ -247,8 +256,8 @@ same variables under **Settings → Environment Variables**, and deploy.
 
 ## Limitations
 
-- **The golden set is small, and small in specific places.** 77 dev questions.
-  At n≈77 a recall@10 of 0.6 carries a 95% CI of roughly ±0.11, so differences
+- **The golden set is small, and small in specific places.** 76 dev questions.
+  At n≈76 a recall@10 of 0.6 carries a 95% CI of roughly ±0.11, so differences
   under ~5 points are not distinguishable and must be reported as null results,
   not wins. Worse per bucket: multi-hop is n=7 and aggregation n=8, where a
   single question moves the score by 12–14 points — neither supports a per-type

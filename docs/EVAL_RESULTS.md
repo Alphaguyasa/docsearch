@@ -23,6 +23,7 @@ failure mode worth more than all four experiments put together.
 | **dense vs hybrid** | Nothing, on any of 31 metrics — while changing 77/77 result sets. |
 | **keyword-only** | Significantly worse than both. This is what explains the null above. |
 | **Per-type breakdown** | **4 of 6 questions retrieval got right were lost when reworded.** |
+| **Unanswerable audit** | **4 of 15 "unanswerable" questions were answerable.** Refusal is 100%, not 50%. |
 
 The thesis all five support: **the candidate pool is not the constraint, and
 neither is how it's fused. Retrieval finds the right chunk or it doesn't, and
@@ -37,12 +38,18 @@ varied.**
 - **Embeddings:** `voyage-4`, 1024 dimensions.
 - **Retrieval:** Postgres + pgvector, hybrid = vector + full-text fused with
   Reciprocal Rank Fusion (k=60).
-- **Golden set:** 92 human-reviewed questions, split 77 dev / 15 holdout with a
+- **Golden set:** 91 human-reviewed questions, split 76 dev / 15 holdout with a
   seeded, paraphrase-family-aware split. **Everything below is the dev split.
   The holdout has not been touched.**
-- **Answerable questions: 62.** The other 15 are unanswerable questions that
+- **Answerable questions: 63.** The other 13 are unanswerable questions that
   assert a refusal; retrieval metrics return `null` for them rather than 0, so
   they are excluded from retrieval means instead of dragging them down.
+
+> The retrieval experiments below were measured on the pre-audit set (77 dev,
+> 62 answerable). The [audit](#the-unanswerable-bucket-was-contaminated) changed
+> one unanswerable question into a factoid and removed another; it does not
+> affect any retrieval comparison here, because all of them exclude unanswerable
+> questions by construction.
 
 Baseline is production exactly: hybrid, topK 8, searchTop 20, rrfK 60.
 
@@ -269,6 +276,78 @@ not how many candidates it considers or how it fuses them — it's that a semant
 match found under one phrasing evaporates under another. **None of the four
 parameters I swept can fix that.** Query rewriting and reranking attack it
 directly; both are still unrun.
+
+---
+
+## The unanswerable bucket was contaminated
+
+The first judged run reported **refusal accuracy of 50%** — the system answering
+questions it was supposed to decline. That would have been the worst finding in
+the project. It was not a system failure at all.
+
+**Two artifacts, stacked.** The 50% came from a 30-question subset that happened
+to contain 3 of the 4 bad items; the full bucket read 73.3%. And every one of
+those 4 "failures" was the system answering **correctly**, from text I verified
+verbatim in the retrieved chunks:
+
+| question | labelled | what is actually in the corpus |
+|---|---|---|
+| q-0086 | absent | Porter Stemmer, truecasing, stop-word removal |
+| q-0087 | near-miss | *"EMNLP, pages 1532–1543"*, in reference lists |
+| q-0090 | absent | *"Franka Emika Panda… 7-DoF fixed-arm manipulator with a parallel-jaw gripper"* |
+| q-0100 | absent | *"only qualified… if they went through several societal… research works"* |
+
+**On the 11 genuinely unanswerable questions, the system refused 11 out of 11.**
+The metric was measuring the golden set, not the system.
+
+### Root cause: generic phrasing in a 90-document corpus
+
+Every one of the four was drafted as absent from **one** paper — the notes say
+so — and then phrased with no entity anchor: *"the text"*, *"the models"*,
+*"the user study"*, *"the benchmark statements"*. Absence was never verified
+against the other 89 documents. In a corpus of NLP papers, generic methodology
+questions are answered somewhere almost by definition.
+
+The failure rate splits cleanly by subtype, and the split is the diagnosis:
+
+| subtype | defective | rate |
+|---|---|---|
+| `absent` | 3 of 8 | 37.5% |
+| `near-miss` | 1 of 7 | 14% |
+
+`near-miss` holds up better because it is anchored to a specific paper's
+specific detail. `absent` questions were the vulnerable design.
+
+One of the four is a different bug worth separating: **q-0090's content is in
+the very paper it was drafted against**, verbatim on page 7. That was not
+cross-document rescue, just a wrong claim about the source.
+
+### The fix
+
+- **q-0086, q-0100** — anchored to the paper each was drafted against, which
+  restores the drafter's original intent and removes the cross-document rescue.
+- **q-0090** — reclassified as the factoid it always was, with ground truth read
+  from the document rather than taken from model output. Now retrieved at rank 1.
+- **q-0087** — removed. Asking for a bibliographic page range is not a
+  meaningful retrieval test in either direction.
+
+**After the fix: refusal accuracy is 100% on all 13 unanswerable questions.**
+
+The judge was never at fault. It scored those four 0 because the system answered
+where ground truth said refuse — doing exactly what it was told, against ground
+truth that was wrong. This is independent of judge calibration.
+
+### The standing check this implies
+
+An unanswerable question is only valid if it is unanswerable from the **whole
+corpus**, not from the document it was drafted against. The cheap screen is the
+one that caught this: run the unanswerable bucket end-to-end and inspect
+anything the system answers with well-grounded citations. A grounded answer to a
+question marked unanswerable is a golden-set defect until proven otherwise.
+
+**The holdout has 5 unanswerable questions drafted the same way**, so roughly
+1–2 are probably contaminated too. Checking means running the holdout, which
+spends it. Left untouched deliberately.
 
 ---
 
