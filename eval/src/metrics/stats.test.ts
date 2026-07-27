@@ -4,6 +4,7 @@ import {
   bootstrapCI,
   correlation,
   DEFAULT_SEED,
+  holmBonferroni,
   mcNemar,
   minDetectableEffect,
   mulberry32,
@@ -248,6 +249,84 @@ describe("mcNemar", () => {
 
   it("throws on length mismatch", () => {
     expect(() => mcNemar([true], [true, false])).toThrow(/differ in length/);
+  });
+});
+
+describe("holmBonferroni", () => {
+  it("leaves a single test unchanged", () => {
+    const [only] = holmBonferroni([0.04]);
+    expect(only.adjusted).toBeCloseTo(0.04, 10);
+    expect(only.reject).toBe(true);
+  });
+
+  it("matches a worked example", () => {
+    // m=5. Scaled: .01*5=.05, .02*4=.08, .03*3=.09, .04*2=.08, .05*1=.05.
+    // Running max enforces monotonicity: .05, .08, .09, .09, .09.
+    const out = holmBonferroni([0.01, 0.02, 0.03, 0.04, 0.05]);
+    expect(out.map((r) => Number(r.adjusted.toFixed(4)))).toEqual([
+      0.05, 0.08, 0.09, 0.09, 0.09,
+    ]);
+    expect(out.map((r) => r.reject)).toEqual([true, false, false, false, false]);
+  });
+
+  it("returns results in INPUT order, not sorted order", () => {
+    const out = holmBonferroni([0.9, 0.001, 0.5]);
+    expect(out.map((r) => r.index)).toEqual([0, 1, 2]);
+    expect(out[0].pValue).toBe(0.9);
+    expect(out[1].pValue).toBe(0.001);
+    expect(out[1].reject).toBe(true);
+    expect(out[0].reject).toBe(false);
+  });
+
+  it("keeps adjusted p-values monotone in rank", () => {
+    const out = holmBonferroni([0.001, 0.5, 0.02, 0.9, 0.03]);
+    const byRank = [...out].sort((a, b) => a.pValue - b.pValue);
+    for (let i = 1; i < byRank.length; i++) {
+      expect(byRank[i].adjusted).toBeGreaterThanOrEqual(byRank[i - 1].adjusted);
+    }
+  });
+
+  it("blocks a test whose own scaled value would have passed", () => {
+    // m=3. Scaled: .001*3=.003 ok, .03*2=.06 FAILS, .04*1=.04 which alone
+    // would pass — but an earlier failure blocks it. This is the step-down
+    // rule doing work, and it is why the running maximum is load-bearing.
+    const out = holmBonferroni([0.001, 0.03, 0.04]);
+    expect(out.map((r) => r.reject)).toEqual([true, false, false]);
+    expect(out[2].adjusted).toBeCloseTo(0.06, 10);
+  });
+
+  it("rejects exactly when the adjusted value clears alpha", () => {
+    const out = holmBonferroni([0.001, 0.03, 0.04, 0.9], 0.05);
+    for (const r of out) expect(r.reject).toBe(r.adjusted <= 0.05);
+  });
+
+  it("rejects nothing when every test is weak", () => {
+    expect(holmBonferroni([0.2, 0.4, 0.6]).some((r) => r.reject)).toBe(false);
+  });
+
+  it("is uniformly more powerful than plain Bonferroni", () => {
+    const ps = [0.004, 0.02, 0.03];
+    const holm = holmBonferroni(ps, 0.05);
+    const bonferroni = ps.map((p) => Math.min(1, p * ps.length) <= 0.05);
+    holm.forEach((r, i) => {
+      if (bonferroni[i]) expect(r.reject).toBe(true);
+    });
+    // And strictly better here: Bonferroni rejects one, Holm rejects all three.
+    expect(bonferroni.filter(Boolean).length).toBe(1);
+    expect(holm.filter((r) => r.reject).length).toBe(3);
+  });
+
+  it("caps adjusted p-values at 1", () => {
+    expect(holmBonferroni([0.5, 0.6, 0.7]).every((r) => r.adjusted <= 1)).toBe(true);
+  });
+
+  it("handles an empty family", () => {
+    expect(holmBonferroni([])).toEqual([]);
+  });
+
+  it("rejects an invalid alpha", () => {
+    expect(() => holmBonferroni([0.01], 0)).toThrow(/alpha/);
+    expect(() => holmBonferroni([0.01], 1)).toThrow(/alpha/);
   });
 });
 
