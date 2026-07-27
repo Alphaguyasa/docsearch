@@ -25,9 +25,6 @@
  */
 import "../src/lib/loadenv";
 
-import { readdirSync, readFileSync } from "node:fs";
-import path from "node:path";
-
 import {
   buildSeries,
   isResource,
@@ -46,14 +43,20 @@ import {
   pairedBootstrap,
   type PairedResult,
 } from "../eval/src/metrics/stats";
+import {
+  readLocalRuns,
+  resolveLocal,
+  usable,
+  type LoadedRun,
+} from "../eval/src/runs";
 import type { Question, QuestionResult } from "../eval/src/types";
 import { db } from "../src/lib/db";
 import { fetchAllRows } from "../src/lib/paginate";
 
-const RUNS_DIR = "eval/runs";
-
 /** Candidate runs inspected when resolving a variant name to its latest run. */
 const RESOLVE_CANDIDATES = 25;
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // --- CLI ---------------------------------------------------------------------
 
@@ -115,102 +118,6 @@ function parseArgs(argv: string[]): Args {
 }
 
 // --- Loading -----------------------------------------------------------------
-
-interface LoadedRun {
-  runId: string;
-  variantName: string;
-  startedAt: string;
-  /** Where it came from, printed so a comparison is traceable to its inputs. */
-  source: string;
-  results: QuestionResult[];
-}
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-/** A run is a usable comparison target only if something in it succeeded. */
-function usable(results: QuestionResult[]): boolean {
-  return results.some((r) => r.error === null);
-}
-
-interface LocalRun {
-  runId: string;
-  variantName: string;
-  startedAt: string;
-  file: string;
-  results: QuestionResult[];
-}
-
-function readLocalRuns(): LocalRun[] {
-  let files: string[];
-  try {
-    files = readdirSync(RUNS_DIR).filter((f) => f.endsWith(".jsonl"));
-  } catch {
-    throw new Error(`No runs directory at ${RUNS_DIR}. Run npm run eval:run first.`);
-  }
-
-  const runs: LocalRun[] = [];
-  for (const file of files) {
-    const full = path.join(RUNS_DIR, file);
-    const lines = readFileSync(full, "utf8").split("\n").filter((l) => l.trim());
-    if (lines.length === 0) continue;
-
-    let header: { type?: string; runId?: string; variant?: { name?: string }; startedAt?: string };
-    try {
-      header = JSON.parse(lines[0]);
-    } catch {
-      // A truncated first line means the file never got past its header write.
-      continue;
-    }
-    if (header.type !== "run" || !header.runId) continue;
-
-    const results: QuestionResult[] = [];
-    for (const line of lines.slice(1)) {
-      try {
-        const row = JSON.parse(line);
-        if (row.type === "result") results.push(row as QuestionResult);
-      } catch {
-        // A crash mid-append can leave one partial line. Keep what parsed —
-        // that is the entire point of writing results incrementally.
-      }
-    }
-
-    runs.push({
-      runId: header.runId,
-      variantName: header.variant?.name ?? "(unknown)",
-      startedAt: header.startedAt ?? "",
-      file: full,
-      results,
-    });
-  }
-  return runs;
-}
-
-function resolveLocal(ref: string, runs: LocalRun[]): LoadedRun {
-  const byId = runs.find((r) => r.runId === ref || r.runId.startsWith(ref));
-  if (byId) {
-    if (!usable(byId.results)) {
-      throw new Error(
-        `Run ${byId.runId} has no successful results (${byId.file}). ` +
-          `Nothing to compare.`,
-      );
-    }
-    return { ...byId, source: byId.file };
-  }
-
-  const candidates = runs
-    .filter((r) => r.variantName === ref && usable(r.results))
-    .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
-
-  if (candidates.length === 0) {
-    const known = [...new Set(runs.map((r) => r.variantName))].sort();
-    throw new Error(
-      `No usable local run found for "${ref}".\n` +
-        `  Not a run id in ${RUNS_DIR}, and no run of that variant has results.\n` +
-        `  Variants on disk: ${known.join(", ") || "(none)"}`,
-    );
-  }
-  return { ...candidates[0], source: candidates[0].file };
-}
 
 interface RunRow {
   run_id: string;
