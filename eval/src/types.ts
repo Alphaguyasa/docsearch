@@ -84,8 +84,18 @@ export type MultihopKind = "cross-doc" | "same-doc";
  * SPEC CONFLICT (naming): the spec's `dense` is the app's `vector` mode
  * (src/lib/retrieve.ts `RetrieveMode`). The Phase 4 adapter maps between them;
  * the harness speaks the spec's vocabulary.
+ *
+ * DEVIATION from docs/EVAL_HARNESS.md, which defines `dense | hybrid` only.
+ * `keyword` is added because dense-vs-hybrid on its own cannot say WHY the two
+ * tie. Hybrid reorders 77 of 77 result sets and moves no metric; that is
+ * consistent with fusing two comparable signals, and equally consistent with
+ * fusing a strong vector ranking with a weak lexical one. Those have opposite
+ * implications for whether the keyword arm should exist, and only a
+ * keyword-only measurement separates them. The app has supported this mode all
+ * along (retrieve.ts `RetrieveMode`); only the harness's vocabulary was
+ * narrower.
  */
-export type RetrievalMode = "dense" | "hybrid";
+export type RetrievalMode = "dense" | "hybrid" | "keyword";
 
 export type QueryRewrite = "none" | "hyde" | "decompose";
 
