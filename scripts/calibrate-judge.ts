@@ -33,7 +33,7 @@ import {
   type JudgeScores,
 } from "../eval/src/metrics/judge";
 import { mcNemar } from "../eval/src/metrics/stats";
-import type { Question, QuestionResult } from "../eval/src/types";
+import type { Question, QuestionResult, RetrievedChunk } from "../eval/src/types";
 
 const RUNS_DIR = "eval/runs";
 const LABELS_FILE = "eval/golden/judge-calibration.jsonl";
@@ -290,6 +290,43 @@ function wrap(text: string, width = 76, indent = "  "): string {
  * for 25 items because nothing ever played the choice back. The echo reveals a
  * misunderstanding immediately and reveals nothing about what the model said.
  */
+/**
+ * Passages of the item currently on screen, so `/term` can search them.
+ *
+ * Module state rather than a parameter threaded through askLabel: the search is
+ * a property of what the reviewer is looking at, and every call site already
+ * passes the same thing showItem just printed.
+ */
+let currentPassages: RetrievedChunk[] = [];
+
+/** Print every occurrence of `term` in the current passages, with context. */
+function searchHits(term: string): void {
+  const needle = term.toLowerCase();
+  let hits = 0;
+
+  for (const [i, chunk] of currentPassages.entries()) {
+    const hay = chunk.text.toLowerCase();
+    let at = hay.indexOf(needle);
+    while (at !== -1) {
+      hits++;
+      const from = Math.max(0, at - 160);
+      const window = chunk.text.slice(from, at + term.length + 160).replace(/\s+/g, " ");
+      console.log(`\n  [${i + 1}] p.${chunk.page}  …${window}…`);
+      if (hits >= 8) {
+        console.log("\n  (stopping at 8 hits)");
+        return;
+      }
+      at = hay.indexOf(needle, at + 1);
+    }
+  }
+
+  console.log(
+    hits === 0
+      ? `\n  "${term}" does not appear in any passage.`
+      : `\n  ${hits} hit(s).`,
+  );
+}
+
 async function askLabel<T extends string>(
   question: string,
   // `value: null` is a real choice, not a missing one: a refusal is not a
@@ -298,8 +335,23 @@ async function askLabel<T extends string>(
 ): Promise<T | null> {
   const menu = options.map((o) => `[${o.key}] ${o.label}`).join("   ");
   for (;;) {
-    const answer = await ask(`\n  ${question}\n  ${menu}   [?] skip\n  > `);
+    const answer = await ask(
+      `\n  ${question}\n  ${menu}   [/text] search passages   [?] skip\n  > `,
+    );
     if (answer === "?" || answer === "") return null;
+
+    // SEARCH, BECAUSE SCANNING IS WHERE THE ERRORS CAME FROM. A question here
+    // retrieves eight passages of dense academic prose, ~16,000 characters. The
+    // first faithfulness pass marked six answers unsupported whose claims were
+    // all present — one buried mid-paragraph on page 26, one split across a line
+    // break as "Ja- son Reifler". Asking a human to verify a claim by eye
+    // against that much text is a task design that produces wrong labels, and
+    // wrong labels are indistinguishable from a broken judge in the output.
+    if (answer.startsWith("/") && answer.length > 1) {
+      searchHits(answer.slice(1));
+      continue;
+    }
+
     const chosen = options.find((o) => o.key === answer);
     if (chosen) {
       console.log(`  recorded: ${chosen.echo}`);
@@ -561,17 +613,30 @@ function report(
     console.log(
       `\n⚠ SYSTEMATIC DISAGREEMENT, one direction: ${biased.join("; ")}\n` +
         wrap(
-          "The disagreements are not spread both ways, so this is a judge that " +
-            "reads the rubric differently from you rather than a noisy one — and " +
-            "it is a real defect no matter what kappa says, because a lenient " +
-            "faithfulness judge inflates every faithfulness number downstream by " +
-            "roughly the rate shown above. For faithfulness the fix is usually to " +
-            "make the atomic-claim decomposition more explicit: a judge that " +
-            "bundles several facts into one claim cannot mark part of it " +
-            "unsupported, so it labels the whole thing supported. Tighten the " +
-            "prompt, then re-run against these same saved labels — that is what " +
-            "the file is for, and it is the only way to tell a real improvement " +
-            "from a judge that drifted somewhere else.",
+          "The disagreements are not spread both ways, so one of the two raters " +
+            "is applying the rubric differently — this is not noise. IT DOES NOT " +
+            "SAY WHICH RATER. That distinction cannot be made from an agreement " +
+            "table, and assuming it is the model is how you end up tuning a judge " +
+            "to reproduce a reviewer's mistake.",
+        ) +
+        "\n\n" +
+        wrap(
+          "This message previously asserted the judge was at fault. On the first " +
+            "run where it fired — faithfulness, 11:0 — the judge was RIGHT and " +
+            "every disputed claim turned out to be near-verbatim in the passages, " +
+            "one of them buried on page 26 of a dense paper and another split " +
+            "across a line break as \"Ja- son Reifler\". Scanning eight passages " +
+            "of academic text per item is where the errors came from, not the " +
+            "rubric.",
+        ) +
+        "\n\n" +
+        wrap(
+          "SETTLE IT ON THE SOURCE, not on the statistics: take two or three " +
+            "disputed items and find the claim in the passages yourself. If it is " +
+            "there, the labels are wrong and the sample needs relabelling. If it " +
+            "is not, the judge is lenient and the prompt needs the atomic-claim " +
+            "decomposition made more explicit. Either way --rejudge measures the " +
+            "change against the saved human labels.",
         ),
     );
   }
@@ -704,8 +769,13 @@ function showItem(
     }
   }
 
+  // Registered for `/term` search: the reviewer has to be able to LOOK FOR a
+  // claim rather than scan eight passages hoping to notice it.
+  currentPassages = result.retrieved;
+
   console.log("\n" + "─".repeat(80));
   console.log("  Label what YOU think. The model's verdict is hidden until after.");
+  console.log("  Type /text to search the passages — claims are often buried mid-paragraph.");
 }
 
 /**
