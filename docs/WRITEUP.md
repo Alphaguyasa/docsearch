@@ -223,11 +223,18 @@ clicks.
   self-preference bias the design tried to avoid and did not.
 - **The multi-hop bucket is n=7 and intra-document only.** It supports no
   conclusion.
-- **The holdout has never been touched** — 15 questions, held for a final
-  measurement. It also contains 5 unanswerable questions drafted the same way as
-  the 4 that turned out contaminated in dev, so **1–2 of them are probably
-  answerable too**. Measuring it before fixing that would bake the flaw into the
-  one number meant to be clean.
+- **The holdout has never been measured, and is now 13 questions rather than
+  15.** Auditing its unanswerable bucket before spending it found **2 of 5
+  contaminated** — the same flaw as the dev split, predicted in advance and
+  confirmed. `q-0095` asks for a Doc2Vec accuracy the source paper reports in
+  two separate tables, four candidate values between them; `q-0097` asks the day
+  a paper appeared on arXiv, and the extracted text carries
+  `arXiv:2301.01269v1 [cs.CL] 3 Jan 2023` in the margin. Both dropped. The
+  remaining three survived a passage-by-passage check
+  (`npm run eval:audit-unanswerable -- --holdout`), but three is too few to
+  support a refusal metric — the holdout can report retrieval and correctness,
+  and should say "no refusal failures in 3 opportunities" rather than a
+  percentage.
 - **Latency and cost comparisons describe the runs as executed**, cache state
   included. Two runs retrieving byte-identical chunks once differed by 39
   seconds because one ran cold.

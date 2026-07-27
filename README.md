@@ -177,7 +177,7 @@ two files that are **never** used interchangeably:
 | File | Questions | Purpose |
 |---|---|---|
 | `eval/golden/questions.dev.jsonl` | 76 | Tune against this. The default everywhere. |
-| `eval/golden/questions.holdout.jsonl` | 15 | Touched once, at the end. Requires `--holdout`. |
+| `eval/golden/questions.holdout.jsonl` | 13 | Measured once, at the end. Requires `--holdout`. |
 
 > **Dev was 77 until a 2026-07-27 audit of the unanswerable bucket.** 4 of its 15
 > unanswerable questions turned out to be answerable from the corpus: each had
@@ -185,8 +185,15 @@ two files that are **never** used interchangeably:
 > documents answered them. Two were re-anchored to their intended paper, one was
 > reclassified as a factoid, one was removed. Refusal accuracy went from an
 > apparent 50% to a true 100%. See [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md).
-> The same drafting flaw likely affects 1–2 of the holdout's 5 unanswerable
-> questions, which have been left untouched rather than spending the holdout.
+
+> **The holdout was audited the same way before being spent, and 2 of its 5
+> unanswerable questions were contaminated too** — the flaw was predicted and
+> then confirmed. `q-0095` asks for an accuracy the source paper prints in two
+> different tables; `q-0097` asks a publication date that survives PDF
+> extraction as `arXiv:2301.01269v1 [cs.CL] 3 Jan 2023`. Both dropped, taking
+> the holdout from 15 to 13 and its unanswerable bucket to 3. The audit is
+> retrieval-only and computes no metrics — `npm run eval:audit-unanswerable --
+> --holdout` — so it validates the questions without spending the measurement.
 
 The split is seeded (seed 42) and reproducible via `npm run eval:split`; the seed
 and rule are written into both files' `#` headers so any number can be traced
@@ -290,10 +297,12 @@ same variables under **Settings → Environment Variables**, and deploy.
   single question moves the score by 12–14 points — neither supports a per-type
   conclusion, and Phase 6's per-type breakdown should say so rather than print a
   number that looks like evidence.
-- **The holdout is 15 questions and covers three types.** It is enough to catch a
-  gross overfit, not to estimate anything precisely: a 15-question score has a
+- **The holdout is 13 questions and covers three types.** It is enough to catch a
+  gross overfit, not to estimate anything precisely: a 13-question score has a
   CI wide enough to swallow most plausible differences. Treat it as a sanity
-  check on the dev number, not as an independent measurement.
+  check on the dev number, not as an independent measurement. Its unanswerable
+  bucket is 3 questions after the audit, which is too few for a refusal rate —
+  report the count, not a percentage.
 - **Voyage free tier is 3 embeddings/min.** Large ingests and vector/hybrid evals
   must be paced (`--delay`), and in the web app a query that hits the limit
   **degrades to keyword-only** rather than failing.

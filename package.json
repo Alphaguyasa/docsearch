@@ -19,6 +19,7 @@
     "eval:cache:clear": "tsx scripts/clear-cache.ts",
     "eval:baseline": "tsx scripts/snapshot-baseline.ts",
     "eval:sync": "tsx scripts/sync-runs.ts",
+    "eval:audit-unanswerable": "tsx scripts/audit-unanswerable.ts",
     "test": "node --import tsx --test \"tests/**/*.test.ts\"",
     "test:eval": "vitest run",
     "test:eval:cov": "vitest run --coverage",
