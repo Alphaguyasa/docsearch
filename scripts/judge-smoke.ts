@@ -54,7 +54,12 @@ async function main(): Promise<void> {
   const faith = await judgeFaithfulness(provider, answer, retrieved);
   console.log("1. FAITHFULNESS:", faith.ok ? "valid JSON" : `ERROR ${faith.error}`);
   if (faith.ok) {
-    console.log(`   score ${faith.value.score.toFixed(2)} over ${faith.value.claims.length} claim(s)`);
+    // Null when the answer made no claims at all — a refusal is not scored.
+    const score = faith.value.score;
+    console.log(
+      `   score ${score === null ? "n/a (no claims)" : score.toFixed(2)} ` +
+        `over ${faith.value.claims.length} claim(s)`,
+    );
     for (const c of faith.value.claims) console.log(`   - [${c.label}] ${c.claim}`);
   }
 
