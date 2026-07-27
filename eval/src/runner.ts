@@ -26,6 +26,7 @@ import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { aggregate, flattenAggregate, type Aggregate } from "./aggregate";
 import { cacheStats, setCacheEnabled } from "./cache";
@@ -528,7 +529,35 @@ async function main(): Promise<void> {
   console.log(`\nWrote ${outFile}\n`);
 }
 
-main().catch((err) => {
-  console.error(err instanceof Error ? err.message : err);
-  process.exitCode = 1;
-});
+/**
+ * True only when this file is the process entry point, not when it is imported.
+ *
+ * WITHOUT THIS GUARD, IMPORTING THE MODULE STARTS A LIVE RUN. `main()` used to
+ * be called unconditionally at the bottom of this file, and `runner.test.ts`
+ * imports `selectSubset` and `mapWithConcurrency` from here — so
+ * `npm run test:eval` launched a full 76-question judged run against Supabase
+ * and the free-tier LLM quota as a side effect of collecting unit tests. The
+ * worker was killed when the suite finished a second or two later, which is why
+ * it never announced itself: no error, no summary, just a partially-written run.
+ *
+ * That is where the empty run files came from — 30 of the 76 in eval/runs/,
+ * one per test invocation, spread across a dozen git SHAs. And it is the ROOT
+ * CAUSE of the bug patched downstream in scripts/calibrate-judge.ts, which
+ * picked an arbitrary uuid-sorted run and landed on one of these husks. That
+ * fix stopped calibration reading them; this one stops them being written.
+ *
+ * `process.argv[1]` is the resolved script path under tsx, so comparing it as a
+ * file URL is the ESM equivalent of `require.main === module`.
+ */
+function isEntryPoint(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return import.meta.url === pathToFileURL(entry).href;
+}
+
+if (isEntryPoint()) {
+  main().catch((err) => {
+    console.error(err instanceof Error ? err.message : err);
+    process.exitCode = 1;
+  });
+}
