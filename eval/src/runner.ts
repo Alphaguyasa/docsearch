@@ -32,7 +32,7 @@ import { aggregate, flattenAggregate, type Aggregate } from "./aggregate";
 import { cacheStats, setCacheEnabled } from "./cache";
 import { loadVariant } from "./config";
 import { loadGoldenSet, warnHoldout } from "./goldenset";
-import { judgeAll, judgeScoresToMetrics } from "./metrics/judge";
+import { judgeAll, judgeScoresToMetrics, type JudgeScores } from "./metrics/judge";
 import { scoreRetrieval } from "./metrics/retrieval";
 import { runPipeline } from "./pipeline";
 import { pacerState, QuotaExhaustedError } from "./provider";
@@ -271,10 +271,15 @@ async function runQuestion(
 
     const cost = { ...pipeline.cost };
 
+    // Kept, not just consumed. Flattening the scores into `metrics` and letting
+    // the object fall out of scope threw away every claim, verdict and reason
+    // behind the four numbers — and with them Phase 3, which compares what the
+    // MODEL said against what a human says. See QuestionResult.judge.
+    let judge: JudgeScores | null = null;
     if (useJudge) {
-      const scores = await judgeAll(question, pipeline.answer, pipeline.retrieved);
-      Object.assign(metrics, judgeScoresToMetrics(scores));
-      cost.judge += scores.costUsd;
+      judge = await judgeAll(question, pipeline.answer, pipeline.retrieved);
+      Object.assign(metrics, judgeScoresToMetrics(judge));
+      cost.judge += judge.costUsd;
       cost.total = cost.embed + cost.rerank + cost.generate + cost.judge;
     }
 
@@ -288,6 +293,7 @@ async function runQuestion(
       cost,
       latency: pipeline.latency,
       degraded: pipeline.degraded,
+      judge,
       error: null,
     };
   } catch (err) {

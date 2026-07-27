@@ -18,6 +18,7 @@
  */
 import "../src/lib/loadenv";
 
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { createInterface } from "node:readline";
@@ -85,10 +86,18 @@ function modelLabels(scores: JudgeScores): CalibrationLabel["model"] {
   };
 }
 
-interface StoredResult extends QuestionResult {
-  /** Runs persist the raw judge output alongside the flattened metrics. */
-  judge?: JudgeScores;
-}
+/**
+ * THIS DECLARATION USED TO BE THE WHOLE BUG. It asserted that runs persist raw
+ * judge output alongside the flattened metrics. They did not: the runner built
+ * the scores, flattened them into `metrics`, and dropped the object — so
+ * `result.judge` was `undefined` on every result ever written, the labelling
+ * loop's `if (!question || !judge) continue` skipped all of them, and this
+ * script would have reported kappa over zero pairs after showing a reviewer
+ * nothing to label. A local interface can only describe what a file contains;
+ * it cannot make it true. The field is now on QuestionResult and the runner
+ * actually writes it.
+ */
+type StoredResult = QuestionResult;
 
 function readJsonl<T>(file: string): T[] {
   if (!existsSync(file)) return [];
@@ -96,6 +105,83 @@ function readJsonl<T>(file: string): T[] {
     .split("\n")
     .filter((l) => l.trim())
     .map((l) => JSON.parse(l) as T);
+}
+
+/**
+ * Why this result cannot be labelled against the CURRENT golden set, or null.
+ *
+ * A run is a photograph of the golden set as it was, and the golden set moves.
+ * The unanswerable audit deleted q-0087, reclassified q-0090 from unanswerable
+ * to factoid, and rewrote the text of two more — all AFTER the only 30-question
+ * judged run on disk was produced. Labelling that run today would have asked for
+ * a verdict on a question that no longer exists, and asked the refusal question
+ * about one the golden set now calls a factoid.
+ *
+ * These are DROPPED, not skipped mid-loop, because the sample is sliced to
+ * --sample before the labelling loop runs: a mid-loop `continue` spends a slot
+ * and returns 24 labels from a request for 25. That is the same silent-shortfall
+ * bug the header-line filter fixed, arriving by a different route.
+ */
+function staleness(result: StoredResult, questions: Map<string, Question>): string | null {
+  const question = questions.get(result.questionId);
+  if (!question) return "no longer in the golden set";
+  if (!result.judge) return "no judge output";
+
+  // Which judges ran is a record of what the golden set said at run time: the
+  // refusal judge runs for unanswerable questions and the other three do not.
+  const judgedUnanswerable = result.judge.refusal !== null;
+  if (judgedUnanswerable !== (question.type === "unanswerable")) {
+    return `judged as ${judgedUnanswerable ? "unanswerable" : "answerable"}, ` +
+      `golden set now says ${question.type}`;
+  }
+  return null;
+}
+
+/**
+ * Loud warning when the run predates the current golden set.
+ *
+ * The per-item check above catches deletions and type changes. It CANNOT catch
+ * a rewritten question, because a run records only `questionId` — the answer was
+ * generated against text nobody can recover from the run file. q-0086 is exactly
+ * that: re-anchored to its intended paper by the audit, so its stored answer
+ * addresses a question that is no longer on the page. A reviewer would label an
+ * answer to a different question and never know.
+ *
+ * Commit ancestry is the available signal. If the commit that last touched the
+ * golden set is not an ancestor of the run's SHA, the run is older than the
+ * questions it would be labelled against.
+ */
+function warnIfPredatesGoldenSet(runSha: string | undefined): void {
+  if (!runSha || runSha === "unknown") return;
+
+  let goldenSha: string;
+  try {
+    goldenSha = execFileSync("git", ["log", "-1", "--format=%H", "--", DEV_FILE], {
+      encoding: "utf8",
+    }).trim();
+    if (!goldenSha) return;
+    // Exit 0 means goldenSha is an ancestor of runSha: the run already had it.
+    execFileSync("git", ["merge-base", "--is-ancestor", goldenSha, runSha], {
+      stdio: "ignore",
+    });
+    return;
+  } catch {
+    // Non-zero from --is-ancestor, or git unavailable / SHA not in this clone.
+    // Only the first is worth reporting, and it is the common case.
+  }
+
+  console.log(
+    `⚠ THIS RUN PREDATES THE CURRENT GOLDEN SET.\n` +
+      wrap(
+        `${DEV_FILE} was last changed at ${goldenSha!.slice(0, 8)}, which is not an ` +
+          `ancestor of the run's ${runSha.slice(0, 8)}. Deleted and reclassified ` +
+          `questions are dropped below, but a REWRITTEN question cannot be detected: ` +
+          `a run stores only the question id, so its answer was generated against ` +
+          `text that is no longer in the file, and labelling it judges an answer to a ` +
+          `different question. Produce a fresh run before spending an hour labelling:`,
+      ) +
+      `\n\n  npm run eval:run -- --variant baseline --subset 30\n`,
+  );
 }
 
 /** A result carries judge output if any of the four judges scored it. */
@@ -313,15 +399,15 @@ async function main(): Promise<void> {
   const runFile = latestRunFile(args.runId);
   const runId = path.basename(runFile, ".jsonl");
 
-  // Filter to RESULT lines. A run file also carries a `run` header and an
-  // `aggregate` footer, and neither has an `error` field — so the pool filter
-  // below (`!r.error`) let them through. The labelling loop skips them via its
-  // `!question || !judge` guard, so nothing crashed; the sample just came back
-  // silently short. Asking for 25 and labelling 23 matters when the acceptance
+  // Split the file by line type. The `run` header carries the git SHA the
+  // staleness check needs; the `aggregate` footer carries nothing useful here.
+  // Both lack an `error` field, so the pool filter below (`!r.error`) used to
+  // let them through — the labelling loop skipped them silently and the sample
+  // came back short. Asking for 25 and labelling 23 matters when the acceptance
   // criterion is 25.
-  const results = readJsonl<StoredResult & { type?: string }>(runFile).filter(
-    (r) => r.type === "result",
-  );
+  const lines = readJsonl<StoredResult & { type?: string; gitSha?: string }>(runFile);
+  const runHeader = lines.find((l) => l.type === "run");
+  const results = lines.filter((r) => r.type === "result");
   if (results.length === 0) {
     throw new Error(
       `${runFile} contains no result lines — the run produced nothing to label.`,
@@ -334,14 +420,35 @@ async function main(): Promise<void> {
       .map((q) => [q.id, q]),
   );
 
+  warnIfPredatesGoldenSet(runHeader?.gitSha);
+
+  const stale = new Map<string, string>();
+  const labelable = results.filter((r) => {
+    if (alreadyLabelled.has(`${runId}:${r.questionId}`) || r.error) return false;
+    const reason = staleness(r, questions);
+    if (reason) {
+      stale.set(r.questionId, reason);
+      return false;
+    }
+    return true;
+  });
+
   const rand = mulberry32(args.seed);
-  const pool = shuffle(
-    results.filter((r) => !alreadyLabelled.has(`${runId}:${r.questionId}`) && !r.error),
-    rand,
-  ).slice(0, args.sample);
+  const pool = shuffle(labelable, rand).slice(0, args.sample);
 
   console.log(`\nRun: ${runId}  —  ${results.length} result(s)`);
-  console.log(`Already labelled: ${existing.length}.  To label now: ${pool.length}.\n`);
+  if (stale.size > 0) {
+    console.log(`Dropped ${stale.size} stale against the current golden set:`);
+    for (const [id, reason] of stale) console.log(`  ${id}  ${reason}`);
+  }
+  console.log(`Already labelled: ${existing.length}.  To label now: ${pool.length}.`);
+  if (pool.length < args.sample) {
+    console.log(
+      `\n⚠ ${pool.length} labelable, ${args.sample} asked for. Phase 3's acceptance is ` +
+        `25 — top up with a larger run rather than reporting kappa on fewer.`,
+    );
+  }
+  console.log();
 
   if (pool.length === 0) {
     console.log("Nothing new to label — reporting on existing labels.");
