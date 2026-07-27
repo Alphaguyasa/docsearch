@@ -1,12 +1,681 @@
 /**
- * Paired run comparison — PHASE 5 STUB.
+ * Paired run comparison — Phase 5 of docs/EVAL_HARNESS.md.
  *
- * Exists so `npm run eval:compare` resolves to a real file and fails with a
- * clear message instead of a module-not-found error. The statistics it depends
- * on (paired bootstrap, CIs) land in Phase 5.
+ *   npm run eval:compare -- <runA> <runB>
+ *       [--local] [--seed 42] [--iters 10000] [--alpha 0.05]
+ *       [--regressions] [--metric recall@10] [--limit 15]
+ *
+ * <runA> and <runB> are either run ids, or variant names — a variant name
+ * resolves to that variant's most recent run WITH USABLE RESULTS. That last
+ * clause matters: a crashed run leaves a header row and no results, and
+ * silently comparing against it would report every metric as missing rather
+ * than saying the run is empty.
+ *
+ * WHAT THIS DOES THAT A TABLE OF MEANS DOES NOT. Both runs answered the same
+ * questions, so this joins them on questionId and bootstraps the per-question
+ * DIFFERENCES. Question difficulty is the largest source of variance in a
+ * golden set of 77 and it affects both arms identically, so differencing
+ * cancels it. A comparison of two independent means at this n can resolve
+ * almost nothing; the paired version can resolve a few points.
+ *
+ * Reading the output: the CI is on the DIFFERENCE. If it contains zero, the
+ * run did not distinguish the variants — which is a result, not a failure, and
+ * the `min detectable effect` line at the bottom says how large a difference
+ * would have had to be before this golden set could have seen it.
  */
-console.error(
-  "not implemented — run comparison lands in Phase 5 " +
-    "(see docs/EVAL_HARNESS.md).",
-);
-process.exit(1);
+import "../src/lib/loadenv";
+
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+import {
+  buildSeries,
+  isResource,
+  mean,
+  regressions,
+  type Series,
+  type SeriesKind,
+} from "../eval/src/compare";
+import { loadGoldenSet, HOLDOUT_FILE, DEV_FILE } from "../eval/src/goldenset";
+import {
+  correlation,
+  DEFAULT_SEED,
+  mcNemar,
+  minDetectableEffect,
+  pairedBootstrap,
+  type PairedResult,
+} from "../eval/src/metrics/stats";
+import type { Question, QuestionResult } from "../eval/src/types";
+import { db } from "../src/lib/db";
+import { fetchAllRows } from "../src/lib/paginate";
+
+const RUNS_DIR = "eval/runs";
+
+/** Candidate runs inspected when resolving a variant name to its latest run. */
+const RESOLVE_CANDIDATES = 25;
+
+// --- CLI ---------------------------------------------------------------------
+
+interface Args {
+  refA: string;
+  refB: string;
+  local: boolean;
+  seed: number;
+  iters: number;
+  alpha: number;
+  regressions: boolean;
+  metric: string | null;
+  limit: number;
+}
+
+function parseArgs(argv: string[]): Args {
+  const positional: string[] = [];
+  const args: Args = {
+    refA: "",
+    refB: "",
+    local: false,
+    seed: DEFAULT_SEED,
+    iters: 10000,
+    alpha: 0.05,
+    regressions: false,
+    metric: null,
+    limit: 15,
+  };
+
+  for (let i = 0; i < argv.length; i++) {
+    const flag = argv[i];
+    if (flag === "--local") args.local = true;
+    else if (flag === "--regressions") args.regressions = true;
+    else if (flag === "--seed") args.seed = Number(argv[++i]);
+    else if (flag === "--iters") args.iters = Number(argv[++i]);
+    else if (flag === "--alpha") args.alpha = Number(argv[++i]);
+    else if (flag === "--metric") args.metric = argv[++i];
+    else if (flag === "--limit") args.limit = Number(argv[++i]);
+    else if (flag.startsWith("--")) throw new Error(`Unknown flag: ${flag}`);
+    else positional.push(flag);
+  }
+
+  if (positional.length !== 2) {
+    throw new Error(
+      "Usage: npm run eval:compare -- <runA> <runB> [--local] [--regressions]\n" +
+        "  <runA>/<runB>: a run id, or a variant name (resolves to its latest run).",
+    );
+  }
+  if (!Number.isFinite(args.seed)) throw new Error("--seed must be a number");
+  if (!Number.isInteger(args.iters) || args.iters < 100) {
+    throw new Error("--iters must be an integer >= 100");
+  }
+  if (!(args.alpha > 0 && args.alpha < 1)) {
+    throw new Error("--alpha must be in (0,1)");
+  }
+
+  [args.refA, args.refB] = positional;
+  return args;
+}
+
+// --- Loading -----------------------------------------------------------------
+
+interface LoadedRun {
+  runId: string;
+  variantName: string;
+  startedAt: string;
+  /** Where it came from, printed so a comparison is traceable to its inputs. */
+  source: string;
+  results: QuestionResult[];
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** A run is a usable comparison target only if something in it succeeded. */
+function usable(results: QuestionResult[]): boolean {
+  return results.some((r) => r.error === null);
+}
+
+interface LocalRun {
+  runId: string;
+  variantName: string;
+  startedAt: string;
+  file: string;
+  results: QuestionResult[];
+}
+
+function readLocalRuns(): LocalRun[] {
+  let files: string[];
+  try {
+    files = readdirSync(RUNS_DIR).filter((f) => f.endsWith(".jsonl"));
+  } catch {
+    throw new Error(`No runs directory at ${RUNS_DIR}. Run npm run eval:run first.`);
+  }
+
+  const runs: LocalRun[] = [];
+  for (const file of files) {
+    const full = path.join(RUNS_DIR, file);
+    const lines = readFileSync(full, "utf8").split("\n").filter((l) => l.trim());
+    if (lines.length === 0) continue;
+
+    let header: { type?: string; runId?: string; variant?: { name?: string }; startedAt?: string };
+    try {
+      header = JSON.parse(lines[0]);
+    } catch {
+      // A truncated first line means the file never got past its header write.
+      continue;
+    }
+    if (header.type !== "run" || !header.runId) continue;
+
+    const results: QuestionResult[] = [];
+    for (const line of lines.slice(1)) {
+      try {
+        const row = JSON.parse(line);
+        if (row.type === "result") results.push(row as QuestionResult);
+      } catch {
+        // A crash mid-append can leave one partial line. Keep what parsed —
+        // that is the entire point of writing results incrementally.
+      }
+    }
+
+    runs.push({
+      runId: header.runId,
+      variantName: header.variant?.name ?? "(unknown)",
+      startedAt: header.startedAt ?? "",
+      file: full,
+      results,
+    });
+  }
+  return runs;
+}
+
+function resolveLocal(ref: string, runs: LocalRun[]): LoadedRun {
+  const byId = runs.find((r) => r.runId === ref || r.runId.startsWith(ref));
+  if (byId) {
+    if (!usable(byId.results)) {
+      throw new Error(
+        `Run ${byId.runId} has no successful results (${byId.file}). ` +
+          `Nothing to compare.`,
+      );
+    }
+    return { ...byId, source: byId.file };
+  }
+
+  const candidates = runs
+    .filter((r) => r.variantName === ref && usable(r.results))
+    .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+
+  if (candidates.length === 0) {
+    const known = [...new Set(runs.map((r) => r.variantName))].sort();
+    throw new Error(
+      `No usable local run found for "${ref}".\n` +
+        `  Not a run id in ${RUNS_DIR}, and no run of that variant has results.\n` +
+        `  Variants on disk: ${known.join(", ") || "(none)"}`,
+    );
+  }
+  return { ...candidates[0], source: candidates[0].file };
+}
+
+interface RunRow {
+  run_id: string;
+  variant: { name?: string } | null;
+  started_at: string;
+}
+
+interface ResultRow {
+  question_id: string;
+  metrics: Record<string, number | null> | null;
+  cost_usd: number | null;
+  latency: Record<string, number> | null;
+  answer: string | null;
+  error: string | null;
+}
+
+async function fetchResults(runId: string): Promise<QuestionResult[]> {
+  const rows = await fetchAllRows<ResultRow>(`eval_results(${runId})`, (from, to) =>
+    db
+      .from("eval_results")
+      .select("question_id, metrics, cost_usd, latency, answer, error")
+      .eq("run_id", runId)
+      // Paging without a total order can repeat and drop rows — see paginate.ts.
+      .order("question_id", { ascending: true })
+      .range(from, to)
+      .returns<ResultRow[]>(),
+  );
+
+  return rows.map((row) => ({
+    questionId: row.question_id,
+    retrieved: [],
+    answer: row.answer ?? "",
+    citations: [],
+    metrics: row.metrics ?? {},
+    costUsd: row.cost_usd ?? 0,
+    latency: {
+      embedMs: row.latency?.embedMs ?? 0,
+      searchMs: row.latency?.searchMs ?? 0,
+      rerankMs: row.latency?.rerankMs ?? 0,
+      generateMs: row.latency?.generateMs ?? 0,
+      totalMs: row.latency?.totalMs ?? 0,
+    },
+    error: row.error,
+  }));
+}
+
+async function resolveRemote(ref: string): Promise<LoadedRun> {
+  const query = db
+    .from("eval_runs")
+    .select("run_id, variant, started_at")
+    .order("started_at", { ascending: false })
+    .limit(RESOLVE_CANDIDATES);
+
+  const res = UUID.test(ref)
+    ? await query.eq("run_id", ref).returns<RunRow[]>()
+    : await query.eq("variant->>name", ref).returns<RunRow[]>();
+
+  if (res.error) {
+    throw new Error(
+      `Supabase read failed: ${res.error.message}\n` +
+        `  Runs are also on disk — retry with --local.`,
+    );
+  }
+
+  const candidates = res.data ?? [];
+  if (candidates.length === 0) {
+    throw new Error(
+      `No run found in Supabase for "${ref}".\n` +
+        `  Runs written before the database was reachable exist only on disk — ` +
+        `retry with --local.`,
+    );
+  }
+
+  // Newest first; take the first one that actually has results.
+  for (const row of candidates) {
+    const results = await fetchResults(row.run_id);
+    if (usable(results)) {
+      return {
+        runId: row.run_id,
+        variantName: row.variant?.name ?? "(unknown)",
+        startedAt: row.started_at,
+        source: "supabase",
+        results,
+      };
+    }
+  }
+
+  throw new Error(
+    `Found ${candidates.length} run(s) for "${ref}" in Supabase, none with ` +
+      `successful results. Nothing to compare.`,
+  );
+}
+
+// --- Pairing -----------------------------------------------------------------
+
+// --- Formatting --------------------------------------------------------------
+
+/**
+ * Money, formatted to stay readable across six orders of magnitude.
+ *
+ * Per-question embedding cost on this corpus is ~4e-7; a judged question on a
+ * paid model is ~1e-3. Any fixed number of decimal places is wrong for one end
+ * or the other, and the failure is not cosmetic: at four places a real,
+ * statistically significant cost difference — a cold run against a cached one —
+ * printed as $0.0000 next to three stars, which reads as a broken test rather
+ * than a fact about the cache. Below $0.0001 this switches to exponential,
+ * where a nonzero value cannot render as zero.
+ */
+function formatUsd(v: number): string {
+  if (v === 0) return "$0";
+  return Math.abs(v) < 1e-4 ? `$${v.toExponential(2)}` : `$${v.toFixed(6)}`;
+}
+
+function formatValue(kind: SeriesKind, v: number): string {
+  if (kind === "usd") return formatUsd(v);
+  if (kind === "ms") return `${Math.round(v)}ms`;
+  if (kind === "count") return v.toFixed(2);
+  return `${(v * 100).toFixed(1)}%`;
+}
+
+function formatDelta(kind: SeriesKind, v: number): string {
+  const sign = v > 0 ? "+" : v < 0 ? "−" : "±";
+  const mag = Math.abs(v);
+  if (kind === "usd") return `${sign}${formatUsd(mag)}`;
+  if (kind === "ms") return `${sign}${Math.round(mag)}ms`;
+  if (kind === "count") return `${sign}${mag.toFixed(2)}`;
+  return `${sign}${(mag * 100).toFixed(1)}pp`;
+}
+
+
+function formatP(p: number): string {
+  if (p >= 0.999) return "1.00";
+  if (p < 0.0002) return "<0.001";
+  return p.toFixed(3);
+}
+
+/**
+ * Significance marker.
+ *
+ * Driven by whether the CI contains zero, NOT by the p-value alone — they agree
+ * almost always, and when they disagree the interval is the thing being
+ * reported, so it wins. `ns` is printed rather than left blank: an empty cell
+ * reads as "not computed", and "we looked and found nothing" is a result worth
+ * showing explicitly.
+ */
+function marker(result: PairedResult): string {
+  const excludesZero = result.lo > 0 || result.hi < 0;
+  if (!excludesZero) return "ns";
+  if (result.pValue < 0.001) return "***";
+  if (result.pValue < 0.01) return "**";
+  return "*";
+}
+
+function pad(s: string, width: number): string {
+  return s.length >= width ? s : " ".repeat(width - s.length) + s;
+}
+
+function padEnd(s: string, width: number): string {
+  return s.length >= width ? s : s + " ".repeat(width - s.length);
+}
+
+// --- Report ------------------------------------------------------------------
+
+interface Row {
+  series: Series;
+  paired: PairedResult;
+}
+
+function computeRows(series: Series[], args: Args): Row[] {
+  return series.map((s) => ({
+    series: s,
+    // pairedBootstrap returns mean(first - second). B goes first so the printed
+    // delta reads as "B minus A", matching the column order of the table.
+    paired: pairedBootstrap(s.b, s.a, args.iters, {
+      seed: args.seed,
+      alpha: args.alpha,
+      idsA: s.ids,
+      idsB: s.ids,
+    }),
+  }));
+}
+
+function printTable(rows: Row[], args: Args): void {
+  const ciLabel = `${Math.round((1 - args.alpha) * 100)}% CI`;
+  const widths = { metric: 22, n: 4, val: 12, delta: 12, ci: 27, p: 8, sig: 4 };
+
+  const header =
+    padEnd("metric", widths.metric) +
+    pad("n", widths.n) +
+    pad("A", widths.val) +
+    pad("B", widths.val) +
+    pad("delta", widths.delta) +
+    pad(`${ciLabel} (B−A)`, widths.ci) +
+    pad("p", widths.p) +
+    pad("sig", widths.sig);
+
+  console.log(header);
+  console.log("─".repeat(header.length));
+
+  let lastKind: SeriesKind | null = null;
+  for (const { series, paired } of rows) {
+    // A rule between the quality metrics and the cost/latency block, which are
+    // read in the opposite direction.
+    if (lastKind !== null && !isResource(lastKind) && isResource(series.kind)) {
+      console.log("─".repeat(header.length));
+    }
+    lastKind = series.kind;
+
+    const meanA = mean(series.a);
+    const meanB = mean(series.b);
+    const ci = `[${formatDelta(series.kind, paired.lo)}, ${formatDelta(series.kind, paired.hi)}]`;
+
+    console.log(
+      padEnd(series.name, widths.metric) +
+        pad(String(paired.n), widths.n) +
+        pad(formatValue(series.kind, meanA), widths.val) +
+        pad(formatValue(series.kind, meanB), widths.val) +
+        pad(formatDelta(series.kind, paired.meanDiff), widths.delta) +
+        pad(ci, widths.ci) +
+        pad(formatP(paired.pValue), widths.p) +
+        pad(marker(paired), widths.sig),
+    );
+  }
+
+  console.log(
+    `\n  * CI excludes 0 · ** p<0.01 · *** p<0.001 · ns = not distinguishable\n` +
+      `  Quality metrics: higher is better. Cost and latency: lower is better.`,
+  );
+
+  if (rows.some((r) => isResource(r.series.kind))) {
+    // Learned from the first real comparison this ran on: two runs with
+    // bit-identical retrieval showed a 39-SECOND mean latency difference and a
+    // significant cost difference, purely because one ran cold and the other
+    // replayed from cache behind a 3-request/minute embedding tier. Both
+    // numbers were correct and neither was about the variant.
+    console.log(
+      `\n  Cost and latency describe the runs AS EXECUTED — cache state and\n` +
+        `  rate-limiter pacing included. A cold run against a cached one differs\n` +
+        `  enormously on both while retrieving identical chunks. Compare these\n` +
+        `  only between runs with the same cache state, and prefer the p50 in the\n` +
+        `  run summary over the mean: one paced wait dominates a mean of 77.`,
+    );
+  }
+}
+
+/** Binary metrics get McNemar's test as well — see stats.ts for why. */
+function printMcNemar(rows: Row[]): void {
+  const binary = rows.filter(({ series }) =>
+    series.kind === "rate" &&
+    series.a.every((v) => v === 0 || v === 1) &&
+    series.b.every((v) => v === 0 || v === 1),
+  );
+  if (binary.length === 0) return;
+
+  console.log("\n── McNemar, binary metrics ─────────────────────────────");
+  console.log(
+    padEnd("metric", 22) +
+      pad("A only", 8) +
+      pad("B only", 8) +
+      pad("disc.", 7) +
+      pad("p", 9),
+  );
+  for (const { series } of binary) {
+    const result = mcNemar(
+      series.a.map((v) => v === 1),
+      series.b.map((v) => v === 1),
+    );
+    console.log(
+      padEnd(series.name, 22) +
+        pad(String(result.b01), 8) +
+        pad(String(result.b10), 8) +
+        pad(String(result.n), 7) +
+        pad(formatP(result.pValue), 9),
+    );
+  }
+  console.log(
+    "\n  Only pairs where the two runs DISAGREE carry information; ties drop out.",
+  );
+}
+
+/**
+ * Pick the metric the regression list and the power statement are keyed to.
+ *
+ * Preference order is deliberate: an end-to-end quality metric if the run was
+ * judged, otherwise the headline retrieval number. Falls back to the first
+ * quality series so this never fails on an unusual variant.
+ */
+function primarySeries(rows: Row[], requested: string | null): Row {
+  if (requested) {
+    const found = rows.find((r) => r.series.name === requested);
+    if (!found) {
+      throw new Error(
+        `--metric "${requested}" is not in this comparison.\n` +
+          `  Available: ${rows.map((r) => r.series.name).join(", ")}`,
+      );
+    }
+    return found;
+  }
+  const preferred = ["correctness", "faithfulness", "recall@10", "recall@5"];
+  for (const name of preferred) {
+    const found = rows.find((r) => r.series.name === name);
+    if (found) return found;
+  }
+  return rows.find((r) => r.series.kind === "rate") ?? rows[0];
+}
+
+function printPower(row: Row): void {
+  const { series, paired } = row;
+
+  // minDetectableEffect models a PROPORTION — its variance term is p(1-p). Fed
+  // a count or a duration it returns a confident-looking number that means
+  // nothing. Say so rather than printing it.
+  if (series.kind !== "rate") {
+    console.log("\n── What this golden set can detect ─────────────────────");
+    console.log(
+      `  Not computed: "${series.name}" is a ${series.kind}, and the power\n` +
+        `  calculation applies to rates in [0,1]. Pass --metric with a rate\n` +
+        `  (recall@10, correctness, faithfulness) to get this figure.`,
+    );
+    return;
+  }
+
+  const meanA = mean(series.a);
+  const rho = correlation(series.a, series.b);
+  const mde = minDetectableEffect(paired.n, Math.min(Math.max(meanA, 0), 1), {
+    correlation: rho,
+  });
+
+  console.log("\n── What this golden set can detect ─────────────────────");
+  console.log(`  keyed to ${series.name} at ${formatValue(series.kind, meanA)}, n=${mde.n}`);
+  console.log(
+    `  95% CI half-width on one arm's mean   ±${(mde.ciHalfWidth * 100).toFixed(1)}pp`,
+  );
+  console.log(
+    `  min detectable effect, unpaired       ${(mde.mde * 100).toFixed(1)}pp   ` +
+      `(80% power, α=0.05)`,
+  );
+  console.log(
+    `  min detectable effect, paired         ${(mde.mdePaired! * 100).toFixed(1)}pp   ` +
+      `(arms correlate ρ=${rho.toFixed(2)})`,
+  );
+
+  if (rho > 0.99) {
+    // The formula scales by sqrt(1-ρ), so ρ=1 sends the paired MDE to 0 — true
+    // in the limit and useless as guidance. Two arms that agree on every
+    // question have no variance left to detect anything against; the figure is
+    // an artifact of comparing a run with itself or with a near-clone.
+    console.log(
+      `\n  ρ≈1: the arms agree on essentially every question, so the paired\n` +
+        `  figure collapses toward zero. That is arithmetic, not statistical\n` +
+        `  power — use the unpaired figure for planning until two genuinely\n` +
+        `  different variants have been run.`,
+    );
+  } else {
+    console.log(
+      `\n  A difference smaller than the paired figure is one this set cannot\n` +
+        `  resolve. Report those as inconclusive, not as "no effect".`,
+    );
+  }
+}
+
+function loadQuestionText(): Map<string, Question> {
+  const byId = new Map<string, Question>();
+  for (const file of [DEV_FILE, HOLDOUT_FILE]) {
+    try {
+      for (const q of loadGoldenSet({ file }).questions) byId.set(q.id, q);
+    } catch {
+      // A missing split is not fatal here — the regression list degrades to
+      // ids, which is still usable. Only the text is lost.
+    }
+  }
+  return byId;
+}
+
+function printRegressions(row: Row, args: Args): void {
+  const { series } = row;
+  const questions = loadQuestionText();
+
+  const worse = regressions(series);
+
+  console.log(`\n── Regressions on ${series.name} ───────────────────────`);
+  if (worse.length === 0) {
+    console.log(`  None. B is no worse than A on any of the ${series.ids.length} paired questions.`);
+    return;
+  }
+
+  console.log(
+    `  ${worse.length} of ${series.ids.length} question(s) where B is worse than A, worst first.\n`,
+  );
+  for (const d of worse.slice(0, args.limit)) {
+    const q = questions.get(d.id);
+    console.log(
+      `  ${formatDelta(series.kind, d.delta)}  ` +
+        `${formatValue(series.kind, d.a)} → ${formatValue(series.kind, d.b)}  ` +
+        `${d.id}${q ? `  [${q.type}/${q.difficulty}]` : ""}`,
+    );
+    if (q) console.log(`      ${q.question}`);
+  }
+  if (worse.length > args.limit) {
+    console.log(`\n  ... and ${worse.length - args.limit} more (--limit ${worse.length} to see all).`);
+  }
+}
+
+// --- Main --------------------------------------------------------------------
+
+async function main(): Promise<void> {
+  const args = parseArgs(process.argv.slice(2));
+
+  let runA: LoadedRun;
+  let runB: LoadedRun;
+  if (args.local) {
+    const local = readLocalRuns();
+    runA = resolveLocal(args.refA, local);
+    runB = resolveLocal(args.refB, local);
+  } else {
+    runA = await resolveRemote(args.refA);
+    runB = await resolveRemote(args.refB);
+  }
+
+  console.log(`\n── Comparing ───────────────────────────────────────────`);
+  console.log(`  A  ${runA.runId}  ${runA.variantName}  ${runA.startedAt}`);
+  console.log(`     ${runA.source}  ${runA.results.length} result(s)`);
+  console.log(`  B  ${runB.runId}  ${runB.variantName}  ${runB.startedAt}`);
+  console.log(`     ${runB.source}  ${runB.results.length} result(s)`);
+  console.log(`  seed ${args.seed}, ${args.iters} bootstrap resamples\n`);
+
+  if (runA.runId === runB.runId) {
+    // The Phase 5 acceptance case. Say what it is, so a zero row is read as the
+    // harness working rather than as a real finding about two variants.
+    console.log(
+      `  NULL TEST — both references resolved to the same run. Every delta\n` +
+        `  must be exactly zero with intervals to match. This checks the join\n` +
+        `  and the statistics, not the variants.\n`,
+    );
+  }
+
+  const series = buildSeries(runA, runB);
+  if (series.length === 0) {
+    throw new Error(
+      "No metric is present in both runs on any shared question.\n" +
+        "  Check that the two runs cover the same golden set split.",
+    );
+  }
+
+  const rows = computeRows(series, args);
+
+  const idsA = new Set(runA.results.map((r) => r.questionId));
+  const idsB = new Set(runB.results.map((r) => r.questionId));
+  const shared = [...idsA].filter((id) => idsB.has(id)).length;
+  console.log(
+    `  ${shared} shared question(s); ${idsA.size - shared} only in A, ` +
+      `${idsB.size - shared} only in B.\n`,
+  );
+
+  printTable(rows, args);
+  printMcNemar(rows);
+
+  const primary = primarySeries(rows, args.metric);
+  printPower(primary);
+
+  if (args.regressions) printRegressions(primary, args);
+
+  console.log("");
+}
+
+main().catch((err) => {
+  console.error(`\n${err instanceof Error ? err.message : err}\n`);
+  process.exitCode = 1;
+});
