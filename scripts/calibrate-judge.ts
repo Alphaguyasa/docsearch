@@ -66,6 +66,24 @@ interface CalibrationLabel {
     citations: string | null;
     refused: string | null;
   };
+  /**
+   * Labels corrected against the SOURCE after the fact, with the evidence.
+   *
+   * An adjudicated label is no longer independent of the model's: it was
+   * changed by someone who already knew what the model said. That is legitimate
+   * as a correction of the record — the source text settles who was right —
+   * and fatal as calibration data, because agreement you produced by looking at
+   * the answer key measures nothing. So these are kept, cited, and EXCLUDED
+   * from the kappa rather than quietly folded into it.
+   */
+  adjudicated?: {
+    field: string;
+    from: string | null;
+    to: string | null;
+    /** Where in the corpus the question was settled. */
+    evidence: string;
+    at: string;
+  }[];
 }
 
 /**
@@ -536,15 +554,38 @@ function report(
   const scored: Record<string, Agreement> = {};
   const judges: {
     name: string;
-    pick: (l: CalibrationLabel) => { human: string | null; model: string | null };
+    /** The `human`/`model` key this judge reads — also what adjudication cites. */
+    field: "faithful" | "correctness" | "citations" | "refused";
   }[] = [
-    { name: "faithfulness", pick: (l) => ({ human: l.human.faithful, model: l.model.faithful }) },
-    { name: "correctness", pick: (l) => ({ human: l.human.correctness, model: l.model.correctness }) },
-    { name: "citations", pick: (l) => ({ human: l.human.citations, model: l.model.citations }) },
-    { name: "refusal", pick: (l) => ({ human: l.human.refused, model: l.model.refused }) },
+    { name: "faithfulness", field: "faithful" },
+    { name: "correctness", field: "correctness" },
+    { name: "citations", field: "citations" },
+    { name: "refusal", field: "refused" },
   ];
 
+  /**
+   * Adjudicated judgements are excluded — PER FIELD, not per label.
+   *
+   * A label corrected against the source after the model's verdict was known
+   * cannot measure agreement with that verdict, so it must not enter the kappa.
+   * But adjudication touches ONE judgement: the six faithfulness corrections
+   * left those items' correctness and citation labels exactly as they were made,
+   * blind. Dropping whole labels threw six independent correctness judgements
+   * away with them and quietly cut that judge's n from 20 to 14 — discarding the
+   * one validated result in the phase to fix a different judge's problem.
+   */
+  const adjudicatedCount = labels.filter((l) => l.adjudicated?.length).length;
+  const isAdjudicated = (l: CalibrationLabel, field: string): boolean =>
+    l.adjudicated?.some((a) => a.field === field) ?? false;
+
   console.log(`\n── ${title} ${"─".repeat(Math.max(3, 54 - title.length))}`);
+  if (adjudicatedCount > 0) {
+    console.log(
+      `  ${adjudicatedCount} adjudicated judgement(s) excluded from the judge they\n` +
+        `  correct — settled against the source after the model's verdict was\n` +
+        `  known, so not independent. Their OTHER judgements still count.`,
+    );
+  }
   console.log("  judge          n   raw agree    kappa");
 
   const weak: string[] = [];
@@ -555,9 +596,15 @@ function report(
   /** Kappa high only because neither rater ever used the other category. */
   const degenerate: string[] = [];
   for (const judge of judges) {
-    const pairs = labels
-      .map(judge.pick)
-      .filter((p): p is { human: string; model: string } => p.human !== null && p.model !== null);
+    const pairs: { human: string; model: string }[] = labels
+      .filter((l) => !isAdjudicated(l, judge.field))
+      .map((l) => ({
+        human: l.human[judge.field] as string | null,
+        model: l.model[judge.field],
+      }))
+      .filter(
+        (p): p is { human: string; model: string } => p.human !== null && p.model !== null,
+      );
 
     if (pairs.length === 0) {
       console.log(`  ${judge.name.padEnd(13)} —    (no labelled pairs)`);
