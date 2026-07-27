@@ -393,11 +393,13 @@ things that would actually help all cost API calls.
 
 ## Deviations from the spec
 
-- **`scripts/sweep.ts` was not built.** The guide specifies a sweep runner
-  emitting `eval/runs/sweep-<timestamp>.md`. That directory is gitignored, so a
-  generated report there would never be committed. This report is hand-assembled
-  from individual runs and lives in `docs/` instead. The automation remains
-  worth building before the arm count grows.
+- **`scripts/sweep.ts` writes to `eval/runs/` by default, as the guide
+  specifies — but that directory is gitignored**, so a report meant to be
+  committed needs `--out docs/...`. The tool prints a note saying so rather than
+  leaving it to be discovered via `git status`. *This* report predates the sweep
+  runner and was hand-assembled; that hand-assembly is what produced the two
+  errors corrected above, and is the reason the tool now prints a recall ceiling
+  next to every per-type score.
 - **`RetrievalMode` was widened** from `dense | hybrid` to include `keyword`,
   for the reason given in Experiment 3. See `eval/src/types.ts`.
 - **Phase 4's acceptance was restated** from "all ~100 questions" to "the full
@@ -408,9 +410,18 @@ things that would actually help all cost API calls.
 ## Appendix: reproducing this
 
 ```bash
+# One arm, or one pair
 npm run eval:run     -- --variant mode-dense --retrieval-only
 npm run eval:compare -- mode-hybrid mode-dense --local --regressions
+
+# The whole report, regenerated from runs already on disk
+npm run eval:sweep -- mode-hybrid mode-dense mode-keyword \
+  topk-3 topk-5 topk-10 topk-20 searchtop-10 searchtop-40 searchtop-80 \
+  --baseline mode-hybrid --reuse --metric recall@20 --out docs/SWEEP.md
 ```
+
+`--reuse` reports on each variant's most recent usable run without executing
+anything, which is how a report is regenerated after a layout change.
 
 Every arm is one config file in `eval/config/`. Runs are cached by content hash,
 so re-running an arm that has already executed costs nothing and takes seconds.
