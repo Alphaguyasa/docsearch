@@ -113,10 +113,41 @@ export function readLocalRuns(dir = RUNS_DIR): LocalRun[] {
 }
 
 /**
- * Resolve a reference to one run: a run id (full or unique prefix), or a
- * variant name, which takes that variant's most recent USABLE run.
+ * Load one run file directly, by path.
+ *
+ * Reuses readLocalRuns on the containing directory rather than re-parsing,
+ * because a second JSONL parser is exactly what the module header warns about.
+ */
+export function readRunFile(file: string): LoadedRun {
+  const dir = path.dirname(file);
+  const base = path.basename(file);
+  const match = readLocalRuns(dir).find((r) => path.basename(r.file) === base);
+  if (!match) {
+    throw new Error(`${file} is not a readable run file (no \`run\` header line).`);
+  }
+  return match;
+}
+
+/**
+ * Resolve a reference to one run: a PATH to a run file, a run id (full or
+ * unique prefix), or a variant name, which takes that variant's most recent
+ * USABLE run.
+ *
+ * THE PATH FORM IS WHAT MAKES CI POSSIBLE. eval/runs/ is gitignored, so a fresh
+ * checkout has no runs and a gate resolving only by id would fail every build
+ * for want of a baseline rather than because of a regression. A committed
+ * baseline under eval/baselines/ is referenced by path — see
+ * scripts/snapshot-baseline.ts.
  */
 export function resolveLocal(ref: string, runs: LocalRun[]): LoadedRun {
+  if (/[\\/]/.test(ref) || ref.endsWith(".jsonl")) {
+    const loaded = readRunFile(ref);
+    if (!usable(loaded.results)) {
+      throw new Error(`${ref} has no successful results. Nothing to compare.`);
+    }
+    return loaded;
+  }
+
   const byId = runs.find((r) => r.runId === ref || r.runId.startsWith(ref));
   if (byId) {
     if (!usable(byId.results)) {
