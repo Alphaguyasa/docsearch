@@ -110,8 +110,30 @@ smoke check against the dev golden set).
 ## Evaluation
 
 An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
-Phases 0–1 (scaffolding, golden set) and 2 (retrieval metrics) are complete; the
-runner is Phase 4, so **there are no measured numbers yet**.
+Phases 0–2 (scaffolding, golden set, retrieval metrics), 4 (runner, caching, cost
+and latency instrumentation) and 5 (statistics) are complete. **Phase 3 is not:
+the LLM judge is built but has never been calibrated against human labels, so it
+has no kappa.**
+
+What that means for the numbers below, stated plainly:
+
+- **Retrieval numbers are real.** A full 77-question run completes with 0 errors,
+  and a second identical run reproduces it bit-for-bit.
+- **Generation and judging numbers are not yet trustworthy.** A full-pipeline run
+  has never completed — the free-tier daily quota caps it partway — and until
+  Phase 3's calibration produces a kappa, any judge score is an unvalidated
+  model opinion. Do not quote them.
+
+Baseline retrieval, dev split, 62 answerable questions (hybrid, topK 8):
+
+| Metric | @1 | @5 | @10 |
+|---|---|---|---|
+| recall | 19.7% | 47.8% | 52.0% |
+| hit rate | 32.3% | 58.1% | 61.3% |
+| nDCG | 32.3% | 42.4% | 42.0% |
+| doc recall | 48.6% | 64.3% | 68.5% |
+
+MRR is 42.5%. These are the "before" — no tuning has been applied yet.
 
 > An earlier ad-hoc eval (35 questions over a 26-chunk corpus) reported
 > recall@5 = 100%. Those numbers are deleted, not carried forward: they came from
@@ -156,6 +178,40 @@ Every script and runner defaults to dev. Reading the holdout requires an explici
 `--holdout` flag and prints a warning that it is a one-time measurement — a
 holdout re-run after every change is just a second dev set with a misleading
 name.
+
+### Comparing runs
+
+```bash
+npm run eval:compare -- <runA> <runB> [--local] [--regressions] [--metric recall@10]
+```
+
+Each argument is a run id or a variant name (which resolves to that variant's
+most recent run that actually has results). Runs load from Supabase by default,
+or from `eval/runs/*.jsonl` with `--local`.
+
+The comparison is **paired**: both runs answered the same questions, so it joins
+on question id and bootstraps the per-question *differences* rather than
+comparing two means. Question difficulty is the dominant source of variance at
+n=77 and both arms feel it identically, so differencing cancels it. Every row
+carries a 95% confidence interval and a p-value; `--regressions` lists the
+individual questions a change made worse, with their text, which is the actual
+debugging workflow.
+
+**What this golden set can and cannot detect.** At n=62 answerable questions and
+a baseline recall@10 of 52%, the 95% interval on a single arm's mean is ±12.4pp,
+and the smallest difference two *independent* arms could resolve at 80% power is
+about 25pp. Pairing shrinks that substantially — by a factor of √(1−ρ), and two
+arms of the same pipeline correlate strongly — but the honest headline is that
+**this set cannot distinguish variants that differ by a few points.** Any such
+result is inconclusive, not negative. The tool prints these figures on every
+comparison so the limitation travels with the numbers instead of being something
+a reader has to know to ask about.
+
+One consequence worth naming: cost and latency rows compare the runs *as
+executed*, cache state and rate-limiter pacing included. A cold run against a
+cached one shows a large, statistically significant latency difference while
+retrieving byte-identical chunks. That is a true fact about the two runs and
+says nothing about the variants.
 
 ## Deploying (Vercel)
 
