@@ -5,6 +5,13 @@
  *                       [--subset 10] [--types factoid,multihop]
  *                       [--concurrency 4] [--no-cache] [--notes "..."]
  *                       [--no-judge] [--retrieval-only] [--holdout] [--skip-db]
+ *                       [--gate <runId|variant>] [--gate-config <path>]
+ *
+ * `--gate` compares the finished run against a baseline and exits non-zero if a
+ * guarded metric regressed — Phase 7. Thresholds live in eval/config/gate.json,
+ * or in the file named by `--gate-config`. A drop only counts when its paired
+ * 95% CI excludes zero, so noise cannot fail a build; see eval/src/gate.ts for
+ * why that rule is the whole design.
  *
  * `--retrieval-only` stops after retrieval: no generation, no judging, no LLM
  * quota beyond an optional query rewrite. Most Phase 6 experiments change
@@ -24,14 +31,23 @@ import "../../src/lib/loadenv";
 
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { aggregate, flattenAggregate, type Aggregate } from "./aggregate";
 import { cacheStats, setCacheEnabled } from "./cache";
 import { loadVariant } from "./config";
+import {
+  DEFAULT_GATE,
+  evaluateGate,
+  gateMarkdown,
+  worstRegressions,
+  type GateConfig,
+} from "./gate";
+import { readLocalRuns, resolveLocal } from "./runs";
 import { loadGoldenSet, warnHoldout } from "./goldenset";
-import { judgeAll, judgeScoresToMetrics } from "./metrics/judge";
+import { judgeAll, judgeScoresToMetrics, type JudgeScores } from "./metrics/judge";
 import { scoreRetrieval } from "./metrics/retrieval";
 import { runPipeline } from "./pipeline";
 import { pacerState, QuotaExhaustedError } from "./provider";
@@ -50,6 +66,12 @@ interface Args {
   judge: boolean;
   holdout: boolean;
   skipDb: boolean;
+  /** Baseline run id or variant name to gate against. */
+  gate: string | null;
+  /** Where to write the gate summary as markdown, for a PR comment. */
+  gateMarkdown: string | null;
+  /** Threshold table to gate against. Defaults to eval/config/gate.json. */
+  gateConfig: string | null;
   retrievalOnly: boolean;
 }
 
@@ -64,6 +86,9 @@ function parseArgs(argv: string[]): Args {
     judge: true,
     holdout: false,
     skipDb: false,
+    gate: null,
+    gateMarkdown: null,
+    gateConfig: null,
     retrievalOnly: false,
   };
 
@@ -84,7 +109,10 @@ function parseArgs(argv: string[]): Args {
       if (value === undefined || value.startsWith("--")) {
         throw new Error(`${flag} requires a value`);
       }
-      if (flag === "--variant") args.variant = value;
+      if (flag === "--gate") args.gate = value;
+      else if (flag === "--gate-md") args.gateMarkdown = value;
+      else if (flag === "--gate-config") args.gateConfig = value;
+      else if (flag === "--variant") args.variant = value;
       else if (flag === "--notes") args.notes = value;
       else if (flag === "--subset") args.subset = requirePositive(value, flag);
       else if (flag === "--concurrency") args.concurrency = requirePositive(value, flag);
@@ -270,10 +298,15 @@ async function runQuestion(
 
     const cost = { ...pipeline.cost };
 
+    // Kept, not just consumed. Flattening the scores into `metrics` and letting
+    // the object fall out of scope threw away every claim, verdict and reason
+    // behind the four numbers — and with them Phase 3, which compares what the
+    // MODEL said against what a human says. See QuestionResult.judge.
+    let judge: JudgeScores | null = null;
     if (useJudge) {
-      const scores = await judgeAll(question, pipeline.answer, pipeline.retrieved);
-      Object.assign(metrics, judgeScoresToMetrics(scores));
-      cost.judge += scores.costUsd;
+      judge = await judgeAll(question, pipeline.answer, pipeline.retrieved);
+      Object.assign(metrics, judgeScoresToMetrics(judge));
+      cost.judge += judge.costUsd;
       cost.total = cost.embed + cost.rerank + cost.generate + cost.judge;
     }
 
@@ -286,6 +319,8 @@ async function runQuestion(
       costUsd: cost.total,
       cost,
       latency: pipeline.latency,
+      degraded: pipeline.degraded,
+      judge,
       error: null,
     };
   } catch (err) {
@@ -323,6 +358,21 @@ function printSummary(
   console.log(
     `  questions ${agg.questions}${agg.errors > 0 ? `   ⚠ ${agg.errors} error(s)` : ""}`,
   );
+
+  if (agg.degraded > 0) {
+    // Loud, because the failure this catches is invisible in every other line
+    // of the summary: a degraded question scores like any other, just worse.
+    console.log(
+      `\n╔══════════════════════════════════════════════════════════════════╗\n` +
+        `║  DEGRADED RETRIEVAL — THIS RUN IS NOT COMPARABLE TO A CLEAN ONE  ║\n` +
+        `╚══════════════════════════════════════════════════════════════════╝\n` +
+        `  ${agg.degraded} of ${agg.questions} question(s) lost one of hybrid retrieval's\n` +
+        `  two sources and were fused from the survivor alone. They still\n` +
+        `  scored, and their scores are in every mean below.\n` +
+        `  Re-run before quoting these numbers — the cache replays the healthy\n` +
+        `  questions for free, so only the failures cost anything.`,
+    );
+  }
 
   console.log("\n── Retrieval — answerable questions only ───────────────");
   for (const key of Object.keys(agg.retrieval).sort()) {
@@ -367,6 +417,136 @@ function printSummary(
         `${(pace.waitedMs / 1000).toFixed(0)}s waiting`,
     );
   }
+}
+
+/**
+ * Compare this run against a baseline and print a pass/fail summary.
+ *
+ * Returns whether the run may land. Everything printed here is for a human;
+ * the caller turns the boolean into an exit code, which is what CI reads.
+ */
+function runGate(
+  baselineRef: string,
+  current: { results: QuestionResult[]; aggregate: Record<string, number | null> },
+  cache: { hits: number; misses: number },
+  markdownFile: string | null,
+  currentRunId: string,
+  variantName: string,
+  configFile: string | null,
+): boolean {
+  const runs = readLocalRuns();
+  let baseline;
+  try {
+    baseline = resolveLocal(baselineRef, runs);
+  } catch (err) {
+    console.log(
+      `\n── Gate ────────────────────────────────────────────────\n` +
+        `  CANNOT GATE: ${errorMessage(err)}\n` +
+        `  A gate that cannot find its baseline must not pass by default.\n`,
+    );
+    return false;
+  }
+
+  const numeric = (o: Record<string, number | null>): Record<string, number> =>
+    Object.fromEntries(
+      Object.entries(o).filter((e): e is [string, number] => typeof e[1] === "number"),
+    );
+
+  const config = loadGateConfig(configFile);
+  const total = cache.hits + cache.misses;
+  const verdict = evaluateGate({
+    baseline: { results: baseline.results, aggregate: baseline.aggregate ?? {} },
+    run: { results: current.results, aggregate: numeric(current.aggregate) },
+    config,
+    // The baseline's cache state is not recoverable from its file, so this is
+    // deliberately one-sided: it reports what THIS run did and lets the reader
+    // judge. Claiming to know both would be worse than admitting to one.
+    runCacheHitRate: total > 0 ? cache.hits / total : undefined,
+  });
+
+  console.log(`\n── Gate ────────────────────────────────────────────────`);
+  console.log(`  baseline ${baseline.runId.slice(0, 8)} (${baseline.variantName})`);
+  if (verdict.warning) console.log(`\n  ⚠ ${verdict.warning}`);
+
+  for (const f of verdict.findings) {
+    const mark = f.failed ? "FAIL" : "ok  ";
+    const shown =
+      f.kind === "quality"
+        ? `${(f.before * 100).toFixed(1)}% → ${(f.after * 100).toFixed(1)}%  ` +
+          `${f.delta >= 0 ? "+" : ""}${(f.delta * 100).toFixed(1)}pp` +
+          (f.ci ? `  95% CI [${(f.ci.lo * 100).toFixed(1)}, ${(f.ci.hi * 100).toFixed(1)}]pp` : "")
+        : `${f.before.toFixed(f.before < 1 ? 4 : 0)} → ${f.after.toFixed(f.after < 1 ? 4 : 0)}  ` +
+          `${f.delta >= 0 ? "+" : ""}${(f.delta * 100).toFixed(1)}%`;
+    console.log(`  ${mark} ${f.metric.padEnd(16)} ${shown}`);
+    if (f.note) console.log(`       ${f.note}`);
+  }
+
+  if (verdict.missing.length > 0) {
+    console.log(
+      `\n  NOT GATED (neither run measured them): ${verdict.missing.join(", ")}\n` +
+        `  A retrieval-only run has no judge metrics, so this is expected there —\n` +
+        `  but a metric silently absent from a gate is a metric nobody is guarding.`,
+    );
+  }
+
+  for (const f of verdict.findings.filter((x) => x.failed && x.kind === "quality")) {
+    const worst = worstRegressions(f.metric, { results: baseline.results }, current, 5);
+    if (worst.length === 0) continue;
+    console.log(`\n  Worst on ${f.metric}:`);
+    for (const w of worst) {
+      console.log(
+        `    ${w.questionId}  ${(w.before * 100).toFixed(0)}% → ${(w.after * 100).toFixed(0)}%` +
+          `  (${(w.delta * 100).toFixed(0)}pp)`,
+      );
+    }
+  }
+
+  console.log(
+    verdict.passed
+      ? `\n  PASS — nothing regressed past its threshold with a CI excluding zero.\n`
+      : `\n  FAIL — ${verdict.findings.filter((f) => f.failed).length} metric(s) regressed.\n`,
+  );
+
+  if (markdownFile) {
+    writeFileSync(
+      markdownFile,
+      gateMarkdown(verdict, {
+        baselineId: baseline.runId,
+        runId: currentRunId,
+        variant: variantName,
+      }) + "\n",
+    );
+    console.log(`  Gate summary → ${markdownFile}\n`);
+  }
+
+  return verdict.passed;
+}
+
+/**
+ * Thresholds from eval/config/gate.json, falling back to the documented defaults.
+ *
+ * `--gate-config` overrides the path. CI uses that to gate on quality only; see
+ * eval/config/gate.ci.json for why latency cannot be gated there. An explicitly
+ * requested file that is missing is fatal rather than a fallback: silently
+ * gating on different thresholds than the ones asked for is how a gate ends up
+ * guarding something nobody intended.
+ */
+function loadGateConfig(override?: string | null): GateConfig {
+  const file = override ?? "eval/config/gate.json";
+  if (!existsSync(file)) {
+    if (override) {
+      throw new Error(`--gate-config ${override} does not exist`);
+    }
+    console.log(`  (${file} not found — using built-in defaults)`);
+    return DEFAULT_GATE;
+  }
+  const parsed = JSON.parse(readFileSync(file, "utf8")) as Partial<GateConfig>;
+  return {
+    quality: parsed.quality ?? DEFAULT_GATE.quality,
+    resource: parsed.resource ?? DEFAULT_GATE.resource,
+    iters: parsed.iters ?? DEFAULT_GATE.iters,
+    seed: parsed.seed ?? DEFAULT_GATE.seed,
+  };
 }
 
 async function main(): Promise<void> {
@@ -510,9 +690,52 @@ async function main(): Promise<void> {
   }
 
   console.log(`\nWrote ${outFile}\n`);
+
+  if (args.gate) {
+    const passed = runGate(
+      args.gate,
+      { results, aggregate: flat },
+      cacheStats(),
+      args.gateMarkdown,
+      runId,
+      variant.name,
+      args.gateConfig,
+    );
+    // The exit code is the entire product of a gate. Everything above is for a
+    // human; this is what CI reads.
+    if (!passed) process.exitCode = 1;
+  }
 }
 
-main().catch((err) => {
-  console.error(err instanceof Error ? err.message : err);
-  process.exitCode = 1;
-});
+/**
+ * True only when this file is the process entry point, not when it is imported.
+ *
+ * WITHOUT THIS GUARD, IMPORTING THE MODULE STARTS A LIVE RUN. `main()` used to
+ * be called unconditionally at the bottom of this file, and `runner.test.ts`
+ * imports `selectSubset` and `mapWithConcurrency` from here — so
+ * `npm run test:eval` launched a full 76-question judged run against Supabase
+ * and the free-tier LLM quota as a side effect of collecting unit tests. The
+ * worker was killed when the suite finished a second or two later, which is why
+ * it never announced itself: no error, no summary, just a partially-written run.
+ *
+ * That is where the empty run files came from — 30 of the 76 in eval/runs/,
+ * one per test invocation, spread across a dozen git SHAs. And it is the ROOT
+ * CAUSE of the bug patched downstream in scripts/calibrate-judge.ts, which
+ * picked an arbitrary uuid-sorted run and landed on one of these husks. That
+ * fix stopped calibration reading them; this one stops them being written.
+ *
+ * `process.argv[1]` is the resolved script path under tsx, so comparing it as a
+ * file URL is the ESM equivalent of `require.main === module`.
+ */
+function isEntryPoint(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return import.meta.url === pathToFileURL(entry).href;
+}
+
+if (isEntryPoint()) {
+  main().catch((err) => {
+    console.error(err instanceof Error ? err.message : err);
+    process.exitCode = 1;
+  });
+}

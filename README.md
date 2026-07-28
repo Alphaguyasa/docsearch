@@ -109,9 +109,61 @@ smoke check against the dev golden set).
 
 ## Evaluation
 
-An evaluation harness is being built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md).
-Phases 0–1 (scaffolding, golden set) and 2 (retrieval metrics) are complete; the
-runner is Phase 4, so **there are no measured numbers yet**.
+**→ [`docs/WRITEUP.md`](docs/WRITEUP.md) is the argument: what was measured, what
+it found, and what it cannot tell you.** The short version:
+
+- **91 human-reviewed questions**, 28% of candidates dropped, 17% deliberately
+  unanswerable — the bucket that separates a retriever from a fabricator.
+- **One of four LLM judges is validated.** `correctness` at Cohen's kappa 0.80
+  (random sample) and 0.89 (stratified). The other three agree with me
+  67&ndash;100% of the time on samples containing almost no negatives, which is
+  agreement without evidence — and the writeup says so rather than printing four
+  green numbers.
+- **Three of four retrieval experiments did nothing**, and the one finding worth
+  more than all of them came from the per-type breakdown: 4 of 6 questions
+  retrieval got right were lost when the question was reworded.
+- **Nothing shipped.** The config is unchanged, because the one arm with a real
+  recall gain has never been measured on answer quality.
+- **The holdout was audited, then spent once.** Composition-matched, it lands
+  +5.8pp on recall and +3.7pp on correctness against dev — inside an interval 60
+  points wide. It confirms the dev number; at n=10 it could not have done more.
+- **The measurement was wrong three times** — a truncated labelling UI, a
+  contaminated unanswerable bucket, and a rubric with no answer for refusals.
+  All three are documented, because each one initially looked like a system
+  failure.
+
+The harness is built per [`docs/EVAL_HARNESS.md`](docs/EVAL_HARNESS.md). All ten
+phases are complete: scaffolding, golden set, retrieval metrics, judge
+calibration, runner and caching, statistics, [eleven experiment
+arms](docs/EVAL_RESULTS.md), the regression gate, the `/evals` dashboard, and CI.
+
+The judge calibration is in
+[the writeup](docs/WRITEUP.md#3-how-the-judge-was-validated--and-why-only-one-of-four-survived),
+reported per sampling design, because pooling a random sample with a stratified
+one describes a population that never existed. Regenerate either half with
+`npm run eval:calibrate -- --report-only --design random|stratified`.
+
+Baseline, full pipeline on the 76-question dev split, 0 errors, $0
+(`npm run eval:run -- --variant baseline`):
+
+| Metric | @1 | @5 | @10 |
+|---|---|---|---|
+| recall | 20.9% | 48.6% | 52.8% |
+| hit rate | — | — | 61.9% |
+| nDCG | — | — | 42.9% |
+| doc recall | — | — | 69.0% |
+
+MRR 43.4%, median latency 1,190 ms. `correctness` 52.4% — the only judged
+number with a validated judge behind it, and it tracks recall@10 almost exactly:
+the system answers when retrieval finds the chunk and declines when it does not.
+**24 of 63 answerable questions get a refusal.**
+
+> **On reproducibility, precisely.** Retrieval is deterministic given the corpus
+> and the cache, but two `baseline` runs on these 76 questions reported 51.2% and
+> 52.8%. The difference is one question where hybrid retrieval lost one of its
+> two sources and fused only the survivor. The runner records that as `degraded`
+> and `eval:compare` prints it, which is why this is a footnote rather than an
+> unexplained 1.6pp. The table above is the run with none.
 
 > An earlier ad-hoc eval (35 questions over a 26-chunk corpus) reported
 > recall@5 = 100%. Those numbers are deleted, not carried forward: they came from
@@ -122,13 +174,29 @@ runner is Phase 4, so **there are no measured numbers yet**.
 
 ### The golden set
 
-92 human-reviewed questions over a 2,134-chunk / 90-document corpus, split into
+91 human-reviewed questions over a 2,134-chunk / 90-document corpus, split into
 two files that are **never** used interchangeably:
 
 | File | Questions | Purpose |
 |---|---|---|
-| `eval/golden/questions.dev.jsonl` | 77 | Tune against this. The default everywhere. |
-| `eval/golden/questions.holdout.jsonl` | 15 | Touched once, at the end. Requires `--holdout`. |
+| `eval/golden/questions.dev.jsonl` | 76 | Tune against this. The default everywhere. |
+| `eval/golden/questions.holdout.jsonl` | 13 | Measured once, at the end. Requires `--holdout`. |
+
+> **Dev was 77 until a 2026-07-27 audit of the unanswerable bucket.** 4 of its 15
+> unanswerable questions turned out to be answerable from the corpus: each had
+> been drafted as absent from *one* paper and phrased generically, so other
+> documents answered them. Two were re-anchored to their intended paper, one was
+> reclassified as a factoid, one was removed. Refusal accuracy went from an
+> apparent 50% to a true 100%. See [`docs/EVAL_RESULTS.md`](docs/EVAL_RESULTS.md).
+
+> **The holdout was audited the same way before being spent, and 2 of its 5
+> unanswerable questions were contaminated too** — the flaw was predicted and
+> then confirmed. `q-0095` asks for an accuracy the source paper prints in two
+> different tables; `q-0097` asks a publication date that survives PDF
+> extraction as `arXiv:2301.01269v1 [cs.CL] 3 Jan 2023`. Both dropped, taking
+> the holdout from 15 to 13 and its unanswerable bucket to 3. The audit is
+> retrieval-only and computes no metrics — `npm run eval:audit-unanswerable --
+> --holdout` — so it validates the questions without spending the measurement.
 
 The split is seeded (seed 42) and reproducible via `npm run eval:split`; the seed
 and rule are written into both files' `#` headers so any number can be traced
@@ -156,6 +224,40 @@ Every script and runner defaults to dev. Reading the holdout requires an explici
 `--holdout` flag and prints a warning that it is a one-time measurement — a
 holdout re-run after every change is just a second dev set with a misleading
 name.
+
+### Comparing runs
+
+```bash
+npm run eval:compare -- <runA> <runB> [--local] [--regressions] [--metric recall@10]
+```
+
+Each argument is a run id or a variant name (which resolves to that variant's
+most recent run that actually has results). Runs load from Supabase by default,
+or from `eval/runs/*.jsonl` with `--local`.
+
+The comparison is **paired**: both runs answered the same questions, so it joins
+on question id and bootstraps the per-question *differences* rather than
+comparing two means. Question difficulty is the dominant source of variance at
+n=76 and both arms feel it identically, so differencing cancels it. Every row
+carries a 95% confidence interval and a p-value; `--regressions` lists the
+individual questions a change made worse, with their text, which is the actual
+debugging workflow.
+
+**What this golden set can and cannot detect.** At n=63 answerable questions and
+a baseline recall@10 of 51.2%, the 95% interval on a single arm's mean is
+±12.3pp, and the smallest difference two *independent* arms could resolve at 80%
+power is about 25pp. Pairing shrinks that substantially — by a factor of √(1−ρ), and two
+arms of the same pipeline correlate strongly — but the honest headline is that
+**this set cannot distinguish variants that differ by a few points.** Any such
+result is inconclusive, not negative. The tool prints these figures on every
+comparison so the limitation travels with the numbers instead of being something
+a reader has to know to ask about.
+
+One consequence worth naming: cost and latency rows compare the runs *as
+executed*, cache state and rate-limiter pacing included. A cold run against a
+cached one shows a large, statistically significant latency difference while
+retrieving byte-identical chunks. That is a true fact about the two runs and
+says nothing about the variants.
 
 ## Deploying (Vercel)
 
@@ -191,17 +293,19 @@ same variables under **Settings → Environment Variables**, and deploy.
 
 ## Limitations
 
-- **The golden set is small, and small in specific places.** 77 dev questions.
-  At n≈77 a recall@10 of 0.6 carries a 95% CI of roughly ±0.11, so differences
+- **The golden set is small, and small in specific places.** 76 dev questions.
+  At n≈76 a recall@10 of 0.6 carries a 95% CI of roughly ±0.11, so differences
   under ~5 points are not distinguishable and must be reported as null results,
   not wins. Worse per bucket: multi-hop is n=7 and aggregation n=8, where a
   single question moves the score by 12–14 points — neither supports a per-type
   conclusion, and Phase 6's per-type breakdown should say so rather than print a
   number that looks like evidence.
-- **The holdout is 15 questions and covers three types.** It is enough to catch a
-  gross overfit, not to estimate anything precisely: a 15-question score has a
+- **The holdout is 13 questions and covers three types.** It is enough to catch a
+  gross overfit, not to estimate anything precisely: a 13-question score has a
   CI wide enough to swallow most plausible differences. Treat it as a sanity
-  check on the dev number, not as an independent measurement.
+  check on the dev number, not as an independent measurement. Its unanswerable
+  bucket is 3 questions after the audit, which is too few for a refusal rate —
+  report the count, not a percentage.
 - **Voyage free tier is 3 embeddings/min.** Large ingests and vector/hybrid evals
   must be paced (`--delay`), and in the web app a query that hits the limit
   **degrades to keyword-only** rather than failing.

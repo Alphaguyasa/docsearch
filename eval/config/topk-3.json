@@ -1,0 +1,23 @@
+{
+  "name": "topk-3",
+  "description": "Top-k sweep arm, k=3. Identical to baseline except retrieval.topK. searchTop is HELD AT 20 across every arm, so all arms fuse the same candidate list and differ only in how much of it they return — this measures truncation depth, not retrieval depth. Run with --retrieval-only: no generation, no judging, so the Flash-Lite generation deviation cannot affect these numbers (see README).",
+  "embeddingModel": "voyage-4",
+  "chunkStrategy": {
+    "size": 800,
+    "overlap": 0.15,
+    "tableName": "chunks"
+  },
+  "retrieval": {
+    "mode": "hybrid",
+    "topK": 3,
+    "rrfK": 60,
+    "searchTop": 20,
+    "rerank": null
+  },
+  "queryRewrite": "none",
+  "generation": {
+    "model": "gemini-flash-lite-latest",
+    "promptVersion": "v1",
+    "maxTokens": 4096
+  }
+}

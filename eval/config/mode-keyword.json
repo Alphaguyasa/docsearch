@@ -1,0 +1,23 @@
+{
+  "name": "mode-keyword",
+  "description": "Retrieval-mode arm, mode=keyword. Identical to baseline except retrieval.mode. Full-text search only — no vector arm, so the query embedding is never used and RRF fuses a single list, making the ordering pure lexical rank. Exists to disambiguate the dense-vs-hybrid tie: hybrid reorders 77/77 result sets and moves no metric, which is equally consistent with fusing two comparable signals and with fusing a strong vector ranking into a weak lexical one. DEVIATION: docs/EVAL_HARNESS.md defines dense|hybrid only; see eval/src/types.ts RetrievalMode. Run with --retrieval-only.",
+  "embeddingModel": "voyage-4",
+  "chunkStrategy": {
+    "size": 800,
+    "overlap": 0.15,
+    "tableName": "chunks"
+  },
+  "retrieval": {
+    "mode": "keyword",
+    "topK": 8,
+    "rrfK": 60,
+    "searchTop": 20,
+    "rerank": null
+  },
+  "queryRewrite": "none",
+  "generation": {
+    "model": "gemini-flash-lite-latest",
+    "promptVersion": "v1",
+    "maxTokens": 4096
+  }
+}

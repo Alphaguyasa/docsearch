@@ -89,8 +89,19 @@ describe("faithfulnessScore", () => {
     expect(faithfulnessScore([claim("unsupported")])).toBe(0);
   });
 
-  it("treats an answer with no claims as vacuously faithful", () => {
-    expect(faithfulnessScore([])).toBe(1);
+  /**
+   * WAS "vacuously faithful", asserting 1. That put a free point in the
+   * faithfulness mean for every question the system refused — and refusals are
+   * disproportionately the questions it did worst on, so the metric rose
+   * fastest exactly where the system was failing.
+   *
+   * Null is the convention recallAtK already uses for a question with no
+   * relevant chunks: not measurable, so excluded from the mean rather than
+   * averaged in. A refusal asserts nothing about the subject, so there is
+   * nothing for grounding to be true or false OF.
+   */
+  it("returns null when the answer made no claims — a refusal is not scored", () => {
+    expect(faithfulnessScore([])).toBeNull();
   });
 });
 
