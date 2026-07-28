@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -210,5 +212,45 @@ describe("worstRegressions", () => {
     const worst = worstRegressions("recall@10", baseline, candidate);
     expect(worst.map((w) => w.questionId)).toEqual(["q-a", "q-b"]);
     expect(worst[0].delta).toBeCloseTo(-0.8, 5);
+  });
+});
+
+/**
+ * The shipped threshold tables, checked as data.
+ *
+ * gate.ci.json exists because latency cannot be gated on a hosted runner — a
+ * cold, rate-limited CI run against a warm committed baseline reported +2140%
+ * on totalMs.p95 while every quality metric was identical. The risk of keeping
+ * a second table is that it drifts from the first and quietly stops guarding a
+ * metric someone thinks is covered, so the two are compared here rather than
+ * trusted.
+ */
+describe("shipped gate configs", () => {
+  const load = (p: string): GateConfig =>
+    JSON.parse(readFileSync(p, "utf8")) as GateConfig;
+
+  const local = load("eval/config/gate.json");
+  const ci = load("eval/config/gate.ci.json");
+
+  it("gates the same quality metrics locally and in CI", () => {
+    expect(Object.keys(ci.quality).sort()).toEqual(Object.keys(local.quality).sort());
+  });
+
+  it("uses identical quality thresholds, so CI is not the lenient one", () => {
+    expect(ci.quality).toEqual(local.quality);
+  });
+
+  it("gates no resource metric in CI, and at least one locally", () => {
+    expect(Object.keys(ci.resource)).toHaveLength(0);
+    expect(Object.keys(local.resource).length).toBeGreaterThan(0);
+  });
+
+  it("keeps the bootstrap reproducible in both", () => {
+    expect(ci.seed).toBe(local.seed);
+    expect(ci.iters).toBe(local.iters);
+  });
+
+  it("gates correctness — the only judge Phase 3 validated", () => {
+    expect(ci.quality).toHaveProperty("correctness");
   });
 });

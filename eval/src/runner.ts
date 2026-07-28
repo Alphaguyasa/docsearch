@@ -5,12 +5,13 @@
  *                       [--subset 10] [--types factoid,multihop]
  *                       [--concurrency 4] [--no-cache] [--notes "..."]
  *                       [--no-judge] [--retrieval-only] [--holdout] [--skip-db]
- *                       [--gate <runId|variant>]
+ *                       [--gate <runId|variant>] [--gate-config <path>]
  *
  * `--gate` compares the finished run against a baseline and exits non-zero if a
- * guarded metric regressed — Phase 7. Thresholds live in eval/config/gate.json.
- * A drop only counts when its paired 95% CI excludes zero, so noise cannot fail
- * a build; see eval/src/gate.ts for why that rule is the whole design.
+ * guarded metric regressed — Phase 7. Thresholds live in eval/config/gate.json,
+ * or in the file named by `--gate-config`. A drop only counts when its paired
+ * 95% CI excludes zero, so noise cannot fail a build; see eval/src/gate.ts for
+ * why that rule is the whole design.
  *
  * `--retrieval-only` stops after retrieval: no generation, no judging, no LLM
  * quota beyond an optional query rewrite. Most Phase 6 experiments change
@@ -69,6 +70,8 @@ interface Args {
   gate: string | null;
   /** Where to write the gate summary as markdown, for a PR comment. */
   gateMarkdown: string | null;
+  /** Threshold table to gate against. Defaults to eval/config/gate.json. */
+  gateConfig: string | null;
   retrievalOnly: boolean;
 }
 
@@ -85,6 +88,7 @@ function parseArgs(argv: string[]): Args {
     skipDb: false,
     gate: null,
     gateMarkdown: null,
+    gateConfig: null,
     retrievalOnly: false,
   };
 
@@ -107,6 +111,7 @@ function parseArgs(argv: string[]): Args {
       }
       if (flag === "--gate") args.gate = value;
       else if (flag === "--gate-md") args.gateMarkdown = value;
+      else if (flag === "--gate-config") args.gateConfig = value;
       else if (flag === "--variant") args.variant = value;
       else if (flag === "--notes") args.notes = value;
       else if (flag === "--subset") args.subset = requirePositive(value, flag);
@@ -427,6 +432,7 @@ function runGate(
   markdownFile: string | null,
   currentRunId: string,
   variantName: string,
+  configFile: string | null,
 ): boolean {
   const runs = readLocalRuns();
   let baseline;
@@ -446,7 +452,7 @@ function runGate(
       Object.entries(o).filter((e): e is [string, number] => typeof e[1] === "number"),
     );
 
-  const config = loadGateConfig();
+  const config = loadGateConfig(configFile);
   const total = cache.hits + cache.misses;
   const verdict = evaluateGate({
     baseline: { results: baseline.results, aggregate: baseline.aggregate ?? {} },
@@ -516,10 +522,21 @@ function runGate(
   return verdict.passed;
 }
 
-/** Thresholds from eval/config/gate.json, falling back to the documented defaults. */
-function loadGateConfig(): GateConfig {
-  const file = "eval/config/gate.json";
+/**
+ * Thresholds from eval/config/gate.json, falling back to the documented defaults.
+ *
+ * `--gate-config` overrides the path. CI uses that to gate on quality only; see
+ * eval/config/gate.ci.json for why latency cannot be gated there. An explicitly
+ * requested file that is missing is fatal rather than a fallback: silently
+ * gating on different thresholds than the ones asked for is how a gate ends up
+ * guarding something nobody intended.
+ */
+function loadGateConfig(override?: string | null): GateConfig {
+  const file = override ?? "eval/config/gate.json";
   if (!existsSync(file)) {
+    if (override) {
+      throw new Error(`--gate-config ${override} does not exist`);
+    }
     console.log(`  (${file} not found — using built-in defaults)`);
     return DEFAULT_GATE;
   }
@@ -682,6 +699,7 @@ async function main(): Promise<void> {
       args.gateMarkdown,
       runId,
       variant.name,
+      args.gateConfig,
     );
     // The exit code is the entire product of a gate. Everything above is for a
     // human; this is what CI reads.
