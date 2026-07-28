@@ -5,6 +5,7 @@
  */
 import { db } from "./db";
 import { embedQueryDetailed, type EmbedUsage } from "./embed";
+import { isTransient } from "./transient";
 
 export type RetrieveMode = "hybrid" | "vector" | "keyword";
 
@@ -190,19 +191,69 @@ export async function retrieve(
   return { results, degraded, mode, embedTokens, embedMs };
 }
 
+const SEARCH_RETRIES = 2;
+const SEARCH_BACKOFF_MS = 500;
+
+/**
+ * Run one RPC, retrying only transient failures, and return its rows.
+ *
+ * SUPABASE REPORTS FAILURE TWO WAYS and this has to handle both: a Postgres or
+ * gateway error comes back as `{ error }` with no exception, while a dropped
+ * connection throws from fetch. Retrying only thrown errors would have missed
+ * the exact failure this was written for — `JWT issued at future` arrives in
+ * `error`, not as a throw.
+ *
+ * Backoff is short on purpose: this sits in the live request path behind a
+ * user's query, not in a batch job. Two retries at 500ms and 1s add at most 1.5s
+ * to a request that would otherwise have failed outright, and the failure this
+ * exists for cleared well inside that.
+ */
+interface RpcResult {
+  data: unknown;
+  error: { message: string } | null;
+}
+
+async function rpcWithRetry<T>(
+  label: string,
+  call: () => Promise<RpcResult>,
+): Promise<T[]> {
+  for (let attempt = 0; ; attempt++) {
+    let message: string;
+    try {
+      const { data, error } = await call();
+      if (!error) return (data ?? []) as T[];
+      message = error.message;
+    } catch (err) {
+      // A throw here is a transport failure; supabase-js does not throw for
+      // query errors. Keep the same transient/permanent test either way.
+      message = errorMessage(err);
+    }
+
+    if (attempt >= SEARCH_RETRIES || !isTransient(message)) {
+      throw new Error(message);
+    }
+    const waitMs = SEARCH_BACKOFF_MS * 2 ** attempt;
+    console.warn(
+      `  [retrieve] ${label} transient failure (attempt ${attempt + 1}/` +
+        `${SEARCH_RETRIES + 1}) — retrying in ${waitMs}ms: ${message}`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+}
+
 async function vectorSearch(
   embedding: number[],
   searchTop: number,
 ): Promise<SearchHit[]> {
-  const { data, error } = await db.rpc("match_chunks", {
-    // pgvector needs the "[0.1,0.2,...]" text form; a JS array is not bound
-    // as a vector correctly. Verified against the live function.
-    query_embedding: JSON.stringify(embedding),
-    match_count: searchTop,
-  });
-  if (error) throw new Error(error.message);
   // The client is untyped (no generated DB types), so assert the row shape.
-  const rows = (data ?? []) as MatchRow[];
+  const rows = await rpcWithRetry<MatchRow>("vector", async () =>
+    await db.rpc("match_chunks", {
+      // pgvector needs the "[0.1,0.2,...]" text form; a JS array is not bound
+      // as a vector correctly. Verified against the live function.
+      query_embedding: JSON.stringify(embedding),
+      match_count: searchTop,
+    }),
+  );
   return rows.map((r, i) => ({
     id: r.id,
     documentId: r.document_id,
@@ -225,13 +276,13 @@ async function keywordSearch(
   query: string,
   searchTop: number,
 ): Promise<SearchHit[]> {
-  const { data, error } = await db.rpc("keyword_chunks", {
-    query_text: toOrQuery(query),
-    match_count: searchTop,
-  });
-  if (error) throw new Error(error.message);
   // The client is untyped (no generated DB types), so assert the row shape.
-  const rows = (data ?? []) as KeywordRow[];
+  const rows = await rpcWithRetry<KeywordRow>("keyword", async () =>
+    await db.rpc("keyword_chunks", {
+      query_text: toOrQuery(query),
+      match_count: searchTop,
+    }),
+  );
   return rows.map((r, i) => ({
     id: r.id,
     documentId: r.document_id,
