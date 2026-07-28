@@ -402,6 +402,22 @@ Now the harness earns its keep. Each experiment is one config file and one comma
 
 **Acceptance:** A PR that worsens the prompt gets a red check and a comment showing exactly which metric moved.
 
+> **Deviation: CI gates quality only, never latency or cost.** The first run of
+> this workflow failed both smoke jobs on `totalMs.p95` alone — +2140% on
+> retrieval, +1386% on generation — while every quality metric was unchanged to
+> the tenth of a point (recall@10 43.4% → 43.4%, correctness 52.0% → 52.0%).
+> Nothing had regressed. The committed baseline was snapshotted warm; a CI run
+> starts cold, and a cold run means real embedding calls, which means 429s and
+> 20–40s backoff waits landing in `embedMs`. The gate was measuring the rate
+> limiter. `eval/src/gate.ts` had already warned in prose that a resource
+> comparison needs matched cache state and CI cannot supply it; this is that
+> warning arriving as a red check. CI therefore runs with
+> `--gate-config eval/config/gate.ci.json`, whose `resource` table is empty and
+> whose quality thresholds are asserted equal to the local ones by a test, so
+> the CI table cannot quietly become the lenient one. Latency is still gated
+> locally by `eval/config/gate.json`, where cache state is knowable. Re-adding
+> it to CI requires making both sides cache-matched first.
+
 ---
 
 ## Phase 10 — The writeup

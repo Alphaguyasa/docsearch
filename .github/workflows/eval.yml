@@ -19,6 +19,13 @@ name: eval
 # eval/runs/ is gitignored and a fresh checkout has nothing to compare against.
 # Regenerate it with `npm run eval:baseline -- <runId>` whenever the pipeline
 # legitimately improves, and say so in the PR that does.
+#
+# CI GATES ON QUALITY ONLY, via --gate-config eval/config/gate.ci.json. The
+# committed baseline is warm and a CI run is cold against rate-limited free-tier
+# APIs, so latency here measures the runner and the 429 backoff rather than the
+# pipeline — it failed both jobs at +2140% while every quality metric was
+# unchanged. The full reasoning, and the numbers, are in that file. Latency is
+# still gated locally by eval/config/gate.json, where cache state is knowable.
 
 on:
   pull_request:
@@ -113,6 +120,7 @@ jobs:
             --retrieval-only \
             --skip-db \
             --gate eval/baselines/ci-smoke.jsonl \
+            --gate-config eval/config/gate.ci.json \
             --gate-md gate-retrieval.md
         continue-on-error: true
 
@@ -167,6 +175,7 @@ jobs:
             --concurrency 2 \
             --skip-db \
             --gate eval/baselines/ci-smoke.jsonl \
+            --gate-config eval/config/gate.ci.json \
             --gate-md gate-generation.md
         continue-on-error: true
 
@@ -213,6 +222,7 @@ jobs:
             --concurrency 2 \
             --skip-db \
             --gate eval/baselines/ci-smoke.jsonl \
+            --gate-config eval/config/gate.ci.json \
             --gate-md gate-full.md
       - name: Summary
         if: always()
