@@ -1,0 +1,36 @@
+# What NOT to upload when deploying.
+#
+# WHY THIS FILE EXISTS. Without it the first production deploy tried to upload
+# 249.5MB and died with "fetch failed" mid-transfer. corpus/ is 186MB and
+# eval/runs/ is 63MB — 249MB, the whole upload. Both are already gitignored, so
+# neither is in the repository; the Vercel CLI simply does not apply those
+# patterns the way git does (the corpus rule in particular is a `corpus/*` plus
+# a `!corpus/manifest.json` negation). Listing them explicitly here is the fix.
+#
+# WHAT MUST NOT BE ADDED HERE: eval/src. It looks like harness-only code and it
+# is not — src/app/evals imports @eval/compare and @eval/metrics/stats, so the
+# dashboard fails to build without it. eval/config, eval/golden and
+# eval/baselines are kept too; together they are under 3MB and excluding them
+# buys nothing while risking the same mistake.
+
+# The fetched papers. Reproducible from corpus/manifest.json, never needed by
+# the app — ingestion runs locally, not on Vercel.
+corpus/
+
+# Eval run output and the API-call cache. The dashboard reads run history from
+# Supabase, not from disk (see the header of src/app/evals/data.ts, which says
+# so explicitly and notes it must work on a deployment that never had these).
+eval/runs/
+eval/.cache/
+
+# Build and test output. Vercel rebuilds from source.
+.next/
+coverage/
+tsconfig.tsbuildinfo
+
+# Source PDFs and screenshots for the writeup. Not served — public/ is.
+docs/
+
+# Not part of the app.
+tests/
+.github/
