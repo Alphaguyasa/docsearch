@@ -30,7 +30,7 @@ const rerankSchema = z.strictObject({
 });
 
 const retrievalSchema = z.strictObject({
-  mode: z.enum(["dense", "hybrid"]),
+  mode: z.enum(["dense", "hybrid", "keyword"]),
   topK: z.number().int().positive(),
   rrfK: z.number().positive().optional(),
   searchTop: z.number().int().positive().optional(),

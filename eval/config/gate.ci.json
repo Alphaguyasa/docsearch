@@ -1,0 +1,39 @@
+{
+  "$comment": [
+    "Gate thresholds for CI. Same quality metrics as gate.json; NO resource metrics.",
+    "Selected with `npm run eval:run -- --gate-config eval/config/gate.ci.json`; see .github/workflows/eval.yml.",
+    "",
+    "WHY LATENCY AND COST ARE NOT GATED HERE, and this is not a convenience.",
+    "gate.ts already says a resource comparison is only meaningful between runs with",
+    "matched cache state, and CI cannot supply that. Three things stack up on a runner:",
+    "",
+    "  1. THE CACHE IS ALWAYS COLD ON A NEW GOLDEN SET. The actions/cache key is keyed on",
+    "     questions.dev.jsonl, so the first run after any golden-set change starts at zero",
+    "     hits — while eval/baselines/ci-smoke.jsonl was snapshotted from a warm local run.",
+    "  2. THE FREE-TIER APIS RATE-LIMIT. A cold run means real embed calls, which means 429s",
+    "     and 20-40s backoff waits. That time lands in embedMs and therefore in totalMs.p95.",
+    "  3. SHARED RUNNERS VARY. Even warm, a hosted runner is not a stable clock.",
+    "",
+    "MEASURED, not hypothetical. On the first green CI run of this workflow both smoke jobs",
+    "failed on totalMs.p95 alone — 20637ms -> 462217ms (+2140%) on retrieval, and 20637ms ->",
+    "306630ms (+1386%) on generation — while EVERY quality metric was unchanged to the tenth",
+    "of a point: recall@10 43.4% -> 43.4%, correctness 52.0% -> 52.0%, faithfulness and",
+    "refusalAccuracy 100% -> 100%. The gate was measuring the rate limiter, not the pipeline.",
+    "",
+    "A gate that fails for reasons unrelated to the diff is a gate people learn to ignore —",
+    "the same reasoning that split this workflow into two jobs in the first place. Latency",
+    "regressions are real and worth catching; catch them locally with gate.json, where you",
+    "control cache state, or with `npm run eval:sweep`. Do not re-add them here without",
+    "first making both sides of the comparison cache-matched."
+  ],
+  "quality": {
+    "recall@10": 0.03,
+    "correctness": 0.05,
+    "faithfulness": 0.05,
+    "citationAccuracy": 0.05,
+    "refusalAccuracy": 0.05
+  },
+  "resource": {},
+  "iters": 10000,
+  "seed": 42
+}

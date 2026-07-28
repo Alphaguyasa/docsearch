@@ -26,6 +26,16 @@ export default function RootLayout({
             >
               Documents
             </Link>
+            {/* Only linked when the dashboard is switched on: the route 404s
+                otherwise, and a nav item leading to a 404 reads as a bug. */}
+            {process.env.EVAL_DASHBOARD === "1" && (
+              <Link
+                href="/evals"
+                className="text-muted transition-colors hover:text-foreground"
+              >
+                Evals
+              </Link>
+            )}
           </nav>
         </header>
         {children}

@@ -308,7 +308,9 @@ An unvalidated LLM judge is a random number generator with good manners. The cal
 >
 > Aggregates: mean of each retrieval metric over answerable questions only; mean faithfulness, correctness, citation accuracy; refusal accuracy over unanswerable only; total and per-question cost; p50/p95 latency per stage; error count.
 
-**Acceptance:** `npm run eval:run -- --variant baseline` completes all ~100 questions, prints the summary, writes JSONL and Supabase rows. A second identical run costs approximately $0 and finishes in seconds. Note your baseline numbers — this is the "before" in your story.
+**Acceptance:** `npm run eval:run -- --variant baseline` completes the full dev split (77 questions), prints the summary, writes JSONL and Supabase rows. A second identical run costs approximately $0 and finishes in seconds. Note your baseline numbers — this is the "before" in your story.
+
+> **Why 77 and not ~100.** This line originally read "all ~100 questions", written before Phase 1 carved the golden set into a dev split and a held-out test set. The dev split is 77 of the 92 reviewed questions; the remaining 15 are the holdout, and the runner only touches them behind an explicit `--holdout` flag. Leaving the old number in place would have made this phase's acceptance permanently unmeetable — a run that does exactly the right thing would still look 23 questions short — and the obvious way to "fix" that is to run the holdout, which is precisely what the split exists to prevent. **The holdout is excluded until the final measurement in Phase 10.** A full-pipeline run of 77 is this phase passing, not this phase falling short.
 
 ---
 
@@ -399,6 +401,22 @@ Now the harness earns its keep. Each experiment is one config file and one comma
 > Keep secrets in GitHub Actions secrets. Cache `eval/.cache/` keyed on the golden set hash so CI runs are cheap. Fail the job on gate failure, but make it non-blocking for PRs labelled `eval-exempt`.
 
 **Acceptance:** A PR that worsens the prompt gets a red check and a comment showing exactly which metric moved.
+
+> **Deviation: CI gates quality only, never latency or cost.** The first run of
+> this workflow failed both smoke jobs on `totalMs.p95` alone — +2140% on
+> retrieval, +1386% on generation — while every quality metric was unchanged to
+> the tenth of a point (recall@10 43.4% → 43.4%, correctness 52.0% → 52.0%).
+> Nothing had regressed. The committed baseline was snapshotted warm; a CI run
+> starts cold, and a cold run means real embedding calls, which means 429s and
+> 20–40s backoff waits landing in `embedMs`. The gate was measuring the rate
+> limiter. `eval/src/gate.ts` had already warned in prose that a resource
+> comparison needs matched cache state and CI cannot supply it; this is that
+> warning arriving as a red check. CI therefore runs with
+> `--gate-config eval/config/gate.ci.json`, whose `resource` table is empty and
+> whose quality thresholds are asserted equal to the local ones by a test, so
+> the CI table cannot quietly become the lenient one. Latency is still gated
+> locally by `eval/config/gate.json`, where cache state is knowable. Re-adding
+> it to CI requires making both sides cache-matched first.
 
 ---
 

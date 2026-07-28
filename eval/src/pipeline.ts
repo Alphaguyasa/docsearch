@@ -44,9 +44,25 @@ export interface PipelineResult {
   danglingCitations: number;
 }
 
-/** The spec says `dense`; the app calls the same thing `vector`. */
+/**
+ * The spec says `dense`; the app calls the same thing `vector`. `keyword` and
+ * `hybrid` are named identically on both sides.
+ *
+ * Exhaustive rather than a two-branch ternary: the old form mapped everything
+ * that was not `dense` to `hybrid`, so adding `keyword` to RetrievalMode would
+ * have silently run a keyword arm as hybrid and produced a duplicate of the
+ * baseline under a different name. A switch makes the compiler catch the next
+ * mode added.
+ */
 function toRetrieveMode(mode: Variant["retrieval"]["mode"]): RetrieveMode {
-  return mode === "dense" ? "vector" : "hybrid";
+  switch (mode) {
+    case "dense":
+      return "vector";
+    case "keyword":
+      return "keyword";
+    case "hybrid":
+      return "hybrid";
+  }
 }
 
 export interface PipelineOptions {

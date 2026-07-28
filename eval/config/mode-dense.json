@@ -1,0 +1,23 @@
+{
+  "name": "mode-dense",
+  "description": "Retrieval-mode arm, mode=dense. Identical to baseline except retrieval.mode. Vector search only — no keyword arm, so RRF fuses a single list and the ordering is pure embedding similarity. Tests whether hybrid fusion earns its keep. Both prior sweeps found candidate supply is not the constraint and ordering is, and fusion is the ordering mechanism — it has never been measured against not fusing. Query embeddings are cached and identical across arms, so both are $0. Run with --retrieval-only.",
+  "embeddingModel": "voyage-4",
+  "chunkStrategy": {
+    "size": 800,
+    "overlap": 0.15,
+    "tableName": "chunks"
+  },
+  "retrieval": {
+    "mode": "dense",
+    "topK": 8,
+    "rrfK": 60,
+    "searchTop": 20,
+    "rerank": null
+  },
+  "queryRewrite": "none",
+  "generation": {
+    "model": "gemini-flash-lite-latest",
+    "promptVersion": "v1",
+    "maxTokens": 4096
+  }
+}

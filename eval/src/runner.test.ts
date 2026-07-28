@@ -1,7 +1,14 @@
+import { spawnSync } from "node:child_process";
+import { existsSync, readdirSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import { mapWithConcurrency, selectSubset } from "./runner";
 import type { Question } from "./types";
+
+const RUNS_DIR = "eval/runs";
 
 function q(id: string, type: Question["type"]): Question {
   return {
@@ -90,3 +97,53 @@ describe("mapWithConcurrency", () => {
     expect(await mapWithConcurrency([], 4, async () => 1)).toEqual([]);
   });
 });
+
+describe("entry point", () => {
+  /**
+   * THIS TEST FILE IS THE REGRESSION. `main()` was called unconditionally at
+   * the bottom of runner.ts, so the two imports at the top of this file started
+   * a live 76-question judged run — against Supabase and the free-tier LLM
+   * quota — every time the suite was collected. It left 30 husk run files in
+   * eval/runs/, and never once said so: the worker was killed when the tests
+   * finished, before the run got far enough to print anything.
+   *
+   * Asserting from inside this process cannot work, because the import that
+   * would trigger it has already happened by the time any test body runs. So
+   * the check is a child process that imports the module and nothing else.
+   *
+   * `-- --variant __nonexistent__` is the safety catch, not the subject. Under
+   * `tsx -e` argv[1] is the separator rather than a script path, so the guard
+   * sees "not the entry point" and main() never runs. If the guard regresses,
+   * main() parses that argv, rejects the unknown argument, and exits non-zero
+   * BEFORE reaching the network — so a broken guard fails this test instead of
+   * quietly spending the day's quota to prove itself broken.
+   */
+  it("does not run the CLI when the module is imported", () => {
+    const runnerUrl = pathToFileURL(resolve("eval/src/runner.ts")).href;
+    const before = runFiles();
+
+    const child = spawnSync(
+      process.execPath,
+      // tsx's CLI directly rather than `npx tsx`, so no shell is involved: on
+      // Windows cmd.exe rewrites the quoting of the -e snippet and esbuild gets
+      // a fragment. No top-level await either — `-e` transforms to CJS.
+      [
+        resolve("node_modules/tsx/dist/cli.mjs"),
+        "-e",
+        `import(${JSON.stringify(runnerUrl)}).catch((e) => { console.error(e); process.exit(1); })`,
+        "--",
+        "--variant",
+        "__nonexistent__",
+      ],
+      { encoding: "utf8", timeout: 60_000 },
+    );
+
+    expect(child.stdout.trim() + child.stderr.trim()).toBe("");
+    expect(child.status).toBe(0);
+    expect(runFiles()).toEqual(before);
+  });
+});
+
+function runFiles(): string[] {
+  return existsSync(RUNS_DIR) ? readdirSync(RUNS_DIR).sort() : [];
+}
