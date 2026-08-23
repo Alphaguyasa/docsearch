@@ -15,6 +15,16 @@ export interface SourceChunk {
   filename: string;
   pageNumber: number | null;
   content: string;
+  /**
+   * The lookup-able citation: "Wisdom 3:1", "NPNF2-08 — Letter CCXXXIII".
+   * Null for documents with no recovered structure, which still cite by page.
+   */
+  reference: string | null;
+  author: string | null;
+  /** "eastern" | "oriental" | "both" | null — see src/lib/corpus/types.ts. */
+  tradition: string | null;
+  category: string | null;
+  century: number | null;
 }
 
 /**

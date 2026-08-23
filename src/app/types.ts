@@ -27,4 +27,14 @@ export interface DocumentSummary {
   status: string;
   error: string | null;
   created_at: string;
+  /**
+   * Catalogue metadata. Null for anything not from the Orthodox catalog — a
+   * user's own upload, or a document left over from before this was a library.
+   * `tradition` being null is the test for "not part of the library".
+   */
+  work_id: string | null;
+  author: string | null;
+  tradition: string | null;
+  category: string | null;
+  century: number | null;
 }

@@ -1,0 +1,500 @@
+{
+  "fetchedAt": "2026-08-22T20:09:42.467Z",
+  "entries": [
+    {
+      "id": "anf01",
+      "title": "Ante-Nicene Fathers, Vol. 1: The Apostolic Fathers with Justin Martyr and Irenaeus",
+      "file": "anf01.txt",
+      "url": "https://ccel.org/ccel/schaff/anf01/cache/anf01.txt",
+      "sha256": "ee9c7f0ac3f4df08d07ddf81cd7e061e82a35e0d27de611cae06f1e05b2fb991",
+      "bytes": 3149312,
+      "fetchedAt": "2026-08-22T19:07:22.910Z"
+    },
+    {
+      "id": "anf02",
+      "title": "Ante-Nicene Fathers, Vol. 2: Fathers of the Second Century (Hermas, Tatian, Athenagoras, Theophilus, Clement of Alexandria)",
+      "file": "anf02.txt",
+      "url": "https://ccel.org/ccel/schaff/anf02/cache/anf02.txt",
+      "sha256": "ae8e15414a21fe8d54a30fee7c3fbd1ee6a018e624dcd681d030da5c1cabbcac",
+      "bytes": 3768675,
+      "fetchedAt": "2026-08-22T20:09:26.278Z"
+    },
+    {
+      "id": "anf03",
+      "title": "Ante-Nicene Fathers, Vol. 3: Latin Christianity — Tertullian",
+      "file": "anf03.txt",
+      "url": "https://ccel.org/ccel/schaff/anf03/cache/anf03.txt",
+      "sha256": "9299f3fae7c08024ea918e70d25433b7b110cc2b851d030cb22f3b1f080800c8",
+      "bytes": 4427171,
+      "fetchedAt": "2026-08-22T19:14:43.386Z"
+    },
+    {
+      "id": "anf04",
+      "title": "Ante-Nicene Fathers, Vol. 4: Tertullian Part IV; Minucius Felix; Commodian; Origen",
+      "file": "anf04.txt",
+      "url": "https://ccel.org/ccel/schaff/anf04/cache/anf04.txt",
+      "sha256": "b9f385a048c18158c2f74dcd37062f48a1c68a5d05bdb07270a93692d172da2e",
+      "bytes": 4237225,
+      "fetchedAt": "2026-08-22T19:17:54.839Z"
+    },
+    {
+      "id": "anf05",
+      "title": "Ante-Nicene Fathers, Vol. 5: Hippolytus; Cyprian; Caius; Novatian",
+      "file": "anf05.txt",
+      "url": "https://ccel.org/ccel/schaff/anf05/cache/anf05.txt",
+      "sha256": "a02b61c36f07edd406a08138b9797151d6e808cb1618f1cc282fe9db5f6a87f8",
+      "bytes": 4302686,
+      "fetchedAt": "2026-08-22T20:09:31.119Z"
+    },
+    {
+      "id": "anf06",
+      "title": "Ante-Nicene Fathers, Vol. 6: Gregory Thaumaturgus; Dionysius the Great; Julius Africanus; Anatolius; Methodius; Arnobius",
+      "file": "anf06.txt",
+      "url": "https://ccel.org/ccel/schaff/anf06/cache/anf06.txt",
+      "sha256": "cd739171090895364bad7600ebdebe824f995e696e75a3894c28ebdc671d68fb",
+      "bytes": 3439156,
+      "fetchedAt": "2026-08-22T20:09:35.937Z"
+    },
+    {
+      "id": "anf07",
+      "title": "Ante-Nicene Fathers, Vol. 7: Lactantius; Venantius; Asterius; Victorinus; Dionysius; Apostolic Teaching and Constitutions; Homily; Liturgies",
+      "file": "anf07.txt",
+      "url": "https://ccel.org/ccel/schaff/anf07/cache/anf07.txt",
+      "sha256": "b69327af0a84dd247c8e32848ad158b038125b534fa6333bba734c5de22e261c",
+      "bytes": 3986919,
+      "fetchedAt": "2026-08-22T20:09:42.467Z"
+    },
+    {
+      "id": "anf08",
+      "title": "Ante-Nicene Fathers, Vol. 8: The Twelve Patriarchs, Excerpts and Epistles, The Clementina, Apocrypha, Decretals, Memoirs of Edessa and Syriac Documents",
+      "file": "anf08.txt",
+      "url": "https://ccel.org/ccel/schaff/anf08/cache/anf08.txt",
+      "sha256": "fc3df54906137039ef2371aa9cf0fb774712d8ad0fd8f08b494cf5bf90817584",
+      "bytes": 4430805,
+      "fetchedAt": "2026-08-22T19:28:48.727Z"
+    },
+    {
+      "id": "anf09",
+      "title": "Ante-Nicene Fathers, Vol. 9: The Gospel of Peter, The Diatessaron of Tatian, The Apocalypse of Peter, and Origen's Commentaries",
+      "file": "anf09.txt",
+      "url": "https://ccel.org/ccel/schaff/anf09/cache/anf09.txt",
+      "sha256": "3861096b158e12bc13f4516baac913cbd3d921c607862a7eace4f0257b3aefa5",
+      "bytes": 3047154,
+      "fetchedAt": "2026-08-22T19:31:12.257Z"
+    },
+    {
+      "id": "anf10",
+      "title": "Ante-Nicene Fathers, Vol. 10: Bibliographic Synopsis and General Index",
+      "file": "anf10.txt",
+      "url": "https://ccel.org/ccel/schaff/anf10/cache/anf10.txt",
+      "sha256": "c97b6c2b8e587aec46a3fb80cec871caf25ad0a9039a0cf4552a221c4b47063c",
+      "bytes": 28045,
+      "fetchedAt": "2026-08-22T19:31:49.006Z"
+    },
+    {
+      "id": "book-of-governors",
+      "title": "The Book of Governors: The Historia Monastica of Thomas of Marga",
+      "file": "book-of-governors.txt",
+      "url": "https://archive.org/download/bookofgovernorsh01thom/bookofgovernorsh01thom_djvu.txt",
+      "sha256": "925b72f72a6d6a0b366078c98ddcbe70b4bdfcd0e303163e4cc31ace16ae15e7",
+      "bytes": 1329291,
+      "fetchedAt": "2026-08-22T20:06:08.105Z"
+    },
+    {
+      "id": "brightman-liturgies",
+      "title": "Liturgies Eastern and Western, Vol. 1: Eastern Liturgies",
+      "file": "brightman-liturgies.txt",
+      "url": "https://archive.org/download/liturgieseastern00brig/liturgieseastern00brig_djvu.txt",
+      "sha256": "8c5e876af9b322ac8da5a9883854552f867142feb62938cc1c91415a127111bb",
+      "bytes": 1473388,
+      "fetchedAt": "2026-08-22T20:06:32.026Z"
+    },
+    {
+      "id": "dionysius-areopagite",
+      "title": "The Works of Dionysius the Areopagite",
+      "file": "dionysius-areopagite.txt",
+      "url": "https://archive.org/download/worksofdionysius00dionuoft/worksofdionysius00dionuoft_djvu.txt",
+      "sha256": "26ab3bd7e1602b3f1edbc33ada70c3fd0aa241cbff3b007437112997f9f09a40",
+      "bytes": 693531,
+      "fetchedAt": "2026-08-22T20:06:40.572Z"
+    },
+    {
+      "id": "douay-rheims",
+      "title": "The Douay-Rheims Bible, with the Deuterocanonical Books",
+      "file": "douay-rheims.txt",
+      "url": "https://ebible.org/Scriptures/engDRA_vpl.zip",
+      "sha256": "d8eca6ac108774bec708d4856899a46a251864d76074fe82df584cd0d0fb020f",
+      "bytes": 4982425,
+      "fetchedAt": "2026-08-22T18:49:39.454Z"
+    },
+    {
+      "id": "enoch-charles",
+      "title": "The Book of Enoch (1 Enoch)",
+      "file": "enoch-charles.txt",
+      "url": "https://archive.org/download/cu31924067146773/cu31924067146773_djvu.txt",
+      "sha256": "78913b05f43c0575d60a5ebc6bf795d729079a058970f85cb384702323768bef",
+      "bytes": 1108471,
+      "fetchedAt": "2026-08-22T18:52:37.622Z"
+    },
+    {
+      "id": "ethiopian-synaxarion",
+      "title": "The Book of the Saints of the Ethiopian Church (the Ethiopian Synaxarion)",
+      "file": "ethiopian-synaxarion.txt",
+      "url": "https://archive.org/download/bookofsaintsofet00yait/bookofsaintsofet00yait_djvu.txt",
+      "sha256": "055b3864da774d67d9e3ef9398aeed5248261837af585410dcc2c8c622f8238a",
+      "bytes": 2706604,
+      "fetchedAt": "2026-08-22T19:04:13.780Z"
+    },
+    {
+      "id": "hapgood-service-book",
+      "title": "Service Book of the Holy Orthodox-Catholic Apostolic Church",
+      "file": "hapgood-service-book.txt",
+      "url": "https://archive.org/download/gtu_A32400004109975B/gtu_A32400004109975B_djvu.txt",
+      "sha256": "7158bcdb7479d4c49a491d0b8efd1ad068548bbcd51274d6fa5b305a3b5ca74f",
+      "bytes": 1622946,
+      "fetchedAt": "2026-08-22T20:06:20.225Z"
+    },
+    {
+      "id": "jubilees-charles",
+      "title": "The Book of Jubilees (The Little Genesis)",
+      "file": "jubilees-charles.txt",
+      "url": "https://archive.org/download/cu31924060029984/cu31924060029984_djvu.txt",
+      "sha256": "72255c01afd7fa3481b349627a2ff7376ab3089a632a8c6a101538f61f433148",
+      "bytes": 957014,
+      "fetchedAt": "2026-08-22T18:54:43.964Z"
+    },
+    {
+      "id": "kebra-nagast",
+      "title": "The Kebra Nagast (The Glory of Kings)",
+      "file": "kebra-nagast.txt",
+      "url": "https://archive.org/download/queenofshebahero00budgrich/queenofshebahero00budgrich_djvu.txt",
+      "sha256": "d1ca59fc8fe535cf86d96cf04d042d859035c44d5652c5d6edf977ca5c1974e3",
+      "bytes": 731205,
+      "fetchedAt": "2026-08-22T18:57:11.473Z"
+    },
+    {
+      "id": "kjv-apocrypha",
+      "title": "The King James Version with the Apocrypha",
+      "file": "kjv-apocrypha.txt",
+      "url": "https://ebible.org/Scriptures/eng-kjv_vpl.zip",
+      "sha256": "07bf8e5e02694bc5f1b0978a8bb4eb2a1a2c5a6b5328ae2d2e05115ed2486afc",
+      "bytes": 5297846,
+      "fetchedAt": "2026-08-22T18:49:26.528Z"
+    },
+    {
+      "id": "lausiac-history",
+      "title": "The Lausiac History of Palladius",
+      "file": "lausiac-history.txt",
+      "url": "https://archive.org/download/lausiachistoryof013039mbp/lausiachistoryof013039mbp_djvu.txt",
+      "sha256": "98d910ae0cb326f63a1b886f864fad5aca4e0cf326c9a5dd43249030b44ec63f",
+      "bytes": 325962,
+      "fetchedAt": "2026-08-22T20:05:59.932Z"
+    },
+    {
+      "id": "lxx-brenton",
+      "title": "The Septuagint (Brenton's English Translation), with the Apocrypha",
+      "file": "lxx-brenton.txt",
+      "url": "https://ebible.org/Scriptures/eng-Brenton_vpl.zip",
+      "sha256": "ba5abc588fcbc70f21fe7e4d698b194c47f5d1f91821a9eddceb19f0863ef09d",
+      "bytes": 4255775,
+      "fetchedAt": "2026-08-22T18:49:19.038Z"
+    },
+    {
+      "id": "my-life-in-christ",
+      "title": "My Life in Christ",
+      "file": "my-life-in-christ.txt",
+      "url": "https://archive.org/download/mylifeinchristex00serguoft/mylifeinchristex00serguoft_djvu.txt",
+      "sha256": "6ba6acae4c6d00798975948724705386f7b2a79c555510be0a16add572f91e1a",
+      "bytes": 1750560,
+      "fetchedAt": "2026-08-22T20:06:51.993Z"
+    },
+    {
+      "id": "neale-eastern-church-1",
+      "title": "A History of the Holy Eastern Church, Vol. 1",
+      "file": "neale-eastern-church-1.txt",
+      "url": "https://archive.org/download/historyofholyeas01neal/historyofholyeas01neal_djvu.txt",
+      "sha256": "82e44d29a507024cc1c030d514d597ce20d1792dbe377dfcaecd8b023ead365f",
+      "bytes": 951271,
+      "fetchedAt": "2026-08-22T20:07:00.692Z"
+    },
+    {
+      "id": "npnf101",
+      "title": "NPNF1-01: Augustine — Prolegomena, Confessions, Letters",
+      "file": "npnf101.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf101/cache/npnf101.txt",
+      "sha256": "210006964fc4eaae1706935a234b19a94a31c7adf048837fbf631d3c51e61549",
+      "bytes": 3902123,
+      "fetchedAt": "2026-08-22T19:34:20.799Z"
+    },
+    {
+      "id": "npnf102",
+      "title": "NPNF1-02: Augustine — City of God, On Christian Doctrine",
+      "file": "npnf102.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf102/cache/npnf102.txt",
+      "sha256": "5c973feda803f3e58a88ed7df210b42d436f5466741eb8dbeae713ab56dedae4",
+      "bytes": 3692898,
+      "fetchedAt": "2026-08-22T19:36:56.827Z"
+    },
+    {
+      "id": "npnf103",
+      "title": "NPNF1-03: Augustine — On the Holy Trinity, Doctrinal Treatises, Moral Treatises",
+      "file": "npnf103.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf103/cache/npnf103.txt",
+      "sha256": "cc8d3ff7ce4d4ba293f50a06200af03ff0e5abdeb5200db3a59b4dbe2cad7bdb",
+      "bytes": 3357503,
+      "fetchedAt": "2026-08-22T19:39:25.429Z"
+    },
+    {
+      "id": "npnf104",
+      "title": "NPNF1-04: Augustine — Writings Against the Manichaeans and Against the Donatists",
+      "file": "npnf104.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf104/cache/npnf104.txt",
+      "sha256": "52aca839b87934bb1e7bfd6932bd06b7ce54212311ded053bdf836c160555c5b",
+      "bytes": 3849596,
+      "fetchedAt": "2026-08-22T19:43:06.832Z"
+    },
+    {
+      "id": "npnf105",
+      "title": "NPNF1-05: Augustine — Anti-Pelagian Writings",
+      "file": "npnf105.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf105/cache/npnf105.txt",
+      "sha256": "bf3dd167062eb4e9f4f193b4957df6973df0321fb5448c157c735309c9c6b40b",
+      "bytes": 3756609,
+      "fetchedAt": "2026-08-22T19:45:24.430Z"
+    },
+    {
+      "id": "npnf106",
+      "title": "NPNF1-06: Augustine — Sermon on the Mount, Harmony of the Gospels, Homilies on the Gospels",
+      "file": "npnf106.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf106/cache/npnf106.txt",
+      "sha256": "ce37179876e5e5c9d8e7a6f1f17b8796c4fdf3ffd2815acb82a1c734c57ecd18",
+      "bytes": 3873176,
+      "fetchedAt": "2026-08-22T19:47:58.725Z"
+    },
+    {
+      "id": "npnf107",
+      "title": "NPNF1-07: Augustine — Homilies on the Gospel of John, Homilies on the First Epistle of John, Soliloquies",
+      "file": "npnf107.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf107/cache/npnf107.txt",
+      "sha256": "266502c9bc5da73981217fc536682b999fc7a09da50255477ed4bcbdad1363e3",
+      "bytes": 3204445,
+      "fetchedAt": "2026-08-22T19:50:21.122Z"
+    },
+    {
+      "id": "npnf108",
+      "title": "NPNF1-08: Augustine — Expositions on the Book of Psalms",
+      "file": "npnf108.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf108/cache/npnf108.txt",
+      "sha256": "d6841950333024906294e6e829f7512d08b3adf62ae6cee3615d18a7ad0020e9",
+      "bytes": 5029159,
+      "fetchedAt": "2026-08-22T19:55:03.387Z"
+    },
+    {
+      "id": "npnf109",
+      "title": "NPNF1-09: St John Chrysostom — On the Priesthood, Ascetic Treatises, Select Homilies and Letters, Homilies on the Statues",
+      "file": "npnf109.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf109/cache/npnf109.txt",
+      "sha256": "d6a51d22d996e02c47b88462f7222737b26d2363212f24e34834cfc6b580da57",
+      "bytes": 2752950,
+      "fetchedAt": "2026-08-22T19:57:36.525Z"
+    },
+    {
+      "id": "npnf110",
+      "title": "NPNF1-10: St John Chrysostom — Homilies on the Gospel of St Matthew",
+      "file": "npnf110.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf110/cache/npnf110.txt",
+      "sha256": "adb8f1c9a988c5050a20fb9fdbf75143dcb227e95e3dad2f560a63b757923648",
+      "bytes": 3345978,
+      "fetchedAt": "2026-08-22T20:00:29.657Z"
+    },
+    {
+      "id": "npnf111",
+      "title": "NPNF1-11: St John Chrysostom — Homilies on the Acts of the Apostles and the Epistle to the Romans",
+      "file": "npnf111.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf111/cache/npnf111.txt",
+      "sha256": "8bdb50c6fd132a9558cbd16808ae05000ddcc7059cfd6c1d282f4f734e539c15",
+      "bytes": 4443151,
+      "fetchedAt": "2026-08-22T20:03:43.587Z"
+    },
+    {
+      "id": "npnf112",
+      "title": "NPNF1-12: St John Chrysostom — Homilies on First and Second Corinthians",
+      "file": "npnf112.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf112/cache/npnf112.txt",
+      "sha256": "10a3454d6c08d52088837132f06ca07c5a1ec9d7264d909fa92c48aa3b2ddddc",
+      "bytes": 2897359,
+      "fetchedAt": "2026-08-22T20:04:15.328Z"
+    },
+    {
+      "id": "npnf113",
+      "title": "NPNF1-13: St John Chrysostom — Homilies on Galatians, Ephesians, Philippians, Colossians, Thessalonians, Timothy, Titus and Philemon",
+      "file": "npnf113.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf113/cache/npnf113.txt",
+      "sha256": "54274dd9aa73ca36e4da9e763e4a27d1818b09e42ffc73795529afec703a4210",
+      "bytes": 3933882,
+      "fetchedAt": "2026-08-22T20:04:20.410Z"
+    },
+    {
+      "id": "npnf114",
+      "title": "NPNF1-14: St John Chrysostom — Homilies on the Gospel of St John and the Epistle to the Hebrews",
+      "file": "npnf114.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf114/cache/npnf114.txt",
+      "sha256": "e26f55f8d0739c07d73d5b664e42efbd923a43230a22d93d55261c808e9cd458",
+      "bytes": 3943878,
+      "fetchedAt": "2026-08-22T20:04:25.921Z"
+    },
+    {
+      "id": "npnf201",
+      "title": "NPNF2-01: Eusebius — Church History, Life of Constantine, Oration in Praise of Constantine",
+      "file": "npnf201.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf201/cache/npnf201.txt",
+      "sha256": "b9104097771d6f5cc39fc630c396805b857f2ec27757fa154acce022b2e09613",
+      "bytes": 4860228,
+      "fetchedAt": "2026-08-22T20:04:32.468Z"
+    },
+    {
+      "id": "npnf202",
+      "title": "NPNF2-02: Socrates and Sozomenus — Ecclesiastical Histories",
+      "file": "npnf202.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf202/cache/npnf202.txt",
+      "sha256": "b78d178bd79b6264abb35cbbcf555562f61104328dca33d543c47cb38086d3f1",
+      "bytes": 3002300,
+      "fetchedAt": "2026-08-22T20:04:37.290Z"
+    },
+    {
+      "id": "npnf203",
+      "title": "NPNF2-03: Theodoret, Jerome, Gennadius, Rufinus — Historical Writings",
+      "file": "npnf203.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf203/cache/npnf203.txt",
+      "sha256": "2216b67e4f1a4181dc44113a472b208f63f2d70d55a4ed154bb8027047976bbc",
+      "bytes": 3455580,
+      "fetchedAt": "2026-08-22T20:04:42.258Z"
+    },
+    {
+      "id": "npnf204",
+      "title": "NPNF2-04: St Athanasius — Select Works and Letters",
+      "file": "npnf204.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf204/cache/npnf204.txt",
+      "sha256": "d2f362ce989db6955bb7d900c619543c581beceaca52acd8359510551c85f124",
+      "bytes": 4570263,
+      "fetchedAt": "2026-08-22T20:04:46.775Z"
+    },
+    {
+      "id": "npnf205",
+      "title": "NPNF2-05: St Gregory of Nyssa — Dogmatic Treatises, Ascetic and Moral Works, Letters",
+      "file": "npnf205.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf205/cache/npnf205.txt",
+      "sha256": "cef974043e48a52d1b6d4ce3bdfb538fa5be2c3af8b53e3bb75181760d614484",
+      "bytes": 3490499,
+      "fetchedAt": "2026-08-22T20:04:50.815Z"
+    },
+    {
+      "id": "npnf206",
+      "title": "NPNF2-06: St Jerome — Letters and Select Works",
+      "file": "npnf206.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf206/cache/npnf206.txt",
+      "sha256": "53fb977f33ea3d92276eca7c0d2fa2e86f654499855ea74bef1c0721706724e1",
+      "bytes": 3559723,
+      "fetchedAt": "2026-08-22T20:04:55.703Z"
+    },
+    {
+      "id": "npnf207",
+      "title": "NPNF2-07: St Cyril of Jerusalem — Catechetical Lectures; St Gregory Nazianzen — Select Orations",
+      "file": "npnf207.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf207/cache/npnf207.txt",
+      "sha256": "56d84cfa94dee313af0139e2d7f3d4b5f7fffca40ce0f34794b5f56264964dfd",
+      "bytes": 3388014,
+      "fetchedAt": "2026-08-22T20:04:59.563Z"
+    },
+    {
+      "id": "npnf208",
+      "title": "NPNF2-08: St Basil the Great — Letters and Select Works",
+      "file": "npnf208.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf208/cache/npnf208.txt",
+      "sha256": "4f21a589be54f0c160c2a2bf8c316991dae1a0f3d13430466ed2db555018e0e2",
+      "bytes": 2645735,
+      "fetchedAt": "2026-08-22T20:05:03.332Z"
+    },
+    {
+      "id": "npnf209",
+      "title": "NPNF2-09: St Hilary of Poitiers; St John of Damascus",
+      "file": "npnf209.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf209/cache/npnf209.txt",
+      "sha256": "859ba34cc5998f2761b801aa5de724b2ea741a54d98e21614faeb89cc40f8ad4",
+      "bytes": 2606804,
+      "fetchedAt": "2026-08-22T20:05:08.301Z"
+    },
+    {
+      "id": "npnf210",
+      "title": "NPNF2-10: St Ambrose — Select Works and Letters",
+      "file": "npnf210.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf210/cache/npnf210.txt",
+      "sha256": "14fa05cc98a67cb1ccf7613e63d5eb80fd48feb3e09dd29210e70f53dfcd7577",
+      "bytes": 2963575,
+      "fetchedAt": "2026-08-22T20:05:11.921Z"
+    },
+    {
+      "id": "npnf211",
+      "title": "NPNF2-11: Sulpitius Severus, Vincent of Lerins, St John Cassian",
+      "file": "npnf211.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf211/cache/npnf211.txt",
+      "sha256": "8b1206d4e7488c65b5391875fd9570a8a6bcc83270dea35ffe44010c3575d267",
+      "bytes": 3470230,
+      "fetchedAt": "2026-08-22T20:05:15.906Z"
+    },
+    {
+      "id": "npnf212",
+      "title": "NPNF2-12: St Leo the Great; St Gregory the Great (the Dialogist)",
+      "file": "npnf212.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf212/cache/npnf212.txt",
+      "sha256": "7bb1db6e2f6814b58dd13a7b85f17f37f80c22ac979c3298793db1fa909b5b5a",
+      "bytes": 2906681,
+      "fetchedAt": "2026-08-22T20:05:20.226Z"
+    },
+    {
+      "id": "npnf213",
+      "title": "NPNF2-13: St Gregory the Great II; St Ephrem the Syrian; Aphrahat the Persian Sage",
+      "file": "npnf213.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf213/cache/npnf213.txt",
+      "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
+      "bytes": 1921581,
+      "fetchedAt": "2026-08-22T20:05:23.849Z"
+    },
+    {
+      "id": "npnf214",
+      "title": "NPNF2-14: The Seven Ecumenical Councils",
+      "file": "npnf214.txt",
+      "url": "https://ccel.org/ccel/schaff/npnf214/cache/npnf214.txt",
+      "sha256": "5b8d0c6518fd71b1de8d626ebf1d6b59c9967d2e7f5d2e0379654b5cbbf0c914",
+      "bytes": 2570287,
+      "fetchedAt": "2026-08-22T20:05:28.132Z"
+    },
+    {
+      "id": "paradise-fathers-1",
+      "title": "The Paradise, or Garden of the Holy Fathers, Vol. 1",
+      "file": "paradise-fathers-1.txt",
+      "url": "https://archive.org/download/ParadiseOfTheHolyFathersV1/ParadiseOfTheHolyFathersV1_djvu.txt",
+      "sha256": "6f11e77a68dca670c43e85da4bd6d6daa8aafbf5f5be93e5bd3e3bb386dfa80d",
+      "bytes": 1413793,
+      "fetchedAt": "2026-08-22T20:05:44.081Z"
+    },
+    {
+      "id": "paradise-fathers-2",
+      "title": "The Paradise, or Garden of the Holy Fathers, Vol. 2",
+      "file": "paradise-fathers-2.txt",
+      "url": "https://archive.org/download/ParadiseOfTheHolyFathersV2/ParadiseOfTheHolyFathersV2_djvu.txt",
+      "sha256": "3e8f6f51f675816bdb0d36b6af5a4e363204e1571e3c4531485982c2112d309e",
+      "bytes": 967437,
+      "fetchedAt": "2026-08-22T20:05:51.865Z"
+    },
+    {
+      "id": "web-deuterocanon",
+      "title": "The World English Bible, British Edition, with the Deuterocanon",
+      "file": "web-deuterocanon.txt",
+      "url": "https://ebible.org/Scriptures/eng-webbe_vpl.zip",
+      "sha256": "9353d375e1180763ece11d5c246853feb802fcd61f5788aed66ada878d3b66d7",
+      "bytes": 5326964,
+      "fetchedAt": "2026-08-22T18:49:34.093Z"
+    }
+  ]
+}

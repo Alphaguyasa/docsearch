@@ -208,6 +208,58 @@ function toGeminiPayload(messages: LlmMessage[]): {
   return { systemText, contents };
 }
 
+/**
+ * Issue a generation request, retrying only failures worth retrying.
+ *
+ * WHY, AND WHY ONLY HERE: retrieval already retries transient database and
+ * embedding failures, and generation did not — so a 503 from the provider, the
+ * single most common transient failure in the whole request path, ended the
+ * user's answer with an error line. A real one, observed in testing:
+ * "This model is currently experiencing high demand."
+ *
+ * THE RETRY IS ON THE REQUEST, NOT THE STREAM, and that distinction is the
+ * whole safety argument. Before the first byte, retrying is invisible. Once
+ * text has been yielded to the caller it has already been written to the user's
+ * screen, and retrying would repeat it — so a failure mid-stream is never
+ * retried here and surfaces as a terminal error, which is what the NDJSON
+ * contract in the search route describes.
+ *
+ * Retried: network errors, 429, and 5xx. Not retried: 4xx, which means the
+ * request is wrong and will be exactly as wrong the second time.
+ */
+const GENERATION_RETRIES = 2;
+const GENERATION_BACKOFF_MS = 1500;
+
+async function generationRequest(
+  url: string,
+  init: RequestInit,
+  label: string,
+): Promise<Response> {
+  for (let attempt = 0; ; attempt++) {
+    let problem: string;
+    try {
+      const res = await fetch(url, init);
+      if (res.ok) return res;
+      if (res.status !== 429 && res.status < 500) return res; // caller reports it
+      problem = `${res.status} ${res.statusText}`;
+    } catch (err) {
+      problem = err instanceof Error ? err.message : String(err);
+    }
+
+    if (attempt >= GENERATION_RETRIES) {
+      // Return nothing useful here — let the caller build the error message it
+      // already knows how to build, so the failure reads the same either way.
+      throw new Error(`${label} request failed after retries: ${problem}`);
+    }
+    const waitMs = GENERATION_BACKOFF_MS * 2 ** attempt;
+    console.warn(
+      `  [llm] ${label} ${problem} (attempt ${attempt + 1}/${GENERATION_RETRIES + 1}) — ` +
+        `retrying in ${waitMs}ms`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+}
+
 const geminiProvider: LlmProvider = {
   async *stream(messages: LlmMessage[]): AsyncIterable<string> {
     // Gemini uses "model" for the assistant role and has no system role in
@@ -218,16 +270,20 @@ const geminiProvider: LlmProvider = {
       `https://generativelanguage.googleapis.com/v1beta/models/` +
       `${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${config.GEMINI_API_KEY}`;
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(systemText
-          ? { system_instruction: { parts: [{ text: systemText }] } }
-          : {}),
-        contents,
-      }),
-    });
+    const res = await generationRequest(
+      url,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...(systemText
+            ? { system_instruction: { parts: [{ text: systemText }] } }
+            : {}),
+          contents,
+        }),
+      },
+      "Gemini",
+    );
 
     if (!res.ok || !res.body) {
       const body = await res.text().catch(() => "");
@@ -276,17 +332,21 @@ const geminiProvider: LlmProvider = {
       `https://generativelanguage.googleapis.com/v1beta/models/` +
       `${model ?? GEMINI_MODEL}:generateContent?key=${config.GEMINI_API_KEY}`;
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(systemText
-          ? { system_instruction: { parts: [{ text: systemText }] } }
-          : {}),
-        contents,
-        generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
-      }),
-    });
+    const res = await generationRequest(
+      url,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...(systemText
+            ? { system_instruction: { parts: [{ text: systemText }] } }
+            : {}),
+          contents,
+          generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
+        }),
+      },
+      "Gemini",
+    );
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");

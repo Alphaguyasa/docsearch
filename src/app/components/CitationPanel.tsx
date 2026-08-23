@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 
 import type { UiSource } from "@/app/types";
 
+import { SourceLabel } from "./SourceLabel";
+
 interface Props {
   sources: UiSource[];
   cited: number[];
@@ -13,8 +15,9 @@ interface Props {
 }
 
 /**
- * Right-side panel opened by clicking a citation. Lists the cited chunks with
- * full text, document title, and page number. The active entry is scrolled into
+ * Right-side panel opened by clicking a citation. Lists the cited chunks in
+ * full, each headed by the work, its author and a reference the reader can look
+ * up in a printed edition. The active entry is scrolled into
  * view; the active or hovered entry is highlighted (hovering a chip highlights
  * the matching entry here).
  */
@@ -71,11 +74,8 @@ export function CitationPanel({
               }`}
             >
               <div className="mb-1 flex items-baseline gap-2 text-xs">
-                <span className="font-mono text-accent">[{s.n}]</span>
-                <span className="font-medium">{s.title}</span>
-                {s.pageNumber !== null && (
-                  <span className="text-muted">p.{s.pageNumber}</span>
-                )}
+                <span className="shrink-0 font-mono text-accent">[{s.n}]</span>
+                <SourceLabel source={s} />
               </div>
               <p className="whitespace-pre-wrap text-[13px] leading-6 text-foreground/90">
                 {s.content}
