@@ -41,8 +41,35 @@ const requestSchema = z.object({
     .string()
     .trim()
     .min(1, "question must not be empty")
-    .max(1000, "question must be at most 1000 characters"),
+    // Raised from 1000: "counsel" mode invites someone to describe their own
+    // situation, and a person explaining what has happened to them needs more
+    // room than a lookup question does. Still bounded — this is the text that
+    // goes into an embedding and a prompt.
+    .max(4000, "question must be at most 4000 characters"),
+  mode: z.enum(["answer", "compare", "counsel"]).default("answer"),
+  /** Restrict to one communion. Omit to draw on the whole corpus. */
+  tradition: z.enum(["eastern", "oriental"]).optional(),
 });
+
+/**
+ * How much, and how widely, each mode retrieves.
+ *
+ * These are not cosmetic. "compare" exists to show what DIFFERENT works say, so
+ * it must fetch more passages and cap how many any one work may contribute —
+ * without the cap, a question about despondency returns eight passages of
+ * Cassian, and a mode whose entire purpose is breadth answers from a single
+ * author. "counsel" caps too, more loosely: several voices speaking to a
+ * person's situation is better than one book at length, but the counsel should
+ * still be allowed to dwell where a source is genuinely apt.
+ */
+const RETRIEVAL_BY_MODE: Record<
+  "answer" | "compare" | "counsel",
+  { limit: number; maxPerWork?: number }
+> = {
+  answer: { limit: 8 },
+  compare: { limit: 16, maxPerWork: 2 },
+  counsel: { limit: 10, maxPerWork: 3 },
+};
 
 function errorResponse(message: string, status: number): Response {
   return new Response(JSON.stringify({ error: message }), {
@@ -71,6 +98,11 @@ function sourceLine(chunks: RetrievedChunk[]): string {
     filename: chunk.filename,
     pageNumber: chunk.pageNumber,
     content: chunk.content,
+    reference: chunk.reference,
+    author: chunk.author,
+    tradition: chunk.tradition,
+    category: chunk.category,
+    century: chunk.century,
     fusedScore: chunk.fusedScore,
     vectorScore: chunk.vectorScore,
     keywordScore: chunk.keywordScore,
@@ -93,13 +125,23 @@ export async function POST(request: Request): Promise<Response> {
   if (!parsed.success) {
     return errorResponse(parsed.error.issues[0]?.message ?? "Invalid request.", 400);
   }
-  const { question } = parsed.data;
+  const { question, mode, tradition } = parsed.data;
 
   // 2. Retrieve BEFORE opening the stream, so an upstream failure can still
   //    return a proper status code and message.
   let chunks: RetrievedChunk[];
   try {
-    const result = await retrieve(question);
+    const result = await retrieve(question, {
+      ...RETRIEVAL_BY_MODE[mode],
+      // ALWAYS filtered by tradition, even when the user picked neither side.
+      // A document with no tradition is not part of this corpus — the database
+      // still holds the research PDFs this project was built on before it
+      // became an Orthodox library, and an unfiltered query can and does
+      // retrieve them. Passing both traditions means "anything catalogued as
+      // Orthodox", and the SQL additionally lets through everything marked
+      // "both", which is the pre-Chalcedonian inheritance either side may cite.
+      traditions: tradition ? [tradition] : ["eastern", "oriental"],
+    });
     chunks = result.results;
   } catch (err) {
     return errorResponse(`Retrieval failed: ${errorMessage(err)}`, 502);
@@ -112,7 +154,7 @@ export async function POST(request: Request): Promise<Response> {
       try {
         controller.enqueue(encoder.encode(sourceLine(chunks)));
 
-        for await (const text of streamAnswer(question, chunks)) {
+        for await (const text of streamAnswer(question, chunks, mode)) {
           controller.enqueue(encoder.encode(line({ type: "delta", text })));
         }
 

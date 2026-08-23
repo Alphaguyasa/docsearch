@@ -37,6 +37,29 @@ export interface RetrieveOptions {
    * nothing and calls Voyage directly — there is no cache in the request path.
    */
   embedder?: (text: string) => Promise<{ embedding: number[]; usage: EmbedUsage }>;
+  /**
+   * Restrict retrieval to one communion. A work marked "both" is always
+   * included — see the SQL, which does the same. Omit for the whole corpus.
+   */
+  traditions?: string[];
+  /** Restrict to kinds of book: scripture, ascetic, council, and so on. */
+  categories?: string[];
+  /** Restrict to named works, by catalog slug. */
+  workIds?: string[];
+  /**
+   * Cap how many chunks any one work may contribute.
+   *
+   * WHY THIS IS NEEDED: unfiltered retrieval over this corpus is dominated by
+   * whichever work happens to say the query's words most often. Ask about
+   * despondency and all eight passages come back from Cassian, who wrote a
+   * whole book on it — a true answer, but it presents one Father's account as
+   * though it were the only one, and it is exactly the wrong result for a
+   * question of the form "what does each tradition say".
+   *
+   * Applied after fusion, so ranking is unaffected: it takes the best `n` from
+   * each work in fused-score order, then re-sorts. Omit for no cap.
+   */
+  maxPerWork?: number;
 }
 
 export interface RetrievedChunk {
@@ -52,6 +75,27 @@ export interface RetrievedChunk {
   title: string; // document title
   filename: string;
   pageNumber: number | null;
+  /**
+   * The citation a reader can look up — "Genesis 1:1-14", "NPNF2-13 —
+   * Demonstration VII". Null for documents ingested before the corpus carried
+   * structure (the research PDFs), which still cite by page.
+   */
+  reference: string | null;
+  /** Biblical book, for scripture chunks only. */
+  book: string | null;
+  /** Catalog slug of the work, or null for anything not from the catalog. */
+  workId: string | null;
+  author: string | null;
+  /**
+   * Which communion this passage speaks for. Carried onto every chunk because
+   * the answer must be able to say so: quoting a Chalcedonian council at
+   * someone asking an Oriental Orthodox question, without noting which is
+   * which, is a misrepresentation and not a formatting detail.
+   */
+  tradition: string | null;
+  lineages: string[] | null;
+  category: string | null;
+  century: number | null;
   /** Cosine similarity (0..1) if the chunk was found by vector search, else null. */
   vectorScore: number | null;
   /** ts_rank if the chunk was found by keyword search, else null. */
@@ -99,6 +143,7 @@ interface MatchRow {
   document_id: string;
   content: string;
   page_number: number | null;
+  reference: string | null;
   similarity: number;
 }
 interface KeywordRow {
@@ -106,12 +151,19 @@ interface KeywordRow {
   document_id: string;
   content: string;
   page_number: number | null;
+  reference: string | null;
   rank: number;
 }
 interface DocMetaRow {
   id: string;
   title: string;
   filename: string;
+  work_id: string | null;
+  author: string | null;
+  tradition: string | null;
+  lineages: string[] | null;
+  category: string | null;
+  century: number | null;
 }
 
 // A hit from one search, with its 1-based rank in that search's result list.
@@ -120,6 +172,7 @@ interface SearchHit {
   documentId: string;
   content: string;
   pageNumber: number | null;
+  reference: string | null;
   score: number;
   rank: number;
 }
@@ -138,14 +191,30 @@ export async function retrieve(
   let embedTokens: number | null = null;
   let embedMs: number | null = null;
   const embedder = opts.embedder ?? embedQueryDetailed;
+
+  // Null means "no filter" on the SQL side, so undefined options must become
+  // null rather than being omitted — supabase-js sends a missing named argument
+  // as SQL DEFAULT, which is the same thing here, but being explicit keeps the
+  // three filters symmetrical and the RPC call readable.
+  const filters: SearchFilters = {
+    filter_traditions: opts.traditions ?? null,
+    filter_categories: opts.categories ?? null,
+    filter_work_ids: opts.workIds ?? null,
+  };
+
+  // A per-work cap can only discard results, so the searches have to look
+  // deeper to still fill `limit` afterwards. Without this, capping at 2 per work
+  // turns a top-20 fetch into maybe 6 usable chunks.
+  const depth = opts.maxPerWork ? searchTop * 3 : searchTop;
+
   const runVector = async (): Promise<SearchHit[]> => {
     const started = performance.now();
     const { embedding, usage } = await embedder(query);
     embedMs = performance.now() - started;
     embedTokens = usage.totalTokens;
-    return vectorSearch(embedding, searchTop);
+    return vectorSearch(embedding, depth, filters);
   };
-  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query, searchTop);
+  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query, depth, filters);
 
   let vector: SearchHit[] | null = null;
   let keyword: SearchHit[] | null = null;
@@ -173,20 +242,36 @@ export async function retrieve(
     }
   }
 
-  const fused = fuse(vector, keyword, rrfK).slice(0, limit);
+  const ranked = fuse(vector, keyword, rrfK);
+  const fused = (opts.maxPerWork ? capPerDocument(ranked, opts.maxPerWork) : ranked).slice(0, limit);
   const meta = await fetchDocumentMeta(fused.map((f) => f.documentId));
 
-  const results: RetrievedChunk[] = fused.map((f) => ({
-    id: f.id,
-    documentId: f.documentId,
-    content: f.content,
-    title: meta.get(f.documentId)?.title ?? "(unknown)",
-    filename: meta.get(f.documentId)?.filename ?? "(unknown)",
-    pageNumber: f.pageNumber,
-    vectorScore: f.vectorScore,
-    keywordScore: f.keywordScore,
-    fusedScore: f.fusedScore,
-  }));
+  const results: RetrievedChunk[] = fused.map((f) => {
+    const doc = meta.get(f.documentId);
+    return {
+      id: f.id,
+      documentId: f.documentId,
+      content: f.content,
+      title: doc?.title ?? "(unknown)",
+      filename: doc?.filename ?? "(unknown)",
+      pageNumber: f.pageNumber,
+      reference: f.reference,
+      // `book` lives on the chunk row but is not returned by the search
+      // functions: nothing ranks or filters on it, and widening two RPC return
+      // types to carry a field only the UI reads is not worth the migration.
+      // The reference string already names the book.
+      book: null,
+      workId: doc?.work_id ?? null,
+      author: doc?.author ?? null,
+      tradition: doc?.tradition ?? null,
+      lineages: doc?.lineages ?? null,
+      category: doc?.category ?? null,
+      century: doc?.century ?? null,
+      vectorScore: f.vectorScore,
+      keywordScore: f.keywordScore,
+      fusedScore: f.fusedScore,
+    };
+  });
 
   return { results, degraded, mode, embedTokens, embedMs };
 }
@@ -241,9 +326,43 @@ async function rpcWithRetry<T>(
   }
 }
 
+/**
+ * The filter arguments both search functions take. Null means no filter.
+ *
+ * Named to match the SQL parameters exactly, because supabase-js binds RPC
+ * arguments by name — a renamed field here silently becomes SQL DEFAULT (no
+ * filter at all) rather than a type error, which would show up as an answer
+ * quietly drawn from the whole corpus when the user asked for one tradition.
+ */
+interface SearchFilters {
+  filter_traditions: string[] | null;
+  filter_categories: string[] | null;
+  filter_work_ids: string[] | null;
+}
+
+/**
+ * Keep at most `max` chunks from any one document, preserving fused order.
+ *
+ * Deliberately operates on documents rather than works: a document IS a work
+ * here, and using the id that retrieval already carries avoids a join purely to
+ * enforce a display rule.
+ */
+function capPerDocument(chunks: FusedChunk[], max: number): FusedChunk[] {
+  const seen = new Map<string, number>();
+  const kept: FusedChunk[] = [];
+  for (const chunk of chunks) {
+    const count = seen.get(chunk.documentId) ?? 0;
+    if (count >= max) continue;
+    seen.set(chunk.documentId, count + 1);
+    kept.push(chunk);
+  }
+  return kept;
+}
+
 async function vectorSearch(
   embedding: number[],
   searchTop: number,
+  filters: SearchFilters,
 ): Promise<SearchHit[]> {
   // The client is untyped (no generated DB types), so assert the row shape.
   const rows = await rpcWithRetry<MatchRow>("vector", async () =>
@@ -252,6 +371,7 @@ async function vectorSearch(
       // as a vector correctly. Verified against the live function.
       query_embedding: JSON.stringify(embedding),
       match_count: searchTop,
+      ...filters,
     }),
   );
   return rows.map((r, i) => ({
@@ -259,6 +379,7 @@ async function vectorSearch(
     documentId: r.document_id,
     content: r.content,
     pageNumber: r.page_number,
+    reference: r.reference,
     score: r.similarity,
     rank: i + 1,
   }));
@@ -275,12 +396,14 @@ function toOrQuery(query: string): string {
 async function keywordSearch(
   query: string,
   searchTop: number,
+  filters: SearchFilters,
 ): Promise<SearchHit[]> {
   // The client is untyped (no generated DB types), so assert the row shape.
   const rows = await rpcWithRetry<KeywordRow>("keyword", async () =>
     await db.rpc("keyword_chunks", {
       query_text: toOrQuery(query),
       match_count: searchTop,
+      ...filters,
     }),
   );
   return rows.map((r, i) => ({
@@ -288,6 +411,7 @@ async function keywordSearch(
     documentId: r.document_id,
     content: r.content,
     pageNumber: r.page_number,
+    reference: r.reference,
     score: r.rank,
     rank: i + 1,
   }));
@@ -298,6 +422,7 @@ interface FusedChunk {
   documentId: string;
   content: string;
   pageNumber: number | null;
+  reference: string | null;
   vectorScore: number | null;
   keywordScore: number | null;
   fusedScore: number;
@@ -327,6 +452,7 @@ function fuse(
           documentId: hit.documentId,
           content: hit.content,
           pageNumber: hit.pageNumber,
+          reference: hit.reference,
           vectorScore: null,
           keywordScore: null,
           fusedScore: 0,
@@ -353,7 +479,7 @@ async function fetchDocumentMeta(
 
   const { data, error } = await db
     .from("documents")
-    .select("id,title,filename")
+    .select("id,title,filename,work_id,author,tradition,lineages,category,century")
     .in("id", ids)
     .returns<DocMetaRow[]>();
   if (error) throw new Error(`document metadata lookup failed: ${error.message}`);

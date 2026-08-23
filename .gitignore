@@ -31,12 +31,19 @@ CLAUDE.md
 *.pem
 *.key
 
-# Fetched corpus: PDFs are reproducible from corpus/manifest.json, which IS
-# tracked. Committing the papers themselves would redistribute them; committing
-# the manifest lets anyone rebuild a byte-identical corpus.
+# Fetched corpus: the texts are reproducible from the manifests, which ARE
+# tracked. Committing the books themselves would redistribute ~200MB; committing
+# the manifest (id, URL, SHA-256, size) lets anyone rebuild a byte-identical
+# corpus and turns a silently changed upstream file into a loud mismatch.
+#
+# Git cannot re-include a file whose PARENT DIRECTORY is excluded, so
+# corpus/orthodox/ has to be un-ignored before its manifest can be negated.
 corpus/*
 !corpus/manifest.json
 !corpus/failed.json
+!corpus/orthodox/
+corpus/orthodox/*
+!corpus/orthodox/manifest.json
 ingest-failures.json
 
 # Phase 9 CI writes these next to the workspace root.
