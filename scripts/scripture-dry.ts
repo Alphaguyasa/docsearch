@@ -92,6 +92,19 @@ function main(): void {
     out.push(`**${entry.id}** — ${heads.length} sections: ${heads.slice(0, 40).join(" · ")}`, "");
   }
 
+  // Coverage per Synaxarium month, and where named figures appear in tradition texts.
+  const months = new Map<string, number>();
+  for (const c of all.filter((c) => c.sourceId === "synaxarium")) {
+    const m = c.ref.match(/^Ethiopian Synaxarium, ([A-Za-z]+)/)?.[1] ?? "?";
+    months.set(m, (months.get(m) ?? 0) + 1);
+  }
+  out.push("## Synaxarium chunks per month", "", [...months].map(([m, n]) => `${m}: ${n}`).join(" · "), "");
+  out.push("## Where Moses the Ethiopian appears", "");
+  for (const c of all.filter((c) => c.sourceId !== "web" && /Moses[^.]{0,80}(Ethiopian|Black|robber|Indian)|(Ethiopian|Black|robber|Indian)[^.]{0,40}Moses/i.test(c.content))) {
+    out.push(`- ${c.sourceId}: ${c.ref}`);
+  }
+  out.push("");
+
   // Tuning aids for OCR sources: most frequent short lines (running-header
   // candidates) and raw context around a keyword, straight from the raw text.
   out.push("## OCR tuning aids", "");
