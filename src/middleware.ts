@@ -29,7 +29,16 @@ function safeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
+/** Upload / document-management routes from the original DocSearch app. */
+const DOCUMENT_ROUTES = /^\/(documents|api\/upload|api\/process|api\/documents)(\/|$)/;
+
 export function middleware(req: NextRequest): NextResponse {
+  // The scripture corpus is curated and ingested by CI; uploading arbitrary
+  // PDFs into it (and paying to embed them) is off unless explicitly enabled.
+  if (process.env.SHOW_DOCUMENTS !== "1" && DOCUMENT_ROUTES.test(req.nextUrl.pathname)) {
+    return new NextResponse("Not found", { status: 404 });
+  }
+
   const password = process.env.APP_PASSWORD;
   if (!password) return NextResponse.next();
 

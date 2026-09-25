@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import type { UiSource } from "@/app/types";
+import { sourceKindLabel, sourceName, type UiSource } from "@/app/types";
 
 interface Props {
   sources: UiSource[];
@@ -41,9 +41,7 @@ export function CitationPanel({
   return (
     <aside className="border border-border bg-panel">
       <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted">
-          Cited sources
-        </span>
+        <span className="text-xs text-muted">Cited passages</span>
         <button
           type="button"
           onClick={onClose}
@@ -72,10 +70,8 @@ export function CitationPanel({
             >
               <div className="mb-1 flex items-baseline gap-2 text-xs">
                 <span className="font-mono text-accent">[{s.n}]</span>
-                <span className="font-medium">{s.title}</span>
-                {s.pageNumber !== null && (
-                  <span className="text-muted">p.{s.pageNumber}</span>
-                )}
+                <span className="font-medium">{sourceName(s)}</span>
+                {sourceKindLabel(s) && <span className="text-muted">{sourceKindLabel(s)}</span>}
               </div>
               <p className="whitespace-pre-wrap text-[13px] leading-6 text-foreground/90">
                 {s.content}

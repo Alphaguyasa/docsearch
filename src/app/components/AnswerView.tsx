@@ -29,7 +29,7 @@ export function AnswerView({
   const parts = answer.split(/(\[\d+\])/g);
 
   return (
-    <div className="whitespace-pre-wrap text-[15px] leading-8">
+    <div className="whitespace-pre-wrap">
       {parts.map((part, i) => {
         const m = part.match(/^\[(\d+)\]$/);
         if (!m) return <span key={i}>{part}</span>;
