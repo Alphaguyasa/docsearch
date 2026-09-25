@@ -2,97 +2,119 @@ name: ingest-scripture
 
 # Embeds the scripture corpus into the not-alone-scripture Supabase project.
 #
-# Resumable by design: the ingest script skips every chunk the database already
-# holds in current form, commits after each batch, and stops cleanly before the
-# 6-hour Actions limit. If work remains, this workflow dispatches itself again;
-# the schedule is a backstop in case a chained run never starts.
+# RESUMABLE AND SELF-CHAINING. Each run embeds until ~320 min, then records
+# progress in corpus/scripture/ingest-progress.json and pushes it with
+# INGEST_PAT. That push is what starts the next run (pushes made with the
+# default GITHUB_TOKEN never trigger workflows, by GitHub design). Scheduled
+# (cron) triggers are not used because they only run on the default branch.
 #
-# When nothing remains it opens (once) the issue "Scripture ingestion complete",
-# which is the phone notification. Failures open/update "Scripture ingestion failed".
-#
-# Lives on the default branch because workflow_dispatch and schedule only run
-# from there; it checks out the pivot branch, where the code is.
+# Stops chaining when everything is embedded or after MAX_CONTINUATIONS runs.
+# Opens a GitHub issue on completion or when it gives up — that is the
+# notification.
 
 on:
+  push:
+    branches: [pivot/scripture]
+    paths:
+      - "scripts/ingest-scripture.ts"
+      - "src/lib/scripture/plan.ts"
+      - ".github/workflows/ingest-scripture.yml"
+      - "corpus/scripture/ingest-progress.json"
   workflow_dispatch:
-    inputs:
-      ref:
-        description: Branch holding the scripture code
-        default: pivot/scripture
-  schedule:
-    - cron: "17 */6 * * *"
 
 permissions:
-  contents: read
+  contents: write
   issues: write
-  actions: write
 
 concurrency:
   group: ingest-scripture
   cancel-in-progress: false
 
 env:
-  SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
-  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
-  VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
-  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-  GENERATION_PROVIDER: gemini
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  DONE_TITLE: "Scripture ingestion complete"
-  FAIL_TITLE: "Scripture ingestion failed"
+  MAX_CONTINUATIONS: "8"
 
 jobs:
   ingest:
     runs-on: ubuntu-latest
     timeout-minutes: 350
     steps:
-      - name: Skip if already complete
-        id: gate
-        run: |
-          n=$(gh issue list -R "$GITHUB_REPOSITORY" --state all --search "\"$DONE_TITLE\" in:title" --json number --jq length)
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$n" -gt 0 ]; then
-            echo "Already complete; scheduled run exits."; echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
       - uses: actions/checkout@v4
-        if: steps.gate.outputs.skip != 'true'
         with:
-          ref: ${{ inputs.ref || 'pivot/scripture' }}
+          token: ${{ secrets.INGEST_PAT }}
       - uses: actions/setup-node@v4
-        if: steps.gate.outputs.skip != 'true'
         with:
           node-version: 20
           cache: npm
-      - if: steps.gate.outputs.skip != 'true'
-        run: npm ci
-      - name: Fetch corpus (idempotent)
-        if: steps.gate.outputs.skip != 'true'
+      - run: npm ci
+      - name: Restore raw corpus
+        uses: actions/cache@v4
+        with:
+          path: corpus/scripture/raw
+          key: scripture-raw-${{ hashFiles('corpus/scripture/manifest.json') }}
+      - name: Fetch corpus (cached files are skipped by hash)
+        continue-on-error: true
         run: npm run scripture:fetch
-      - name: Build chunks (no network)
-        if: steps.gate.outputs.skip != 'true'
-        run: npm run scripture:dry
       - name: Ingest
         id: ingest
-        if: steps.gate.outputs.skip != 'true'
-        run: npm run scripture:ingest -- --max-minutes 320
-      - name: Continue in a new run
-        if: steps.gate.outputs.skip != 'true' && steps.ingest.outputs.remaining != '0' && steps.ingest.outputs.embedded != '0'
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+          GENERATION_PROVIDER: gemini
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "${{ steps.ingest.outputs.remaining }} chunks remain; dispatching another run."
-          gh workflow run ingest-scripture.yml -R "$GITHUB_REPOSITORY" --ref "${{ github.event.repository.default_branch }}"
-      - name: Announce completion
-        if: steps.gate.outputs.skip != 'true' && steps.ingest.outputs.remaining == '0'
+          set -o pipefail
+          npm run scripture:ingest -- --max-minutes 320 2>&1 | tee ingest.log
+      - name: Record progress, chain, notify
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTCOME: ${{ steps.ingest.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          n=$(gh issue list -R "$GITHUB_REPOSITORY" --state all --search "\"$DONE_TITLE\" in:title" --json number --jq length)
-          if [ "$n" -eq 0 ]; then
-            gh issue create -R "$GITHUB_REPOSITORY" --title "$DONE_TITLE — ${{ steps.ingest.outputs.done }} chunks" \
-              --body "All scripture chunks are embedded in not-alone-scripture. Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          set -euo pipefail
+          PROG=corpus/scripture/ingest-progress.json
+          PREV=$( [ -f $PROG ] && node -p "require('./$PROG').continuation ?? 0" || echo 0 )
+          if [ -f ingest-status.json ]; then
+            TOTAL=$(node -p "require('./ingest-status.json').total")
+            DONE=$(node -p "require('./ingest-status.json').done")
+            REMAINING=$(node -p "require('./ingest-status.json').remaining")
+          else
+            TOTAL=0; DONE=0; REMAINING=-1
           fi
-      - name: Report failure
-        if: failure()
-        run: |
-          body="Ingestion run failed: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID — progress is saved; the next run resumes."
-          n=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search "\"$FAIL_TITLE\" in:title" --json number --jq '.[0].number // empty')
-          if [ -n "$n" ]; then gh issue comment "$n" -R "$GITHUB_REPOSITORY" --body "$body"
-          else gh issue create -R "$GITHUB_REPOSITORY" --title "$FAIL_TITLE" --body "$body"; fi
+          echo "outcome=$OUTCOME total=$TOTAL done=$DONE remaining=$REMAINING continuation=$PREV"
+
+          open_issue () { # title, body — skip if an open issue with this title exists
+            if gh issue list --state open --search "\"$1\" in:title" --json title --jq '.[].title' | grep -qF "$1"; then
+              echo "issue already open: $1"
+            else
+              gh issue create --title "$1" --body "$2"
+            fi
+          }
+
+          if [ "$OUTCOME" = "success" ] && [ "$REMAINING" = "0" ]; then
+            echo "{\"complete\": true, \"total\": $TOTAL, \"continuation\": $PREV}" > $PROG
+            open_issue "Scripture ingestion complete — $TOTAL chunks" \
+              "All $TOTAL chunks are embedded in the not-alone-scripture database. Run: $RUN_URL"
+          else
+            NEXT=$((PREV + 1))
+            if [ "$NEXT" -gt "$MAX_CONTINUATIONS" ]; then
+              open_issue "Scripture ingestion stopped — needs attention" \
+                "Gave up after $PREV chained runs. Last outcome: $OUTCOME, $DONE/$TOTAL embedded. Run: $RUN_URL
+
+          \`\`\`
+          $(tail -n 30 ingest.log 2>/dev/null || true)
+          \`\`\`"
+              exit 1
+            fi
+            echo "{\"complete\": false, \"total\": $TOTAL, \"done\": $DONE, \"remaining\": $REMAINING, \"continuation\": $NEXT, \"lastOutcome\": \"$OUTCOME\", \"at\": \"$(date -u +%FT%TZ)\"}" > $PROG
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $PROG
+          if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
+          git commit -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
+          git pull --rebase -q
+          git push
