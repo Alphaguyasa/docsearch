@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { UiSource } from "@/app/types";
+import { sourceKindLabel, sourceName, type UiSource } from "@/app/types";
 
 /** Collapsible list of ALL retrieved chunks with their fusion scores. */
 export function SourcesList({ sources }: { sources: UiSource[] }) {
@@ -14,10 +14,10 @@ export function SourcesList({ sources }: { sources: UiSource[] }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted hover:text-foreground"
+        className="flex items-center gap-2 text-xs text-muted hover:text-foreground"
       >
         <span className="font-mono">{open ? "▾" : "▸"}</span>
-        Retrieved chunks ({sources.length})
+        All retrieved passages ({sources.length})
       </button>
 
       {open && (
@@ -27,10 +27,8 @@ export function SourcesList({ sources }: { sources: UiSource[] }) {
               <div className="flex items-baseline justify-between gap-3 text-xs">
                 <div className="flex min-w-0 items-baseline gap-2">
                   <span className="font-mono text-muted">[{s.n}]</span>
-                  <span className="truncate font-medium">{s.title}</span>
-                  {s.pageNumber !== null && (
-                    <span className="shrink-0 text-muted">p.{s.pageNumber}</span>
-                  )}
+                  <span className="truncate font-medium">{sourceName(s)}</span>
+                  {sourceKindLabel(s) && <span className="shrink-0 text-muted">{sourceKindLabel(s)}</span>}
                 </div>
                 <div className="shrink-0 font-mono text-muted">
                   fused {s.fusedScore.toFixed(4)}

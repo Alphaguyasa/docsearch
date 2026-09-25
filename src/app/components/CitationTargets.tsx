@@ -1,6 +1,6 @@
 "use client";
 
-import type { UiSource } from "@/app/types";
+import { sourceName, type UiSource } from "@/app/types";
 
 interface Props {
   sources: UiSource[];
@@ -19,9 +19,7 @@ export function CitationTargets({ sources, activeCitation, onSelect, onHover }: 
 
   return (
     <div className="mb-5">
-      <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted">
-        Citation targets
-      </div>
+      <div className="mb-1.5 text-xs text-muted">Passages this answer draws on</div>
       <ol className="flex flex-wrap gap-1.5">
         {sources.map((s) => (
           <li key={s.n}>
@@ -37,10 +35,7 @@ export function CitationTargets({ sources, activeCitation, onSelect, onHover }: 
               }`}
             >
               <span className="font-mono text-accent">[{s.n}]</span>
-              <span className="max-w-[16rem] truncate">{s.title}</span>
-              {s.pageNumber !== null && (
-                <span className="text-muted">p.{s.pageNumber}</span>
-              )}
+              <span className="max-w-[16rem] truncate">{sourceName(s)}</span>
             </button>
           </li>
         ))}

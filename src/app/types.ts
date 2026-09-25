@@ -28,3 +28,15 @@ export interface DocumentSummary {
   error: string | null;
   created_at: string;
 }
+
+/** How a source is named in the UI: its scripture/tradition ref, else title + page. */
+export function sourceName(s: SourceChunk): string {
+  if (s.ref) return s.ref;
+  return s.pageNumber !== null ? `${s.title}, p.${s.pageNumber}` : s.title;
+}
+
+/** "Scripture" / "Church tradition", or null for pre-pivot documents. */
+export function sourceKindLabel(s: SourceChunk): string | null {
+  if (!s.ref || !s.kind) return null;
+  return s.kind === "scripture" ? "Scripture" : "Church tradition";
+}

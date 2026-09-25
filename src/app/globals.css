@@ -1,24 +1,31 @@
 @import "tailwindcss";
 
+/*
+ * Not Alone — quiet, readable, made for someone reading alone at night on a phone.
+ * Stone-grey paper, slate ink, one accent: lapis, the blue of Ethiopian icon
+ * painting. Stories are set in a reading serif; interface text stays sans.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --panel: #fafafa;
-  --accent: #d97706; /* amber — the single accent */
+  --background: #f3f5f4;
+  --foreground: #1d2a30;
+  --muted: #5b686c;
+  --border: #d3dad8;
+  --panel: #e9eeec;
+  --accent: #27458f; /* lapis */
   --accent-fg: #ffffff;
+  --care: #7a2e2e; /* used only on the crisis card */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #9ca3af;
-    --border: #262626;
-    --panel: #121212;
-    --accent: #f59e0b; /* slightly brighter amber for dark contrast */
-    --accent-fg: #1a1200;
+    --background: #11171d;
+    --foreground: #e3e8ea;
+    --muted: #97a3a8;
+    --border: #28323a;
+    --panel: #172029;
+    --accent: #93aef0;
+    --accent-fg: #0d1526;
+    --care: #e8a3a3;
   }
 }
 
@@ -30,9 +37,11 @@
   --color-panel: var(--panel);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
+  --color-care: var(--care);
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
+    Roboto, "Noto Sans Ethiopic", Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-reading), "Noto Serif Ethiopic", Georgia, "Times New Roman", serif;
   --font-mono:
     ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas,
     monospace;
@@ -42,5 +51,17 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 15px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
