@@ -1,4 +1,4 @@
-outcome=failure at 2026-09-25T18:36:31Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36174457789
+outcome=failure at 2026-09-25T18:37:00Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36174508657
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
