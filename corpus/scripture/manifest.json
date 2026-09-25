@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T18:38:55.779Z",
+  "generatedAt": "2026-09-25T18:50:07.197Z",
   "entries": [
     {
       "id": "confessions",
@@ -8,7 +8,7 @@
       "kind": "tradition",
       "format": "gutenberg-txt",
       "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
-      "retrievedAt": "2026-09-25T18:38:40.383Z",
+      "retrievedAt": "2026-09-25T18:49:42.250Z",
       "files": [
         {
           "name": "pg3296.txt",
@@ -65,7 +65,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-      "retrievedAt": "2026-09-25T18:38:43.074Z",
+      "retrievedAt": "2026-09-25T18:49:44.804Z",
       "files": [
         {
           "name": "bookofsaintsofet0001sire_djvu.txt",
@@ -89,7 +89,7 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-09-25T18:38:39.874Z",
+      "retrievedAt": "2026-09-25T18:49:41.599Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",

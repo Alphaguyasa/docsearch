@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-25T18:38:55.779Z
+Generated 2026-09-25T18:50:07.197Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -141,44 +141,4 @@ and  departed  from  him.  And  straightway  Saint  Abba  john
 
 ## lausiac — The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)
 - pinned: lausiachistoryof00palluoft
-
-#### `lausiachistoryof00palluoft_djvu.txt` (archive id `lausiachistoryof00palluoft`) — 378755 bytes
-7021 non-empty lines. First 25:
-```
-o-
-liJS
->=
-loo
-ioo
-■O
-•CD
-"00
-OF
-m
-OF
-BR
-65
-|P3
-1918
-c.  1
-IROBA
-CLiyRKE,B,a
-^
-la
-!!!
-Ill
-'iiii
-^1
-ii
-```
-Sample from the middle:
-```
-tyrannized  over,  that  you  should  not  be  proud,  as  if
-you  had  any  strength,  but  recognizing  your  weakness
-should  not  trust  in  your  manner  of  life,  but  run  for  the
-help  of  God.'  Thus  convinced  I  returned  and  dwelt
-in  confidence,  and  no  longer  troubling  about  the  war
-I  was  in  peace  the  rest  of  my  days.  But  he,  knowing
-how  I  despised  him,  no  longer  came  near  me."
-CHAPTER   XXIV
-```
+**FAILED:** fetch failed
