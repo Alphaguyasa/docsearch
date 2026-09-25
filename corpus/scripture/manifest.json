@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T18:01:07.739Z",
+  "generatedAt": "2026-09-25T18:02:11.627Z",
   "entries": [
     {
       "id": "confessions",
@@ -8,7 +8,7 @@
       "kind": "tradition",
       "format": "gutenberg-txt",
       "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
-      "retrievedAt": "2026-09-25T18:00:57.659Z",
+      "retrievedAt": "2026-09-25T18:02:02.566Z",
       "files": [
         {
           "name": "pg3296.txt",
@@ -24,7 +24,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
-      "retrievedAt": "2026-09-25T18:01:07.729Z",
+      "retrievedAt": "2026-09-25T18:02:11.617Z",
       "files": [
         {
           "name": "lausiachistoryof00palluoft_djvu.txt",
@@ -41,7 +41,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain (published 1907; Budge d. 1934)",
-      "retrievedAt": "2026-09-25T18:01:06.078Z",
+      "retrievedAt": "2026-09-25T18:02:09.235Z",
       "files": [
         {
           "name": "paradiseorgarden01anan_djvu.txt",
@@ -60,12 +60,36 @@
       ]
     },
     {
+      "id": "synaxarium",
+      "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
+      "retrievedAt": "2026-09-25T18:02:05.500Z",
+      "files": [
+        {
+          "name": "bookofsaintsofet0001sire_djvu.txt",
+          "url": "https://archive.org/download/bookofsaintsofet0001sire/bookofsaintsofet0001sire_djvu.txt",
+          "sha256": "cec8724cad9c128cf9f956a5674b5fb79135fc9eb4672935468535328283144b",
+          "bytes": 820155,
+          "archiveId": "bookofsaintsofet0001sire"
+        },
+        {
+          "name": "bookofsaintsofet00yait_djvu.txt",
+          "url": "https://archive.org/download/bookofsaintsofet00yait/bookofsaintsofet00yait_djvu.txt",
+          "sha256": "055b3864da774d67d9e3ef9398aeed5248261837af585410dcc2c8c622f8238a",
+          "bytes": 2706604,
+          "archiveId": "bookofsaintsofet00yait"
+        }
+      ]
+    },
+    {
       "id": "web",
       "title": "World English Bible with Deuterocanon",
       "kind": "scripture",
       "format": "usfm-zip",
-      "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark \u2014 unaltered text only)",
-      "retrievedAt": "2026-09-25T18:00:57.444Z",
+      "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
+      "retrievedAt": "2026-09-25T18:02:02.060Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",

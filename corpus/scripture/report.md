@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-25T18:01:07.739Z
+Generated 2026-09-25T18:02:11.627Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -51,7 +51,48 @@ is a more clear foreshower of the Gospel and of the calling of the
 ```
 
 ## synaxarium — The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)
-- pinned: bookofsaintsofet00yait
+- pinned: bookofsaintsofet0001sire, bookofsaintsofet00yait
+
+#### `bookofsaintsofet0001sire_djvu.txt` (archive id `bookofsaintsofet0001sire`) — 820155 bytes
+15706 non-empty lines. First 25:
+```
+IO) UNCU ATA
+3 1223 00385 0279
+DATE DUE
+922 B859b=
+aie : i | i Os i ok ee lig Et! Aa ae cu, Arh
+hip ONT ar eae ¢ ry A
+r aan ; { Pee y Vo Caan ‘| 4
+a Ceo Gs) 14 ; Hy Bai 4 i:
+¥, Dey Oe tes seer he ; if
+"4 hat fi n ; ve {
+‘ YY 4
+iy x
+:
+iY
+¥ Uy 1
+\
+Av i
+1 U re
++.
++ : ‘4
+ee ;
+’ .
+’
+~ %
+} h
+```
+Sample from the middle:
+```
+and will not find me, and he will hear that thou hast killed me,
+and he will punish thee with very great severity, and thou wilt
+die for the sake of the Name of our Lord Jesus Christ. And now,
+FIRST MONTH—MASKARAM (SEPT. 8-OCT. 7) 99
+nake speed to finish our martyrdoms.”’ And straightway the
+governor commanded his soldiers to cut off the heads of ’ABA-
+pir and his sister, and they cut off their heads; and the saints
+fol. 296 1] received crowns of martyrdom in the kingdom of
+```
 
 #### `bookofsaintsofet00yait_djvu.txt` (archive id `bookofsaintsofet00yait`) — 2706604 bytes
 44682 non-empty lines. First 25:
