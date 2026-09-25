@@ -60,28 +60,11 @@
       ]
     },
     {
-      "id": "synaxarium",
-      "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
-      "kind": "tradition",
-      "format": "archive-djvu-txt",
-      "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-      "retrievedAt": "2026-09-25T18:01:00.629Z",
-      "files": [
-        {
-          "name": "bookofsaintsofet00yait_djvu.txt",
-          "url": "https://archive.org/download/bookofsaintsofet00yait/bookofsaintsofet00yait_djvu.txt",
-          "sha256": "055b3864da774d67d9e3ef9398aeed5248261837af585410dcc2c8c622f8238a",
-          "bytes": 2706604,
-          "archiveId": "bookofsaintsofet00yait"
-        }
-      ]
-    },
-    {
       "id": "web",
       "title": "World English Bible with Deuterocanon",
       "kind": "scripture",
       "format": "usfm-zip",
-      "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
+      "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark \u2014 unaltered text only)",
       "retrievedAt": "2026-09-25T18:00:57.444Z",
       "files": [
         {
