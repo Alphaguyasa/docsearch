@@ -22,7 +22,7 @@ import { buildSource } from "../src/lib/scripture/sources";
 import type { ScriptureChunk } from "../src/lib/scripture/types";
 
 const ROOT = "corpus/scripture";
-const GROUP_SIZE = 16; // ~7k tokens: a few Voyage requests, then commit
+const GROUP_SIZE = 64; // ~28k tokens: ~9 full 3k-token Voyage requests per commit (3 RPM x 3k = the free-tier ceiling)
 const STATUS_FILE = "ingest-status.json";
 
 function arg(name: string): string | undefined {
