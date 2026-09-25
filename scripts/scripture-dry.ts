@@ -67,7 +67,8 @@ function main(): void {
           });
         }
       } else {
-        hits = all.filter((c) => c.sourceId === p.sourceId && c.ref.toLowerCase().startsWith(p.ref.toLowerCase()));
+        hits = all.filter((c) => c.sourceId === p.sourceId && c.ref.toLowerCase().startsWith(p.ref.toLowerCase()) &&
+          (!("match" in p) || c.content.toLowerCase().includes(String((p as { match?: string }).match).toLowerCase())));
       }
       const line = `- ${hits.length ? "✅" : "❌"} ${f.id} / ${p.role}: \`${p.ref}\` → ${hits.length} chunk(s)${hits.length ? ` (${hits.slice(0, 3).map((h) => h.ref).join("; ")}${hits.length > 3 ? "; …" : ""})` : ""}`;
       out.push(line);
