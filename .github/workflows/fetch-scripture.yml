@@ -1,0 +1,67 @@
+name: fetch-scripture
+
+# Downloads the public-domain corpus listed in corpus/scripture/sources.json and
+# commits the resulting manifest (hashes, sizes, resolved archive.org ids) back
+# to the branch. Raw texts are NOT committed; they are uploaded as an artifact
+# and re-fetched byte-identically by the ingestion workflow.
+#
+# Triggered by push (not only workflow_dispatch) because workflow_dispatch only
+# works for workflows present on the default branch, and this one lives on
+# pivot/scripture until the pivot merges. The commit-back touches only
+# manifest.json / failed.json, which are outside the path filter, so it cannot
+# re-trigger itself.
+
+on:
+  push:
+    branches: [pivot/scripture]
+    paths:
+      - "corpus/scripture/sources.json"
+      - "scripts/fetch-scripture.ts"
+      - "src/lib/scripture/manifest.ts"
+      - ".github/workflows/fetch-scripture.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-scripture
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Fetch corpus
+        id: fetch
+        continue-on-error: true
+        run: npm run scripture:fetch
+      - name: Upload raw corpus
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scripture-raw
+          path: corpus/scripture/raw/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Commit manifest
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add corpus/scripture/manifest.json corpus/scripture/failed.json
+          if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
+          git commit -m "chore(corpus): update scripture manifest [fetch-scripture]"
+          git push
+      - name: Fail if any source failed
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          cat corpus/scripture/failed.json
+          exit 1

@@ -37,6 +37,8 @@ CLAUDE.md
 corpus/*
 !corpus/manifest.json
 !corpus/failed.json
+!corpus/scripture/
+corpus/scripture/raw/
 ingest-failures.json
 
 # Phase 9 CI writes these next to the workspace root.
