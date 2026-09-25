@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-25T17:45:31.754Z
+Generated 2026-09-25T17:47:00.235Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -51,92 +51,7 @@ is a more clear foreshower of the Gospel and of the calling of the
 ```
 
 ## synaxarium — The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)
-- hit: `bookofsaintsofet00yait` — The book of the saints of the Ethiopian church [microform]. A translation of the Ethiopic synaxarium Mashafa senkesar [transliterated from Ethiopic] made from the manuscripts Oriental 660 and 661 in the British Museum (1928)
-- hit: `bookofsaintsofet0001sire` — The Book of the Saints of the Ethiopian Church (1928)
-- hit: `bookofsaintsofet0002sire` — The Book of the saints of the ethiopian church (1928)
-- hit: `bwb_C0-ABS-836` — The book of the saints of the ethiopian church (1928)
-
-#### `bookofsaintsofet0001sire_djvu.txt` (archive id `bookofsaintsofet0001sire`) — 820155 bytes
-15706 non-empty lines. First 25:
-```
-IO) UNCU ATA
-3 1223 00385 0279
-DATE DUE
-922 B859b=
-aie : i | i Os i ok ee lig Et! Aa ae cu, Arh
-hip ONT ar eae ¢ ry A
-r aan ; { Pee y Vo Caan ‘| 4
-a Ceo Gs) 14 ; Hy Bai 4 i:
-¥, Dey Oe tes seer he ; if
-"4 hat fi n ; ve {
-‘ YY 4
-iy x
-:
-iY
-¥ Uy 1
-\
-Av i
-1 U re
-+.
-+ : ‘4
-ee ;
-’ .
-’
-~ %
-} h
-```
-Sample from the middle:
-```
-and will not find me, and he will hear that thou hast killed me,
-and he will punish thee with very great severity, and thou wilt
-die for the sake of the Name of our Lord Jesus Christ. And now,
-FIRST MONTH—MASKARAM (SEPT. 8-OCT. 7) 99
-nake speed to finish our martyrdoms.”’ And straightway the
-governor commanded his soldiers to cut off the heads of ’ABA-
-pir and his sister, and they cut off their heads; and the saints
-fol. 296 1] received crowns of martyrdom in the kingdom of
-```
-
-#### `bookofsaintsofet0002sire_djvu.txt` (archive id `bookofsaintsofet0002sire`) — 800678 bytes
-13863 non-empty lines. First 25:
-```
-Jesuit-Krauss-McCormick
-BRE
-Mashafa senkesar
-Book of the saints of the Ethiopian mid
-tA
-|
-a a Tp ae
-© JESUIT-KRAUSS-McCORMICK
-: LIBRARY
-@><o><o)
-cons «oho oho,
-wy
-SW o, eVoeveeVe
-Digitized by the Internet Archive
-in 2025
-https://archive.org/details/bookofsaintsofetOO02sire
-= oe 5 ates ae
-ee er ae oe ae or>
-THE
-BOOK OF THE SAINTS
-OF THE ETHIOPIAN CHURCH
-IN FOUR VOLUMES
-VOLUME TWO
-Cambridge University Press
-Fetter Lane, London
-```
-Sample from the middle:
-```
-of fasting and the matter of the festival; and this is ordained
-in the churches of the Egyptians. And if the day of Bayramtitm
-fall on the First Day of the week, or on the Sabbath of the
-: _ f i
-“ae *
-FIFTH MONTH—TER (JAN. 6-FEB. 5) 477
-Jews, one shall fast on the Fourth Day of the week preceding it
-until the evening, and shall only eat what it is meet to eat
-```
+- pinned: bookofsaintsofet00yait
 
 #### `bookofsaintsofet00yait_djvu.txt` (archive id `bookofsaintsofet00yait`) — 2706604 bytes
 44682 non-empty lines. First 25:
@@ -179,197 +94,93 @@ and  departed  from  him.  And  straightway  Saint  Abba  john
 (ISAAC  ?)  rose  up,  and  embraced  his  father  and  mother,  and
 ```
 
-#### `bwb_C0-ABS-836_djvu.txt` (archive id `bwb_C0-ABS-836`) — 824910 bytes
-15730 non-empty lines. First 25:
+## paradise — The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)
+- pinned: paradiseorgarden01anan, paradiseorgarden02anan
+
+#### `paradiseorgarden01anan_djvu.txt` (archive id `paradiseorgarden01anan`) — 1406045 bytes
+20778 non-empty lines. First 25:
 ```
-Jes rl = ss-McCormick
-Mashafa senkesar
-Book of the saints of the Ethiopian chur
-HE
-3 9967 00251 9093
-|
-Virginia Library
-Digitized by the Internet Archive
-in 2025
-httops://archive.org/details/owb_CO-ABS-836
-BOOK OF THE SAINTS
-(OF THE ETHIOPIAN CHURCH
-if
-oe
-IN FOUR VOLUMES
-VOLUME ONE
-Cambridge University Press
-Fetter Lane, London
-| New York
-Bombay, Calcutta, Madras
-Toronto ‘
-Tokyo
-Maruzen-Kabushiki-Kaisha
-All rights reserved B
-Three hundred copies only of this
+Division
+SectioQ
+0X2405-
+• A53
+V.|
+THE  PARADISE
+OF  THE  HOLY  FATHERS
+i VOLUME  I
+CONTAINING  THE  INTRO-
+DUCTION: THE  LIFE  OF  ST
+ANTHONY,  BY  ATHANASIUS
+ARCHBP  OF  ALEXANDRIA:
+HISTORIES  OFTHE  FATHERS
+BY  PALLADIUS  Bp  OF  HELE-
+NOPOLIS:  THERULEOF
+PACHOMIUS:  ST  JEROME’S
+HISTORY  OF  THE  FATHERS
+Digitized  by  the  Internet  Archive
+in  2017  with  funding  from
+Princeton  Theological  Seminary  Library
+https://archive.org/details/paradiseorgarden01anan
+rdaQa  h\cu
+.cr*i
+^>acu  njMirc'Ai^TS"
+w Stars'
 ```
 Sample from the middle:
 ```
-(SUSANNAH), the daughter of CHELCIAS (HELKIAH); and
-they slew those two Rabbans according to the Law of MOSES.
-And on this day also are commemorated ’fRANI (IRENE)
-the martyr, and ‘anKUO MARYAM, and STEPHEN his son,
-and HANNAH, and PORPHYRINA, and LUKE the monk.
-XXIX. MASKARAM
-IN THE NAME OF THE FATHER AND THE SON
-AND THE HOLY GHOST, ONE GOD
+“ that  thou  art  still  in  the  heat  of  youth  how  canst  thou  have
+“ confidence  that  by  means  of  carefulness  [on  thy  part]  thou
+“ wilt  be  able  to  resist  the  [natural  heat  of]  the  constitution  of
+“ the  body  which  still  burneth  in  thy  memberfs]?  And  dost
+“thou  not  perceive  the  injurious  effedts  which  will  be  produced
+“ in  thee  by  [this  washing]?  Believe  me,  O my  son,  for  I am
+“this  day  a woman  sixty  years  old,  from  the  time  when  I
+“first  took  upon  myself  this  garb  water  hath  never  touched
 ```
 
-## paradise — The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)
-- hit: `ParadiseOfTheHolyFathersV2` — The Paradise or Garden of the Holy Fathers, being histories of the anchorites, recluses, monks, coenobites and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter. Compiled by Athanasius, Archbishop of Alexandria: Palladius, Bishop of Helenopolis: Saint Jerome, and others. [Another edition of "The Book of Paradise" of 'Ǎnān Īshō'.] Now translated out of the Syriac with notes & introduction by E.A. Wallis Budge. Volume 2 (1907)
-- hit: `paradiseorgarde03budggoog` — The paradise or garden of the holy fathers: being histories of the ..., Volume 2 (1907)
-- hit: `paradise4_2012_librivox` — The Paradise, or Garden of the Holy Fathers (Book 4) (The Histories of the Monks Who Lived in the Desert of Egypt, Which Were Compiled by Saint Hieronymus) (2020)
-- hit: `paradisebook1_2009_librivox` — The Paradise, or Garden of the Holy Fathers (Book 1) (2020)
-- hit: `theparadiseorgardenoftheholyfathers_book_2_2010_librivox` — The Paradise, or Garden of the Holy Fathers (Book 2) (2020)
-- hit: `paradiseorgarden01anan` — The Paradise, or Garden of the Holy Fathers, being histories of the anchorites, recluses, monks, coenobites and ascetic fathers of the deserts of Egypt between A.D.CCL and A.D.CCCC circiter, comp. by Athanasius ... Palladius ... St. Jerome and others [version of Abba ̂An̂an-̂Isĥo] (1907)
-- hit: `paradise_or_garden_of_the_holy_fathers_pachomius_2011_librivox` — The Paradise, or Garden of the Holy Fathers (The Rule of Pachomius at Tabenna) (2020)
-- hit: `paradiseorgarden01ann` — The paradise, or garden of the holy fathers : being histories of the anchorites, recluses, monks, coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- hit: `paradiseorgarden02ann` — The paradise, or garden of the holy fathers : being histories of the anchorites, recluses, monks, coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- hit: `ParadiseOfTheHolyFathersV1` — The Paradise or Garden of the Holy Fathers, being histories of the anchorites, recluses, monks, coenobites and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter. Compiled by Athanasius, Archbishop of Alexandria: Palladius, Bishop of Helenopolis: Saint Jerome, and others. [Another edition of "The Book of Paradise" of 'Ǎnān Īshō'.] Now translated out of the Syriac with notes & introduction by E.A. Wallis Budge. Volume 1 (1907)
-- hit: `paradiseorgarde02budggoog` — The paradise or garden of the holy fathers : being histories of the anchorites, recluses, monks, Coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- hit: `paradiseorgarden02anan` — The Paradise, or Garden of the Holy Fathers, being histories of the anchorites, recluses, monks, coenobites and ascetic fathers of the deserts of Egypt between A.D.CCL and A.D.CCCC circiter, comp. by Athanasius ... Palladius ... St. Jerome and others [version of Abba ̂An̂an-̂Isĥo] (1907)
-- hit: `theparadiseorgar01unkwuoft` — The paradise, or garden of the holy fathers : being histories of the anchorites, recluses, monks, coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- hit: `paradiseorgarde00budggoog` — The paradise or garden of the holy fathers : being histories of the anchorites, recluses, monks, Coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- hit: `paradiseorgarde01budggoog` — The Paradise Or Garden of the Holy Fathers: Being Histories of the Anchorites, Recluses, Monks ... (1907)
-- hit: `paradiseofholyfa0000erne` — Paradise of the Holy Fathers, Part 1 (2003)
-- hit: `theparadiseorgar00unkwuoft` — The paradise, or garden of the holy fathers : being histories of the anchorites, recluses, monks, coenobites, and ascetic fathers of the deserts of Egypt between A.D. CCL and A.D. CCCC circiter (1907)
-- skipped (access-restricted): `paradiseofholyfa0000erne`
-**FAILED:** GET https://archive.org/download/ParadiseOfTheHolyFathersV1/ParadiseOfTheHolyFathersV1_djvu.txt -> 500 Internal Server Error
+#### `paradiseorgarden02anan_djvu.txt` (archive id `paradiseorgarden02anan`) — 1138769 bytes
+18020 non-empty lines. First 25:
+```
+Division
+Section
+BX244.S
+• AS3
+V.  2
+Digitized  by  the  Internet  Archive
+in  2017  with  funding  from
+Princeton  Theological  Seminary  Library
+https://archive.org/details/paradiseorgarden02anan
+THE  PARADISE
+OF  THE  HOLY  FATHERS
+VOLUME  II
+CONTAINING
+THE  COUNSELS  OF  THE
+HOLY  MEN  AND  THE
+QUESTIONS  & ANSWERS  OF
+THE  ASCETIC  BRETHREN
+GENERALLY  KNOWN  AS
+THE  SAYINGS  OF  THE
+FATHERS  OF
+EGYPT
+>18-1(1 1 RlM  a H T
+XH  - !'.  , 1 ■>  :
+il  -l/J.KY
+w'.-v
+```
+Sample from the middle:
+```
+And  he  answered  and  said  unto  the  old  man,  “It  is  sufficient
+“ for  me  to  see  thee.”
+162.  Abba  Sisoes  asked  Abba  Poemen  about  filthy  thoughts,
+and  the  old  man  said  unto  him,  “The  matter  is  like  unto  a box
+“ of  clothes:  if  a man  leaveth  the  clothes  inside  it  for  a long
+“ time  without  being  turned,  they  will  become  eaten  up  in  pro-
+“ cess  of  time  and  destroyed.  And  thus  also  is  it  with  the
+“ thoughts,  and  if  a man  doth  not  drive  them  out  from  his  body
+```
 
 ## lausiac — The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)
-- hit: `lausiachistoryof013039mbp` — The Lausiac History Of Palladius (1918)
-- hit: `lausiachistoryof002802mbp` — The Lausiac History Of Palladius (1918)
-- hit: `lausiachistoryof00palluoft` — The Lausiac history of Palladius (1918)
-- hit: `in.ernet.dli.2015.152307` — The Lausiac History Of Palladius (1918)
-- hit: `in.ernet.dli.2015.157791` — The Lausiac History Of Palladius (1918)
-
-#### `2015.152307.The-Lausiac-History-Of-Palladius_djvu.txt` (archive id `in.ernet.dli.2015.152307`) — 329703 bytes
-7014 non-empty lines. First 25:
-```
-281.1 P16L 66-04200
-Palladlus
-The Lausiac history of Palladius
-281.1 P16L 66-04200
-Palladius
-The Lausiac history of Palladius
-am
-kansas city |||| public library
-mmmm Kansas city, missouri
-mmm w
-Books will be issued only
-on presentation of library card.
-Please report lost cards and
-change of residence promptly.
-Card holders are responsible for
-all books, records, films, pictures
-or other library materials
-checked out on their cards.
-TRANSLATIONS OF CHRISTIAN LITERATURE
-SERIES I
-GREEK TEXTS
-THE LAUSIAC
-HISTORY OF PALLADIUS
-TRANSMTONS OF CHRISTEN
-LITERATURE . SERIES I
-```
-Sample from the middle:
-```
-ber of years. He reached such a pitch of arrogance
-that he was deceived by demons. For by deceiving him
-little by little they induced him to be very proud, sup-
-posing that angels met him, [2] One day at least, so
-they told the tale, as he was working in the dark he let
-drop the needle with which he was stitching the basket.
-And when he did not find it, the demon made a lamp,
-and he found the needle. Again, puffed up at this, he
-```
-
-#### `2015.157791.The-Lausiac-History-Of-Palladius_djvu.txt` (archive id `in.ernet.dli.2015.157791`) — 329087 bytes
-7017 non-empty lines. First 25:
-```
-281,1 P16L 66-04200
-Palladius
-The Lausiac history of Palladius
-281.1 P16L 66-04200
-Palladius
-The Lausiac history of Palladius
-s
-kansas city pg public library
-■■!■■■■ kansas city, missouri
-^mmw
-Books will be issued only
-on presentation of library card.
-Please report lost cards and
-change of residence promptly.
-Card holders are responsible for
-all books, records, films, pictures
-or other library materials
-checked out on their cards.
-TRANSLATIONS OF CHRISTIAN LITERATURE
-SERIES I
-GREEK TEXTS
-THE LAUSIAC
-HISTORY OF PALLADIUS
-TRSNjUaTON^ OF CHM^IKN
-UTE3OTUKE . ^ERIE5 1
-```
-Sample from the middle:
-```
-ber of years. He reached such a pitch of arrogance
-that he was deceived by demons. For by deceiving him
-little by little they induced him to be very proud, sup-
-posing that angels met him. [2] One day at least, so
-they told the tale, as he was working in the dark he let
-drop the needle with which he was stitching the basket.
-And when he did not find it, the demon made a lamp,
-and he found the needle. Again, puffed up at this, he
-```
-
-#### `lausiachistoryof002802mbp_djvu.txt` (archive id `lausiachistoryof002802mbp`) — 379102 bytes
-6919 non-empty lines. First 25:
-```
-281*1  P16L       66-04200
-Palladlus
-The  Lausiac  history  of  Palladlus
-281*1  P16L       66-04200
-Palladlus
-The  Lausiac  history  of  Palladlus
-kansas  city          public  library
-Books  will  be  issued  only
-on  presentation  of  library  card.
-Please  report  lost  cards  and
-change  of  residence  promptly.
-Card  holders  are  responsible  for
-all  books,  records,  films,  pictures
-or  other  library  materials
-«.'«*».
-v
-4-
-^-.^.....ti,, w.s_u  „  ,  , , „ — ,L «.^«,,
-TRANSLATIONS  OF  CHRISTIAN  LITERATURE
-SERIES  I
-GREEK  TEXTS
-THE  LAUSIAC
-HISTORY  OF  PALLADIUS
-MAP  OF  EGYPT
-shewing  the  Places  mentioned
-```
-Sample from the middle:
-```
-became  so  mad  that  he  entered  into  the  church  and
-before  the  assembled  brotherhood  said  :  "  I  have  no
-need  of  Communion,  for  I  have  seen  Christ  to-day."
-Then  the  fathers  bound  him  and  put  him  in  irons  for
-a  year  and  so  cured  him,  destroying  his  pride  by  their
-prayers  and  indifference  and  calmer  mode  of  life.  As  it
-is  said,  "  Diseases  are  cured  by  their  opposites."  2
-[6]  But  it  is  necessary  to  insert  in  this  little  book  the
-```
+- pinned: lausiachistoryof00palluoft
 
 #### `lausiachistoryof00palluoft_djvu.txt` (archive id `lausiachistoryof00palluoft`) — 378755 bytes
 7021 non-empty lines. First 25:
@@ -410,45 +221,4 @@ in  confidence,  and  no  longer  troubling  about  the  war
 I  was  in  peace  the  rest  of  my  days.  But  he,  knowing
 how  I  despised  him,  no  longer  came  near  me."
 CHAPTER   XXIV
-```
-
-#### `lausiachistoryof013039mbp_djvu.txt` (archive id `lausiachistoryof013039mbp`) — 325962 bytes
-6918 non-empty lines. First 25:
-```
-281*1 P16L 66-04200
-Palladlus
-The Lausiac history of Palladlus
-281*1 P16L 66-04200
-Palladlus
-The Lausiac history of Palladlus
-kansas city public library
-Books will be issued only
-on presentation of library card.
-Please report lost cards and
-change of residence promptly.
-Card holders are responsible for
-all books, records, films, pictures
-or other library materials
-.'*.
-v
-4-
-^-.^.....ti,, w . s _u , , , ,L .^,,
-TRANSLATIONS OF CHRISTIAN LITERATURE
-SERIES I
-GREEK TEXTS
-THE LAUSIAC
-HISTORY OF PALLADIUS
-MAP OF EGYPT
-shewing the Places mentioned
-```
-Sample from the middle:
-```
-became so mad that he entered into the church and
-before the assembled brotherhood said : " I have no
-need of Communion, for I have seen Christ to-day."
-Then the fathers bound him and put him in irons for
-a year and so cured him, destroying his pride by their
-prayers and indifference and calmer mode of life. As it
-is said, " Diseases are cured by their opposites." 2
-[6] But it is necessary to insert in this little book the
 ```
