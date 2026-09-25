@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "_note": "Only list resources you have verified. Numbers change; re-check before launch and add local lines (e.g. Ethiopia) once confirmed from an official source.",
+  "global": [
+    {
+      "name": "Find A Helpline",
+      "detail": "Free, confidential crisis lines in your country, by phone, text or chat",
+      "url": "https://findahelpline.com"
+    }
+  ],
+  "always": [
+    "If you are in immediate danger, contact your local emergency number now.",
+    "Reach out to someone you trust today — a family member, friend, priest or pastor."
+  ]
+}
