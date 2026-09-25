@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-25T17:53:44.403Z
+Generated 2026-09-25T17:55:24.158Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -188,4 +188,380 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **paradise** — 15 sections: Paradise of the Holy Fathers, Anthony, By Athanasius · Paradise of the Holy Fathers, History Of The Fathers · Paradise of the Holy Fathers, Mcm VII · Paradise of the Holy Fathers, E. A. Wallis Budge · Paradise of the Holy Fathers, Kapia0aias · Paradise of the Holy Fathers, Kopnh20aaoy · Paradise of the Holy Fathers, 20. A Holy Virgin. · Paradise of the Holy Fathers, 28. A Virgin. · Paradise of the Holy Fathers, 31. A Famous Deacon. · Paradise of the Holy Fathers, 34. The APOSTATE BROTHER. · Paradise of the Holy Fathers, Egypt · Paradise of the Holy Fathers, M Cm VII · Paradise of the Holy Fathers, AND IN WHOSE MIND WICKED COGITATIONS RISE UP. Those · Paradise of the Holy Fathers, And Anger, And Who Keepeth His Hatred Against His Brother. · Paradise of the Holy Fathers, DENY THE GRACE WHICH IS PERFORMED TOWARDS THEM. One of the
 
 **synaxarium** — 326 sections: Ethiopian Synaxarium, Columbia University Libraries/new York · Ethiopian Synaxarium, National Endowment For The Humanities · Ethiopian Synaxarium, Copyright Statement · Ethiopian Synaxarium, Bibliographic Microform Target · Ethiopian Synaxarium, Fhhocophy. · Ethiopian Synaxarium, Reduction Ratio: \\ ^ · Ethiopian Synaxarium, Hlmedby: Research Publications. Inc Woodbridge. Ct · Ethiopian Synaxarium, Ytttj · Ethiopian Synaxarium, Volume Two · Ethiopian Synaxarium, Of The Ethiopian Church · Ethiopian Synaxarium, Sir E. A. Wallis Budge, K^ · Ethiopian Synaxarium, Contents · Ethiopian Synaxarium, OF TAKHSHASH, TER and YAKATIT · Ethiopian Synaxarium, Eutychianus. · Ethiopian Synaxarium, Phana. · Ethiopian Synaxarium, FILGAT (?), ANANIAS, BARACHUS (?) and JOHN. · Ethiopian Synaxarium, XIII · Ethiopian Synaxarium, Yeres Kela, 'elkolonitos.^ · Ethiopian Synaxarium, KHADRE of DABRA ' ASWAN. · Ethiopian Synaxarium, Scete. · Ethiopian Synaxarium, Photinus. · Ethiopian Synaxarium, MICHAEL of DABRA KALMON. · Ethiopian Synaxarium, XXIV · Ethiopian Synaxarium, HERWAg, ANANIAS, kAzI, SANSARAdIN, EUGEN- · Ethiopian Synaxarium, AULARIANUS, 'EUTHYOS, SURYAn, MARK, BAR- · Ethiopian Synaxarium, FARKAYON, SILIKION, GALINICUS and 'EUNAS. · Ethiopian Synaxarium, Nelius, Mercurius. · Ethiopian Synaxarium, FELHASIUS, BASIL and ARIUS. · Ethiopian Synaxarium, John Kama. · Ethiopian Synaxarium, JOHN of LIKOS (LYKUS). · Ethiopian Synaxarium, Lavendius (leontius ?). · Ethiopian Synaxarium, Abel. · Ethiopian Synaxarium, VIII · Ethiopian Synaxarium, Eusegnius. · Ethiopian Synaxarium, Noah. · Ethiopian Synaxarium, Mosolon, Gregory, Mark, Antianus, Luya. · Ethiopian Synaxarium, Anatolius. · Ethiopian Synaxarium, Saints Commemorated During T^r · Ethiopian Synaxarium, Genius, Demetrius, Bernatius, Stephen · Ethiopian Synaxarium, Maximus.
+
+## OCR tuning aids
+
+### lausiac: frequent short lines
+```
+179	#
+55	# THE LAUSIAC HISTORY
+31	. #
+26	• #
+8	INTRODUCTION #
+7	PAGE
+7	INDICES
+6	# INTRODUCTION
+6	#, #
+6	Historia Monachorum,
+4	#.
+4	PROLOGUE #
+4	MACARIUS OF ALEXANDRIA #
+4	I# THE LAUSIAC HISTORY
+```
+### lausiac: context around "Moses" (line 193)
+```
+PAESIUS AND ISAIAS .
+- 67
+XV.
+MACARIUS THE YOUNGER
+. 69
+XVI.
+NATHANAEL.
+70
+XVII.
+MACARIUS OF EGYPT .
+73
+XVIII.
+MACARIUS OF ALEXANDRIA
+• 77
+XIX.
+MOSES THE ROBBER .
+. 86
+XX.
+PAUL
+-.
+90
+XXI.
+EULOGIUS AND THE CRIPPLE
+91
+XXII.
+PAUL THE SIMPLE . . . .
+96
+XXIII.
+PACHON
+lOI
+XXIV.
+STEPHEN
+. 103
+XXV.
+VALENS
+104
+XXVI.
+HERON
+106
+XXVII.
+```
+### lausiac: 50 raw lines at 40%
+```
+man. Then he laid his hands on him and in a few days
+he was cured and the hair grew and he went away healed.
+[22] Before my eyes a young lad was brought to
+him possessed by an evil spirit. So, putting one hand
+1 Lit. "him."
+* Note that Macarius, though not a bishop, makes absolution,
+administered by imposition of hands, and in this case conferring
+bodily as well as spiritual renewal, conditional on the sinful jiriest
+ceasing to exercise his priestly functions.
+84 THE LAUSIAC HISTORY
+on his head and the other on his heart, he prayed so
+much that he made him hang in mid-air. Then the
+boy swelled like a wine-skin and festered so that he
+became a mass of erysipelas.^ And having cried out
+suddenly, he produced water through all his senses,
+and calming down returned to his original size. So he
+anointed him with holy oil and handed him to his
+father, and having poured water upon him ordered that
+he should touch neither flesh nor wiiie for forty days.
+And so he healed him.
+[23] One day vainglorious thoughts troubled him,
+driving him out from the cell and suggesting to him as
+if by a divine dispensation that he should visit the city
+of the Romans to cure the sick. For grace acted power-
+fully in him against (evil) spirits. And when for a long
+while he would not obey, but was being vehemently
+pressed, falling on the doorstep of his cell, he put his
+feet outside and said: "Drag me, demons, pull me.
+For I am not going with my feet. If you can take me,
+then I will go." He swore to them : " Here I lie until
+evening. Unless you shake me, I vvill not listen to
+you." [24] So, having lain there a long while, he got
+up, but when night came on they attacked him again,
+and having filled a two-bushel basket with sand and
+put it on his shoulders, he tramped about in the desert.
+Theosebius the Cosmetor,^ an Antiochian by race, met
+him and said to him : " What are you carrying, father ?
+Give me the burden and don't trouble yourself." But
+he said to him: "I trouble my troubler. For he is
+insatiable and tempts me to go out." So having tramped
+about for a long time he went into his cell, having
+punished his body.
+^ Reading ipvanreXaros, as suggested by Butler. The iras ^vcri-
+neXavTos of the text is evidently corrupt.
+* The meaning is uncertain. Sophocles in his Lexicon suggests
+— KoiTfi.i\rr\s, in the sense of a sweeper of a monastery.
+MACARIUS OF ALEXANDRIA 85
+[25] This holy Macarius told me the following — for
+he was a priest. " I noticed at the time of distributing
+the mysteries that it was never I which gave the oblation
+```
+
+### paradise: frequent short lines
+```
+737	#
+159	#, #
+104	# #
+72	#,
+42	y y
+29	#, #, #, #, #, #, #,
+28	t t
+14	yy
+12	#. #
+11	#i
+11	#, #, #
+10	*#
+10	vi, #
+10	vii, #
+9	#, #, #, #, #, #, #
+8	#°#
+8	xix, #
+8	v, #
+8	vi,
+7	#°
+7	#, #i
+7	iv, #
+7	x, #
+7	v,
+7	#, #, #, #
+6	J#
+6	©f Matcbfulness
+6	©f Watchfulness
+6	Ube Savings of tbe Ibols jfatbers
+6	xvii, #
+```
+### paradise: context around "Moses" (line 260)
+```
+viij
+Contents of tbe irst IDoIunte
+66 The History of Sabas of Jericho 187
+67 The History of Serapion of the Girdle 188
+68 The History of Eulogius 192
+Boob ij
+1 The Triumph of Mark the Mourner 197
+2 The History of Mar Paulus (Paule) 197
+3 The History of the Alexandrian 203
+4 The History of an Old Man in Scete 209
+5 The History of a Disciple 212
+6 The History of a Disciple 212
+7 The History of Peter 214
+8 The History of a Disciple 214
+9 The History of Aurelius (Adolius) 214
+10 The History of Abba Moses, the Indian 215
+11 The History of Abba Pior 218
+12 The History of Abbd Moses, the Libyan 219
+13 The History of a Wandering Monk 219
+14 The History of Evagrius 222
+15 The History of Malchus 226
+16 The History of the Two Naked Fathers 234
+17 The History of an Old Man who went Naked 235
+18 The History of another Holy Man 238
+19 The History of a Grass-eating Monk 239
+20 The History of a certain Virgin 240
+21 The History of the Two Young Men with Macarius 240
+22 The History of Bessarion 242
+23 The History of the A6ts of Bessarion 243
+24 The History of the Man with Nine Virtues 245
+25 The History of Maria 248
+26 The History of a Sage 251
+27 The History of the Two Brothers 253
+28 The History of a Virgin 255
+29 The History of Stephana 260
+30 The History of Eucarpus 262
+31 The History of the Deacon 264
+32 The History of the Bishop 265
+33 The History of Abbd Poemen’s Neighbour 265
+34 The History of a Brother who denied Christ 266
+```
+### paradise: 50 raw lines at 40%
+```
+A CERTAIN old man said: There was a harlot who was
+so beautiful and so rich that all princes flocked unto
+her. One day she went into the church and desired to
+pass inside the gates, but a subdeacon who was standing at
+the door would not allow her to do so, and he said, “Thou art
+“ not allowed to enter into the house of God, because thou art
+“ an unclean woman.” Now whilst they were striving together,
+the Bishop heard the sound of the noise, and he went out to
+see [what was the matter]. And the harlot said unto him, “He
+“would not permit me to go into the church,” and the Bishop
+said to her, “Thou art not permitted [to do so] because thou
+“ art unclean. ” Then having repented within herself, she said,
+“ I will never play the whore again.” And the Bishop said
+unto her, “If thou wilt strip thyself of all thy possessions, I
+“shall know of a certainty that thou dost repent”; then she
+brought her possessions, and the Bishop took them, and
+divided them in the fear of God among the needy. And the
+woman went into the church, and wept and said, “If it hath
+“ happened to me thus in this world, what would have hap-
+“ pened to me in the next?” And she repented, and became
+a chosen vessel.
+269
+XTbe iparabise of tbe Ibols fathers
+Chapter jj£\>iij. ©f Sbba Hpollo who was in Scete
+THEY say concerning Abba Apollo, who lived in Scete,
+that he was originally a rude and brutish herdsman,
+and that he [once] saw in the fields a woman who was
+with child, and that, through the operation of the devil, he
+said, “I wish to know the condition of the child which is in
+“the womb of this woman,” and that he ripped her open and
+saw the child in her belly; then straightway he repented, and
+he purged his heart, and having repented he went to Scete,
+and revealed unto the fathers what he had done. And when he
+heard them singing the Psalms, and saying, “The days of
+“our years are threescore years and ten, and with difficulty
+“[we come] to fourscore years” (Psalm xc, io), he said to the
+old men, “I am forty years old this day, and I have never yet
+“made a prayer; and now, if I live for forty years more, I will
+‘ ‘ never rest, nor cease, nor refrain from praying to God continu-
+“ally that He may forgive me my sins.” And from that time
+onwards he did even as he had said, for he never toiled with the
+work of his hands, but he was always supplicating God, and
+saying, “I, O my Lord, like a man, have sinned, and do Thou,
+“like God, forgive me”; and he prayed this prayer both by
+night and by day instead of reciting Psalms. And a certain
+brother who used to dwell with him once heard him say in his
+prayer, now as he spake he wept, and groaned from the bottom
+of his heart, and sighed in grief of heart, “O my Lord, I have
+“vexed Thee, have pity upon me, and forgive me so that I may
+“enjoy a little rest.” Then a voice came to him, which said,
+```
+
+### synaxarium: frequent short lines
+```
+577	#
+352	THE ETHIOPIC SYNAXARIUM
+190	AND THE HOLY GHOST, ONE GOD
+174	IN THE NAME OF THE FATHER AND THE SON
+111	# THE ETHIOPIC SYNAXARIUM
+77	I
+68	#-#
+60	SON AND THE HOLY GHOST, ONE GOD
+44	INDEX
+32	#, #
+30	II
+28	DAY
+26	in the name of the father and the son
+26	i
+20	II#
+19	n
+19	and the holy ghost, one god
+19	#, #, #
+18	# #
+18	III
+18	m
+18	[fol. #^#] IN THE NAME OF THE FATHER AND THE
+15	#, #, #, #, #, #, #,
+13	FIFTH MONTH — TER (jAN. #-FEB. #)
+12	\
+11	#i#
+11	And on this day also is celebrated the commemoration of
+11	B £ S III
+10	f
+10	ill
+```
+### synaxarium: context around "Moses" (line 390)
+```
+JOHN the evangelist.
+GEORGE, mAtenA the archbishop, Theodora and
+AbbaLiKANds.
+NARDOSof DABRABizAN.whokiUedaserpentbyaprayer.
+SYBIL, the interpretress of dreams.
+EUSEGNIUS.
+MATTHEW, Archbishop of Alexandria.
+yArew£ny6s and his fellow martyrs.
+NEGIRUS of Rome.
+ALEXANDRA, who visited ARSENIUS and 'AWSHIA.
+The Circumcision of Christ.
+NOAH.
+The Ascension of Elijah into heaven.
+M A R c I A N u s. Archbishop of Alexandria.
+BASIL, Bishop of Caesarea.
+Abba MOSES, who dwelt in the desert for sixty years.
+SILVESTER, Archbishop of R6md.
+Abba EPHRAIM.
+MOSOLON, GREGORY, MARK, ANTIANUS, LUYA.
+MAYLEN, sosYAsand mArteyA.
+Consecration of the church ofMACARlusofsCETE
+ANDRONicus, Archbishop of Alexandria.
+BENJAMIN, Archbishop of Alexandria.
+MALACHI the prophet.
+ANDRONICUS the Stylite.
+Abba ABRAHAM.
+GEORGE, n6sm£sA and dioscurus.
+tAwbentos (theopantus ?).
+CYNARIUS, PATRICIA the queen, and tomiAni.
+Baptism of Christ.
+ANATOLIUS.
+JOHN, Archbishop of Alexandria.
+JUSTUS and fAyyos (var. guedet).
+AbbaWAKRis.
+JOHN, who gave 20,000 dinars (about £10,000) to the poor.
+MICHAEL the archangel.
+THEODORE, LAVENDIUS and banik6r6s and 250.000
+fellow martyrs.
+JULIAN the martyr and DANIEL the monk.
+ZIV
+```
+### synaxarium: 50 raw lines at 40%
+```
+of darkness lasted from the sixth to the ninth hour, and in that
+time our Lord bowed His head by His own free will, and
+delivered up His understanding and rational soul which He
+had received from our Lady, the Virgin mary, and that soul
+was separated from its body. And it went into Sheol without
+separation from the Godhead, even as Saint peter the apostle
+saith, *'He was dead in the body and alive in the spirit." And
+at that same time His body was hung upon the wood of the
+Cross, without separation from the Godhead. Similarly His
+soul descended into Sheol, like a released [fol. 2263] prisoner,
+and it had one nature and was without separation from the
+Godhead. And He was exalted high above the heavens, sitting
+with the Father and the Holy Spirit.
+Salutation to Thy passion, O God the King.
+Salutation to Thy crucifixion on the Cross.
+Salutation to the going forth of Thy Soul from Thy Body.
+And on this day also died the strenuous ascetic and fighter
+Abba hezekiah, the father of the monks of dabra libAnos.
+He was the fourth abbot from our father taklahAymAnot.
+[Omitted in the Bodleian MS.]
+[fol. 23a i] And on this day also the God-loving Claudius
+finished [his] crowning with martyrdom. He was brought up
+piously by the orthodox King lebna dengel (i.e. david ii,
+WANAGSAGADi, who died 2nd September, 1540) and when his
+father died God made him king. There was a certain Muslim,
+whose name was grAnn (i.e. the "left-handed"), who called
+himself a king, though it was not right [to do so], and all the
+men of Ethiopia believed in his might, and associated them-
+selves with him in his belief. The remaining people in the
+country who clung to Christianity, he made to slave for him.
+He pulled down the churches, and carried off the greater
+number of the people captive into Ethiopia, and he sold them
+to whom he pleased. And he said, ''Henceforward no man
+can resist me; I have captured all the cities." Then God raised
+746
+THE ETHIOPIC SYNAXARIUM
+Up King CLAUDIUS, and he began to make war against the
+nobles of the kingdom of that iniquitous man, and he conquered
+them. When grAnn heard [this] he was furious, and he
+marched against Claudius with tens of thousands of men,
+and horses, and Turks, and they joined battle, and God killed
+him, and destroyed him by the hand of Claudius. And the
+captives returned [from Ethiopia], and the churches which
+had been laid waste were rebuilt, and the Orthodox Faith of
+Christ [was restored]. After this one of the Muslims came with
+many men of war, and he came upon King Claudius when he
+had [only] a few men with him. And the Muslim said unto
+him, "Let us remain quiet and not fight each other until the
+officers of our armies arrive." And Claudius said, "I will
+not remain quiet, and see Christians carried off into captivity,
+```
 
