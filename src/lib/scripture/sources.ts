@@ -8,7 +8,15 @@ import { join } from "node:path";
 import { unzipSync, strFromU8 } from "fflate";
 
 import { canonByCode, TRADITIONS, type Tradition } from "./canon";
-import { chunkBook, chunkSections, cleanText, toSections, type CleanOptions } from "./chunk-scripture";
+import {
+  chunkBook,
+  chunkSections,
+  cleanText,
+  sectionize,
+  toSections,
+  type CleanOptions,
+  type SectionRule,
+} from "./chunk-scripture";
 import type { Manifest } from "./manifest";
 import type { ScriptureChunk } from "./types";
 import { PERIPHERAL, parseUsfm } from "./usfm";
@@ -22,7 +30,13 @@ interface TextRule {
   traditions: Tradition[];
   clean: CleanOptions;
   defaultHeading: string;
+  /** OCR sources: rule-driven sections instead of generic heading detection. */
+  sections?: SectionRule;
 }
+
+/** Footnotes and index lines common to the OCR scans. */
+const FOOTNOTE = /^[\^*†‡§]\s?|^\d{1,2}\s+(Lit\.|Cf\.|See|Or|i\.e\.|Reading|Read)\b/;
+const INDEX_LINE = /\d+\s*,\s*\d+/;
 
 export const TEXT_RULES: Record<string, TextRule> = {
   confessions: {
@@ -34,24 +48,46 @@ export const TEXT_RULES: Record<string, TextRule> = {
   lausiac: {
     refPrefix: "Lausiac History",
     traditions: ALL,
-    clean: { endAt: /^INDEX\b/, dropLines: [/^THE LAUSIAC HISTORY\s*\d*$/i, /^\d+\s+THE LAUSIAC HISTORY/i] },
-    defaultHeading: "Introduction",
+    clean: {
+      startAt: /^PROLOGUE\b/,
+      dropLines: [/^[\dIl]+\s+THE LAUSIAC HISTORY$/i, /^THE LAUSIAC HISTORY$/i, FOOTNOTE, INDEX_LINE],
+      inline: [/\[\d+\]\s*/g],
+    },
+    defaultHeading: "Prologue",
+    // Right-hand running header: chapter title + page number.
+    sections: { runningTitle: /^([A-Z][A-Z .,'’&()-]{3,}?)[\s.•·-]*\d{1,3}$/ },
   },
   paradise: {
     refPrefix: "Paradise of the Holy Fathers",
     traditions: ["catholic", "orthodox", "ethiopian_orthodox"],
-    clean: { endAt: /^INDEX\b/, dropLines: [/^THE PARADISE OF THE (HOLY )?FATHERS\s*\d*$/i, /^\d+\s+THE PARADISE/i] },
+    clean: {
+      dropLines: [/par[ao]bise|paradise/i, /^contents\b/i, FOOTNOTE, INDEX_LINE],
+    },
     defaultHeading: "Introduction",
+    // Blackletter chapter lines OCR badly; name each chapter by its opening words.
+    sections: { sectionStart: /^Chapter\b/i, name: "firstWords" },
   },
   synaxarium: {
     refPrefix: "Ethiopian Synaxarium",
     traditions: ["ethiopian_orthodox"],
     clean: {
-      endAt: /^INDEX\b/,
-      dropLines: [MONTHS, /^\d+\s+THE BOOK OF THE SAINTS/i, /^THE BOOK OF THE SAINTS/i],
-      inline: [/\[?fol\.\s*\d+\s*[ab]?\s*\d?\]?/gi],
+      dropLines: [
+        /^[#\d\s]*THE ETHIOPIC SYNAXARIUM$/i,
+        /^(SON )?AND THE HOLY GHOST,? ONE GOD\.?$/i,
+        /^\d+\s+THE BOOK OF THE SAINTS/i,
+        FOOTNOTE,
+        INDEX_LINE,
+      ],
+      inline: [/\[fol\.[^\]]*\]/gi],
     },
     defaultHeading: "Preface",
+    // Each day opens with the Trinitarian invocation; the month comes from the running header.
+    sections: {
+      runningContext:
+        /^(?:FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\s*[—–-]+\s*([A-Za-z'’]+)/i,
+      sectionStart: /^(\[fol[^\]]*\]\s*)?IN THE NAME OF THE FATHER/i,
+      name: "contextCounter",
+    },
   },
 };
 
@@ -104,7 +140,9 @@ export function buildSource(rawDir: string, manifest: Manifest, sourceId: string
   const lines = entry.files.flatMap((f) =>
     cleanText(readFileSync(join(rawDir, sourceId, f.name), "utf8"), rule.clean),
   );
-  const sections = toSections(lines, rule.defaultHeading);
+  const sections = rule.sections
+    ? sectionize(lines, rule.sections, rule.defaultHeading)
+    : toSections(lines, rule.defaultHeading);
   const chunks = chunkSections(sections, {
     sourceId,
     title: entry.title,

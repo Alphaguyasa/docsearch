@@ -111,3 +111,34 @@ test("toSections + chunkSections: refs name the work and section, never cross se
   assert.deepEqual(chunks.map((c) => c.ref), ["Confessions, Book I", "Confessions, Book II"]);
   assert.match(chunks[1].content, /Pears were stolen/);
 });
+
+import { sectionize } from "../src/lib/scripture/chunk-scripture";
+import { TEXT_RULES } from "../src/lib/scripture/sources";
+
+test("sectionize: Lausiac running titles become chapter sections", () => {
+  const rule = TEXT_RULES.lausiac.sections!;
+  const lines = ["MACARIUS OF ALEXANDRIA 85", "He tramped about the desert with sand.", "MOSES THE ROBBER . 86", "Moses was an Ethiopian, black of skin."];
+  const s = sectionize(lines, rule, "Prologue");
+  assert.deepEqual(s.map((x) => x.heading), ["Macarius Of Alexandria", "Moses The Robber"]);
+});
+
+test("sectionize: Synaxarium days counted within the month from the running header", () => {
+  const rule = TEXT_RULES.synaxarium.sections!;
+  const lines = [
+    "FIFTH MONTH — TER (JAN. 9-FEB. 7) 101",
+    "IN THE NAME OF THE FATHER AND THE SON",
+    "On this day died Abba Moses the Black.",
+    "",
+    "[fol. 23a i] IN THE NAME OF THE FATHER AND THE SON",
+    "On this day also a martyr was crowned.",
+  ];
+  const s = sectionize(lines, rule, "Preface");
+  assert.deepEqual(s.map((x) => x.heading), ["Ter, entry 1", "Ter, entry 2"]);
+});
+
+test("sectionize: Paradise chapters are named by their opening words", () => {
+  const rule = TEXT_RULES.paradise.sections!;
+  const lines = ["Chapter jj£. ©f Sbba Hpollo", "THEY say concerning Abba Apollo, who lived in Scete, that he was rude."];
+  const s = sectionize(lines, rule, "Introduction");
+  assert.equal(s[0].heading, "“THEY say concerning Abba Apollo, who lived in…”");
+});
