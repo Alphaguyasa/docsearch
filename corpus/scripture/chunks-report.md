@@ -1,17 +1,17 @@
 # Scripture chunk report
 
-Generated 2026-09-25T18:01:08.234Z
+Generated 2026-09-25T18:02:12.143Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
 | confessions | 1 | 347 | 153365 | 442 | 611 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
-| synaxarium | 1 | 1137 | 533214 | 469 | 623 |
+| synaxarium | 1 | 1535 | 725810 | 473 | 625 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 5992 chunks, 2486800 tokens ≈ 4.1 h of embedding at 10000 TPM.
+**Total:** 6390 chunks, 2679396 tokens ≈ 4.5 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -67,8 +67,8 @@ Generated 2026-09-25T18:01:08.234Z
 - ✅ augustine / fall: `Confessions, Book II` → 30 chunk(s) (Confessions, Book II; Confessions, Book II (part 2); Confessions, Book II (part 3); …)
 - ✅ augustine / restoration: `Confessions, Book VIII` → 24 chunk(s) (Confessions, Book VIII; Confessions, Book VIII (part 2); Confessions, Book VIII (part 3); …)
 - ✅ moses_the_ethiopian / restoration: `Lausiac History, Moses The Robber` → 4 chunk(s) (Lausiac History, Moses The Robber; Lausiac History, Moses The Robber (part 2); Lausiac History, Moses The Robber (part 3); …)
-- ✅ moses_the_ethiopian / context: `Paradise of the Holy Fathers` → 1129 chunk(s) (Paradise of the Holy Fathers, Introduction; Paradise of the Holy Fathers, Introduction (part 2); Paradise of the Holy Fathers, Introduction (part 3); …)
-- ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium` → 1137 chunk(s) (Ethiopian Synaxarium, Preface; Ethiopian Synaxarium, Preface (part 2); Ethiopian Synaxarium, Preface (part 3); …)
+- ✅ moses_the_ethiopian / context: `Paradise of the Holy Fathers, “NOW there was a certain man whose name…”` → 4 chunk(s) (Paradise of the Holy Fathers, “NOW there was a certain man whose name…”; Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 2); Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 3); …)
+- ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium, Sane` → 110 chunk(s) (Ethiopian Synaxarium, Sane; Ethiopian Synaxarium, Sane (part 2); Ethiopian Synaxarium, Sane (part 3); …)
 
 ## Samples
 
@@ -181,41 +181,41 @@ And I know that “ when the judge cometh here he will kill me without asking �
 And he answered and said unto the woman and her husband, “ Because I see that ye preserve the “purity of your bodies for Christ’s sake, and that ye have “chosen to remain in great tribulation and not to destroy “ your chastity, God hath put it into my heart to do unto you an “ a6l of grace which ye deserve, and perhaps
 ```
 
-**Ethiopian Synaxarium, Preface** (609 tokens, ethiopian_orthodox)
+**Ethiopian Synaxarium, Preface** (562 tokens, ethiopian_orthodox)
 ```
 Ethiopian Synaxarium, Preface
 
-MICROFILMED 1992 COLUMBIA UNIVERSITY LIBRARIES/NEW YORK
+aie : i | i Os i ok ee lig Et! Aa ae cu, Arh hip ONT ar eae ¢ ry A r aan ; { Pee y Vo Caan ‘| 4 a Ceo Gs) 14 ; Hy Bai 4 i: ¥, Dey Oe tes seer he ; if "4 hat fi n ; ve {
 
-as part of the "Foundations of Western Civilization Preservation Project"
+iY Av i 1 U re ee ; Vey a a Vere fii 4 2 a ig j . ee uae amy, yi Weer Al i a! de : Mb H\ er set i eae _
 
-Funded by the NATIONAL ENDOWMENT FOR THE HUMANITIES
+THE BOOK OF THE SAINTS OF THE ETHIOPIAN CHURCH
 
-Reproductions may not be made without permission from
+IN FOUR VOLUMES VOLUME ONE
 
-Columbia University Library
+} 4 Cambridge University Press Fetter Lane, London "New York Te Bombay, Calcutta, Madras ’ Toronto Tokyo Maruzen-Kabushiki-Kaisha
 
-The copyright law of the United States - Title 17, United States Code — concerns the making of photocopies or other reproductions of copyrighted material..
+To The Memory of Hilp Gite
 
-Columbia University Library reserves the right to refuse to accept a copy order if, in its judgement, fiilfillment of the order would involve violation of the copyright law.
+Three hundred copies only of th work have been printed: of two hundred and fifty are for
 
-BOOK OF THE SAINTS OF THE ETHIOPIAN CHURCH
+THE BOOK OF THE SAINTS OF THE ETHIOPIAN CHURCH
 
-COLUMBIA UNIVERSITY LIBR
+A translation of the 
 ```
 
-**Ethiopian Synaxarium, Miyazya (part 4)** (571 tokens, ethiopian_orthodox)
+**Ethiopian Synaxarium, Yakatit** (252 tokens, ethiopian_orthodox)
 ```
-Ethiopian Synaxarium, Miyazya (part 4)
+Ethiopian Synaxarium, Yakatit
 
-little sick. And he saw in a vision many priests and monks coming to him, carrying in their hands crosses, and censers, and Books of the Gospel, and they embraced him, and said unto him, "We have come unto thee to visit thee, but we will return unto thee after this earth is ended [for thee], and we will take thee with us/' When he awoke he told the bishops and the priests who were about him what he had seen, and then he recovered from his illness. And after the end of a year he became a little sick, and again he saw the priests and the monks who had come to him formerly, and they embraced him and he rejoiced with them. And straightway he delivered his 
+On this day died the holy and righteous woman Saint Elisabeth, the mother of JOHN the Baptist. This holy woman was from the city of Jerusalem, and the name of her mother was SOPHIA, and the name of her father was mat at, the son of LEVI, the son of melki, of the tribe of aaron, of the tribe of LEVI; and he begot three daughters. By kin she was the daughter of the sister of the mother of our Lady mary, the mother of God in the flesh. The name of the eldest was mary, and she it was who was the mother of salome, who received our Lady mary when she brought forth the Wonder. The name of the second was sophia, and she it was who was the mother of this Saint Elisabeth
 ```
 
-**Ethiopian Synaxarium, Nahase (part 2)** (559 tokens, ethiopian_orthodox)
+**Ethiopian Synaxarium, Hamle (part 8)** (604 tokens, ethiopian_orthodox)
 ```
-Ethiopian Synaxarium, Nahase (part 2)
+Ethiopian Synaxarium, Hamle (part 8)
 
-rfol 1366 I] And on this day also died Saint mary mag- DALAwiT (MARY MAGDALENE). This saint followed our Lord Jesus Christ, and He cast seven devils out of her, and she ministered unto our Lord and followed Him, and she also followed the Apostles; and she was present at the time of the Passion and the Crucifixion, and Death and Burial of our Lord. And on the following day, at early dawn, she saw the stone roUed away, and the angel sitting upon it, and she and mary the mother of our Lord, being afraid, the angel said unto them. "Be not afraid, behold I know that ye are seeking Jesus, Who was crucified. Behold He hath risen. He is not here." And our Lord 
+T26a^l very severely. And he also sent him to the city of GAMNii^i, where they beat him with bars of wood and broke hit back- and when he was tired of torturing him he sent him fo the city of Alexandria. And when the saint came to the Hill orBARM6DA, our Lord Jesus Christ, our Redeemer, appeared io him, and comforted him, and told him that he should ihWs fight there, and He promised him that He would erant to every man any request which he should make m his fame And when the governor was tired of torturing him he commanded the soldiers to cut off his head with the sword, and thus the saint finished his martyrdom, and received the crown thereof in the kin
 ```
 
 **Genesis 1:1-13** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
@@ -247,11 +247,11 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
 
-**synaxarium** — 58 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…” · Ethiopian Synaxarium, Takhsas — “BIRTH OF CHRIST of MARY…” · Ethiopian Synaxarium, Takhsas — “ANTEDRIUS (ANDREAS?), and PHILIP, and EITELTAS (or…” · Ethiopian Synaxarium, Takhsas — “MARDOCHAEUS (mordecai). And he commanded hama (haman) to…” · Ethiopian Synaxarium, Takhsas — “AUGUSTUS CAESAR, the cmperor, that all the people…” · Ethiopian Synaxarium, Takhsas — “MARY His mother, and they fell down and…” · Ethiopian Synaxarium, Ter — “LEDIANUS(LYDIANUS),andTADRES(THEODORE),andPAUL…” · Ethiopian Synaxarium, Ter — “ABEL should take his sister, who was born…” · Ethiopian Synaxarium, Ter · Ethiopian Synaxarium, Ter — “BENJAMIN said, "Verily this is the house of…” · Ethiopian Synaxarium, Ter — “LIDAS, DUAMEDOS (DIOMEDIS), EUGENIUS, DEMETRIUS…” · Ethiopian Synaxarium, Ter — “DIOCLETIAN who ?T' 7^'^^ '^"* '''^''"' ^t *e…” · Ethiopian Synaxarium, Ter — “THE SIXTH MONTH— YAKATIT…” · Ethiopian Synaxarium, Yakatit · Ethiopian Synaxarium, Yakatit — “UD " And h I' 'f T ^^^*…” · Ethiopian Synaxarium, Yakatit — “THEODORE (sic), and TIMOTHY…” · Ethiopian Synaxarium, Yakatit — “THE NAME OF THE FATHER AND THE SON…” · Ethiopian Synaxarium, Yakatit — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Maggabit · Ethiopian Synaxarium, Maggabit — “DIOSCURUS said unto him, ''I am a Christian…” · Ethiopian Synaxarium, Maggabit — “AYYAD KHALIFAH AL-WALID II, the SOU of HISHAm…” · Ethiopian Synaxarium, Maggabit — “DABRA DEKHUKHAN [and] DABRA KANANMO…” · Ethiopian Synaxarium, Maggabit — “MARTHA his sister ministered unto those who were…” · Ethiopian Synaxarium, Maggabit — “GABRA MANFAS KtDUS was like unto the fowls…” · Ethiopian Synaxarium, Miyazya · Ethiopian Synaxarium, Miyazya — “JUDAH, for he was the son of joachim…” · Ethiopian Synaxarium, Miyazya — “XV. MiyAzyA i in the name of the…” · Ethiopian Synaxarium, Genbot — “THE NINTH MONTH— GENB6t…” · Ethiopian Synaxarium, Genbot · Ethiopian Synaxarium, Genbot — “JOHN a priest. And on the following day…” · Ethiopian Synaxarium, Genbot — “JOHN, Bishop of the city of Jerusalem, was…” · Ethiopian Synaxarium, Genbot — “THE ETHIOPIC SYNAXARIOM…” · Ethiopian Synaxarium, Genbot — “CAMBRIDGE: PRINTED BY…” · Ethiopian Synaxarium, Sane · Ethiopian Synaxarium, Sane — “GABRIEL came and touched his limbs, and healed…”
+**synaxarium** — 92 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, “COMMEMORATION OF fyAst}) I ’ADYAM SAGAD King of…” · Ethiopian Synaxarium, Maskaram · Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” · Ethiopian Synaxarium, Maskaram — “CURUS having ended his good fight and pleased…” · Ethiopian Synaxarium, Maskaram — “LIDES) came once again before the governor, and…” · Ethiopian Synaxarium, Maskaram — “TOBIT rubbed his eyes and there removed itself…” · Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Maskaram — “ATHANASIUS archbishop, for the holiness of his life…” · Ethiopian Synaxarium, Maskaram — “BELINA, and Abba sALAMA the lamp of the…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONE GOD |…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONESGoOD…” · Ethiopian Synaxarium, Maskaram — “SON AND THE HOLY GHOST, ONE GOD 4…” · Ethiopian Synaxarium, Maskaram — “THE SECOND MONTH—TEKEMT…” · Ethiopian Synaxarium, Teqemt — “SEVERUS secretly, she besought the holy man to…” · Ethiopian Synaxarium, Teqemt · Ethiopian Synaxarium, Teqemt — “TBA THE ETHIOPIC SYNAXARIUM…” · Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST. ONE GOD…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY, GHOST, ONE GOD…” · Ethiopian Synaxarium, Teqemt — “NE aia tS a sana eas Macapee ates…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ..ONE GOD…” · Ethiopian Synaxarium, Teqemt — “BESRA of the West, of the country of…” · Ethiopian Synaxarium, Teqemt — “SECOMD MOXTE—TEZEMT (ocr. Sov. 6) Ig7…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ONE GOD . On…” · Ethiopian Synaxarium, Teqemt — “AND THB’ HOLY GHOST, ONE, GOD…” · Ethiopian Synaxarium, Hedar · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONE:GOD…” · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONEVGO@D…” · Ethiopian Synaxarium, Hedar — “AND: THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Hedar — “WALATTA PETROS the Ethiopian woman. ] |…” · Ethiopian Synaxarium, Hedar — “PHERON, who hath corrupted thy daughter’s heart.” And…” · Ethiopian Synaxarium, Hedar — “NASEL, in the country of Ethiopia. Salutation to…” · Ethiopian Synaxarium, Hedar — “NAS was dying he commanded the bishops and…” · Ethiopian Synaxarium, Hedar — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…”
 
 ## Synaxarium chunks per month
 
-Preface: 10 · Takhsas: 137 · Ter: 153 · Yakatit: 108 · Maggabit: 131 · Miyazya: 84 · Genbot: 129 · Sane: 110 · Hamle: 147 · Nahase: 128
+Preface: 41 · ?: 20 · Maskaram: 115 · Teqemt: 103 · Hedar: 129 · Takhsas: 137 · Ter: 153 · Yakatit: 108 · Maggabit: 131 · Miyazya: 84 · Genbot: 129 · Sane: 110 · Hamle: 147 · Nahase: 128
 
 ## Where Moses the Ethiopian appears
 
@@ -270,6 +270,18 @@ Preface: 10 · Takhsas: 137 · Ter: 153 · Yakatit: 108 · Maggabit: 131 · Miya
 - paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 70)
 - paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 82)
 - paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 97)
+- synaxarium: Ethiopian Synaxarium, Preface (part 34)
+- synaxarium: Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” (part 5)
+- synaxarium: Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” (part 6)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…”
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 2)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 3)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 4)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 5)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 6)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 7)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 8)
+- synaxarium: Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” (part 9)
 - synaxarium: Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” (part 6)
 - synaxarium: Ethiopian Synaxarium, Sane
 - synaxarium: Ethiopian Synaxarium, Sane (part 2)
@@ -523,20 +535,26 @@ of his heart, and sighed in grief of heart, “O my Lord, I have
 
 ### synaxarium: frequent short lines
 ```
-577	#
+681	#
+352	#-#
 352	THE ETHIOPIC SYNAXARIUM
-190	AND THE HOLY GHOST, ONE GOD
-174	IN THE NAME OF THE FATHER AND THE SON
-111	# THE ETHIOPIC SYNAXARIUM
-77	I
-68	#-#
-60	SON AND THE HOLY GHOST, ONE GOD
+247	AND THE HOLY GHOST, ONE GOD
+241	IN THE NAME OF THE FATHER AND THE SON
+227	# THE ETHIOPIC SYNAXARIUM
+78	I
+76	SON AND THE HOLY GHOST, ONE GOD
 44	INDEX
+38	FIRST MONTH—MASKARAM (SEPT. #-OCT. #) #
+36	#.
+36	DAY
 32	#, #
 30	II
-28	DAY
+28	i
 26	in the name of the father and the son
-26	i
+24	\
+23	|
+22	THIRD MONTH—KHEDAR (HEDAR) (NOV. #—-DEC. #) #
+21	THIRD MONTH—KHEDAR (HEDAR) (NOV. #-DEC. #) #
 20	II#
 19	n
 19	and the holy ghost, one god
@@ -545,109 +563,103 @@ of his heart, and sighed in grief of heart, “O my Lord, I have
 18	III
 18	m
 18	[fol. #^#] IN THE NAME OF THE FATHER AND THE
-15	#, #, #, #, #, #, #,
-13	FIFTH MONTH — TER (jAN. #-FEB. #)
-12	\
-11	#i#
-11	And on this day also is celebrated the commemoration of
-11	B £ S III
-10	f
-10	ill
+17	#-# (or #)
+16	INTRODUCTION
 ```
-### synaxarium: context around "Moses" (line 390)
+### synaxarium: context around "Moses" (line 1564)
 ```
-JOHN the evangelist.
-GEORGE, mAtenA the archbishop, Theodora and
-AbbaLiKANds.
-NARDOSof DABRABizAN.whokiUedaserpentbyaprayer.
-SYBIL, the interpretress of dreams.
-EUSEGNIUS.
-MATTHEW, Archbishop of Alexandria.
-yArew£ny6s and his fellow martyrs.
-NEGIRUS of Rome.
-ALEXANDRA, who visited ARSENIUS and 'AWSHIA.
-The Circumcision of Christ.
-NOAH.
-The Ascension of Elijah into heaven.
-M A R c I A N u s. Archbishop of Alexandria.
-BASIL, Bishop of Caesarea.
-Abba MOSES, who dwelt in the desert for sixty years.
-SILVESTER, Archbishop of R6md.
-Abba EPHRAIM.
-MOSOLON, GREGORY, MARK, ANTIANUS, LUYA.
-MAYLEN, sosYAsand mArteyA.
-Consecration of the church ofMACARlusofsCETE
-ANDRONicus, Archbishop of Alexandria.
-BENJAMIN, Archbishop of Alexandria.
-MALACHI the prophet.
-ANDRONICUS the Stylite.
-Abba ABRAHAM.
-GEORGE, n6sm£sA and dioscurus.
-tAwbentos (theopantus ?).
-CYNARIUS, PATRICIA the queen, and tomiAni.
-Baptism of Christ.
-ANATOLIUS.
-JOHN, Archbishop of Alexandria.
-JUSTUS and fAyyos (var. guedet).
-AbbaWAKRis.
-JOHN, who gave 20,000 dinars (about £10,000) to the poor.
-MICHAEL the archangel.
-THEODORE, LAVENDIUS and banik6r6s and 250.000
-fellow martyrs.
-JULIAN the martyr and DANIEL the monk.
-ZIV
+The follower of the ten thousand martyrs whom DIOCLETIAN
+slew.
+His companions who were round about him proclaimed him
+blessed
+When they wished to wash his wounds
+According to the decree made by CONSTANTINE, the right-
+eous man.
+XXIV. SANE
+Salutation I say to the seven brethren
+Who, together with MOSES the Black, died by the sword of the’
+Barbarians.
+One of them, through his fear, hid himself,
+_ But when the angel who was carrying their crowns appeared to
+him,
+His fear was turned into courage.
+Salutation I say to MOSES the Black,
+Who dwelt withdrawn into the recesses of the desert.
+When calling to mind his own former evil deeds
+On that very day he was slain by the sword of the Barbarians,
+Saying, “ Without blood blood cannot be purified.”
+XXV. SANE
+Salutation to JUDE, the servant of God,
+Whose feet were pierced with a red hot spear.
+Since, teaching the perfect Faith of the Gospel,
+The Apostles included his Epistle with their Epistles,
+His memorial is written side by side with the [memorials of
+the] Apostles.
+xlvi
+56.
+57:
+58.
+59:
+60.
+6I.
+INTRODUCTION
+Salutation to PETER whose Ordinances and Law were good,
+Who was named governor of DABRA ZEGAG.
+Of the clear and unpolluted water of his teaching,
+Which flowed over him like a river,
+The young drank and the old refreshed themselves.
 ```
 ### synaxarium: 50 raw lines at 40%
 ```
-of darkness lasted from the sixth to the ninth hour, and in that
-time our Lord bowed His head by His own free will, and
-delivered up His understanding and rational soul which He
-had received from our Lady, the Virgin mary, and that soul
-was separated from its body. And it went into Sheol without
-separation from the Godhead, even as Saint peter the apostle
-saith, *'He was dead in the body and alive in the spirit." And
-at that same time His body was hung upon the wood of the
-Cross, without separation from the Godhead. Similarly His
-soul descended into Sheol, like a released [fol. 2263] prisoner,
-and it had one nature and was without separation from the
-Godhead. And He was exalted high above the heavens, sitting
-with the Father and the Holy Spirit.
-Salutation to Thy passion, O God the King.
-Salutation to Thy crucifixion on the Cross.
-Salutation to the going forth of Thy Soul from Thy Body.
-And on this day also died the strenuous ascetic and fighter
-Abba hezekiah, the father of the monks of dabra libAnos.
-He was the fourth abbot from our father taklahAymAnot.
-[Omitted in the Bodleian MS.]
-[fol. 23a i] And on this day also the God-loving Claudius
-finished [his] crowning with martyrdom. He was brought up
-piously by the orthodox King lebna dengel (i.e. david ii,
-WANAGSAGADi, who died 2nd September, 1540) and when his
-father died God made him king. There was a certain Muslim,
-whose name was grAnn (i.e. the "left-handed"), who called
-himself a king, though it was not right [to do so], and all the
-men of Ethiopia believed in his might, and associated them-
-selves with him in his belief. The remaining people in the
-country who clung to Christianity, he made to slave for him.
-He pulled down the churches, and carried off the greater
-number of the people captive into Ethiopia, and he sold them
-to whom he pleased. And he said, ''Henceforward no man
-can resist me; I have captured all the cities." Then God raised
-746
+they made with their hands, and he brought them bread And
+they lived in this way in the desert for three years, and they
+held converse with none, for they would go into the church
+holding their peace, and receive the Holy Mysteries, and return
+to their cell. And our father Saint macarius wondered at
+their behaviour and why they had neither come to him nor
+512
 THE ETHIOPIC SYNAXARIUM
-Up King CLAUDIUS, and he began to make war against the
-nobles of the kingdom of that iniquitous man, and he conquered
-them. When grAnn heard [this] he was furious, and he
-marched against Claudius with tens of thousands of men,
-and horses, and Turks, and they joined battle, and God killed
-him, and destroyed him by the hand of Claudius. And the
-captives returned [from Ethiopia], and the churches which
-had been laid waste were rebuilt, and the Orthodox Faith of
-Christ [was restored]. After this one of the Muslims came with
-many men of war, and he came upon King Claudius when he
-had [only] a few men with him. And the Muslim said unto
-him, "Let us remain quiet and not fight each other until the
-officers of our armies arrive." And Claudius said, "I will
-not remain quiet, and see Christians carried off into captivity,
+FIFTH MONTH— t£R (JAN. 6-FEB. 5)
+513
+Visited him during this period of three years; and he asked God
+rreveal the matter of them to him. And he rose up and wen
+to them, and they rejoiced in him exceedmgly. and he dwelt
+with them that night. And when he rose up to pray he saw
+Saints MAXIMUS and dumatheus nse up to pray, and when
+tS prayed he saw as it were a rope of fire wWch wen up from
+thefr mouths to heaven. And Satans thronged about them like
+flies and the angel of God drove them away from them with a
+sword of fire. When the morning had come he arrayed them
+L the garb of the angels, and he departed from them, saymg,
+^Pray for me"; and they bowed low before Jim saying
+-ml us, O our father, and pray for us." And when they had
+finished their fight, and God wished to give them rest from the
+Sbour and sorrow of this worid, maximus fell sick of fever
+and his body became like fire. And he sent a message to Abba
+macarius asking him to come and see him, and when ma-
+CARius arrived he found him sick. And maximus said unto
+him "Bless me, O my father"; and he blessed him, and said
+S; him, "Fear not, for this iUness shall depart from thee,
+ffol 130a I] And MAXIMUS said unto him, O my father, I
+know that this day I shaU depart from this poor body of mine,
+fa^k thee to pray for me, and I shall find help"; and having
+said these words he wept bitterly. And at that moment Abba
+MACARIUS saw the Company of the Saints, Prophets and
+Apostles, and JOHN the Baptist, and the Emperor constan-
+TiNE and they came and surrounded Saint maximus, until
+his soul went forth in honour and glory. And Abba macarius
+wept and said, "Blessed art thou, maximus.' And duma-
+theus wept bitterly for his brother, and he asked Abba
+macarius! saymg, "Pray for me that God may take my sou
+and bring me to my brother." And three days after Saint
+maximus was buried, dumatheus fell sick, and one told
+Saint macarius about him, and he rose up to go to him. And
+as he was journeying along the road, he saw the saints, and he
+saw the Company, who came and received the soul of baint
+MAXIMUS, take the soul of his brother dumatheus, and
+carrv it up to heaven. And when Abba macarius arrived at
+their cell he found dumatheus dead, and he took him and
+buried him with his brother maximus, in the same grave.
+The death of maximus took place on the fourteenth day of
 ```
 
