@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T17:47:00.235Z",
+  "generatedAt": "2026-09-25T17:53:43.925Z",
   "entries": [
     {
       "id": "confessions",
@@ -8,7 +8,7 @@
       "kind": "tradition",
       "format": "gutenberg-txt",
       "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
-      "retrievedAt": "2026-09-25T17:46:48.099Z",
+      "retrievedAt": "2026-09-25T17:53:28.702Z",
       "files": [
         {
           "name": "pg3296.txt",
@@ -24,7 +24,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
-      "retrievedAt": "2026-09-25T17:47:00.225Z",
+      "retrievedAt": "2026-09-25T17:53:43.915Z",
       "files": [
         {
           "name": "lausiachistoryof00palluoft_djvu.txt",
@@ -41,7 +41,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain (published 1907; Budge d. 1934)",
-      "retrievedAt": "2026-09-25T17:46:57.588Z",
+      "retrievedAt": "2026-09-25T17:53:42.241Z",
       "files": [
         {
           "name": "paradiseorgarden01anan_djvu.txt",
@@ -65,7 +65,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-      "retrievedAt": "2026-09-25T17:46:51.598Z",
+      "retrievedAt": "2026-09-25T17:53:35.020Z",
       "files": [
         {
           "name": "bookofsaintsofet00yait_djvu.txt",
@@ -82,7 +82,7 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-09-25T17:46:28.786Z",
+      "retrievedAt": "2026-09-25T17:53:28.281Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",
