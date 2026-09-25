@@ -41,6 +41,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.INGEST_PAT }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -66,6 +67,12 @@ jobs:
         run: |
           set -o pipefail
           npm run scripture:ingest -- --max-minutes 320 2>&1 | tee ingest.log
+      - name: Surface the log tail as an annotation
+        if: always()
+        run: |
+          # Annotations are readable through the API even where raw logs are not.
+          TAIL=$(tail -n 25 ingest.log 2>/dev/null | sed 's/%/%25/g' | tr '\n' '|' | cut -c1-3500)
+          if [ "${{ steps.ingest.outcome }}" = "success" ]; then echo "::notice title=ingest tail::$TAIL"; else echo "::error title=ingest tail::$TAIL"; fi
       - name: Record progress, chain, notify
         if: always()
         env:
@@ -116,5 +123,7 @@ jobs:
           git add $PROG
           if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
           git commit -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
-          git pull --rebase -q
-          git push
+          for attempt in 1 2 3; do
+            git push && break
+            git fetch -q origin pivot/scripture && git rebase -q origin/pivot/scripture
+          done
