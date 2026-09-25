@@ -1,0 +1,20 @@
+outcome=failure at 2026-09-25T18:34:38Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36174257033
+
+> docsearch@0.1.0 scripture:ingest
+> tsx scripts/ingest-scripture.ts --max-minutes 320
+
+built 6390 chunks across 82 documents
+⚠️  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715
+Error: Node.js detected but native WebSocket not found.
+
+Suggested solution: Ensure you are running Node.js 22+ or provide a WebSocket implementation via the transport option.
+    at Function.getWebSocketConstructor (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/lib/websocket-factory.ts:159:11)
+    at RealtimeClient._initializeOptions (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/RealtimeClient.ts:789:63)
+    at new RealtimeClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/RealtimeClient.ts:283:39)
+    at SupabaseClient._initRealtimeClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/SupabaseClient.ts:653:12)
+    at new SupabaseClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/SupabaseClient.ts:381:26)
+    at createClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/index.ts:65:10)
+    at <anonymous> (/home/runner/work/docsearch/docsearch/src/lib/db.ts:12:19)
+    at Object.<anonymous> (/home/runner/work/docsearch/docsearch/src/lib/db.ts:22:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Object.transformer (/home/runner/work/docsearch/docsearch/node_modules/tsx/dist/register-BoI6-WNn.cjs:9:3252)
