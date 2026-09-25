@@ -44,7 +44,17 @@ function sha256(buf: Buffer): string {
 }
 
 async function get(url: string, attempt = 0): Promise<Buffer> {
-  const res = await fetch(url, { headers: { "User-Agent": UA }, redirect: "follow" });
+  let res: Response;
+  try {
+    res = await fetch(url, { headers: { "User-Agent": UA }, redirect: "follow" });
+  } catch (err) {
+    // Network-level failure ("fetch failed"): archive.org drops connections under load.
+    if (attempt < 4) {
+      await new Promise((r) => setTimeout(r, 5000 * 2 ** attempt));
+      return get(url, attempt + 1);
+    }
+    throw err;
+  }
   if (res.ok) return Buffer.from(await res.arrayBuffer());
   if ((res.status === 429 || res.status >= 500) && attempt < 3) {
     await new Promise((r) => setTimeout(r, 5000 * 2 ** attempt));
@@ -166,13 +176,19 @@ async function fetchSource(source: SourceConfig, prev: ManifestEntry | undefined
     files.push(await fetchFile(source.id, source.url, name, prevFile(name)));
   }
 
+  // Keep the previous timestamp when every file is byte-identical, so the
+  // manifest (and the CI cache key derived from it) only changes on real change.
+  const unchanged =
+    prev !== undefined &&
+    prev.files.length === files.length &&
+    prev.files.every((f, i) => f.sha256 === files[i].sha256 && f.name === files[i].name);
   return {
     id: source.id,
     title: source.title,
     kind: source.kind,
     format: source.format,
     license: source.license,
-    retrievedAt: new Date().toISOString(),
+    retrievedAt: unchanged ? prev.retrievedAt : new Date().toISOString(),
     files,
   };
 }
@@ -203,7 +219,9 @@ async function main(): Promise<void> {
   }
 
   manifest.entries.sort((a, b) => a.id.localeCompare(b.id));
-  manifest.generatedAt = new Date().toISOString();
+  // generatedAt only moves when an entry did, for the same cache-key reason.
+  const latest = manifest.entries.map((e) => e.retrievedAt).sort().at(-1) ?? "";
+  manifest.generatedAt = latest;
   validateManifest(manifest);
   writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
   writeFileSync(FAILED, JSON.stringify(failed, null, 2) + "\n");
