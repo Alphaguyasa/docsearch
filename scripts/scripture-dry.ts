@@ -92,6 +92,27 @@ function main(): void {
     out.push(`**${entry.id}** — ${heads.length} sections: ${heads.slice(0, 40).join(" · ")}`, "");
   }
 
+  // Tuning aids for OCR sources: most frequent short lines (running-header
+  // candidates) and raw context around a keyword, straight from the raw text.
+  out.push("## OCR tuning aids", "");
+  for (const entry of manifest.entries.filter((e) => e.format === "archive-djvu-txt")) {
+    const raw = entry.files.map((f) => readFileSync(join(ROOT, "raw", entry.id, f.name), "utf8")).join("\n");
+    const lines = raw.split(/\r?\n/).map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean);
+    const freq = new Map<string, number>();
+    for (const l of lines) {
+      if (l.length > 60) continue;
+      const shape = l.replace(/\d+/g, "#");
+      freq.set(shape, (freq.get(shape) ?? 0) + 1);
+    }
+    const top = [...freq.entries()].filter(([, n]) => n >= 4).sort((a, b) => b[1] - a[1]).slice(0, 30);
+    out.push(`### ${entry.id}: frequent short lines`, "```", ...top.map(([l, n]) => `${n}\t${l}`), "```");
+    const hit = lines.findIndex((l) => /\bMOSES\b/.test(l) && l.length < 60);
+    const at = hit >= 0 ? hit : lines.findIndex((l) => /Moses/.test(l));
+    if (at >= 0) out.push(`### ${entry.id}: context around "Moses" (line ${at})`, "```", ...lines.slice(Math.max(0, at - 15), at + 25).map((l) => l.slice(0, 140)), "```");
+    const sampleAt = Math.floor(lines.length * 0.4);
+    out.push(`### ${entry.id}: 50 raw lines at 40%`, "```", ...lines.slice(sampleAt, sampleAt + 50).map((l) => l.slice(0, 140)), "```", "");
+  }
+
   writeFileSync(join(ROOT, "chunks-report.md"), out.join("\n") + "\n");
   console.log(out.slice(0, 20).join("\n"));
   if (problems.length) {
