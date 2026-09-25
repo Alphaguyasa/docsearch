@@ -6,6 +6,7 @@
  * Failures BEFORE streaming return a real HTTP status with a readable JSON body
  * { "error": string }:
  *   - 400  invalid request body (missing/empty/too-long question)
+ *   - 429  site-wide search limit reached (Voyage free tier); retry in a minute
  *   - 502  retrieval failed upstream (embedding / database / keyword search)
  *
  * On success the response is 200 with Content-Type application/x-ndjson: one
@@ -39,6 +40,7 @@ import { getLlm } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
 import { TRADITIONS } from "@/lib/scripture/canon";
 import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
+import { BUSY_MESSAGE, takeSearchSlot } from "@/lib/scripture/rate-limit";
 import { checkSafety, crisisResponse } from "@/lib/scripture/safety";
 import { parseRef } from "@/lib/scripture/usfm";
 import type { FigureSummary, SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
@@ -121,7 +123,13 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  // 3. Retrieve BEFORE opening the stream, so an upstream failure can still
+  // 3. Global rate limit — AFTER the safety gate, so a person in crisis is
+  //    never told to wait.
+  if (!(await takeSearchSlot())) {
+    return errorResponse(BUSY_MESSAGE, 429);
+  }
+
+  // 4. Retrieve BEFORE opening the stream, so an upstream failure can still
   //    return a proper status code and message.
   let chunks: RetrievedChunk[];
   let figures: FigureSummary[] = [];
@@ -139,7 +147,7 @@ export async function POST(request: Request): Promise<Response> {
   }
   const hints: FigureHint[] = figures.map(({ name, summary, note }) => ({ name, summary, note }));
 
-  // 4. Stream NDJSON: sources first, then answer deltas, then done (or error).
+  // 5. Stream NDJSON: sources first, then answer deltas, then done (or error).
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
