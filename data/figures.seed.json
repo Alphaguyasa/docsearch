@@ -650,12 +650,14 @@
         {
           "role": "fall",
           "ref": "Confessions, Book II",
-          "sourceId": "confessions"
+          "sourceId": "confessions",
+          "match": "pears"
         },
         {
           "role": "restoration",
           "ref": "Confessions, Book VIII",
-          "sourceId": "confessions"
+          "sourceId": "confessions",
+          "match": "Take up and read"
         }
       ],
       "note": "Gutenberg Pusey text has no chapter numbers; refs are by Book."
@@ -684,15 +686,17 @@
         {
           "role": "context",
           "ref": "Paradise of the Holy Fathers, “NOW there was a certain man whose name…”",
-          "sourceId": "paradise"
+          "sourceId": "paradise",
+          "match": "Moses"
         },
         {
           "role": "context",
           "ref": "Ethiopian Synaxarium, Sane",
-          "sourceId": "synaxarium"
+          "sourceId": "synaxarium",
+          "match": "Moses"
         }
       ],
-      "note": "Budge's Paradise calls him 'Moses the Indian'. Synaxarium commemoration falls in Sane; Session 4 should narrow to the exact entry by content."
+      "note": "Budge's Paradise calls him 'Moses the Indian'. Tradition passages are narrowed by a content match ('Moses')."
     },
     {
       "id": "mary_of_egypt",

@@ -28,7 +28,9 @@
     "corpus:fetch": "tsx scripts/fetch-corpus.ts",
     "scripture:fetch": "tsx scripts/fetch-scripture.ts",
     "scripture:dry": "tsx scripts/scripture-dry.ts",
-    "scripture:ingest": "tsx scripts/ingest-scripture.ts"
+    "scripture:ingest": "tsx scripts/ingest-scripture.ts",
+    "scripture:seed-figures": "tsx scripts/seed-figures.ts",
+    "scripture:ask": "tsx scripts/ask-struggle.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
