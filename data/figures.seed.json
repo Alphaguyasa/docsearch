@@ -649,16 +649,16 @@
       "passages": [
         {
           "role": "fall",
-          "ref": "Confessions 2.4",
+          "ref": "Confessions, Book II",
           "sourceId": "confessions"
         },
         {
           "role": "restoration",
-          "ref": "Confessions 8.12",
+          "ref": "Confessions, Book VIII",
           "sourceId": "confessions"
         }
       ],
-      "note": "Chapter numbering must match the ingested translation; verify."
+      "note": "Gutenberg Pusey text has no chapter numbers; refs are by Book."
     },
     {
       "id": "moses_the_ethiopian",
@@ -678,17 +678,17 @@
       "passages": [
         {
           "role": "restoration",
-          "ref": "Lausiac History 19",
+          "ref": "Lausiac History, Chapter XIX",
           "sourceId": "lausiac"
         },
         {
           "role": "context",
-          "ref": "Paradise of the Holy Fathers — Abba Moses",
+          "ref": "Paradise of the Holy Fathers",
           "sourceId": "paradise"
         },
         {
           "role": "context",
-          "ref": "Synaxarium — Abba Moses",
+          "ref": "Ethiopian Synaxarium",
           "sourceId": "synaxarium"
         }
       ],
