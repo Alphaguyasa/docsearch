@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-25T17:59:41.285Z
+Generated 2026-09-25T18:01:08.234Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -248,6 +248,32 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
 
 **synaxarium** — 58 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…” · Ethiopian Synaxarium, Takhsas — “BIRTH OF CHRIST of MARY…” · Ethiopian Synaxarium, Takhsas — “ANTEDRIUS (ANDREAS?), and PHILIP, and EITELTAS (or…” · Ethiopian Synaxarium, Takhsas — “MARDOCHAEUS (mordecai). And he commanded hama (haman) to…” · Ethiopian Synaxarium, Takhsas — “AUGUSTUS CAESAR, the cmperor, that all the people…” · Ethiopian Synaxarium, Takhsas — “MARY His mother, and they fell down and…” · Ethiopian Synaxarium, Ter — “LEDIANUS(LYDIANUS),andTADRES(THEODORE),andPAUL…” · Ethiopian Synaxarium, Ter — “ABEL should take his sister, who was born…” · Ethiopian Synaxarium, Ter · Ethiopian Synaxarium, Ter — “BENJAMIN said, "Verily this is the house of…” · Ethiopian Synaxarium, Ter — “LIDAS, DUAMEDOS (DIOMEDIS), EUGENIUS, DEMETRIUS…” · Ethiopian Synaxarium, Ter — “DIOCLETIAN who ?T' 7^'^^ '^"* '''^''"' ^t *e…” · Ethiopian Synaxarium, Ter — “THE SIXTH MONTH— YAKATIT…” · Ethiopian Synaxarium, Yakatit · Ethiopian Synaxarium, Yakatit — “UD " And h I' 'f T ^^^*…” · Ethiopian Synaxarium, Yakatit — “THEODORE (sic), and TIMOTHY…” · Ethiopian Synaxarium, Yakatit — “THE NAME OF THE FATHER AND THE SON…” · Ethiopian Synaxarium, Yakatit — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Maggabit · Ethiopian Synaxarium, Maggabit — “DIOSCURUS said unto him, ''I am a Christian…” · Ethiopian Synaxarium, Maggabit — “AYYAD KHALIFAH AL-WALID II, the SOU of HISHAm…” · Ethiopian Synaxarium, Maggabit — “DABRA DEKHUKHAN [and] DABRA KANANMO…” · Ethiopian Synaxarium, Maggabit — “MARTHA his sister ministered unto those who were…” · Ethiopian Synaxarium, Maggabit — “GABRA MANFAS KtDUS was like unto the fowls…” · Ethiopian Synaxarium, Miyazya · Ethiopian Synaxarium, Miyazya — “JUDAH, for he was the son of joachim…” · Ethiopian Synaxarium, Miyazya — “XV. MiyAzyA i in the name of the…” · Ethiopian Synaxarium, Genbot — “THE NINTH MONTH— GENB6t…” · Ethiopian Synaxarium, Genbot · Ethiopian Synaxarium, Genbot — “JOHN a priest. And on the following day…” · Ethiopian Synaxarium, Genbot — “JOHN, Bishop of the city of Jerusalem, was…” · Ethiopian Synaxarium, Genbot — “THE ETHIOPIC SYNAXARIOM…” · Ethiopian Synaxarium, Genbot — “CAMBRIDGE: PRINTED BY…” · Ethiopian Synaxarium, Sane · Ethiopian Synaxarium, Sane — “GABRIEL came and touched his limbs, and healed…”
+
+## Synaxarium chunks per month
+
+Preface: 10 · Takhsas: 137 · Ter: 153 · Yakatit: 108 · Maggabit: 131 · Miyazya: 84 · Genbot: 129 · Sane: 110 · Hamle: 147 · Nahase: 128
+
+## Where Moses the Ethiopian appears
+
+- lausiac: Lausiac History, Macarius Of Alexandria (part 9)
+- lausiac: Lausiac History, Moses The Robber
+- lausiac: Lausiac History, Moses The Robber (part 2)
+- lausiac: Lausiac History, Moses The Robber (part 3)
+- lausiac: Lausiac History, Moses The Robber (part 4)
+- lausiac: Lausiac History, The Brother Who Is With The Writer (part 2)
+- paradise: Paradise of the Holy Fathers, Introduction (part 4)
+- paradise: Paradise of the Holy Fathers, “NOW there was a certain man whose name…”
+- paradise: Paradise of the Holy Fathers, “AND we saw also the granaries of Joseph…” (part 10)
+- paradise: Paradise of the Holy Fathers, “AND we saw also the granaries of Joseph…” (part 19)
+- paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 19)
+- paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 28)
+- paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 70)
+- paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 82)
+- paradise: Paradise of the Holy Fathers, “THE brethren said: — There were two brethren…” (part 97)
+- synaxarium: Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” (part 6)
+- synaxarium: Ethiopian Synaxarium, Sane
+- synaxarium: Ethiopian Synaxarium, Sane (part 2)
+- synaxarium: Ethiopian Synaxarium, Sane (part 3)
 
 ## OCR tuning aids
 
