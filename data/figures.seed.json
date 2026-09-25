@@ -1,0 +1,722 @@
+{
+  "version": 1,
+  "vocabulary": [
+    "abandonment",
+    "adultery",
+    "anger",
+    "betrayal",
+    "cowardice",
+    "deceit",
+    "denial",
+    "despair",
+    "disobedience",
+    "doubt",
+    "envy",
+    "exploitation",
+    "fear",
+    "greed",
+    "hypocrisy",
+    "idolatry",
+    "lust",
+    "murder",
+    "persecution",
+    "pride",
+    "quitting",
+    "resentment",
+    "sexual_sin",
+    "shame",
+    "theft",
+    "violence"
+  ],
+  "figures": [
+    {
+      "id": "david",
+      "name": "King David",
+      "kind": "scripture",
+      "sins": [
+        "adultery",
+        "lust",
+        "murder",
+        "deceit"
+      ],
+      "summary": "Took another man's wife, then arranged the husband's death; confronted by Nathan, he confessed.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "2 Samuel 11:1-27",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "2 Samuel 12:1-13",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Psalm 51",
+          "sourceId": "web"
+        }
+      ],
+      "note": "Psalm 51 is Psalm 50 in Septuagint numbering; verse numbers differ by tradition."
+    },
+    {
+      "id": "peter",
+      "name": "Peter",
+      "kind": "scripture",
+      "sins": [
+        "denial",
+        "cowardice",
+        "betrayal",
+        "hypocrisy"
+      ],
+      "summary": "Denied knowing Jesus three times; restored by the risen Jesus with three questions of love.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Luke 22:54-62",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "John 21:15-19",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Galatians 2:11-14",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "paul",
+      "name": "Paul (Saul)",
+      "kind": "scripture",
+      "sins": [
+        "violence",
+        "persecution",
+        "pride"
+      ],
+      "summary": "Hunted and imprisoned Christians; later called himself the foremost of sinners.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Acts 8:1-3",
+          "sourceId": "web"
+        },
+        {
+          "role": "fall",
+          "ref": "Acts 9:1-2",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Acts 9:3-19",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "1 Timothy 1:12-16",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "moses",
+      "name": "Moses",
+      "kind": "scripture",
+      "sins": [
+        "murder",
+        "anger",
+        "violence"
+      ],
+      "summary": "Killed an Egyptian and fled; God later called him from the burning bush.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Exodus 2:11-15",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Exodus 3:1-12",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Numbers 20:10-12",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "abraham",
+      "name": "Abraham",
+      "kind": "scripture",
+      "sins": [
+        "deceit",
+        "fear"
+      ],
+      "summary": "Twice passed off his wife as his sister to protect himself.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Genesis 12:10-20",
+          "sourceId": "web"
+        },
+        {
+          "role": "fall",
+          "ref": "Genesis 20:1-18",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Genesis 15:1-6",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "jacob",
+      "name": "Jacob",
+      "kind": "scripture",
+      "sins": [
+        "deceit",
+        "theft",
+        "envy"
+      ],
+      "summary": "Deceived his father to steal his brother's blessing; wrestled with God and reconciled with Esau.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Genesis 27:1-36",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Genesis 32:22-30",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Genesis 33:1-11",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "jonah",
+      "name": "Jonah",
+      "kind": "scripture",
+      "sins": [
+        "disobedience",
+        "anger",
+        "resentment"
+      ],
+      "summary": "Ran from God's call, then resented God's mercy to his enemies.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Jonah 1:1-3",
+          "sourceId": "web"
+        },
+        {
+          "role": "fall",
+          "ref": "Jonah 4:1-3",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Jonah 2:1-10",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Jonah 3:1-3",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Jonah 4:4-11",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "elijah",
+      "name": "Elijah",
+      "kind": "scripture",
+      "sins": [
+        "despair",
+        "fear"
+      ],
+      "summary": "After great victory, fled in fear and asked to die; God fed him, let him rest, and spoke to him.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "1 Kings 19:1-4",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "1 Kings 19:5-18",
+          "sourceId": "web"
+        }
+      ],
+      "note": "Despair is not sin in itself; frame as struggle, not guilt."
+    },
+    {
+      "id": "samson",
+      "name": "Samson",
+      "kind": "scripture",
+      "sins": [
+        "lust",
+        "pride",
+        "disobedience"
+      ],
+      "summary": "Gave in repeatedly to desire and pride, lost his strength and sight; prayed at the end.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Judges 16:1-21",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Judges 16:28-30",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "aaron",
+      "name": "Aaron",
+      "kind": "scripture",
+      "sins": [
+        "idolatry",
+        "cowardice",
+        "deceit"
+      ],
+      "summary": "Made the golden calf under pressure and made excuses; still ordained as priest.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Exodus 32:1-24",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Leviticus 8:1-12",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "rahab",
+      "name": "Rahab",
+      "kind": "scripture",
+      "sins": [
+        "sexual_sin",
+        "shame"
+      ],
+      "summary": "A prostitute in Jericho who sheltered the spies; saved and later named among the faithful.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "context",
+          "ref": "Joshua 2:1-21",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Joshua 6:22-25",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Hebrews 11:31",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Matthew 1:5",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "matthew",
+      "name": "Matthew (Levi)",
+      "kind": "scripture",
+      "sins": [
+        "greed",
+        "exploitation"
+      ],
+      "summary": "A tax collector Jesus called to follow him, then ate with.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Matthew 9:9-13",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "zacchaeus",
+      "name": "Zacchaeus",
+      "kind": "scripture",
+      "sins": [
+        "greed",
+        "theft",
+        "exploitation"
+      ],
+      "summary": "A chief tax collector who cheated people; repaid fourfold after Jesus came to his house.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Luke 19:1-10",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "samaritan_woman",
+      "name": "The Samaritan woman",
+      "kind": "scripture",
+      "sins": [
+        "sexual_sin",
+        "shame"
+      ],
+      "summary": "Jesus named her past plainly and she became a witness to her town.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "John 4:7-42",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "woman_caught_in_adultery",
+      "name": "The woman caught in adultery",
+      "kind": "scripture",
+      "sins": [
+        "adultery",
+        "shame"
+      ],
+      "summary": "Jesus refused to condemn her and told her to sin no more.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "John 8:1-11",
+          "sourceId": "web"
+        }
+      ],
+      "note": "John 7:53-8:11 is absent from the earliest manuscripts; always show this note."
+    },
+    {
+      "id": "thomas",
+      "name": "Thomas",
+      "kind": "scripture",
+      "sins": [
+        "doubt"
+      ],
+      "summary": "Refused to believe without proof; Jesus met him where he was.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "John 20:24-29",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "john_mark",
+      "name": "John Mark",
+      "kind": "scripture",
+      "sins": [
+        "quitting",
+        "abandonment"
+      ],
+      "summary": "Left Paul mid-mission, causing a split; later called useful by Paul.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Acts 13:13",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Acts 15:36-39",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "2 Timothy 4:11",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Colossians 4:10",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "nebuchadnezzar",
+      "name": "Nebuchadnezzar",
+      "kind": "scripture",
+      "sins": [
+        "pride"
+      ],
+      "summary": "Boasted in his own power, was humbled, then praised God.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Daniel 4:28-33",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Daniel 4:34-37",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "manasseh",
+      "name": "King Manasseh",
+      "kind": "scripture",
+      "sins": [
+        "idolatry",
+        "violence",
+        "murder"
+      ],
+      "summary": "Among the worst kings of Judah; humbled in captivity, he repented and was restored.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "2 Kings 21:1-16",
+          "sourceId": "web"
+        },
+        {
+          "role": "fall",
+          "ref": "2 Chronicles 33:1-9",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "2 Chronicles 33:10-16",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Prayer of Manasseh",
+          "sourceId": "web"
+        }
+      ],
+      "note": "Prayer of Manasseh is canonical only for orthodox / ethiopian_orthodox; filter that passage by tradition."
+    },
+    {
+      "id": "augustine",
+      "name": "St. Augustine",
+      "kind": "tradition",
+      "sins": [
+        "lust",
+        "theft",
+        "pride"
+      ],
+      "summary": "Stole pears for the thrill of it and lived for years in lust and ambition; converted in a Milan garden.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Confessions 2.4",
+          "sourceId": "confessions"
+        },
+        {
+          "role": "restoration",
+          "ref": "Confessions 8.12",
+          "sourceId": "confessions"
+        }
+      ],
+      "note": "Chapter numbering must match the ingested translation; verify."
+    },
+    {
+      "id": "moses_the_ethiopian",
+      "name": "Abba Moses the Ethiopian (Black)",
+      "kind": "tradition",
+      "sins": [
+        "violence",
+        "theft",
+        "murder"
+      ],
+      "summary": "A robber and gang leader who became a monk and a father of the desert.",
+      "traditions": [
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Lausiac History 19",
+          "sourceId": "lausiac"
+        },
+        {
+          "role": "context",
+          "ref": "Paradise of the Holy Fathers — Abba Moses",
+          "sourceId": "paradise"
+        },
+        {
+          "role": "context",
+          "ref": "Synaxarium — Abba Moses",
+          "sourceId": "synaxarium"
+        }
+      ],
+      "note": "Chapter numbers vary by edition; resolve against ingested text. Also venerated widely by Protestants informally — UI shows under 'All' with 'Church tradition' label."
+    },
+    {
+      "id": "mary_of_egypt",
+      "name": "St. Mary of Egypt",
+      "kind": "tradition",
+      "sins": [
+        "lust",
+        "sexual_sin",
+        "shame"
+      ],
+      "summary": "Lived for years in sexual sin, then spent decades in repentance in the desert.",
+      "traditions": [
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Life of St. Mary of Egypt",
+          "sourceId": "pending"
+        }
+      ],
+      "note": "No verified public-domain source in corpus v1; do not surface until sourced."
+    }
+  ]
+}
