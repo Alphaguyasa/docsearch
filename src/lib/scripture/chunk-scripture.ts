@@ -239,3 +239,89 @@ function titleCase(heading: string): string {
 export function stripInline(line: string, patterns: RegExp[]): string {
   return patterns.reduce((acc, re) => acc.replace(re, " "), line).replace(/\s+/g, " ").trim();
 }
+
+// ---------------------------------------------------------------------------
+// Rule-driven sectioning for OCR sources, where generic heading detection
+// picks up running headers and scan noise.
+// ---------------------------------------------------------------------------
+
+export interface SectionRule {
+  /**
+   * Running header carrying the section title, e.g. "MACARIUS OF ALEXANDRIA 85".
+   * Group 1 is the title. A new title starts a new section; the line is dropped.
+   */
+  runningTitle?: RegExp;
+  /** Running header carrying a context label only (e.g. the Synaxarium month). Group 1. */
+  runningContext?: RegExp;
+  /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
+  sectionStart?: RegExp;
+  /** How to name a section opened by `sectionStart`. */
+  name?: "firstWords" | "contextCounter";
+}
+
+function firstWords(text: string, n = 8): string {
+  const words = text.replace(/^[“"'\s]+/, "").split(/\s+/).slice(0, n).join(" ");
+  return `“${words.replace(/[,;:.]+$/, "")}…”`;
+}
+
+export function sectionize(lines: string[], rule: SectionRule, defaultHeading: string): Section[] {
+  const sections: Section[] = [];
+  let cur: Section = { heading: defaultHeading, paragraphs: [] };
+  let para: string[] = [];
+  let context = "";
+  let counter = 0;
+  let pendingName = false;
+
+  const endPara = () => {
+    if (para.length) {
+      const text = para.join(" ").replace(/\s+/g, " ").trim();
+      if (pendingName && rule.name === "firstWords" && text.length > 20) {
+        cur.heading = firstWords(text);
+        pendingName = false;
+      }
+      cur.paragraphs.push(text);
+    }
+    para = [];
+  };
+  const open = (heading: string) => {
+    endPara();
+    if (cur.paragraphs.length) sections.push(cur);
+    cur = { heading, paragraphs: [] };
+  };
+
+  for (const line of lines) {
+    if (line === "") {
+      endPara();
+      continue;
+    }
+    const ctx = rule.runningContext ? line.match(rule.runningContext) : null;
+    if (ctx) {
+      const next = titleCase(ctx[1].trim());
+      if (next !== context) {
+        context = next;
+        counter = 0;
+      }
+      continue;
+    }
+    const rt = rule.runningTitle ? line.match(rule.runningTitle) : null;
+    if (rt) {
+      const title = titleCase(rt[1].replace(/[\s.•·-]+$/, "").trim());
+      if (title !== cur.heading) open(title);
+      continue;
+    }
+    if (rule.sectionStart?.test(line)) {
+      if (rule.name === "contextCounter") {
+        counter++;
+        open(`${context || defaultHeading}, entry ${counter}`);
+      } else {
+        open(defaultHeading);
+        pendingName = true;
+      }
+      continue;
+    }
+    para.push(line);
+  }
+  endPara();
+  if (cur.paragraphs.length) sections.push(cur);
+  return sections;
+}
