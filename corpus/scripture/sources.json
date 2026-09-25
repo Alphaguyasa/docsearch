@@ -26,8 +26,12 @@
    "format": "archive-djvu-txt",
    "archiveQuery": "title:(book of the saints of the ethiopian church) AND creator:(budge)",
    "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-   "status": "resolve",
-   "titleHint": "book saints ethiopian church"
+   "status": "verified",
+   "titleHint": "book saints ethiopian church",
+   "archiveIds": [
+    "bookofsaintsofet00yait"
+   ],
+   "note": "Pinned: Columbia 1992 microfilm, all four volumes in one OCR text."
   },
   {
    "id": "paradise",
@@ -36,8 +40,13 @@
    "format": "archive-djvu-txt",
    "archiveQuery": "title:(paradise holy fathers) AND (creator:(budge) OR creator:(palladius) OR creator:(athanasius))",
    "license": "Public domain (published 1907; Budge d. 1934)",
-   "status": "resolve",
-   "titleHint": "paradise holy fathers"
+   "status": "verified",
+   "titleHint": "paradise holy fathers",
+   "archiveIds": [
+    "paradiseorgarden01anan",
+    "paradiseorgarden02anan"
+   ],
+   "note": "Pinned: two-volume 1907 Chatto & Windus English edition; verify heads in report.md."
   },
   {
    "id": "lausiac",
@@ -46,8 +55,12 @@
    "format": "archive-djvu-txt",
    "archiveQuery": "title:(lausiac history) AND creator:(clarke)",
    "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
-   "status": "resolve",
-   "titleHint": "lausiac history"
+   "status": "verified",
+   "titleHint": "lausiac history",
+   "archiveIds": [
+    "lausiachistoryof00palluoft"
+   ],
+   "note": "Pinned: University of Toronto scan of the 1918 Clarke translation."
   },
   {
    "id": "kjv",
