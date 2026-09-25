@@ -26,16 +26,18 @@
    "format": "archive-djvu-txt",
    "archiveQuery": "title:(book of the saints of the ethiopian church) AND creator:(budge)",
    "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-   "status": "resolve"
+   "status": "resolve",
+   "titleHint": "book saints ethiopian church"
   },
   {
    "id": "paradise",
-   "title": "The Paradise of the Holy Fathers (tr. E. A. Wallis Budge, 1907)",
+   "title": "The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)",
    "kind": "tradition",
    "format": "archive-djvu-txt",
-   "archiveQuery": "title:(paradise of the holy fathers) AND creator:(budge)",
+   "archiveQuery": "title:(paradise holy fathers) AND (creator:(budge) OR creator:(palladius) OR creator:(athanasius))",
    "license": "Public domain (published 1907; Budge d. 1934)",
-   "status": "resolve"
+   "status": "resolve",
+   "titleHint": "paradise holy fathers"
   },
   {
    "id": "lausiac",
@@ -44,7 +46,8 @@
    "format": "archive-djvu-txt",
    "archiveQuery": "title:(lausiac history) AND creator:(clarke)",
    "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
-   "status": "resolve"
+   "status": "resolve",
+   "titleHint": "lausiac history"
   },
   {
    "id": "kjv",

@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add corpus/scripture/manifest.json corpus/scripture/failed.json
+          git add corpus/scripture/manifest.json corpus/scripture/failed.json corpus/scripture/report.md
           if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
           git commit -m "chore(corpus): update scripture manifest [fetch-scripture]"
           git push

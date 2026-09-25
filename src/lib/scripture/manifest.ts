@@ -12,6 +12,10 @@ export interface SourceConfig {
   format: "usfm-zip" | "gutenberg-txt" | "archive-djvu-txt";
   url?: string;
   archiveQuery?: string;
+  /** Words every matching archive.org title must contain. Defaults to `title`. */
+  titleHint?: string;
+  /** Reviewed archive.org identifiers, in volume order. Overrides archiveQuery. */
+  archiveIds?: string[];
   license: string;
   status: SourceStatus;
   note?: string;
@@ -72,6 +76,12 @@ export function pickArchiveItems(docs: ArchiveDoc[], titleHint: string): Archive
       return words.every((w) => t.includes(w));
     })
     .sort((a, b) => a.identifier.localeCompare(b.identifier));
+}
+
+/** archive.org lending-library items cannot be downloaded anonymously. */
+export function isRestricted(metadata: Record<string, unknown> | undefined): boolean {
+  const v = metadata?.["access-restricted-item"];
+  return v === true || v === "true";
 }
 
 /** From archive.org /metadata files[], the OCR full-text file name, if any. */
