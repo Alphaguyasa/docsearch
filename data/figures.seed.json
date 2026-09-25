@@ -683,16 +683,16 @@
         },
         {
           "role": "context",
-          "ref": "Paradise of the Holy Fathers",
+          "ref": "Paradise of the Holy Fathers, “NOW there was a certain man whose name…”",
           "sourceId": "paradise"
         },
         {
           "role": "context",
-          "ref": "Ethiopian Synaxarium",
+          "ref": "Ethiopian Synaxarium, Sane",
           "sourceId": "synaxarium"
         }
       ],
-      "note": "Chapter numbers vary by edition; resolve against ingested text. Also venerated widely by Protestants informally — UI shows under 'All' with 'Church tradition' label."
+      "note": "Budge's Paradise calls him 'Moses the Indian'. Synaxarium commemoration falls in Sane; Session 4 should narrow to the exact entry by content."
     },
     {
       "id": "mary_of_egypt",
