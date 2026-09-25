@@ -125,15 +125,15 @@ test("sectionize: Lausiac running titles become chapter sections", () => {
 test("sectionize: Synaxarium days counted within the month from the running header", () => {
   const rule = TEXT_RULES.synaxarium.sections!;
   const lines = [
-    "FIFTH MONTH — TER (JAN. 9-FEB. 7) 101",
+    "FIFTH MONTH — TfeR (JAN. 9-FEB. 7) 101",
     "IN THE NAME OF THE FATHER AND THE SON",
-    "On this day died Abba Moses the Black.",
+    "ON this day died Abba Moses the Black.",
     "",
     "[fol. 23a i] IN THE NAME OF THE FATHER AND THE SON",
-    "On this day also a martyr was crowned.",
+    "ON this day also a martyr was crowned.",
   ];
   const s = sectionize(lines, rule, "Preface");
-  assert.deepEqual(s.map((x) => x.heading), ["Ter, entry 1", "Ter, entry 2"]);
+  assert.deepEqual(s.map((x) => x.heading), ["Ter — “ON this day died Abba Moses the Black…”", "Ter — “ON this day also a martyr was crowned…”"]);
 });
 
 test("sectionize: Paradise chapters are named by their opening words", () => {
