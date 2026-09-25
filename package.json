@@ -30,7 +30,8 @@
     "scripture:dry": "tsx scripts/scripture-dry.ts",
     "scripture:ingest": "tsx scripts/ingest-scripture.ts",
     "scripture:seed-figures": "tsx scripts/seed-figures.ts",
-    "scripture:ask": "tsx scripts/ask-struggle.ts"
+    "scripture:ask": "tsx scripts/ask-struggle.ts",
+    "scripture:eval": "tsx scripts/scripture-eval.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
