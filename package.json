@@ -27,7 +27,8 @@
     "eval:judge-smoke": "tsx scripts/judge-smoke.ts",
     "corpus:fetch": "tsx scripts/fetch-corpus.ts",
     "scripture:fetch": "tsx scripts/fetch-scripture.ts",
-    "scripture:dry": "tsx scripts/scripture-dry.ts"
+    "scripture:dry": "tsx scripts/scripture-dry.ts",
+    "scripture:ingest": "tsx scripts/ingest-scripture.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
