@@ -1,6 +1,6 @@
 [
   {
     "id": "paradise",
-    "error": "GET https://archive.org/download/paradiseofholyfa0000erne/paradiseofholyfa0000erne_djvu.txt -> 401 Unauthorized"
+    "error": "GET https://archive.org/download/ParadiseOfTheHolyFathersV1/ParadiseOfTheHolyFathersV1_djvu.txt -> 500 Internal Server Error"
   }
 ]

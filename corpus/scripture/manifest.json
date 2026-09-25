@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T17:37:51.419Z",
+  "generatedAt": "2026-09-25T17:45:31.754Z",
   "entries": [
     {
       "id": "confessions",
@@ -8,7 +8,7 @@
       "kind": "tradition",
       "format": "gutenberg-txt",
       "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
-      "retrievedAt": "2026-09-25T17:36:40.731Z",
+      "retrievedAt": "2026-09-25T17:44:16.946Z",
       "files": [
         {
           "name": "pg3296.txt",
@@ -24,7 +24,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
-      "retrievedAt": "2026-09-25T17:37:51.418Z",
+      "retrievedAt": "2026-09-25T17:45:31.739Z",
       "files": [
         {
           "name": "2015.152307.The-Lausiac-History-Of-Palladius_djvu.txt",
@@ -69,7 +69,7 @@
       "kind": "tradition",
       "format": "archive-djvu-txt",
       "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
-      "retrievedAt": "2026-09-25T17:36:52.683Z",
+      "retrievedAt": "2026-09-25T17:44:24.593Z",
       "files": [
         {
           "name": "bookofsaintsofet0001sire_djvu.txt",
@@ -107,7 +107,7 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-09-25T17:36:40.279Z",
+      "retrievedAt": "2026-09-25T17:43:23.132Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",
