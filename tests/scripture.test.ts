@@ -7,6 +7,7 @@ import figuresJson from "../data/figures.seed.json";
 import { canonByCode, traditionsFor, validateCanon } from "../src/lib/scripture/canon";
 import {
   activeSources,
+  isRestricted,
   pickArchiveItems,
   pickDjvuText,
   validateManifest,
@@ -81,4 +82,11 @@ test("validateManifest catches bad hashes and missing licenses", () => {
   };
   assert.throws(() => validateManifest(m), (e: Error) =>
     /missing license/.test(e.message) && /bad sha256/.test(e.message) && /non-https/.test(e.message));
+});
+
+test("isRestricted flags lending-library items", () => {
+  assert.equal(isRestricted({ "access-restricted-item": "true" }), true);
+  assert.equal(isRestricted({ "access-restricted-item": true }), true);
+  assert.equal(isRestricted({}), false);
+  assert.equal(isRestricted(undefined), false);
 });
