@@ -25,7 +25,8 @@
     "test:eval:cov": "vitest run --coverage",
     "eval:calibrate": "tsx scripts/calibrate-judge.ts",
     "eval:judge-smoke": "tsx scripts/judge-smoke.ts",
-    "corpus:fetch": "tsx scripts/fetch-corpus.ts"
+    "corpus:fetch": "tsx scripts/fetch-corpus.ts",
+    "scripture:fetch": "tsx scripts/fetch-scripture.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",

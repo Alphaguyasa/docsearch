@@ -1,0 +1,60 @@
+{
+ "version": 1,
+ "sources": [
+  {
+   "id": "web",
+   "title": "World English Bible with Deuterocanon",
+   "kind": "scripture",
+   "format": "usfm-zip",
+   "url": "https://ebible.org/Scriptures/eng-web_usfm.zip",
+   "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark \u2014 unaltered text only)",
+   "status": "verified"
+  },
+  {
+   "id": "confessions",
+   "title": "The Confessions of Saint Augustine (tr. E. B. Pusey)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://www.gutenberg.org/cache/epub/3296/pg3296.txt",
+   "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
+   "status": "verified-at-fetch"
+  },
+  {
+   "id": "synaxarium",
+   "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(book of the saints of the ethiopian church) AND creator:(budge)",
+   "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
+   "status": "resolve"
+  },
+  {
+   "id": "paradise",
+   "title": "The Paradise of the Holy Fathers (tr. E. A. Wallis Budge, 1907)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(paradise of the holy fathers) AND creator:(budge)",
+   "license": "Public domain (published 1907; Budge d. 1934)",
+   "status": "resolve"
+  },
+  {
+   "id": "lausiac",
+   "title": "The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(lausiac history) AND creator:(clarke)",
+   "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
+   "status": "resolve"
+  },
+  {
+   "id": "kjv",
+   "title": "King James Version",
+   "kind": "scripture",
+   "format": "usfm-zip",
+   "url": "https://ebible.org/Scriptures/eng-kjv2006_usfm.zip",
+   "license": "Public domain outside the UK",
+   "status": "deferred",
+   "note": "Deferred from v1: doubles Bible embedding time for little retrieval gain."
+  }
+ ]
+}
