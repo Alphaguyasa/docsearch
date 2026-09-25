@@ -13,7 +13,7 @@
  * Writes ingest-status.json: { total, done, remaining, stoppedEarly, ... }.
  * --dry-run makes zero network calls.
  */
-import { writeFileSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import type { Manifest } from "../src/lib/scripture/manifest";
@@ -37,8 +37,24 @@ async function main(): Promise<void> {
   const deadline = started + maxMinutes * 60_000;
 
   const manifest = JSON.parse(readFileSync(join(ROOT, "manifest.json"), "utf8")) as Manifest;
+  // A source whose raw files are missing (e.g. archive.org was down during the
+  // fetch) is skipped for this run — and, crucially, its existing rows are NOT
+  // treated as stale. Deleting embedded work because a download flaked would
+  // throw away hours of embedding.
   const expected: ScriptureChunk[] = [];
-  for (const e of manifest.entries) expected.push(...buildSource(join(ROOT, "raw"), manifest, e.id).chunks);
+  const builtSources = new Set<string>();
+  const skippedSources: string[] = [];
+  for (const e of manifest.entries) {
+    const missing = e.files.some((f) => !existsSync(join(ROOT, "raw", e.id, f.name)));
+    if (missing) {
+      skippedSources.push(e.id);
+      continue;
+    }
+    expected.push(...buildSource(join(ROOT, "raw"), manifest, e.id).chunks);
+    builtSources.add(e.id);
+  }
+  if (skippedSources.length) console.warn(`raw files missing, skipped this run: ${skippedSources.join(", ")}`);
+  if (builtSources.size === 0) throw new Error("no raw corpus available — fetch failed for every source");
   const docs = new Map<string, { title: string; sourceId: string }>();
   for (const c of expected) docs.set(c.documentKey, { title: c.documentTitle, sourceId: c.sourceId });
   console.log(`built ${expected.length} chunks across ${docs.size} documents`);
@@ -86,7 +102,10 @@ async function main(): Promise<void> {
       )
     ).map((r) => r.id),
   );
-  const existing: ExistingRow[] = rows.map((r) => ({
+  const docSource = new Map((up.data ?? []).map((r: { id: string; source_id: string }) => [r.id, r.source_id.split(":")[0]]));
+  const existing: ExistingRow[] = rows
+    .filter((r) => builtSources.has(docSource.get(r.document_id) ?? keyOf.get(r.document_id)?.split(":")[0] ?? ""))
+    .map((r) => ({
     id: r.id,
     documentKey: keyOf.get(r.document_id) ?? "?",
     chunkIndex: r.chunk_index,
@@ -135,7 +154,9 @@ async function main(): Promise<void> {
     }
   }
 
-  writeStatus({ total: expected.length, done, remaining: expected.length - done, stoppedEarly });
+  // Skipped sources mean the job is not finished even if everything built is embedded.
+  const remaining = expected.length - done + (skippedSources.length ? 1 : 0);
+  writeStatus({ total: expected.length, done, remaining, stoppedEarly, skippedSources });
   console.log(`finished: ${done}/${expected.length}${stoppedEarly ? " (will resume)" : ""}`);
 }
 
