@@ -39,6 +39,7 @@ corpus/*
 !corpus/failed.json
 !corpus/scripture/
 corpus/scripture/raw/
+corpus/scripture/chunks/
 ingest-failures.json
 
 # Phase 9 CI writes these next to the workspace root.

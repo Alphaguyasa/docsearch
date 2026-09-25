@@ -17,7 +17,9 @@ on:
     paths:
       - "corpus/scripture/sources.json"
       - "scripts/fetch-scripture.ts"
-      - "src/lib/scripture/manifest.ts"
+      - "src/lib/scripture/**"
+      - "scripts/scripture-dry.ts"
+      - "data/**"
       - ".github/workflows/fetch-scripture.yml"
   workflow_dispatch:
 
@@ -43,6 +45,19 @@ jobs:
         id: fetch
         continue-on-error: true
         run: npm run scripture:fetch
+      - name: Parse and chunk (no network)
+        id: dry
+        if: always()
+        continue-on-error: true
+        run: npm run scripture:dry
+      - name: Upload chunks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scripture-chunks
+          path: corpus/scripture/chunks/
+          retention-days: 7
+          if-no-files-found: warn
       - name: Upload raw corpus
         if: always()
         uses: actions/upload-artifact@v4
@@ -57,11 +72,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add corpus/scripture/manifest.json corpus/scripture/failed.json corpus/scripture/report.md
+          [ -f corpus/scripture/chunks-report.md ] && git add corpus/scripture/chunks-report.md
           if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
           git commit -m "chore(corpus): update scripture manifest [fetch-scripture]"
           git push
-      - name: Fail if any source failed
-        if: steps.fetch.outcome == 'failure'
+      - name: Fail if fetch or chunking failed
+        if: steps.fetch.outcome == 'failure' || steps.dry.outcome == 'failure'
         run: |
           cat corpus/scripture/failed.json
           exit 1
