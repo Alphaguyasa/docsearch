@@ -43,6 +43,12 @@ export default function RootLayout({
           </nav>
         </header>
         {children}
+        <footer className="mx-auto max-w-3xl border-t border-border px-5 py-6 text-sm text-muted">
+          Not Alone is not a counselling or emergency service. Questions or corrections:{" "}
+          <a href="mailto:alphaguyasa@gmail.com" className="underline underline-offset-4 hover:text-foreground">
+            alphaguyasa@gmail.com
+          </a>
+        </footer>
       </body>
     </html>
   );

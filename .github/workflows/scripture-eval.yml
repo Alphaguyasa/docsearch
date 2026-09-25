@@ -56,7 +56,7 @@ jobs:
           VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
           GENERATION_PROVIDER: gemini
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: npm run scripture:eval -- --generate 8
+        run: npm run scripture:eval -- --generate 10
       - name: Commit results and comment on the PR
         if: steps.gate.outputs.ready == 'true' && always()
         env:

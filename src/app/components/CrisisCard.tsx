@@ -24,7 +24,11 @@ export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: 
             ) : (
               <span className="font-medium">{r.name}</span>
             )}
-            {r.phone && <span className="ml-2">{r.phone}</span>}
+            {r.phone && (
+              <a href={`tel:${r.phone}`} className="ml-2 font-medium text-accent underline underline-offset-4">
+                {r.phone}
+              </a>
+            )}
             <span className="block text-sm text-muted">{r.detail}</span>
           </li>
         ))}
