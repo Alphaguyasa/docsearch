@@ -1,175 +1,146 @@
 /**
- * Resumable ingestion of the scripture corpus into Supabase.
+ * Resumable scripture ingestion — built to run unattended on GitHub Actions.
  *
- *   npm run scripture:ingest -- [--dry-run] [--max-minutes 330] [--only web,confessions]
+ *   npm run scripture:ingest [-- --dry-run] [-- --max-minutes 330]
  *
- * Reads corpus/scripture/chunks/*.jsonl (built by `npm run scripture:dry`),
- * upserts one documents row per Bible book / tradition work, then embeds and
- * upserts only the chunks the database does not already hold in current form.
- * Progress is committed after every batch, so a killed run loses at most one
- * batch and the next run continues where this one stopped.
+ * 1. Builds chunks from corpus/scripture/raw (fetched by scripture:fetch).
+ * 2. Upserts one documents row per book / work (keyed by documents.source_id).
+ * 3. Reads what is already in the DB and plans only the missing or changed chunks.
+ * 4. Embeds in small groups and upserts each group immediately, so a killed run
+ *    loses at most one group. Stops cleanly before --max-minutes so the workflow
+ *    can record progress and chain the next run.
  *
- * Stops cleanly before --max-minutes so GitHub Actions never kills it mid-write.
- * Writes corpus/scripture/ingest-status.json and, on Actions, `remaining=<n>`
- * to $GITHUB_OUTPUT so the workflow can decide whether to run again.
+ * Writes ingest-status.json: { total, done, remaining, stoppedEarly, ... }.
+ * --dry-run makes zero network calls.
  */
-import "../src/lib/loadenv";
-
-import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { countTokens } from "../src/lib/chunk";
-import { batchByTokens } from "../src/lib/ratelimit";
-import { orderSources, planDocument, type DbChunkState } from "../src/lib/scripture/ingest-plan";
 import type { Manifest } from "../src/lib/scripture/manifest";
+import { groups, planIngest, type ExistingRow } from "../src/lib/scripture/plan";
+import { buildSource } from "../src/lib/scripture/sources";
 import type { ScriptureChunk } from "../src/lib/scripture/types";
 
 const ROOT = "corpus/scripture";
-const BATCH_TOKENS = 3_000;
-const UPSERT_BATCH = 100;
+const GROUP_SIZE = 16; // ~7k tokens: a few Voyage requests, then commit
+const STATUS_FILE = "ingest-status.json";
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(name);
-  return i >= 0 ? process.argv[i + 1] : process.argv.find((a) => a.startsWith(`${name}=`))?.split("=")[1];
-}
-
-function loadChunks(only: string[] | null): Map<string, ScriptureChunk[]> {
-  const dir = join(ROOT, "chunks");
-  if (!existsSync(dir)) throw new Error(`${dir} missing — run npm run scripture:dry first`);
-  const bySource = new Map<string, ScriptureChunk[]>();
-  for (const f of readdirSync(dir).filter((f) => f.endsWith(".jsonl"))) {
-    const id = f.replace(/\.jsonl$/, "");
-    if (only && !only.includes(id)) continue;
-    const rows = readFileSync(join(dir, f), "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l) as ScriptureChunk);
-    bySource.set(id, rows);
-  }
-  return bySource;
-}
-
-function output(key: string, value: string | number): void {
-  if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
+  return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
 async function main(): Promise<void> {
+  const started = Date.now();
   const dryRun = process.argv.includes("--dry-run");
   const maxMinutes = Number(arg("--max-minutes") ?? 330);
-  const only = arg("--only")?.split(",") ?? null;
-  const started = Date.now();
   const deadline = started + maxMinutes * 60_000;
 
   const manifest = JSON.parse(readFileSync(join(ROOT, "manifest.json"), "utf8")) as Manifest;
-  const bySource = loadChunks(only);
+  const expected: ScriptureChunk[] = [];
+  for (const e of manifest.entries) expected.push(...buildSource(join(ROOT, "raw"), manifest, e.id).chunks);
+  const docs = new Map<string, { title: string; sourceId: string }>();
+  for (const c of expected) docs.set(c.documentKey, { title: c.documentTitle, sourceId: c.sourceId });
+  console.log(`built ${expected.length} chunks across ${docs.size} documents`);
 
-  // Imported lazily so --dry-run works without credentials.
-  const { db } = dryRun ? { db: null } : await import("../src/lib/db");
-  const { embedDocuments } = dryRun ? { embedDocuments: null } : await import("../src/lib/embed");
-
-  interface Work { docId: string; chunk: ScriptureChunk }
-  const queue: Work[] = [];
-  let alreadyDone = 0;
-  let staleDeleted = 0;
-
-  for (const sourceId of orderSources([...bySource.keys()])) {
-    const entry = manifest.entries.find((e) => e.id === sourceId);
-    const chunks = bySource.get(sourceId)!;
-    const docs = new Map<string, ScriptureChunk[]>();
-    for (const c of chunks) docs.set(c.documentKey, [...(docs.get(c.documentKey) ?? []), c]);
-
-    for (const [key, local] of docs) {
-      if (dryRun || !db) {
-        queue.push(...local.map((chunk) => ({ docId: key, chunk })));
-        continue;
-      }
-      const up = await db
-        .from("documents")
-        .upsert(
-          {
-            source_id: key,
-            title: local[0].documentTitle,
-            filename: key,
-            kind: entry?.kind ?? (sourceId === "web" ? "scripture" : "tradition"),
-            license: entry?.license ?? null,
-            source_url: entry?.files[0]?.url ?? null,
-            status: "complete",
-          },
-          { onConflict: "source_id" },
-        )
-        .select("id")
-        .single();
-      if (up.error || !up.data) throw new Error(`document upsert ${key}: ${up.error?.message}`);
-      const docId = (up.data as { id: string }).id;
-
-      const st = await db.rpc("chunk_state", { doc: docId });
-      if (st.error) throw new Error(`chunk_state ${key}: ${st.error.message}`);
-      const plan = planDocument(local, (st.data ?? []) as DbChunkState[]);
-      alreadyDone += plan.alreadyDone;
-      if (plan.staleIndexes.length) {
-        const del = await db.from("chunks").delete().eq("document_id", docId).in("chunk_index", plan.staleIndexes);
-        if (del.error) throw new Error(`stale delete ${key}: ${del.error.message}`);
-        staleDeleted += plan.staleIndexes.length;
-      }
-      queue.push(...plan.toEmbed.map((chunk) => ({ docId, chunk })));
-    }
+  if (dryRun) {
+    writeStatus({ total: expected.length, done: 0, remaining: expected.length, stoppedEarly: false, dryRun: true });
+    return;
   }
 
-  const totalTokens = queue.reduce((s, w) => s + w.chunk.tokenCount, 0);
-  const tpm = Number(process.env.VOYAGE_TPM ?? 10_000);
-  console.log(
-    `to embed: ${queue.length} chunks / ${totalTokens} tokens (≈ ${(totalTokens / tpm).toFixed(0)} min); ` +
-      `already done: ${alreadyDone}; stale deleted: ${staleDeleted}`,
+  // Lazy imports: the dry run must not require credentials.
+  const { db } = await import("../src/lib/db");
+  const { embedDocuments } = await import("../src/lib/embed");
+  const { fetchAllRows } = await import("../src/lib/paginate");
+
+  // Documents
+  const byEntry = new Map(manifest.entries.map((e) => [e.id, e]));
+  const docRows = [...docs].map(([key, d]) => {
+    const entry = byEntry.get(d.sourceId)!;
+    return {
+      source_id: key,
+      title: d.title,
+      filename: key,
+      kind: entry.kind,
+      license: entry.license,
+      source_url: entry.files[0]?.url ?? null,
+      status: "complete",
+    };
+  });
+  const up = await db.from("documents").upsert(docRows, { onConflict: "source_id" }).select("id,source_id");
+  if (up.error) throw new Error(`documents upsert failed: ${up.error.message}`);
+  const docId = new Map((up.data ?? []).map((r: { id: string; source_id: string }) => [r.source_id, r.id]));
+  const keyOf = new Map([...docId].map(([k, v]) => [v, k]));
+
+  // Existing chunks
+  // Existing chunks. Rows are always written together with their embedding,
+  // but check for nulls anyway (e.g. rows inserted by hand) so they get redone.
+  const rows = await fetchAllRows<{ id: string; document_id: string; chunk_index: number; content: string }>(
+    "chunks",
+    (from, to) => db.from("chunks").select("id,document_id,chunk_index,content").order("id").range(from, to),
   );
+  const nullIds = new Set(
+    (
+      await fetchAllRows<{ id: string }>("null embeddings", (from, to) =>
+        db.from("chunks").select("id").is("embedding", null).order("id").range(from, to),
+      )
+    ).map((r) => r.id),
+  );
+  const existing: ExistingRow[] = rows.map((r) => ({
+    id: r.id,
+    documentKey: keyOf.get(r.document_id) ?? "?",
+    chunkIndex: r.chunk_index,
+    content: r.content,
+    embedded: !nullIds.has(r.id),
+  }));
 
-  let embedded = 0;
+  const plan = planIngest(expected, existing);
+  console.log(`done ${plan.alreadyDone}, to embed ${plan.toEmbed.length}, stale ${plan.staleRowIds.length}`);
+  for (const ids of groups(plan.staleRowIds, 100)) {
+    const del = await db.from("chunks").delete().in("id", ids);
+    if (del.error) throw new Error(`stale delete failed: ${del.error.message}`);
+  }
+
+  let done = plan.alreadyDone;
   let stoppedEarly = false;
-  if (!dryRun && db && embedDocuments) {
-    const batches = batchByTokens(queue, (w) => countTokens(w.chunk.content), BATCH_TOKENS, 100);
-    for (const [i, batch] of batches.entries()) {
-      if (Date.now() > deadline) {
-        stoppedEarly = true;
-        console.log(`time budget reached after ${embedded} chunks — stopping cleanly`);
-        break;
-      }
-      const vectors = await embedDocuments(batch.map((w) => w.chunk.content));
-      const rows = batch.map((w, j) => ({
-        document_id: w.docId,
-        chunk_index: w.chunk.chunkIndex,
-        content: w.chunk.content,
-        token_count: w.chunk.tokenCount,
-        embedding: JSON.stringify(vectors[j]),
-        ref: w.chunk.ref,
-        book: w.chunk.book,
-        chapter_start: w.chunk.chapterStart,
-        verse_start: w.chunk.verseStart,
-        verse_end: w.chunk.verseEnd,
-        traditions: w.chunk.traditions,
-      }));
-      for (let k = 0; k < rows.length; k += UPSERT_BATCH) {
-        const res = await db.from("chunks").upsert(rows.slice(k, k + UPSERT_BATCH), { onConflict: "document_id,chunk_index" });
-        if (res.error) throw new Error(`chunk upsert: ${res.error.message}`);
-      }
-      embedded += batch.length;
-      if (i % 10 === 0 || i === batches.length - 1) {
-        const mins = ((Date.now() - started) / 60_000).toFixed(1);
-        console.log(`  [${mins} min] ${embedded}/${queue.length} chunks — last: ${batch[batch.length - 1].chunk.ref}`);
-      }
+  const batches = groups(plan.toEmbed, GROUP_SIZE);
+  for (let b = 0; b < batches.length; b++) {
+    if (Date.now() > deadline) {
+      stoppedEarly = true;
+      console.log(`deadline reached after ${maxMinutes} min — stopping cleanly`);
+      break;
+    }
+    const batch = batches[b];
+    const vectors = await embedDocuments(batch.map((c) => c.content));
+    const upRows = batch.map((c, i) => ({
+      document_id: docId.get(c.documentKey),
+      chunk_index: c.chunkIndex,
+      content: c.content,
+      token_count: c.tokenCount,
+      ref: c.ref,
+      book: c.book,
+      chapter_start: c.chapterStart,
+      verse_start: c.verseStart,
+      verse_end: c.verseEnd,
+      traditions: c.traditions,
+      embedding: JSON.stringify(vectors[i]),
+    }));
+    const res = await db.from("chunks").upsert(upRows, { onConflict: "document_id,chunk_index" });
+    if (res.error) throw new Error(`chunk upsert failed: ${res.error.message}`);
+    done += batch.length;
+    if (b % 10 === 0 || b === batches.length - 1) {
+      const mins = ((Date.now() - started) / 60_000).toFixed(1);
+      console.log(`  ${done}/${expected.length} embedded (${mins} min)`);
+      writeStatus({ total: expected.length, done, remaining: expected.length - done, stoppedEarly: false });
     }
   }
 
-  const remaining = dryRun ? queue.length : queue.length - embedded;
-  const status = {
-    finishedAt: new Date().toISOString(),
-    dryRun,
-    embeddedThisRun: embedded,
-    alreadyDone,
-    remaining,
-    stoppedEarly,
-    minutes: Number(((Date.now() - started) / 60_000).toFixed(1)),
-  };
-  writeFileSync(join(ROOT, "ingest-status.json"), JSON.stringify(status, null, 2) + "\n");
-  output("remaining", remaining);
-  output("done", alreadyDone + embedded);
-  output("embedded", embedded);
-  console.log(JSON.stringify(status));
+  writeStatus({ total: expected.length, done, remaining: expected.length - done, stoppedEarly });
+  console.log(`finished: ${done}/${expected.length}${stoppedEarly ? " (will resume)" : ""}`);
+}
+
+function writeStatus(s: Record<string, unknown>): void {
+  writeFileSync(STATUS_FILE, JSON.stringify({ ...s, at: new Date().toISOString() }, null, 2) + "\n");
 }
 
 main().catch((err) => {
