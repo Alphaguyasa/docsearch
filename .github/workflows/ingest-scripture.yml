@@ -120,7 +120,9 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add $PROG
+          # Raw job logs are hard to reach remotely; keep the last lines in the repo.
+          { echo "outcome=$OUTCOME at $(date -u +%FT%TZ) run=$RUN_URL"; tail -n 60 ingest.log 2>/dev/null || echo "(no ingest.log)"; } > corpus/scripture/ingest-last.log
+          git add $PROG corpus/scripture/ingest-last.log
           if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
           git commit -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
           for attempt in 1 2 3; do
