@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-25T18:25:19.142Z
+Generated 2026-09-25T22:13:39.364Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -64,11 +64,11 @@ Generated 2026-09-25T18:25:19.142Z
 - ✅ manasseh / fall: `2 Chronicles 33:1-9` → 1 chunk(s) (2 Chronicles 32:32-33:9)
 - ✅ manasseh / restoration: `2 Chronicles 33:10-16` → 1 chunk(s) (2 Chronicles 33:10-17)
 - ✅ manasseh / restoration: `Prayer of Manasseh` → 1 chunk(s) (Prayer of Manasseh 1:1-15)
-- ✅ augustine / fall: `Confessions, Book II` → 30 chunk(s) (Confessions, Book II; Confessions, Book II (part 2); Confessions, Book II (part 3); …)
-- ✅ augustine / restoration: `Confessions, Book VIII` → 24 chunk(s) (Confessions, Book VIII; Confessions, Book VIII (part 2); Confessions, Book VIII (part 3); …)
+- ✅ augustine / fall: `Confessions, Book II` → 2 chunk(s) (Confessions, Book II (part 8); Confessions, Book II (part 11))
+- ✅ augustine / restoration: `Confessions, Book VIII` → 1 chunk(s) (Confessions, Book VIII (part 23))
 - ✅ moses_the_ethiopian / restoration: `Lausiac History, Moses The Robber` → 4 chunk(s) (Lausiac History, Moses The Robber; Lausiac History, Moses The Robber (part 2); Lausiac History, Moses The Robber (part 3); …)
 - ✅ moses_the_ethiopian / context: `Paradise of the Holy Fathers, “NOW there was a certain man whose name…”` → 4 chunk(s) (Paradise of the Holy Fathers, “NOW there was a certain man whose name…”; Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 2); Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 3); …)
-- ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium, Sane` → 110 chunk(s) (Ethiopian Synaxarium, Sane; Ethiopian Synaxarium, Sane (part 2); Ethiopian Synaxarium, Sane (part 3); …)
+- ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium, Sane` → 7 chunk(s) (Ethiopian Synaxarium, Sane; Ethiopian Synaxarium, Sane (part 2); Ethiopian Synaxarium, Sane (part 3); …)
 
 ## Samples
 
