@@ -256,7 +256,9 @@ export interface SectionRule {
   /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
-  name?: "firstWords" | "contextCounter";
+  name?: "firstWords" | "contextCounter" | "contextFirstWords";
+  /** Map the runningContext capture to a canonical label (OCR-proof). */
+  contextLabel?: (capture: string) => string;
 }
 
 function firstWords(text: string, n = 8): string {
@@ -275,8 +277,11 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
   const endPara = () => {
     if (para.length) {
       const text = para.join(" ").replace(/\s+/g, " ").trim();
-      if (pendingName && rule.name === "firstWords" && text.length > 20) {
-        cur.heading = firstWords(text);
+      // Name by the first paragraph that opens like prose (Budge sets the
+      // opening word in capitals: "THEY say...", "NOW in Mount Nitria...").
+      if (pendingName && text.length > 20 && /^[“"]?[A-Z]{2,}\b/.test(text)) {
+        const words = firstWords(text);
+        cur.heading = rule.name === "contextFirstWords" && context ? `${context} — ${words}` : words;
         pendingName = false;
       }
       cur.paragraphs.push(text);
@@ -296,7 +301,7 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
     }
     const ctx = rule.runningContext ? line.match(rule.runningContext) : null;
     if (ctx) {
-      const next = titleCase(ctx[1].trim());
+      const next = rule.contextLabel ? rule.contextLabel(ctx[1]) : titleCase(ctx[1].trim());
       if (next !== context) {
         context = next;
         counter = 0;
@@ -310,7 +315,10 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       continue;
     }
     if (rule.sectionStart?.test(line)) {
-      if (rule.name === "contextCounter") {
+      if (rule.name === "contextFirstWords") {
+        open(context || defaultHeading);
+        pendingName = true;
+      } else if (rule.name === "contextCounter") {
         counter++;
         open(`${context || defaultHeading}, entry ${counter}`);
       } else {

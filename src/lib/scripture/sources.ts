@@ -22,6 +22,11 @@ import type { ScriptureChunk } from "./types";
 import { PERIPHERAL, parseUsfm } from "./usfm";
 
 const ALL: Tradition[] = [...TRADITIONS];
+const ETHIOPIAN_MONTHS: Record<string, string> = {
+  FIRST: "Maskaram", SECOND: "Teqemt", THIRD: "Hedar", FOURTH: "Takhsas", FIFTH: "Ter",
+  SIXTH: "Yakatit", SEVENTH: "Maggabit", EIGHTH: "Miyazya", NINTH: "Genbot", TENTH: "Sane",
+  ELEVENTH: "Hamle", TWELFTH: "Nahase", THIRTEENTH: "Pagumen",
+};
 const MONTHS =
   /^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\b/i;
 
@@ -83,10 +88,12 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "Preface",
     // Each day opens with the Trinitarian invocation; the month comes from the running header.
     sections: {
+      // The ordinal survives OCR; the small-caps month name does not.
       runningContext:
-        /^(?:FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\s*[—–-]+\s*([A-Za-z'’]+)/i,
+        /^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\b/i,
+      contextLabel: (ordinal: string) => ETHIOPIAN_MONTHS[ordinal.toUpperCase()] ?? ordinal,
       sectionStart: /^(\[fol[^\]]*\]\s*)?IN THE NAME OF THE FATHER/i,
-      name: "contextCounter",
+      name: "contextFirstWords",
     },
   },
 };
