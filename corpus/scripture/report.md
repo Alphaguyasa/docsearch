@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-25T18:25:18.822Z
+Generated 2026-09-25T18:38:55.779Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -137,88 +137,7 @@ and  departed  from  him.  And  straightway  Saint  Abba  john
 
 ## paradise — The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)
 - pinned: paradiseorgarden01anan, paradiseorgarden02anan
-
-#### `paradiseorgarden01anan_djvu.txt` (archive id `paradiseorgarden01anan`) — 1406045 bytes
-20778 non-empty lines. First 25:
-```
-Division
-SectioQ
-0X2405-
-• A53
-V.|
-THE  PARADISE
-OF  THE  HOLY  FATHERS
-i VOLUME  I
-CONTAINING  THE  INTRO-
-DUCTION: THE  LIFE  OF  ST
-ANTHONY,  BY  ATHANASIUS
-ARCHBP  OF  ALEXANDRIA:
-HISTORIES  OFTHE  FATHERS
-BY  PALLADIUS  Bp  OF  HELE-
-NOPOLIS:  THERULEOF
-PACHOMIUS:  ST  JEROME’S
-HISTORY  OF  THE  FATHERS
-Digitized  by  the  Internet  Archive
-in  2017  with  funding  from
-Princeton  Theological  Seminary  Library
-https://archive.org/details/paradiseorgarden01anan
-rdaQa  h\cu
-.cr*i
-^>acu  njMirc'Ai^TS"
-w Stars'
-```
-Sample from the middle:
-```
-“ that  thou  art  still  in  the  heat  of  youth  how  canst  thou  have
-“ confidence  that  by  means  of  carefulness  [on  thy  part]  thou
-“ wilt  be  able  to  resist  the  [natural  heat  of]  the  constitution  of
-“ the  body  which  still  burneth  in  thy  memberfs]?  And  dost
-“thou  not  perceive  the  injurious  effedts  which  will  be  produced
-“ in  thee  by  [this  washing]?  Believe  me,  O my  son,  for  I am
-“this  day  a woman  sixty  years  old,  from  the  time  when  I
-“first  took  upon  myself  this  garb  water  hath  never  touched
-```
-
-#### `paradiseorgarden02anan_djvu.txt` (archive id `paradiseorgarden02anan`) — 1138769 bytes
-18020 non-empty lines. First 25:
-```
-Division
-Section
-BX244.S
-• AS3
-V.  2
-Digitized  by  the  Internet  Archive
-in  2017  with  funding  from
-Princeton  Theological  Seminary  Library
-https://archive.org/details/paradiseorgarden02anan
-THE  PARADISE
-OF  THE  HOLY  FATHERS
-VOLUME  II
-CONTAINING
-THE  COUNSELS  OF  THE
-HOLY  MEN  AND  THE
-QUESTIONS  & ANSWERS  OF
-THE  ASCETIC  BRETHREN
-GENERALLY  KNOWN  AS
-THE  SAYINGS  OF  THE
-FATHERS  OF
-EGYPT
->18-1(1 1 RlM  a H T
-XH  - !'.  , 1 ■>  :
-il  -l/J.KY
-w'.-v
-```
-Sample from the middle:
-```
-And  he  answered  and  said  unto  the  old  man,  “It  is  sufficient
-“ for  me  to  see  thee.”
-162.  Abba  Sisoes  asked  Abba  Poemen  about  filthy  thoughts,
-and  the  old  man  said  unto  him,  “The  matter  is  like  unto  a box
-“ of  clothes:  if  a man  leaveth  the  clothes  inside  it  for  a long
-“ time  without  being  turned,  they  will  become  eaten  up  in  pro-
-“ cess  of  time  and  destroyed.  And  thus  also  is  it  with  the
-“ thoughts,  and  if  a man  doth  not  drive  them  out  from  his  body
-```
+**FAILED:** fetch failed
 
 ## lausiac — The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)
 - pinned: lausiachistoryof00palluoft
