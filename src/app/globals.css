@@ -331,3 +331,18 @@ body {
   padding-inline: var(--gutter);
   scroll-padding-inline: var(--gutter);
 }
+
+/* A bar pinned under the site bar moves up when the site bar tucks away. */
+.below-nav {
+  top: 3rem;
+  transition: top 0.5s var(--ease-out);
+}
+html[data-nav-hidden] .below-nav {
+  top: 0;
+}
+
+/* Numbers in headings (phone numbers, step numbers, counters) stand upright. */
+.font-display,
+.font-caps {
+  font-variant-numeric: lining-nums;
+}
