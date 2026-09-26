@@ -152,7 +152,17 @@ function hang(w: number, h: number, aspect: number) {
   return { pw, ph, cx: w / 2, cy: ph / 2 };
 }
 
-export function CandleScene({ painting }: { painting?: Painting }) {
+export function CandleScene({
+  painting,
+  glow = true,
+  embers = 1,
+}: {
+  painting?: Painting;
+  /** The candle's halo. Off where only drifting embers are wanted. */
+  glow?: boolean;
+  /** Ember density, as a fraction of the hero's. */
+  embers?: number;
+}) {
   const host = useRef<HTMLDivElement>(null);
   const still = useRef<HTMLImageElement>(null);
   const [live, setLive] = useState(false);
@@ -170,7 +180,9 @@ export function CandleScene({ painting }: { painting?: Painting }) {
     const ro = new ResizeObserver(place);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [painting]);
+    // Keyed on the painting's values, not the object: a parent re-render (every
+    // streamed word of a story) must not tear the scene down and rebuild it.
+  }, [painting?.small, painting?.large, painting?.aspect, glow, embers]);
 
   useEffect(() => {
     if (!canAnimate()) return;
@@ -183,7 +195,7 @@ export function CandleScene({ painting }: { painting?: Painting }) {
       if (disposed || !el) return;
 
       const small = window.innerWidth < 640;
-      const count = small ? 160 : 360;
+      const count = Math.round((small ? 160 : 360) * embers);
 
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
       const ratio = Math.min(window.devicePixelRatio, small ? 1.5 : 2);
@@ -245,7 +257,7 @@ export function CandleScene({ painting }: { painting?: Painting }) {
         }),
       );
       halo.position.set(0, -0.6, -1.2);
-      scene.add(halo);
+      if (glow) scene.add(halo);
 
       // The painting, lit by the candle.
       const PAINT_Z = -2;
@@ -337,20 +349,20 @@ export function CandleScene({ painting }: { painting?: Painting }) {
       };
       document.addEventListener("visibilitychange", onVisibility);
 
-      const clock = new THREE.Clock();
+      const timer = new THREE.Timer();
       let frame = 0;
       let running = false;
       function loop() {
         if (running || disposed) return;
         running = true;
+        timer.reset();
         const tick = () => {
           if (disposed || !visible || document.hidden) {
             running = false;
-            clock.stop();
             return;
           }
-          if (!clock.running) clock.start();
-          uniforms.uTime.value += Math.min(clock.getDelta(), 0.05);
+          timer.update();
+          uniforms.uTime.value += Math.min(timer.getDelta(), 0.05);
           uniforms.uPointer.value.lerp(target, 0.03);
           if (paint) {
             // Follow the reader's finger; when they stop, the candle drifts on its own.
@@ -403,12 +415,14 @@ export function CandleScene({ painting }: { painting?: Painting }) {
       else window.clearTimeout(idle);
       cleanup();
     };
-  }, [painting]);
+    // Keyed on the painting's values, not the object: a parent re-render (every
+    // streamed word of a story) must not tear the scene down and rebuild it.
+  }, [painting?.small, painting?.large, painting?.aspect, glow, embers]);
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* The still version: what everyone sees first, and all some phones ever see. */}
-      <div className="candle-still absolute inset-0" />
+      {glow && <div className="candle-still absolute inset-0" />}
       {painting && (
         <img
           ref={still}

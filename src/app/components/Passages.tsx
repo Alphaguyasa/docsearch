@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { sourceKindLabel, sourceName, type UiSource } from "@/app/types";
 
+import { ChevronDown } from "./Icons";
+
 /**
  * The passages the story was told from, set as quotations so the reader can
  * check every line against the text. Cited passages come first and are always
@@ -61,7 +63,7 @@ export function Passages({
   return (
     <section aria-labelledby="passages-heading" className="border-t border-border pt-8">
       <div className="flex items-baseline justify-between gap-3">
-        <h2 id="passages-heading" className="font-serif text-2xl">
+        <h2 id="passages-heading" className="font-display text-3xl font-semibold">
           Read it for yourself
         </h2>
         {active !== null && (
@@ -78,8 +80,9 @@ export function Passages({
             type="button"
             onClick={() => setMore((m) => !m)}
             aria-expanded={more}
-            className="text-sm text-muted underline underline-offset-4 hover:text-foreground"
+            className="flex items-center gap-1.5 text-sm text-muted underline underline-offset-4 hover:text-foreground"
           >
+            <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${more ? "rotate-180" : ""}`} />
             {more ? "Hide" : "Show"} {rest.length} more {rest.length === 1 ? "passage" : "passages"} read for this story
           </button>
           {more && <ol className="mt-6 space-y-6">{rest.map(quote)}</ol>}

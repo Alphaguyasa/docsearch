@@ -1,14 +1,36 @@
 import type { Metadata } from "next";
-import { Newsreader } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "next/font/google";
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
 
 import "./globals.css";
 
-const reading = Newsreader({
+// Church type: EB Garamond for reading (the face of the old Bibles and
+// prayer books), Cormorant Garamond for headings, Cinzel (Roman inscription
+// capitals) for the name and small labels, Noto Serif Ethiopic for Amharic.
+const reading = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-reading",
+  display: "swap",
+});
+const display = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-display-face",
+  display: "swap",
+});
+const caps = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-caps-face",
+  display: "swap",
+});
+const ethiopic = Noto_Serif_Ethiopic({
+  subsets: ["ethiopic"],
+  weight: ["400", "600"],
+  variable: "--font-ethiopic",
   display: "swap",
 });
 
@@ -22,14 +44,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={reading.variable}>
+    <html lang="en" className={`${reading.variable} ${display.variable} ${caps.variable} ${ethiopic.variable}`}>
       <body className="antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg">
           Skip to content
         </a>
         <header className="night relative z-20 border-b border-border">
           <nav className="mx-auto flex h-14 max-w-5xl items-center gap-5 px-4 text-sm sm:px-6">
-            <Link href="/" className="flex items-center gap-2 font-serif text-lg font-medium tracking-tight">
+            <Link href="/" className="flex items-center gap-2 font-caps text-[15px] font-semibold tracking-[0.12em]">
               <CandleMark className="h-6 w-6 text-gold" />
               Not Alone
             </Link>
