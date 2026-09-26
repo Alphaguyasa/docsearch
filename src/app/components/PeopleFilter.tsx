@@ -56,7 +56,7 @@ export function PeopleFilter({
       {label}
       <span
         className={`grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-semibold tabular-nums ${
-          active === id ? "bg-background/15" : "bg-foreground/10 text-muted"
+          active === id ? "bg-foreground/20" : "bg-foreground/10 text-foreground/85"
         }`}
       >
         {n}

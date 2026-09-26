@@ -20,7 +20,7 @@
   --card: #fbf8f2;
   --accent: #27458f; /* lapis */
   --accent-fg: #ffffff;
-  --gold: #9a6516;
+  --gold: #8c5b12; /* 5.1:1 on the background, so small gold labels stay readable */
   --care: #8a3030; /* used only for crisis help */
 }
 
@@ -49,6 +49,7 @@
   --accent: #a4b8f2;
   --accent-fg: #0d1526;
   --gold: #e8b560;
+  --care: #eba5a5; /* as in dark mode: dark text on it stays readable */
   background: var(--background);
   color: var(--foreground);
   color-scheme: dark;
