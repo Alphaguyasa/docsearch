@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { TRADITION_KEY, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
-import { EXAMPLE_QUESTIONS } from "@/lib/example-cache";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 
 import { AnswerView } from "./components/AnswerView";
@@ -19,10 +18,9 @@ import { ScrollWords } from "./components/ScrollWords";
 import { StickyStories } from "./components/StickyStories";
 import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
+import { useT } from "./i18n/client";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
-
-const EXAMPLES = [...EXAMPLE_QUESTIONS];
 
 function extractCited(text: string): number[] {
   const set = new Set<number>();
@@ -31,6 +29,7 @@ function extractCited(text: string): number[] {
 }
 
 export default function Home() {
+  const { t } = useT();
   const [question, setQuestion] = useState("");
   const [tradition, setTradition] = useState<TraditionChoice>("all");
   const [status, setStatus] = useState<Status>("idle");
@@ -90,13 +89,13 @@ export default function Home() {
         body: JSON.stringify({ question: query, ...(tradition !== "all" ? { tradition } : {}) }),
       });
     } catch {
-      setError("Could not reach the server. Check your connection and try again.");
+      setError(t.story.errors.offline);
       setStatus("error");
       return;
     }
     if (!res.ok || !res.body) {
       const body = await res.json().catch(() => null);
-      setError(body?.error ?? `The request failed (${res.status}). Try again.`);
+      setError(body?.error ?? t.story.errors.failed(res.status));
       setStatus("error");
       return;
     }
@@ -120,7 +119,7 @@ export default function Home() {
         }
       }
     } catch {
-      setError("The story stopped partway. Try again.");
+      setError(t.story.errors.stopped);
       setStatus("error");
     }
   }
@@ -144,8 +143,11 @@ export default function Home() {
         )}
       </Hero>
 
-      <div ref={results} className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
-        {status === "idle" && <ExampleCards examples={EXAMPLES} onPick={run} />}
+      <div
+        ref={results}
+        className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}
+      >
+        {status === "idle" && <ExampleCards examples={t.examples.list} onPick={run} />}
         {status === "loading" && (
           <div className="mx-auto max-w-3xl">
             <LoadingSkeleton />
@@ -153,7 +155,7 @@ export default function Home() {
         )}
         {status === "error" && (
           <div className="mx-auto max-w-3xl">
-          <ErrorState message={error ?? "Something went wrong."} onRetry={() => run(lastQuestion.current)} />
+            <ErrorState message={error ?? t.story.errors.generic} onRetry={() => run(lastQuestion.current)} />
           </div>
         )}
 

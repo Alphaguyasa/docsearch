@@ -6,13 +6,6 @@
  */
 import type { Figure } from "@/lib/scripture/figures";
 
-export const TRADITION_NAMES: Record<string, string> = {
-  protestant: "Protestant",
-  catholic: "Catholic",
-  orthodox: "Eastern Orthodox",
-  ethiopian_orthodox: "Ethiopian Orthodox",
-};
-
 const READER_NOTES: Record<string, string> = {
   david: "Psalm 51 is Psalm 50 in Orthodox and Catholic Bibles that follow the Septuagint.",
   elijah: "Despair is not a sin in itself. Elijah's story is here because he was brought so low, and was met there.",

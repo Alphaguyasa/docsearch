@@ -174,7 +174,12 @@ export function CandleScene({
     if (!img || !el || !painting) return;
     const place = () => {
       const { pw, ph, cx, cy } = hang(el.clientWidth, el.clientHeight, painting.aspect);
-      Object.assign(img.style, { width: `${pw}px`, height: `${ph}px`, left: `${cx - pw / 2}px`, top: `${cy - ph / 2}px` });
+      Object.assign(img.style, {
+        width: `${pw}px`,
+        height: `${ph}px`,
+        left: `${cx - pw / 2}px`,
+        top: `${cy - ph / 2}px`,
+      });
     };
     place();
     const ro = new ResizeObserver(place);
@@ -270,7 +275,9 @@ export function CandleScene({
         uAmbient: { value: 0.22 },
       };
       if (painting) {
-        const tex = await new THREE.TextureLoader().loadAsync(small ? painting.small : painting.large).catch(() => null);
+        const tex = await new THREE.TextureLoader()
+          .loadAsync(small ? painting.small : painting.large)
+          .catch(() => null);
         if (disposed) return;
         if (tex) {
           tex.colorSpace = THREE.NoColorSpace;

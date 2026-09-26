@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { GROUPS } from "@/app/people";
 
+import { useT } from "../i18n/client";
+
 /**
  * A frosted bar of struggle chips that sticks under the site bar. Picking one
  * shows only the people who fell that way. The cards are server-rendered;
@@ -21,6 +23,7 @@ export function PeopleFilter({
   counts: Record<string, number>;
 }) {
   const [active, setActive] = useState("all");
+  const { t } = useT();
   const [shown, setShown] = useState(total);
   const list = useRef<HTMLDivElement>(null);
 
@@ -66,16 +69,16 @@ export function PeopleFilter({
       <div className="below-nav sticky z-30 border-b border-border/60 bg-[var(--background)]/75 backdrop-blur-xl backdrop-saturate-150">
         <div
           role="toolbar"
-          aria-label="Filter by struggle"
+          aria-label={t.people.filterAria}
           className="gallery-track chip-row flex snap-x gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {chip("all", "Everyone", total)}
-          {GROUPS.map((g) => chip(g.id, g.label, counts[g.id] ?? 0))}
+          {chip("all", t.people.everyone, total)}
+          {GROUPS.map((g) => chip(g.id, t.groups[g.id] ?? g.label, counts[g.id] ?? 0))}
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
         <p aria-live="polite" className="text-sm text-muted">
-          {active === "all" ? `${shown} people` : `${shown} ${shown === 1 ? "person" : "people"} who fell this way`}
+          {active === "all" ? t.people.count(shown) : t.people.countFiltered(shown)}
         </p>
       </div>
       <div ref={list}>{children}</div>

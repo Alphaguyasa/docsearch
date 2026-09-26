@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import resources from "../../../data/crisis-resources.json";
 import { ArrowRight, Building, Globe, Phone } from "../components/Icons";
+import { getDict } from "../i18n/server";
 
 export const metadata = { title: "Help now — Not Alone" };
 
@@ -10,26 +11,23 @@ export const metadata = { title: "Help now — Not Alone" };
  * on the worst connection and work with JavaScript off. Phone numbers are
  * large tap targets that dial directly.
  */
-export default function HelpPage() {
+export default async function HelpPage() {
+  const { t } = await getDict();
+  const h = t.help;
   const phones = resources.global.filter((r) => "phone" in r && r.phone);
   const others = resources.global.filter((r) => !("phone" in r && r.phone));
   return (
     <main className="pb-24">
       <section className="mx-auto max-w-3xl px-4 pt-14 text-center sm:px-6 sm:pt-24">
-        <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-care">Help now</p>
-        <h1 className="mt-4 font-display text-[2.6rem] font-semibold leading-[1.04] sm:text-7xl">
-          If you are in danger, reach someone now.
-        </h1>
-        <p lang="am" className="mt-4 font-serif text-2xl text-muted">
-          አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።
+        <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-care">{h.eyebrow}</p>
+        <h1 className="mt-4 font-display text-[2.6rem] font-semibold leading-[1.04] sm:text-7xl">{h.title}</h1>
+        <p lang={h.subtitleLang} className="mt-4 font-serif text-2xl text-muted">
+          {h.subtitle}
         </p>
-        <p className="mx-auto mt-6 max-w-xl font-serif text-[20px] leading-8">
-          You matter more than anything you have done or anything done to you. Talking to someone today is the next
-          right step.
-        </p>
+        <p className="mx-auto mt-6 max-w-xl font-serif text-[20px] leading-8">{h.body}</p>
       </section>
 
-      <section aria-label="Call" className="mx-auto mt-14 max-w-4xl px-4 sm:px-6">
+      <section aria-label={h.call} className="mx-auto mt-14 max-w-4xl px-4 sm:px-6">
         <ul className="grid gap-4 sm:grid-cols-2">
           {phones.map((r) => (
             <li key={r.name}>
@@ -45,7 +43,9 @@ export default function HelpPage() {
                     {"phone" in r ? r.phone : ""}
                   </span>
                   <span className="mt-2 block font-medium">{r.name}</span>
-                  <span className="block text-sm text-muted">{r.detail} · tap to call</span>
+                  <span className="block text-sm text-muted">
+                    {r.detail} · {h.tap}
+                  </span>
                 </span>
               </a>
             </li>
@@ -78,7 +78,7 @@ export default function HelpPage() {
 
       <section aria-labelledby="now-heading" className="mx-auto mt-16 max-w-3xl px-4 sm:px-6">
         <h2 id="now-heading" className="font-display text-3xl font-semibold">
-          Right now
+          {h.now}
         </h2>
         <ol className="mt-5 space-y-3">
           {resources.always.map((s, i) => (
@@ -92,12 +92,12 @@ export default function HelpPage() {
           ))}
         </ol>
         <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <p className="text-muted">When you are safe, the stories are still here.</p>
+          <p className="text-muted">{h.safe}</p>
           <Link
             href="/"
             className="group inline-flex h-11 items-center gap-2 rounded-full bg-foreground/[0.06] px-5 text-[14px] ring-1 ring-foreground/10 transition-colors hover:bg-foreground/[0.1]"
           >
-            Back to Not Alone
+            {h.back}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         </div>

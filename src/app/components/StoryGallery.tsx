@@ -11,6 +11,8 @@ import { ArtImage } from "./ArtImage";
 import { ArrowRight } from "./Icons";
 import { RevealGroup, Tilt } from "./Motion";
 import { SymbolPlate } from "./SymbolPlate";
+import { useT } from "../i18n/client";
+import { figureText } from "../i18n/dict";
 
 /**
  * "Holy people, true stories": every person in one row that scrolls
@@ -21,6 +23,7 @@ import { SymbolPlate } from "./SymbolPlate";
 export function StoryGallery() {
   const people = readablePeople(FIGURES);
   const track = useRef<HTMLElement>(null);
+  const { lang, t } = useT();
   const [edge, setEdge] = useState({ start: true, end: false });
 
   useEffect(() => {
@@ -46,16 +49,16 @@ export function StoryGallery() {
     <section aria-labelledby="gallery-heading" className="py-24 sm:py-32">
       <div className="mx-auto flex max-w-6xl items-end justify-between gap-4 px-4 sm:px-6">
         <div>
-          <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">They fell, too</p>
+          <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">{t.gallery.eyebrow}</p>
           <h2 id="gallery-heading" className="mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-6xl">
-            Holy people, true stories.
+            {t.gallery.heading}
           </h2>
         </div>
         <Link
           href="/people"
           className="group hidden shrink-0 items-center gap-1.5 text-[15px] text-accent hover:underline sm:inline-flex"
         >
-          All {readablePeople(FIGURES).length} people
+          {t.gallery.all(readablePeople(FIGURES).length)}
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
         </Link>
       </div>
@@ -87,8 +90,8 @@ export function StoryGallery() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6 text-[#f1e9dc] transition-transform duration-700 [transition-timing-function:var(--ease-out)] group-hover:-translate-y-1">
-                <p className="font-display text-3xl font-semibold leading-tight">{f.name}</p>
-                <p className="mt-2 line-clamp-2 text-[14px] leading-6 text-white/80">{f.summary}</p>
+                <p className="font-display text-3xl font-semibold leading-tight">{figureText(lang, f).name}</p>
+                <p className="mt-2 line-clamp-2 text-[14px] leading-6 text-white/80">{figureText(lang, f).summary}</p>
               </div>
             </Tilt>
           </li>
@@ -97,7 +100,7 @@ export function StoryGallery() {
 
       <div className="mx-auto flex max-w-6xl justify-end gap-3 px-4 sm:px-6">
         <Link href="/people" className="mr-auto inline-flex items-center gap-1.5 text-[15px] text-accent sm:hidden">
-          All {readablePeople(FIGURES).length} people <ArrowRight className="h-4 w-4" />
+          {t.gallery.all(readablePeople(FIGURES).length)} <ArrowRight className="h-4 w-4" />
         </Link>
         {([-1, 1] as const).map((dir) => (
           <button
@@ -105,7 +108,7 @@ export function StoryGallery() {
             type="button"
             onClick={() => page(dir)}
             disabled={dir === -1 ? edge.start : edge.end}
-            aria-label={dir === -1 ? "Previous people" : "Next people"}
+            aria-label={dir === -1 ? t.gallery.prev : t.gallery.next}
             className="grid h-11 w-11 place-items-center rounded-full bg-foreground/10 text-foreground transition-colors hover:bg-foreground/20 disabled:opacity-30"
           >
             <ArrowRight className={`h-5 w-5 ${dir === -1 ? "rotate-180" : ""}`} />
