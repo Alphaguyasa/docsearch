@@ -11,7 +11,9 @@ import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
+import credits from "../../../../public/art/credits.json";
 import { peopleFor } from "@/lib/scripture/people-for";
+import { personOfTheDay } from "@/lib/scripture/today";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
@@ -24,6 +26,7 @@ import {
   feedbackKeyboard,
   parseFeedbackData,
   storyMessages,
+  todayCaption,
   tg,
   webhookSecret,
   type BotLang,
@@ -75,6 +78,18 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
     return void (await send(
       crisisMessage({ message: t.helpTitle, steps: resources.always, resources: resources.global }, lang),
     ));
+  }
+  if (text.startsWith("/today")) {
+    const f = personOfTheDay(new Date());
+    const caption = todayCaption(f, lang);
+    const hasArt = (credits as { credits: { id: string }[] }).credits.some((a) => a.id === f.id);
+    if (!hasArt) return void (await send(caption));
+    return void (await tg(token, "sendPhoto", {
+      chat_id,
+      photo: `${SITE_URL}/art/og/${f.id}.jpg`,
+      caption,
+      parse_mode: "HTML",
+    }).catch(() => send(caption)));
   }
   if (text.length > 1000) return void (await send(t.tooLong));
 
