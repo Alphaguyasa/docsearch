@@ -13,6 +13,9 @@ import { Passages } from "./components/Passages";
 import { ExampleCards } from "./components/ExampleCards";
 import { ErrorState, LoadingSkeleton } from "./components/States";
 import { StoryFigures } from "./components/StoryFigures";
+import { ClosingCta, HowItWorks } from "./components/HomeSections";
+import { ScrollWords } from "./components/ScrollWords";
+import { StickyStories } from "./components/StickyStories";
 import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
 
@@ -146,12 +149,7 @@ export default function Home() {
       </Hero>
 
       <div ref={results} className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
-        {status === "idle" && (
-          <div>
-            <ExampleCards examples={EXAMPLES} onPick={run} />
-            <StoryGallery />
-          </div>
-        )}
+        {status === "idle" && <ExampleCards examples={EXAMPLES} onPick={run} />}
         {status === "loading" && (
           <div className="mx-auto max-w-3xl">
             <LoadingSkeleton />
@@ -188,6 +186,16 @@ export default function Home() {
           </article>
         )}
       </div>
+
+      {status === "idle" && (
+        <>
+          <ScrollWords />
+          <StickyStories />
+          <StoryGallery />
+          <HowItWorks />
+          <ClosingCta />
+        </>
+      )}
     </main>
   );
 }
