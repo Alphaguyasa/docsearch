@@ -7,6 +7,7 @@ import type { TraditionChoice } from "@/app/traditions";
 import { ArrowRight, Lock } from "./Icons";
 import { prefersCalm } from "./Motion";
 import { TraditionSelect } from "./TraditionSelect";
+import { useT } from "../i18n/client";
 
 interface Props {
   value: string;
@@ -19,20 +20,11 @@ interface Props {
 
 const MAX = 1000;
 
-/** What the empty box quietly writes to itself, one line at a time. */
-const WHISPERS = [
-  "I keep lying to the people I love…",
-  "I cheated, and I don’t know how to live with it…",
-  "I have walked away from God for years…",
-  "My anger is hurting my family…",
-  "ሁልጊዜ በጣም እቆጣለሁ…",
-];
-
 /**
  * The typewriter placeholder: types a line, rests, erases, moves on. Only
  * while the box is empty and not focused, and never under reduced motion.
  */
-function useWhisper(active: boolean): string {
+function useWhisper(active: boolean, WHISPERS: string[]): string {
   const [text, setText] = useState(WHISPERS[0]);
   useEffect(() => {
     if (!active || prefersCalm()) {
@@ -68,7 +60,7 @@ function useWhisper(active: boolean): string {
     };
     timer = window.setTimeout(tick, 900);
     return () => window.clearTimeout(timer);
-  }, [active]);
+  }, [active, WHISPERS]);
   return text;
 }
 
@@ -82,7 +74,9 @@ function useWhisper(active: boolean): string {
 export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, onTradition }: Props) {
   const box = useRef<HTMLTextAreaElement>(null);
   const [focused, setFocused] = useState(false);
-  const whisper = useWhisper(!focused && value.length === 0);
+  const { t } = useT();
+  const WHISPERS = t.hero.whispers;
+  const whisper = useWhisper(!focused && value.length === 0, WHISPERS);
   const ready = value.trim().length > 0 && !disabled;
 
   // Grow with the words; shrink back when cleared (e.g. after picking an example).
@@ -100,14 +94,11 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         if (ready) onSubmit();
       }}
     >
-      <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] sm:text-7xl">You are not the only one.</h1>
-      <p className="mt-5 max-w-xl font-serif text-[19px] leading-8 text-muted">
-        David, Peter, Augustine, Abba Moses — holy people fell the same way you have, and were restored. Tell what you
-        are carrying, in English or Amharic, and read their true story from Scripture and the Church Fathers.
-      </p>
+      <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] sm:text-7xl">{t.hero.title}</h1>
+      <p className="mt-5 max-w-xl font-serif text-[19px] leading-8 text-muted">{t.hero.intro}</p>
 
       <label htmlFor="struggle" className="mt-10 block font-display text-[1.75rem] font-semibold">
-        What are you carrying?
+        {t.hero.label}
       </label>
 
       <div
@@ -158,14 +149,14 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
             <button
               type="submit"
               disabled={!ready}
-              aria-label={disabled ? "Finding a story" : "Show me a story"}
+              aria-label={disabled ? t.hero.finding : t.hero.send}
               className="composer-send group ml-auto inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full px-4 font-caps text-[12px] font-semibold tracking-[0.14em] sm:ml-0 sm:px-5"
             >
               {disabled ? (
                 <span className="composer-spinner" aria-hidden />
               ) : (
                 <>
-                  <span className="hidden sm:inline">Show me a story</span>
+                  <span className="hidden sm:inline">{t.hero.send}</span>
                   <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </>
               )}
@@ -176,8 +167,8 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
 
       <p id="struggle-privacy" className="mt-3 flex items-center gap-2 px-1 text-[13px] text-muted">
         <Lock className="h-3.5 w-3.5 shrink-0 text-gold/80" />
-        Nothing you write is saved.
-        <span className="hidden sm:inline">Enter to send · Shift+Enter for a new line</span>
+        {t.hero.privacy}
+        <span className="hidden sm:inline">{t.hero.keys}</span>
       </p>
     </form>
   );

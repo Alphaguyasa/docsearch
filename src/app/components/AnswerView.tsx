@@ -1,6 +1,7 @@
 "use client";
 
 import type { UiSource } from "@/app/types";
+import { useT } from "../i18n/client";
 
 interface Props {
   answer: string;
@@ -16,13 +17,8 @@ interface Props {
  * matching passage (possible while streaming) is shown quietly, not as an
  * error. Generous line height — this text is read closely.
  */
-export function AnswerView({
-  answer,
-  sources,
-  activeCitation,
-  streaming,
-  onCiteClick,
-}: Props) {
+export function AnswerView({ answer, sources, activeCitation, streaming, onCiteClick }: Props) {
+  const { t } = useT();
   const known = new Set(sources.map((s) => s.n));
   const parts = answer.split(/(\[\d+\])/g);
 
@@ -42,13 +38,9 @@ export function AnswerView({
               disabled={!isKnown}
               onClick={() => onCiteClick(n)}
               aria-label={isKnown ? `Passage ${n}` : undefined}
-              title={isKnown ? `Read passage ${n}` : undefined}
+              title={isKnown ? t.story.passage(n) : undefined}
               className={`mx-px rounded px-1 font-sans text-[11px] font-semibold leading-none transition-colors ${
-                isKnown
-                  ? active
-                    ? "bg-gold text-background"
-                    : "text-gold hover:bg-gold/15"
-                  : "text-muted"
+                isKnown ? (active ? "bg-gold text-background" : "text-gold hover:bg-gold/15") : "text-muted"
               }`}
             >
               {n}
@@ -56,9 +48,7 @@ export function AnswerView({
           </sup>
         );
       })}
-      {streaming && (
-        <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-current align-middle" />
-      )}
+      {streaming && <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-current align-middle" />}
     </div>
   );
 }

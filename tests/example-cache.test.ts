@@ -20,3 +20,9 @@ test("a cached answer is served until it expires", () => {
   assert.equal(getCachedExample(key, 1000 + 60_000), "BODY");
   assert.equal(getCachedExample(key, 1000 + 7 * 60 * 60 * 1000), null);
 });
+
+test("every example card, in both languages, is cacheable", async () => {
+  const { DICTS } = await import("../src/app/i18n/dict");
+  for (const lang of ["en", "am"] as const)
+    for (const q of DICTS[lang].examples.list) assert.ok(exampleKey(q), `${lang}: ${q}`);
+});

@@ -5,39 +5,25 @@ import { useEffect, useRef, useState } from "react";
 
 import { ArtImage } from "./ArtImage";
 import { ArrowRight, Lock } from "./Icons";
-
-const STEPS = [
-  {
-    n: "01",
-    title: "Say it plainly.",
-    body: "Write what you are carrying, in English or Amharic, the way you would say it to a priest. Nothing you write is saved.",
-  },
-  {
-    n: "02",
-    title: "Meet someone who fell the same way.",
-    body: "A king, an apostle, a robber turned monk — from Scripture and the Church Fathers, chosen for your struggle and your church.",
-  },
-  {
-    n: "03",
-    title: "Read it for yourself.",
-    body: "Every line of the story is numbered back to the passage it comes from. Tap a number and the verse lights up. Nothing is retold from memory.",
-  },
-];
+import { useT } from "../i18n/client";
+import { figureText } from "../i18n/dict";
 
 /** What the phone shows at each step: the site itself, in miniature, acting the step out. */
 function Screen({ step }: { step: number }) {
+  const { lang, t } = useT();
+  const m = t.how.mock;
   return (
     <div key={step} className="mock-screen flex h-full flex-col px-4 pb-5 pt-10 text-[#f1e9dc]">
       <p className="font-caps text-[9px] font-semibold tracking-[0.2em] text-[#e8b560]">Not Alone</p>
       {step === 0 && (
         <>
-          <p className="mt-6 font-display text-[22px] font-semibold leading-tight">What are you carrying?</p>
+          <p className="mt-6 font-display text-[22px] font-semibold leading-tight">{m.question}</p>
           <div className="mt-4 rounded-2xl p-[1.5px] [background:linear-gradient(135deg,#e8b560,rgb(232_181_96_/_0.2)_60%,#e8b560)]">
             <div className="rounded-[15px] bg-[#120e0a] p-3">
-              <p className="mock-type font-serif text-[14px] leading-6">I keep lying to my parents and I can’t stop.</p>
+              <p className="mock-type font-serif text-[14px] leading-6">{m.typed}</p>
               <div className="mt-3 flex items-center justify-between">
                 <span className="rounded-full bg-white/[0.07] px-2.5 py-1 text-[10px] text-[#b3a48f]">
-                  ✝ Any tradition
+                  ✝ {t.church.options.all}
                 </span>
                 <span className="mock-send grid h-7 w-7 place-items-center rounded-full bg-[#e8b560] text-[#0b0907]">
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -46,37 +32,37 @@ function Screen({ step }: { step: number }) {
             </div>
           </div>
           <p className="mt-3 flex items-center gap-1.5 text-[10px] text-[#b3a48f]">
-            <Lock className="h-3 w-3 text-[#e8b560]" /> Nothing you write is saved.
+            <Lock className="h-3 w-3 text-[#e8b560]" /> {t.hero.privacy}
           </p>
         </>
       )}
       {step === 1 && (
         <>
-          <p className="mt-6 font-caps text-[9px] font-semibold tracking-[0.2em] text-[#e8b560]">
-            You are not the only one
-          </p>
+          <p className="mt-6 font-caps text-[9px] font-semibold tracking-[0.2em] text-[#e8b560]">{m.notOnly}</p>
           <div className="mock-rise mt-3 overflow-hidden rounded-2xl bg-[#17120d] ring-1 ring-white/10">
             <ArtImage id="peter" sizes="260px" className="aspect-[16/10] w-full" />
             <div className="p-3">
-              <p className="font-display text-[18px] font-semibold">Peter</p>
-              <p className="mt-1 text-[11px] leading-4 text-[#b3a48f]">
-                Denied knowing Jesus three times; restored by the risen Jesus with three questions of love.
+              <p className="font-display text-[18px] font-semibold">
+                {figureText(lang, { id: "peter", name: "Peter", summary: "" }).name}
               </p>
+              <p className="mt-1 text-[11px] leading-4 text-[#b3a48f]">{m.peter}</p>
             </div>
           </div>
           <div className="mock-rise mt-2 flex items-center gap-2 rounded-2xl bg-[#17120d] p-2.5 ring-1 ring-white/10 [animation-delay:250ms]">
             <ArtImage id="jacob" sizes="60px" className="h-9 w-9 rounded-lg" />
-            <p className="font-display text-[15px] font-semibold">Jacob</p>
+            <p className="font-display text-[15px] font-semibold">
+              {figureText(lang, { id: "jacob", name: "Jacob", summary: "" }).name}
+            </p>
           </div>
         </>
       )}
       {step === 2 && (
         <>
           <p className="mt-6 font-serif text-[13px] leading-6">
-            <span className="float-left mr-1 font-caps text-[34px] leading-[0.85] text-[#e8b560]">O</span>n the night
-            Jesus was arrested, Peter was asked three times whether he knew him, and three times he said no
-            <sup className="mock-cite mx-0.5 rounded px-1 text-[9px] font-bold text-[#0b0907]">1</sup>. Then the rooster
-            crowed, and he went out and wept bitterly.
+            <span className="float-left mr-1 font-caps text-[34px] leading-[0.85] text-[#e8b560]">{m.initial}</span>
+            {m.story}
+            <sup className="mock-cite mx-0.5 rounded px-1 text-[9px] font-bold text-[#0b0907]">1</sup>
+            {m.story2}
           </p>
           <div className="mock-quote mt-4 rounded-r-xl border-l-2 border-[#e8b560] p-3">
             <p className="text-[10px] text-[#e8b560]">
@@ -112,6 +98,8 @@ function Phone({ step, className = "" }: { step: number; className?: string }) {
  * screen.
  */
 export function HowItWorks() {
+  const { t } = useT();
+  const STEPS = t.how.steps.map((s, i) => ({ ...s, n: String(i + 1).padStart(2, "0") }));
   const [step, setStep] = useState(0);
   const steps = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -130,9 +118,9 @@ export function HowItWorks() {
 
   return (
     <section aria-labelledby="how-heading" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
-      <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">How it works</p>
+      <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">{t.how.eyebrow}</p>
       <h2 id="how-heading" className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-[1.05] sm:text-6xl">
-        A true story, not a lecture.
+        {t.how.title}
       </h2>
 
       <div className="mt-14 grid gap-16 min-[900px]:grid-cols-[1fr_300px] min-[900px]:gap-20">
@@ -183,18 +171,19 @@ const CTA =
  * scrolls back up to the story box; elsewhere (`href`) it links there.
  */
 export function ClosingCta({ href }: { href?: string }) {
+  const { t } = useT();
   return (
     <section className="night relative overflow-hidden border-t border-border">
       <div className="candle-still absolute inset-0" aria-hidden />
       <div className="relative mx-auto max-w-4xl px-4 py-28 text-center sm:px-6 sm:py-36">
         <h2 className="font-display text-5xl font-semibold leading-[1.02] sm:text-7xl">
-          Whatever you are carrying,
+          {t.closing.line1}
           <br />
-          <span className="text-gold">someone carried it first.</span>
+          <span className="text-gold">{t.closing.line2}</span>
         </h2>
         {href ? (
           <Link href={href} className={CTA}>
-            Tell what you are carrying
+            {t.closing.cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         ) : (
@@ -206,7 +195,7 @@ export function ClosingCta({ href }: { href?: string }) {
             }}
             className={CTA}
           >
-            Tell what you are carrying
+            {t.closing.cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         )}

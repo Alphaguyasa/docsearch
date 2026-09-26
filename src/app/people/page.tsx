@@ -8,12 +8,16 @@ import { RevealGroup, Tilt } from "../components/Motion";
 import { ClosingCta } from "../components/HomeSections";
 import { PeopleFilter } from "../components/PeopleFilter";
 import { SymbolPlate } from "../components/SymbolPlate";
-import { groupCounts, groupsFor, readablePeople, readerNote, storyRefs, tagLabel, TRADITION_NAMES } from "../people";
+import { figureText } from "../i18n/dict";
+import { getDict } from "../i18n/server";
+import { groupCounts, groupsFor, readablePeople, readerNote, storyRefs, tagLabel } from "../people";
 
 export const metadata = { title: "People — Not Alone" };
 
 /** Every person in the library: their symbol, their fall, their restoration, where to read it. Static — no DB. */
-export default function PeoplePage() {
+export default async function PeoplePage() {
+  const { lang, t } = await getDict();
+  const tp = t.people;
   const people = readablePeople(FIGURES);
   const l = artFor("lalibela");
   const lalibela = l && {
@@ -31,14 +35,11 @@ export default function PeoplePage() {
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[var(--background)]/10 via-[var(--background)]/60 to-[var(--background)] min-[900px]:bg-gradient-to-r min-[900px]:from-[var(--background)] min-[900px]:via-[var(--background)]/70 min-[900px]:to-transparent"
         />
         <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-[34vh] sm:px-6 min-[900px]:min-h-[560px] min-[900px]:pb-24 min-[900px]:pt-28">
-          <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">The people</p>
+          <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">{tp.eyebrow}</p>
           <h1 className="mt-3 max-w-3xl font-display text-[2.8rem] font-semibold leading-[1.02] sm:text-7xl">
-            They fell. They were not left there.
+            {tp.title}
           </h1>
-          <p className="mt-5 max-w-xl font-serif text-[19px] leading-8 text-muted">
-            {people.length} people from Scripture and the Church Fathers — kings, apostles, a prostitute, a robber, a
-            tax collector. Each story is read from the text itself, never retold from memory.
-          </p>
+          <p className="mt-5 max-w-xl font-serif text-[19px] leading-8 text-muted">{tp.intro(people.length)}</p>
         </div>
         {l && (
           <p className="absolute bottom-3 right-4 hidden text-right text-xs text-muted min-[900px]:block sm:right-6">
@@ -53,7 +54,8 @@ export default function PeoplePage() {
             {people.map((f, i) => {
               const everywhere = f.traditions.length === 4;
               const { fall, restoration } = storyRefs(f);
-              const note = readerNote(f);
+              const note = lang === "am" ? t.notes[f.id] : readerNote(f);
+              const text = figureText(lang, f);
               return (
                 <li
                   key={f.id}
@@ -85,26 +87,26 @@ export default function PeoplePage() {
                           </div>
                         )}
                         <div className="min-w-0">
-                          <h2 className="font-display text-2xl font-semibold leading-tight">{f.name}</h2>
+                          <h2 className="font-display text-2xl font-semibold leading-tight">{text.name}</h2>
                           <p className="font-caps text-[11px] tracking-[0.2em] text-white/70">
-                            {f.kind === "tradition" ? "Church tradition" : "Scripture"}
+                            {f.kind === "tradition" ? tp.tradition : tp.scripture}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <p className="font-serif text-[17px] leading-7">{f.summary}</p>
+                    <p className="font-serif text-[17px] leading-7">{text.summary}</p>
 
                     <dl className="mt-4 space-y-2 text-sm leading-6">
                       {fall.length > 0 && (
                         <div>
-                          <dt className="inline text-muted">The fall · </dt>
+                          <dt className="inline text-muted">{tp.fall} · </dt>
                           <dd className="inline">{fall.join("; ")}</dd>
                         </div>
                       )}
                       {restoration.length > 0 && (
                         <div>
-                          <dt className="inline text-muted">The restoration · </dt>
+                          <dt className="inline text-muted">{tp.rise} · </dt>
                           <dd className="inline">{restoration.join("; ")}</dd>
                         </div>
                       )}
@@ -116,13 +118,17 @@ export default function PeoplePage() {
                       <ul className="flex flex-wrap gap-1.5">
                         {f.sins.map((s) => (
                           <li key={s} className="rounded-full bg-panel px-2.5 py-0.5 text-xs text-muted">
-                            {tagLabel(s)}
+                            {t.tags[s] ?? tagLabel(s)}
                           </li>
                         ))}
                       </ul>
                       {!everywhere && (
                         <p className="mt-2 text-xs text-muted">
-                          Honoured in {f.traditions.map((t) => TRADITION_NAMES[t]).join(", ")}
+                          {tp.honoured(
+                            f.traditions
+                              .map((tr) => t.church.options[tr as keyof typeof t.church.options])
+                              .join(lang === "am" ? "፣ " : ", "),
+                          )}
                         </p>
                       )}
                     </div>

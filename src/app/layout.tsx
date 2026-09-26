@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
 import { SiteFooter } from "./components/SiteFooter";
+import { LangProvider, LangToggle } from "./i18n/client";
+import { getDict } from "./i18n/server";
 import { SiteHeader } from "./components/SiteHeader";
 
 import "./globals.css";
@@ -58,44 +60,56 @@ export const viewport: Viewport = {
   colorScheme: "dark light",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const { lang, t } = await getDict();
   return (
-    <html lang="en" className={`${reading.variable} ${display.variable} ${caps.variable} ${ethiopic.variable}`}>
+    <html lang={lang} className={`${reading.variable} ${display.variable} ${caps.variable} ${ethiopic.variable}`}>
       <body className="antialiased">
-        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg">
-          Skip to content
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
+        >
+          {t.nav.skip}
         </a>
-        <SiteHeader>
-          <nav className="mx-auto flex h-12 max-w-6xl items-center gap-4 whitespace-nowrap px-4 text-[13px] sm:gap-6 sm:px-6">
-            <Link href="/" className="flex shrink-0 items-center gap-2 font-caps text-[14px] font-semibold tracking-[0.1em] sm:text-[15px] sm:tracking-[0.12em]">
-              <CandleMark className="h-6 w-6 text-gold" />
-              Not Alone
-            </Link>
-            <Link href="/people" className="text-muted transition-colors hover:text-foreground">
-              People
-            </Link>
-            {process.env.SHOW_DOCUMENTS === "1" && (
-              <Link href="/documents" className="text-muted transition-colors hover:text-foreground">
-                Documents
+        <LangProvider lang={lang}>
+          <SiteHeader>
+            <nav className="mx-auto flex h-12 max-w-6xl items-center gap-4 whitespace-nowrap px-4 text-[13px] sm:gap-6 sm:px-6">
+              <Link
+                href="/"
+                lang="en"
+                className="flex shrink-0 items-center gap-2 font-caps text-[14px] font-semibold tracking-[0.1em] sm:text-[15px] sm:tracking-[0.12em]"
+              >
+                <CandleMark className="h-6 w-6 text-gold" />
+                Not Alone
               </Link>
-            )}
-            {process.env.EVAL_DASHBOARD === "1" && (
-              <Link href="/evals" className="text-muted transition-colors hover:text-foreground">
-                Evals
+              <Link href="/people" className="text-muted transition-colors hover:text-foreground">
+                {t.nav.people}
               </Link>
-            )}
-            <Link
-              href="/help"
-              className="ml-auto shrink-0 rounded-full bg-white/10 px-3 py-1.5 sm:px-3.5 text-foreground transition-colors hover:bg-gold hover:text-background"
-            >
-              Need help now?
-            </Link>
-          </nav>
-        </SiteHeader>
-        <div id="main">{children}</div>
-        <SiteFooter />
+              {process.env.SHOW_DOCUMENTS === "1" && (
+                <Link href="/documents" className="text-muted transition-colors hover:text-foreground">
+                  Documents
+                </Link>
+              )}
+              {process.env.EVAL_DASHBOARD === "1" && (
+                <Link href="/evals" className="text-muted transition-colors hover:text-foreground">
+                  Evals
+                </Link>
+              )}
+              <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+                <LangToggle />
+                <Link
+                  href="/help"
+                  className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-foreground transition-colors hover:bg-gold hover:text-background sm:px-3.5"
+                >
+                  <span className="min-[420px]:hidden">{t.nav.helpShort}</span>
+                  <span className="hidden min-[420px]:inline">{t.nav.needHelp}</span>
+                </Link>
+              </div>
+            </nav>
+          </SiteHeader>
+          <div id="main">{children}</div>
+          <SiteFooter />
+        </LangProvider>
       </body>
     </html>
   );
