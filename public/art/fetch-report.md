@@ -21,3 +21,11 @@
 - john_mark: File:Frans Hals 085 detail 01.jpg — Frans Hals — Public domain
 - nebuchadnezzar: File:William Blake - Nebuchadnezzar (Tate Britain).jpg — William Blake — Public domain
 - augustine: File:Saint Augustine by Philippe de Champaigne.jpg — Philippe de Champaigne — Public domain
+- noah: File:Drunkenness of Noah bellini.jpg — Giovanni Bellini — Public domain
+- prodigal_son: File:Murillo - The Return of the Prodigal Son, NGI.4545.jpg — Bartolomé Esteban Murillo — Public domain
+- miriam: File:Anselm Feuerbach - Miriam - WGA07870.jpg — Anselm Feuerbach — Public domain
+- judah: File:Horace Vernet - Judah and Tamar - WGA24755.jpg — Horace Vernet — Public domain
+- job: File:Léon Bonnat - Job.jpg — Léon Bonnat — Public domain
+- penitent_thief: File:Tiziano Vecellio e aiuti, Gesù Cristo e il buon ladrone, 1563 circa.jpg — Mongolo1984 — CC BY-SA 4.0
+- sinful_woman: File:Bouts anoiting.jpg — Dieric Bouts — Public domain
+- naomi: File:1795-William-Blake-Naomi-entreating-Ruth-Orpah.jpg — William Blake — Public domain
