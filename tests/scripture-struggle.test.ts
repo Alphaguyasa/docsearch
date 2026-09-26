@@ -107,7 +107,11 @@ test("rankFigures: more matching tags first, scripture before tradition", () => 
 test("rankFigures: tradition filter and pending sources", () => {
   assert.ok(!rankFigures(["violence"], ["protestant"], 10).some((f) => f.id === "moses_the_ethiopian"));
   assert.ok(rankFigures(["violence"], ["ethiopian_orthodox"], 10).some((f) => f.id === "moses_the_ethiopian"));
-  assert.ok(!rankFigures(["sexual_sin"], undefined, 10).some((f) => f.id === "mary_of_egypt"), "pending source hidden");
+  const pending = { ...FIGURES[0], id: "unsourced", passages: [{ role: "restoration" as const, ref: "Life", sourceId: "pending" }] };
+  assert.ok(!rankFigures(pending.sins, undefined, 10, [...FIGURES, pending]).some((f) => f.id === "unsourced"), "pending source hidden");
+  // Mary of Egypt is read from the Ethiopian Synaxarium, so she appears only where that text is tagged.
+  assert.ok(rankFigures(["sexual_sin"], ["ethiopian_orthodox"], 10).some((f) => f.id === "mary_of_egypt"));
+  assert.ok(!rankFigures(["sexual_sin"], ["protestant"], 10).some((f) => f.id === "mary_of_egypt"));
 });
 
 test("refsOverlap", () => {
@@ -160,4 +164,10 @@ test("addiction and gossip are recognised in English and Amharic", () => {
 
 test("the name of Jesus never reads as addiction", () => {
   assert.ok(!matchTags("ኢየሱስን እወዳለሁ ግን ሁልጊዜ እዋሻለሁ").includes("addiction"));
+});
+
+test("going to a witch doctor reads as idolatry, and Cyprian answers it", () => {
+  assert.deepEqual(matchTags("ወደ ጠንቋይ ሄጃለሁ"), ["idolatry"]);
+  assert.deepEqual(matchTags("I went to a witch doctor"), ["idolatry"]);
+  assert.ok(rankFigures(["idolatry"], ["ethiopian_orthodox"], 3).some((f) => f.id === "cyprian"));
 });
