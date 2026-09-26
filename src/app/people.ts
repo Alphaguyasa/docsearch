@@ -11,6 +11,12 @@ const READER_NOTES: Record<string, string> = {
   elijah: "Despair is not a sin in itself. Elijah's story is here because he was brought so low, and was met there.",
   woman_caught_in_adultery: "This passage (John 7:53–8:11) is not in the earliest manuscripts of John's Gospel.",
   moses_the_ethiopian: "Budge's translation of the Paradise of the Holy Fathers calls him “Moses the Indian”.",
+  noah: "Scripture does not tell of Noah repenting. It tells what his drunkenness cost his family, and still names him among the faithful (Hebrews 11:7).",
+  prodigal_son: "A parable Jesus told, not a historical person — told so that anyone could see themselves in him.",
+  job: "Job's suffering was not a punishment for sin. He is here because he said the bitterest things to God, and God still answered him.",
+  penitent_thief:
+    "Luke calls him a criminal. The Church remembers him as the good thief; in the Ethiopian tradition, Fiyatawi Zeyemen, “the thief on the right”.",
+  sinful_woman: "Luke does not name her. She is often identified with Mary Magdalene, but the Gospel does not say so.",
   manasseh: "The Prayer of Manasseh is Scripture in the Orthodox and Ethiopian Orthodox Churches.",
 };
 
@@ -45,12 +51,13 @@ export function readablePeople(all: Figure[]): Figure[] {
 export const GROUPS: { id: string; label: string; tags: string[] }[] = [
   { id: "lust", label: "Lust", tags: ["lust", "sexual_sin", "adultery"] },
   { id: "anger", label: "Anger & violence", tags: ["anger", "violence", "murder", "persecution", "resentment"] },
-  { id: "lying", label: "Lying", tags: ["deceit", "hypocrisy", "denial", "betrayal"] },
+  { id: "lying", label: "Lying & gossip", tags: ["deceit", "hypocrisy", "denial", "betrayal", "gossip"] },
   { id: "pride", label: "Pride", tags: ["pride"] },
   { id: "greed", label: "Greed & theft", tags: ["greed", "theft", "exploitation", "envy"] },
   { id: "fear", label: "Fear & shame", tags: ["fear", "cowardice", "shame"] },
   { id: "away", label: "Turning away", tags: ["idolatry", "disobedience", "quitting", "abandonment"] },
   { id: "despair", label: "Despair & doubt", tags: ["despair", "doubt"] },
+  { id: "addiction", label: "Addiction", tags: ["addiction"] },
 ];
 
 /** The group ids a person belongs to, for their card's data-groups attribute. */

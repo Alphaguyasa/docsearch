@@ -56,6 +56,89 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M12 58 L56 58" />
     </>
   ),
+  // The rainbow after the flood.
+  noah: (
+    <>
+      <path d="M8 40 C8 22 20 12 32 12 C44 12 56 22 56 40" />
+      <path d="M14 40 C14 26 22 18 32 18 C42 18 50 26 50 40" />
+      <path d="M20 40 C20 30 25 24 32 24 C39 24 44 30 44 40" />
+      <path d="M10 48 L54 48 L48 56 L16 56 Z" />
+      <path d="M24 48 L24 42 L40 42 L40 48" />
+    </>
+  ),
+  // The road home, and the door already open.
+  prodigal_son: (
+    <>
+      <path d="M36 30 L48 20 L60 30 L60 46 L36 46 Z" />
+      <path d="M45 46 L45 36 L51 36 L51 46" />
+      <path d="M45 36 L42 34 L42 44 L45 46" />
+      <path d="M4 60 C18 56 26 52 34 48" />
+      <path d="M14 60 C24 56 30 52 36 48" />
+      <circle cx="10" cy="46" r="2.4" />
+      <path d="M10 49 L10 55 M10 51 L7 54 M10 51 L13 53" />
+    </>
+  ),
+  // Her timbrel at the sea (Exodus 15:20).
+  miriam: (
+    <>
+      <circle cx="32" cy="32" r="18" />
+      <circle cx="32" cy="32" r="13" />
+      <circle cx="32" cy="14" r="2" />
+      <circle cx="50" cy="32" r="2" />
+      <circle cx="32" cy="50" r="2" />
+      <circle cx="14" cy="32" r="2" />
+      <circle cx="44.7" cy="19.3" r="2" />
+      <circle cx="19.3" cy="44.7" r="2" />
+    </>
+  ),
+  // The signet, cord and staff he left as a pledge (Genesis 38:18).
+  judah: (
+    <>
+      <path d="M40 8 L22 58" />
+      <circle cx="24" cy="30" r="7" />
+      <circle cx="24" cy="30" r="3" />
+      <path d="M24 37 C28 44 38 42 42 48 C46 54 40 58 36 56" />
+    </>
+  ),
+  // The whirlwind God answered him from.
+  job: (
+    <>
+      <path d="M10 12 L54 12" />
+      <path d="M14 20 L50 20" />
+      <path d="M19 28 L45 28" />
+      <path d="M23 36 L41 36" />
+      <path d="M27 44 L37 44" />
+      <path d="M30 52 L34 52" />
+      <path d="M32 52 L31 58" />
+    </>
+  ),
+  // Three crosses; he hung on the one to the right.
+  penitent_thief: (
+    <>
+      <path d="M32 10 L32 50 M24 18 L40 18" />
+      <path d="M14 22 L14 50 M8 28 L20 28" />
+      <path d="M50 22 L50 50 M44 28 L56 28" />
+      <path d="M4 58 C18 48 46 48 60 58" />
+    </>
+  ),
+  // The alabaster jar of ointment.
+  sinful_woman: (
+    <>
+      <path d="M26 10 L38 10 M28 10 L28 16 M36 10 L36 16" />
+      <path d="M28 16 C18 22 18 30 22 36 C18 44 20 54 32 56 C44 54 46 44 42 36 C46 30 46 22 36 16" />
+      <path d="M24 36 L40 36" />
+    </>
+  ),
+  // A sheaf of barley from Ruth's gleaning.
+  naomi: (
+    <>
+      <path d="M32 58 L32 20 M32 58 L24 24 M32 58 L40 24 M32 58 L18 30 M32 58 L46 30" />
+      <path d="M32 20 C30 16 30 12 32 8 C34 12 34 16 32 20 Z" />
+      <path d="M24 24 C21 21 20 17 21 13 C24 16 25 20 24 24 Z" />
+      <path d="M40 24 C43 21 44 17 43 13 C40 16 39 20 40 24 Z" />
+      <path d="M24 44 L40 44" />
+    </>
+  ),
   // The great fish.
   jonah: (
     <>
