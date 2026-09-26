@@ -3,11 +3,14 @@ import { cookies, headers } from "next/headers";
 import { DICTS, LANG_COOKIE, type Dict, type Lang } from "./dict";
 
 /**
- * The reader's language on the server: their saved choice, else Amharic when
- * their browser prefers it, else English. The cookie only ever holds "en" or
- * "am" — never anything they wrote.
+ * The reader's language on the server: a ?lang= in the address (set as a
+ * header by the middleware, so search engines can index both languages), else
+ * their saved choice, else Amharic when their browser prefers it, else English.
+ * The cookie only ever holds "en" or "am" — never anything they wrote.
  */
 export async function getLang(): Promise<Lang> {
+  const fromUrl = (await headers()).get("x-not-alone-lang");
+  if (fromUrl === "en" || fromUrl === "am") return fromUrl;
   const saved = (await cookies()).get(LANG_COOKIE)?.value;
   if (saved === "en" || saved === "am") return saved;
   const accept = (await headers()).get("accept-language") ?? "";
