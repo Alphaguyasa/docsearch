@@ -8,6 +8,7 @@
  */
 import { createHmac } from "node:crypto";
 
+import { FIGURES } from "./scripture/figures";
 import type { CrisisPayload, FigureSummary, SearchStreamMessage, SourceChunk } from "./search-stream";
 
 export type BotLang = "en" | "am";
@@ -65,6 +66,9 @@ export const TEXT = {
     textOnly: "Please write what you are carrying in words, and I will find a story for you.",
     helpTitle: "If you are in danger, reach someone now.",
     call: "Call",
+    helped: "🙏 This helped",
+    notReally: "Not really",
+    thanks: "Thank you. It helps us find the right stories for others.",
   },
   am: {
     welcome: (name?: string) =>
@@ -83,6 +87,9 @@ export const TEXT = {
     textOnly: "እባክዎ የተሸከሙትን በቃላት ይጻፉ፣ እኔም ታሪክ እፈልግልዎታለሁ።",
     helpTitle: "አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።",
     call: "ይደውሉ",
+    helped: "🙏 ረድቶኛል",
+    notReally: "ብዙም አይደለም",
+    thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
   },
 } as const;
 
@@ -91,17 +98,19 @@ export interface SearchResult {
   crisis?: CrisisPayload;
   chunks: SourceChunk[];
   figures: FigureSummary[];
+  tags: string[];
   answer: string;
   error?: string;
 }
 
 export async function collectStream(messages: AsyncIterable<SearchStreamMessage>): Promise<SearchResult> {
-  const out: SearchResult = { chunks: [], figures: [], answer: "" };
+  const out: SearchResult = { chunks: [], figures: [], tags: [], answer: "" };
   for await (const m of messages) {
     if (m.type === "crisis") out.crisis = m.crisis;
     else if (m.type === "sources") {
       out.chunks = m.chunks;
       out.figures = m.figures ?? [];
+      out.tags = m.tags ?? [];
     } else if (m.type === "delta") out.answer += m.text;
     else if (m.type === "error") out.error = m.message;
   }
@@ -176,4 +185,45 @@ export async function tg(token: string, method: string, body: Record<string, unk
   const json = (await res.json().catch(() => ({}))) as { ok?: boolean; description?: string };
   if (!json.ok) throw new Error(`Telegram ${method} failed: ${json.description ?? res.status}`);
   return json;
+}
+
+/**
+ * Feedback buttons carry what the story used in Telegram's 64-byte
+ * callback_data: "fb|<1 or 0>|<lang>|<figure positions>|<tags>". People are
+ * encoded by their position in the seed list, which only ever grows at the end.
+ */
+export function feedbackKeyboard(result: Pick<SearchResult, "figures">, tags: string[], lang: BotLang) {
+  const figs = result.figures
+    .map((f) => FIGURES.findIndex((x) => x.id === f.id))
+    .filter((i) => i >= 0)
+    .join(".");
+  const data = (yes: boolean) => {
+    const full = `fb|${yes ? 1 : 0}|${lang}|${figs}|${tags.join(".")}`;
+    return full.length <= 64 ? full : `fb|${yes ? 1 : 0}|${lang}|${figs}|`;
+  };
+  return {
+    inline_keyboard: [
+      [
+        { text: TEXT[lang].helped, callback_data: data(true) },
+        { text: TEXT[lang].notReally, callback_data: data(false) },
+      ],
+    ],
+  };
+}
+
+export function parseFeedbackData(
+  data: string,
+): { helpful: boolean; lang: BotLang; figures: string[]; tags: string[] } | null {
+  const [kind, yes, lang, figs = "", tags = ""] = data.split("|");
+  if (kind !== "fb" || (yes !== "1" && yes !== "0") || (lang !== "en" && lang !== "am")) return null;
+  return {
+    helpful: yes === "1",
+    lang,
+    figures: figs
+      .split(".")
+      .filter(Boolean)
+      .map((i) => FIGURES[Number(i)]?.id)
+      .filter((id): id is string => !!id),
+    tags: tags.split(".").filter(Boolean),
+  };
 }

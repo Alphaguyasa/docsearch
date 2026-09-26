@@ -7,6 +7,7 @@ import type { UiSource } from "@/app/types";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 
 import { AnswerView } from "./components/AnswerView";
+import { StoryFeedback } from "./components/StoryFeedback";
 import { CrisisCard } from "./components/CrisisCard";
 import { Hero } from "./components/Hero";
 import { Passages } from "./components/Passages";
@@ -35,6 +36,7 @@ export default function Home() {
   const [status, setStatus] = useState<Status>("idle");
   const [sources, setSources] = useState<UiSource[]>([]);
   const [figures, setFigures] = useState<FigureSummary[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [crisis, setCrisis] = useState<CrisisPayload | null>(null);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +66,7 @@ export default function Home() {
     setAnswer("");
     setSources([]);
     setFigures([]);
+    setTags([]);
   }
 
   async function run(q: string) {
@@ -74,6 +77,7 @@ export default function Home() {
     setStatus("loading");
     setSources([]);
     setFigures([]);
+    setTags([]);
     setCrisis(null);
     setAnswer("");
     setError(null);
@@ -108,6 +112,7 @@ export default function Home() {
         } else if (msg.type === "sources") {
           setSources(msg.chunks as unknown as UiSource[]);
           setFigures(msg.figures ?? []);
+          setTags(msg.tags ?? []);
           setStatus("streaming");
         } else if (msg.type === "delta") {
           setAnswer((prev) => prev + msg.text);
@@ -171,6 +176,7 @@ export default function Home() {
                 onCiteClick={setActiveCitation}
               />
             </div>
+            {status === "done" && answer.trim() && <StoryFeedback figures={figures.map((f) => f.id)} tags={tags} />}
             {sources.length > 0 && (
               <div className="mt-12">
                 <Passages
