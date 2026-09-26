@@ -3,6 +3,7 @@ import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "ne
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
+import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
 
 import "./globals.css";
@@ -94,25 +95,7 @@ export default function RootLayout({
           </nav>
         </SiteHeader>
         <div id="main">{children}</div>
-        <footer className="mx-auto max-w-5xl border-t border-border px-4 py-8 text-sm leading-6 text-muted sm:px-6">
-          <p>
-            Not Alone is not a counselling or emergency service. If you are in danger,{" "}
-            <Link href="/help" className="text-foreground underline underline-offset-4">
-              find help now
-            </Link>
-            .
-          </p>
-          <p className="mt-1">
-            Questions or corrections:{" "}
-            <a href="mailto:alphaguyasa@gmail.com" className="underline underline-offset-4 hover:text-foreground">
-              alphaguyasa@gmail.com
-            </a>
-            {" · "}
-            <Link href="/credits" className="underline underline-offset-4 hover:text-foreground">
-              Image credits
-            </Link>
-          </p>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   );
