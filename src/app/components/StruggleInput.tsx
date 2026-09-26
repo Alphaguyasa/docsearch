@@ -20,13 +20,14 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         onSubmit();
       }}
     >
-      <label htmlFor="struggle" className="block font-serif text-[1.9rem] leading-tight sm:text-4xl">
+      <h1 className="font-serif text-[2.4rem] leading-[1.05] sm:text-6xl">You are not the only one.</h1>
+      <p className="mt-4 max-w-xl text-[16px] leading-7 text-muted">
+        David, Peter, Augustine, Abba Moses — holy people fell the same way you have, and were restored. Tell what
+        you are carrying, in English or Amharic, and read their true story from Scripture and the Church Fathers.
+      </p>
+      <label htmlFor="struggle" className="mt-10 block font-serif text-2xl">
         What are you carrying?
       </label>
-      <p className="mt-2 max-w-prose text-muted">
-        Write it plainly, in English or Amharic. You will read the true story of someone holy who fell the
-        same way and was restored. Nothing you write is saved.
-      </p>
       <textarea
         id="struggle"
         value={value}
@@ -38,15 +39,16 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         maxLength={1000}
         rows={3}
         placeholder="I keep lying to the people I love…"
-        className="mt-5 block w-full resize-y border border-border bg-background px-3 py-3 font-serif text-lg leading-7 outline-none placeholder:text-muted/70 focus:border-accent disabled:opacity-60"
+        className="mt-3 block w-full resize-y rounded-sm border border-border bg-background/70 px-4 py-3 font-serif text-lg leading-7 shadow-[0_0_40px_-12px_rgb(232_181_96_/_0.35)] outline-none backdrop-blur-sm placeholder:text-muted/70 focus:border-gold disabled:opacity-60"
       />
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+      <p className="mt-2 text-xs text-muted">Nothing you write is saved.</p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <label className="flex items-center gap-2 text-sm text-muted">
           My church
           <select
             value={tradition}
             onChange={(e) => onTradition(e.target.value as TraditionChoice)}
-            className="border border-border bg-background px-2 py-1.5 text-foreground"
+            className="rounded-sm border border-border bg-background px-2 py-1.5 text-foreground"
           >
             {TRADITION_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -58,7 +60,7 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         <button
           type="submit"
           disabled={disabled || value.trim().length === 0}
-          className="bg-accent px-5 py-2.5 text-sm font-medium text-accent-fg disabled:opacity-40"
+          className="w-full rounded-sm bg-gold px-5 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 disabled:opacity-40 sm:w-auto sm:py-2.5"
         >
           {disabled ? "Finding a story…" : "Show me a story"}
         </button>

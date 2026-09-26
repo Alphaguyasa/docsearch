@@ -8,14 +8,13 @@ interface Props {
   activeCitation: number | null;
   streaming: boolean;
   onCiteClick: (n: number) => void;
-  onCiteHover: (n: number | null) => void;
 }
 
 /**
  * The streaming answer body. Splits on [n] markers and renders each as a
- * clickable superscript chip; hovering a chip highlights its panel entry, and
- * an unknown [n] (no matching source) is flagged. Generous line height — this
- * text is read closely.
+ * small gold superscript that jumps to its passage below. A marker with no
+ * matching passage (possible while streaming) is shown quietly, not as an
+ * error. Generous line height — this text is read closely.
  */
 export function AnswerView({
   answer,
@@ -23,7 +22,6 @@ export function AnswerView({
   activeCitation,
   streaming,
   onCiteClick,
-  onCiteHover,
 }: Props) {
   const known = new Set(sources.map((s) => s.n));
   const parts = answer.split(/(\[\d+\])/g);
@@ -43,18 +41,17 @@ export function AnswerView({
               type="button"
               disabled={!isKnown}
               onClick={() => onCiteClick(n)}
-              onMouseEnter={() => onCiteHover(n)}
-              onMouseLeave={() => onCiteHover(null)}
-              title={isKnown ? `Open source [${n}]` : `Unknown source [${n}]`}
-              className={`mx-0.5 rounded-sm px-1 font-mono text-[11px] leading-none transition-colors ${
+              aria-label={isKnown ? `Passage ${n}` : undefined}
+              title={isKnown ? `Read passage ${n}` : undefined}
+              className={`mx-px rounded px-1 font-sans text-[11px] font-semibold leading-none transition-colors ${
                 isKnown
                   ? active
-                    ? "bg-accent text-accent-fg"
-                    : "bg-accent/15 text-accent hover:bg-accent hover:text-accent-fg"
-                  : "bg-red-500/15 text-red-600 dark:text-red-400"
+                    ? "bg-gold text-background"
+                    : "text-gold hover:bg-gold/15"
+                  : "text-muted"
               }`}
             >
-              [{n}]
+              {n}
             </button>
           </sup>
         );
