@@ -7,10 +7,13 @@ import type { UiSource } from "@/app/types";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 
 import { AnswerView } from "./components/AnswerView";
-import { CitationPanel } from "./components/CitationPanel";
 import { CrisisCard } from "./components/CrisisCard";
-import { SourcesList } from "./components/SourcesList";
+import { Hero } from "./components/Hero";
+import { Passages } from "./components/Passages";
+import { ExampleCards } from "./components/ExampleCards";
 import { ErrorState, LoadingSkeleton } from "./components/States";
+import { StoryFigures } from "./components/StoryFigures";
+import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
@@ -38,8 +41,8 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [activeCitation, setActiveCitation] = useState<number | null>(null);
-  const [hoveredCitation, setHoveredCitation] = useState<number | null>(null);
   const lastQuestion = useRef("");
+  const results = useRef<HTMLDivElement>(null);
 
   // Remember the reader's church on this device only.
   useEffect(() => {
@@ -77,7 +80,8 @@ export default function Home() {
     setAnswer("");
     setError(null);
     setActiveCitation(null);
-    setHoveredCitation(null);
+    // Bring the reader down to where the story will appear.
+    requestAnimationFrame(() => results.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
 
     let res: Response;
     try {
@@ -122,81 +126,66 @@ export default function Home() {
     }
   }
 
-  const showPanel = activeCitation !== null;
   const showResults = status === "streaming" || status === "done";
 
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-20 pt-10 sm:pt-16">
-      {status !== "crisis" && (
-        <StruggleInput
-          value={question}
-          onChange={setQuestion}
-          onSubmit={() => run(question)}
-          disabled={busy}
-          tradition={tradition}
-          onTradition={chooseTradition}
-        />
-      )}
+    <main>
+      <Hero>
+        {status === "crisis" && crisis ? (
+          <CrisisCard crisis={crisis} onBack={reset} />
+        ) : (
+          <StruggleInput
+            value={question}
+            onChange={setQuestion}
+            onSubmit={() => run(question)}
+            disabled={busy}
+            tradition={tradition}
+            onTradition={chooseTradition}
+          />
+        )}
+      </Hero>
 
-      <div className="mt-10">
+      <div ref={results} className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
         {status === "idle" && (
           <div>
-            <p className="text-sm text-muted">Or start from something others have written:</p>
-            <ul className="mt-2 divide-y divide-border border-y border-border">
-              {EXAMPLES.map((q) => (
-                <li key={q}>
-                  <button
-                    type="button"
-                    onClick={() => run(q)}
-                    className="block w-full py-3 text-left font-serif text-[17px] leading-7 transition-colors hover:text-accent"
-                  >
-                    {q}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <ExampleCards examples={EXAMPLES} onPick={run} />
+            <StoryGallery />
           </div>
         )}
-        {status === "loading" && <LoadingSkeleton />}
-        {status === "error" && (
-          <ErrorState message={error ?? "Something went wrong."} onRetry={() => run(lastQuestion.current)} />
+        {status === "loading" && (
+          <div className="mx-auto max-w-3xl">
+            <LoadingSkeleton />
+          </div>
         )}
-        {status === "crisis" && crisis && <CrisisCard crisis={crisis} onBack={reset} />}
+        {status === "error" && (
+          <div className="mx-auto max-w-3xl">
+          <ErrorState message={error ?? "Something went wrong."} onRetry={() => run(lastQuestion.current)} />
+          </div>
+        )}
 
         {showResults && (
-          <div className={showPanel ? "grid gap-8 lg:-mr-[380px] lg:grid-cols-[1fr_340px]" : ""}>
-            <article className="min-w-0">
-              {figures.length > 0 && (
-                <p className="mb-4 text-sm text-muted">
-                  Stories of {figures.map((f) => f.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
-                </p>
-              )}
-              <div className="font-serif text-[18px] leading-8">
-                <AnswerView
-                  answer={answer}
-                  sources={sources}
-                  activeCitation={activeCitation}
-                  streaming={status === "streaming"}
-                  onCiteClick={setActiveCitation}
-                  onCiteHover={setHoveredCitation}
-                />
-              </div>
-              <div className="mt-10">
-                <SourcesList sources={sources} />
-              </div>
-            </article>
-            {showPanel && (
-              <div className="h-fit lg:sticky lg:top-6">
-                <CitationPanel
+          <article className="mx-auto min-w-0 max-w-3xl">
+            <StoryFigures figures={figures} />
+            <div className="illuminated font-serif text-[19px] leading-8 sm:text-[20px] sm:leading-9">
+              <AnswerView
+                answer={answer}
+                sources={sources}
+                activeCitation={activeCitation}
+                streaming={status === "streaming"}
+                onCiteClick={setActiveCitation}
+              />
+            </div>
+            {sources.length > 0 && (
+              <div className="mt-12">
+                <Passages
                   sources={sources}
                   cited={extractCited(answer)}
-                  activeCitation={activeCitation}
-                  hoveredCitation={hoveredCitation}
-                  onClose={() => setActiveCitation(null)}
+                  active={activeCitation}
+                  onClear={() => setActiveCitation(null)}
                 />
               </div>
             )}
-          </div>
+          </article>
         )}
       </div>
     </main>

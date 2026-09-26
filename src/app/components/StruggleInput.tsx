@@ -1,6 +1,9 @@
 "use client";
 
-import { TRADITION_OPTIONS, type TraditionChoice } from "@/app/traditions";
+import type { TraditionChoice } from "@/app/traditions";
+
+import { ArrowRight } from "./Icons";
+import { TraditionSelect } from "./TraditionSelect";
 
 interface Props {
   value: string;
@@ -20,13 +23,14 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         onSubmit();
       }}
     >
-      <label htmlFor="struggle" className="block font-serif text-[1.9rem] leading-tight sm:text-4xl">
+      <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] sm:text-7xl">You are not the only one.</h1>
+      <p className="mt-5 max-w-xl font-serif text-[19px] leading-8 text-muted">
+        David, Peter, Augustine, Abba Moses — holy people fell the same way you have, and were restored. Tell what you
+        are carrying, in English or Amharic, and read their true story from Scripture and the Church Fathers.
+      </p>
+      <label htmlFor="struggle" className="mt-10 block font-display text-[1.75rem] font-semibold">
         What are you carrying?
       </label>
-      <p className="mt-2 max-w-prose text-muted">
-        Write it plainly, in English or Amharic. You will read the true story of someone holy who fell the
-        same way and was restored. Nothing you write is saved.
-      </p>
       <textarea
         id="struggle"
         value={value}
@@ -37,30 +41,30 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         disabled={disabled}
         maxLength={1000}
         rows={3}
+        onInput={(e) => {
+          // Grow with the words instead of showing a resize handle.
+          const t = e.currentTarget;
+          t.style.height = "auto";
+          t.style.height = `${Math.min(t.scrollHeight, 320)}px`;
+        }}
         placeholder="I keep lying to the people I love…"
-        className="mt-5 block w-full resize-y border border-border bg-background px-3 py-3 font-serif text-lg leading-7 outline-none placeholder:text-muted/70 focus:border-accent disabled:opacity-60"
+        className="mt-3 block min-h-[7.5rem] w-full resize-none rounded-sm border border-border bg-background/70 px-5 py-4 font-serif text-[19px] leading-8 shadow-[0_0_40px_-12px_rgb(232_181_96_/_0.35)] outline-none backdrop-blur-sm transition-[border-color,box-shadow] duration-500 placeholder:italic placeholder:text-muted/70 focus:border-gold/80 focus:shadow-[0_0_60px_-10px_rgb(232_181_96_/_0.55)] disabled:opacity-60"
       />
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <label className="flex items-center gap-2 text-sm text-muted">
-          My church
-          <select
-            value={tradition}
-            onChange={(e) => onTradition(e.target.value as TraditionChoice)}
-            className="border border-border bg-background px-2 py-1.5 text-foreground"
-          >
-            {TRADITION_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      <p className="mt-2 text-xs text-muted">Nothing you write is saved.</p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <TraditionSelect value={tradition} onChange={onTradition} disabled={disabled} />
         <button
           type="submit"
           disabled={disabled || value.trim().length === 0}
-          className="bg-accent px-5 py-2.5 text-sm font-medium text-accent-fg disabled:opacity-40"
+          className="group relative inline-flex min-h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gold px-6 py-3 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-[transform,opacity,box-shadow] duration-300 hover:shadow-[0_0_32px_-4px_rgb(232_181_96_/_0.7)] active:scale-[0.98] disabled:opacity-40 disabled:shadow-none sm:w-auto"
         >
+          {/* A sheen passes over the button, like light over gilt. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/30 opacity-0 transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100 group-disabled:hidden"
+          />
           {disabled ? "Finding a story…" : "Show me a story"}
+          {!disabled && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
         </button>
       </div>
     </form>
