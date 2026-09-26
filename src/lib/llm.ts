@@ -217,12 +217,16 @@ const GEMINI_FALLBACKS = ["gemini-flash-lite-latest", "gemma-3-27b-it"];
 const GEMINI_ATTEMPTS = 3;
 
 /**
- * The model for short classification calls (safety, struggle tags): Gemma,
- * whose free daily quota is far larger than Flash's, so Flash's is kept for
- * writing answers. If Gemma is unavailable the chain falls back to Flash-Lite.
+ * The model for short classification calls (safety, struggle tags):
+ * Flash-Lite, so Flash's small free quota is kept for writing answers.
+ *
+ * MEASURED: a full eval's worth of classification (about 60 calls) ran on
+ * Flash-Lite's free tier without running out. Moving it to Gemma made every
+ * LLM-tagged question come back with no tags (holdout figure hit 100% -> 60%),
+ * so Gemma stays a last resort only.
  */
 export function lightModel(): string | undefined {
-  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[1] : undefined;
+  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[0] : undefined;
 }
 
 interface GeminiRequest {
@@ -251,9 +255,11 @@ function geminiBody(model: string, req: GeminiRequest): unknown {
  * - per-minute limits and overload (429 / 5xx) are retried with backoff;
  * - a used-up daily free quota is not retried (it will not clear today) —
  *   the next model in the chain is tried instead, as is an overloaded model
- *   that stays overloaded.
+ *   that stays overloaded, a model this key cannot use (404), or a request
+ *   one model rejects (400).
  * Retrying is safe for streaming too: nothing has been read from the body.
- * Errors that will not change (bad key, bad request) throw at once.
+ * A bad key (401/403) throws at once; anything else throws once every model
+ * in the chain has failed.
  */
 async function geminiPost(
   method: "streamGenerateContent?alt=sse&" | "generateContent?",
@@ -275,7 +281,11 @@ async function geminiPost(
       if (res.ok && res.body) return res;
       const text = await res.text().catch(() => "");
       last = `Gemini request failed (${m}): ${res.status} ${res.statusText}` + (text ? ` — ${text}` : "");
-      if (!isRetryableStatus(res.status)) throw new Error(last);
+      // A bad key fails the same on every model: stop at once.
+      if (res.status === 401 || res.status === 403) throw new Error(last);
+      // A model this key cannot use (404) or a request it rejects (400) may
+      // still work on the next model in the chain.
+      if (!isRetryableStatus(res.status)) break;
       if (/PerDay/i.test(text) || attempt >= GEMINI_ATTEMPTS - 1) break; // next model
       await new Promise((r) => setTimeout(r, backoffMs(attempt, res.headers.get("retry-after"))));
       res = await post(m);
