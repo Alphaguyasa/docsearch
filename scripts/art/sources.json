@@ -116,6 +116,46 @@
       "id": "augustine",
       "query": "Philippe de Champaigne Saint Augustine LACMA -intitle:frame",
       "caption": "Saint Augustine"
+    },
+    {
+      "id": "noah",
+      "query": "Giovanni Bellini Drunkenness of Noah Besançon",
+      "caption": "The Drunkenness of Noah"
+    },
+    {
+      "id": "prodigal_son",
+      "query": "Murillo Return of the Prodigal Son National Gallery of Art",
+      "caption": "The Return of the Prodigal Son"
+    },
+    {
+      "id": "miriam",
+      "query": "Anselm Feuerbach Mirjam",
+      "caption": "Miriam"
+    },
+    {
+      "id": "judah",
+      "query": "Horace Vernet Judah and Tamar Wallace Collection",
+      "caption": "Judah and Tamar"
+    },
+    {
+      "id": "job",
+      "query": "Léon Bonnat Job 1880",
+      "caption": "Job"
+    },
+    {
+      "id": "penitent_thief",
+      "query": "Titian Christ and the Good Thief",
+      "caption": "Christ and the Good Thief"
+    },
+    {
+      "id": "sinful_woman",
+      "query": "Dieric Bouts Christ in the House of Simon",
+      "caption": "Christ in the House of Simon"
+    },
+    {
+      "id": "naomi",
+      "query": "William Blake Naomi entreating Ruth and Orpah",
+      "caption": "Naomi Entreating Ruth and Orpah"
     }
   ]
 }

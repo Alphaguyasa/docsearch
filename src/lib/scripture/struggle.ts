@@ -57,6 +57,9 @@ const SYNONYMS: Record<string, { en: string[]; am?: string[] }> = {
   persecution: { en: ["persecut", "mocked christians", "hurt believers", "against the church"], am: ["አሳደድ", "ስደት"] },
   quitting: { en: ["quit", "gave up on", "walked away", "abandoned my", "left the ministry", "dropped out"], am: ["አቋረጥ", "ተውኩ"] },
   abandonment: { en: ["abandon", "left my family", "left them", "walked out on"], am: ["ጥዬ", "ተውኳቸው"] },
+  // ሱስ alone would also match ኢየሱስ (Jesus): Amharic stems match anywhere, so only longer forms.
+  addiction: { en: ["addict", "drunk", "alcohol", "drinking", "can't stop drinking", "hangover", "khat", "qat", "drug", "weed", "marijuana", "cocaine", "gambl", "betting", "smoking", "cigarette"], am: ["ሱሰኛ", "ሱስ አለብኝ", "ሱስ ያዘ", "ሱስ ይዞ", "ሱሴ", "ጫት", "መጠጥ", "ሰከር", "ስካር", "አልኮል", "ቁማር", "ሲጋራ", "አደንዛዥ"] },
+  gossip: { en: ["gossip", "slander", "talk behind", "talked behind", "talking behind", "spread rumo", "spreading rumo", "badmouth", "bad-mouth"], am: ["ሐሜት", "ማማት", "ስም ማጥፋት", "ስሙን አጠፋ"] },
   shame: { en: ["shame", "ashamed", "dirty", "disgust", "unworthy", "unforgivable", "too sinful", "can god forgive"], am: ["ኀፍረት", "እፍረት", "አፍራለሁ", "ነውር"] },
 };
 
