@@ -21,6 +21,16 @@ export interface Art {
 export const ART: Art[] = (data as { credits: Art[] }).credits;
 const BY_ID = new Map(ART.map((a) => [a.id, a]));
 
+/** Where to anchor the crop for tall paintings whose faces sit near the top. */
+const FOCUS: Record<string, string> = {
+  cyprian: "center 6%",
+  mary_of_egypt: "center 12%",
+};
+
+export function artFocus(id: string): string {
+  return FOCUS[id] ?? "center";
+}
+
 export function artFor(id: string): Art | undefined {
   return BY_ID.get(id);
 }

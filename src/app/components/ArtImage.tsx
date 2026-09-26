@@ -1,4 +1,4 @@
-import { artByline, artFor, artSrc, artSrcSet } from "@/app/art";
+import { artByline, artFocus, artFor, artSrc, artSrcSet } from "@/app/art";
 
 /**
  * A painting, sized for phones first: 800px WebP by default, 1600px on large
@@ -10,7 +10,7 @@ export function ArtImage({
   className = "",
   sizes = "(min-width: 1024px) 33vw, 100vw",
   eager = false,
-  position = "center",
+  position,
 }: {
   id: string;
   className?: string;
@@ -29,7 +29,7 @@ export function ArtImage({
       loading={eager ? "eager" : "lazy"}
       decoding="async"
       className={`bg-cover object-cover ${className}`}
-      style={{ backgroundImage: `url(${a.blur})`, objectPosition: position }}
+      style={{ backgroundImage: `url(${a.blur})`, objectPosition: position ?? artFocus(id) }}
     />
   );
 }
