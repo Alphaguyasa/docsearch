@@ -91,3 +91,39 @@ export function Tilt({
   }, [max]);
   return createElement(as, { ref, className: `tilt ${className}`, ...rest }, children);
 }
+
+/**
+ * Calls `onProgress(p)` with how far the reader has scrolled through `ref`:
+ * 0 when its top reaches the top of the viewport, 1 when its bottom does.
+ * (For a tall section with a sticky child, that is exactly "how far through
+ * the pinned scene".) One passive listener, at most one update per frame.
+ */
+export function useScrollProgress(ref: React.RefObject<HTMLElement | null>, onProgress: (p: number) => void) {
+  const cb = useRef(onProgress);
+  cb.current = onProgress;
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const p = span > 0 ? -r.top / span : r.top < 0 ? 1 : 0;
+      cb.current(Math.min(1, Math.max(0, p)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [ref]);
+}
+
+export { calm as prefersCalm };

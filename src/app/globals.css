@@ -307,3 +307,27 @@ body {
     clip-path: none !important;
   }
 }
+
+/* A pinned story changing: the new words rise into place. */
+@keyframes story-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.story-in {
+  animation: story-in 0.9s var(--ease-out) both;
+}
+
+/* A sideways row that starts in line with the page's text column and runs off the right edge. */
+.gallery-track {
+  --gutter: max(1rem, calc((100vw - 72rem) / 2 + 1.5rem));
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
+}
