@@ -46,9 +46,27 @@ npm run scripture:ask -- "I keep lying" --tradition protestant
 npm run scripture:eval -- --generate 10
 ```
 
+## Running on free tiers
+
+The app is set up to work without paying for any API:
+
+- **Gemini** (free tier: about 20 requests a day per model). Answers use
+  `gemini-flash-latest`, then `gemini-flash-lite-latest`, then `gemma-3-27b-it`
+  when a model's daily quota is used up or it is overloaded (`src/lib/llm.ts`).
+  Safety and struggle-tag classification run on Gemma, whose free quota is the
+  largest, so Flash's quota goes to writing answers.
+- **Example questions** on the home page are answered once and served from
+  memory for six hours (`src/lib/example-cache.ts`). Only those fixed sentences
+  are kept; nothing a reader writes is ever stored.
+- **Voyage** (free tier) limits the whole site to about 3 searches a minute.
+
+Enabling billing on the Gemini key (paid tier 1) removes the daily cap; a search
+costs a small fraction of a cent.
+
 ## Before public launch
 
 - A priest or pastor reviews `data/canon.json` items marked NEEDS REVIEW and a sample of answers.
 - Add a verified Ethiopian counselling / suicide-prevention line to `data/crisis-resources.json` when one exists.
+- ✅ The Amharic line on `/help` ("አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።") was checked by the maintainer (Sept 2026).
 - Upgrade Voyage (or keep the 3/min limit) — the free tier cannot serve real traffic.
 - Rotate the Supabase service_role key and revoke the GitHub token used during the build.

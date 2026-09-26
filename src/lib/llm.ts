@@ -216,9 +216,13 @@ function toGeminiPayload(messages: LlmMessage[]): {
 const GEMINI_FALLBACKS = ["gemini-flash-lite-latest", "gemma-3-27b-it"];
 const GEMINI_ATTEMPTS = 3;
 
-/** The cheaper model for short classification calls (safety, struggle tags). */
+/**
+ * The model for short classification calls (safety, struggle tags): Gemma,
+ * whose free daily quota is far larger than Flash's, so Flash's is kept for
+ * writing answers. If Gemma is unavailable the chain falls back to Flash-Lite.
+ */
 export function lightModel(): string | undefined {
-  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[0] : undefined;
+  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[1] : undefined;
 }
 
 interface GeminiRequest {
