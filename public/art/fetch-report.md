@@ -20,4 +20,4 @@
 - thomas: File:Der ungläubige Thomas - Michelangelo Merisi, named Caravaggio.jpg — Caravaggio — Public domain
 - john_mark: File:Frans Hals 085 detail 01.jpg — Frans Hals — Public domain
 - nebuchadnezzar: File:William Blake - Nebuchadnezzar (Tate Britain).jpg — William Blake — Public domain
-- augustine: File:Philippe de Champaigne - Saint Augustine - LACMA - with frame.JPG — Philippe de Champaigne — Public domain
+- augustine: File:Saint Augustine by Philippe de Champaigne.jpg — Philippe de Champaigne — Public domain
