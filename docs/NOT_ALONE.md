@@ -70,3 +70,14 @@ costs a small fraction of a cent.
 - ✅ The Amharic line on `/help` ("አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።") was checked by the maintainer (Sept 2026).
 - Upgrade Voyage (or keep the 3/min limit) — the free tier cannot serve real traffic.
 - Rotate the Supabase service_role key and revoke the GitHub token used during the build.
+
+## Telegram bot
+
+The bot is the website in a chat. `POST /api/telegram` is its webhook: each
+private message is sent to `/api/search` as the site sends it (safety gate,
+rate limit and example cache included) and the story comes back with its
+references. `/start` greets, `/help` gives the crisis numbers. Nothing is stored.
+
+- The token lives only in Vercel as `TELEGRAM_BOT_TOKEN` (sensitive, production).
+- After a deploy, open `/api/telegram/setup` once to register the webhook and
+  the English/Amharic command menu. The webhook secret is derived from the token.
