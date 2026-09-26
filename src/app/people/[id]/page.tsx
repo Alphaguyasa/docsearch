@@ -27,10 +27,18 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!f) return {};
   const { lang } = await getDict();
   const text = figureText(lang, f);
+  const art = artFor(f.id);
   return {
     title: `${text.name} — Not Alone`,
     description: text.summary,
-    openGraph: { title: `${text.name} — Not Alone`, description: text.summary, url: `/people/${f.id}` },
+    openGraph: {
+      title: `${text.name} — Not Alone`,
+      description: text.summary,
+      url: `/people/${f.id}`,
+      // Each painting has a 1200×630 crop made by scripts/og-images.ts; without one, the site image is used.
+      images: art ? [{ url: `/art/og/${f.id}.jpg`, width: 1200, height: 630, alt: art.caption }] : undefined,
+    },
+    twitter: { card: "summary_large_image", title: `${text.name} — Not Alone`, description: text.summary },
   };
 }
 

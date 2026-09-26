@@ -58,7 +58,8 @@ test("a story lists only the passages its answer cites, and links to the site", 
   assert.match(msg, /<i>Peter<\/i>/);
   assert.match(msg, /\[1\] Luke 22:54-62/);
   assert.doesNotMatch(msg, /John 21/);
-  assert.match(msg, /href="https:\/\/[^"]+\/"/);
+  assert.match(msg, /href="https:\/\/[^"]+\/people\/peter">Peter<\/a>/);
+  assert.match(storyMessages(result, "am")[0], /\/people\/peter">ጴጥሮስ<\/a>/);
 });
 
 test("crisis replies put the phone numbers first", async () => {
