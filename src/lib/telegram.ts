@@ -30,6 +30,11 @@ export function webhookSecret(token: string): string {
   return createHmac("sha256", token).update("not-alone-telegram-webhook").digest("hex").slice(0, 48);
 }
 
+/** The key that unlocks /api/telegram/setup, derived from the token like the webhook secret. */
+export function setupKey(token: string): string {
+  return createHmac("sha256", token).update("not-alone-telegram-setup").digest("hex").slice(0, 32);
+}
+
 /** Amharic if the message is written in Ethiopic script, or the phone is set to Amharic. */
 export function detectLang(text: string, languageCode?: string): BotLang {
   if (/[ሀ-፿]/.test(text)) return "am";
