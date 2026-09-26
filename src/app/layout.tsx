@@ -3,6 +3,7 @@ import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "ne
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
+import { ServiceWorker } from "./components/ServiceWorker";
 import { SiteFooter } from "./components/SiteFooter";
 import { LangProvider, LangToggle } from "./i18n/client";
 import { getDict } from "./i18n/server";
@@ -46,6 +47,8 @@ export const metadata: Metadata = {
   title: { default: "Not Alone", template: "%s" },
   description: DESCRIPTION,
   applicationName: "Not Alone",
+  icons: { apple: "/icons/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "Not Alone", statusBarStyle: "black" },
   openGraph: {
     type: "website",
     siteName: "Not Alone",
@@ -109,6 +112,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           </SiteHeader>
           <div id="main">{children}</div>
           <SiteFooter />
+          <ServiceWorker />
         </LangProvider>
       </body>
     </html>
