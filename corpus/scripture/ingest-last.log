@@ -1,20 +1,61 @@
-outcome=failure at 2026-09-25T18:37:57Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36174608283
-
-> docsearch@0.1.0 scripture:ingest
-> tsx scripts/ingest-scripture.ts --max-minutes 320
-
-built 6390 chunks across 82 documents
-⚠️  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715
-Error: Node.js detected but native WebSocket not found.
-
-Suggested solution: Ensure you are running Node.js 22+ or provide a WebSocket implementation via the transport option.
-    at Function.getWebSocketConstructor (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/lib/websocket-factory.ts:159:11)
-    at RealtimeClient._initializeOptions (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/RealtimeClient.ts:789:63)
-    at new RealtimeClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/realtime-js/src/RealtimeClient.ts:283:39)
-    at SupabaseClient._initRealtimeClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/SupabaseClient.ts:653:12)
-    at new SupabaseClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/SupabaseClient.ts:381:26)
-    at createClient (/home/runner/work/docsearch/docsearch/node_modules/@supabase/supabase-js/src/index.ts:65:10)
-    at <anonymous> (/home/runner/work/docsearch/docsearch/src/lib/db.ts:12:19)
-    at Object.<anonymous> (/home/runner/work/docsearch/docsearch/src/lib/db.ts:22:1)
-    at Module._compile (node:internal/modules/cjs/loader:1521:14)
-    at Object.transformer (/home/runner/work/docsearch/docsearch/node_modules/tsx/dist/register-BoI6-WNn.cjs:9:3252)
+outcome=success at 2026-09-26T09:56:11Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36224834423
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2604 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2755 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 8 chunk(s) / 2700 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2751 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2226 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 8 chunk(s) / 2923 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2713 tokens
+  5007/6229 embedded (94.0 min)
+  [embed] 429 (attempt 1/6) — waiting 21s, 10 chunk(s) / 2906 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 9 chunk(s) / 2925 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 1 chunk(s) / 441 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2787 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2935 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 9 chunk(s) / 2915 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2574 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 9 chunk(s) / 2850 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 1 chunk(s) / 320 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 9 chunk(s) / 2855 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2611 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 8 chunk(s) / 2944 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2871 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2706 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2908 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2705 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2999 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2478 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2644 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2694 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2572 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2619 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2887 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2837 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2967 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 2 chunk(s) / 716 tokens
+  5647/6229 embedded (142.3 min)
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2804 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2715 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2960 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 8 chunk(s) / 2924 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2978 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 9 chunk(s) / 2995 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2872 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2684 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 3000 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2840 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2790 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 1801 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2905 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2767 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2833 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2696 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2728 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2626 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2672 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2956 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2841 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2903 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 2 chunk(s) / 840 tokens
+  6229/6229 embedded (184.4 min)
+finished: 6229/6229
