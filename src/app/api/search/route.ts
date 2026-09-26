@@ -36,7 +36,7 @@
 import { z } from "zod";
 
 import { streamAnswer, type FigureHint } from "@/lib/answer";
-import { getLlm } from "@/lib/llm";
+import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
 import { TRADITIONS } from "@/lib/scripture/canon";
 import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
@@ -108,8 +108,9 @@ export async function POST(request: Request): Promise<Response> {
     return errorResponse(parsed.error.issues[0]?.message ?? "Invalid request.", 400);
   }
   const { question, tradition } = parsed.data;
+  // Classification runs on the light model, saving the main one's quota for answers.
   const classify = async (prompt: string) =>
-    (await getLlm().complete([{ role: "user", content: prompt }], 20)).text;
+    (await getLlm().complete([{ role: "user", content: prompt }], 20, lightModel())).text;
 
   // 2. Safety gate FIRST: a person at risk, or describing harm done to them,
   //    gets help and resources — never a story about a sinner.
