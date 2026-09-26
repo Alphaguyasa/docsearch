@@ -67,10 +67,10 @@
   --color-care: var(--care);
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, var(--font-ethiopic), "Noto Sans Ethiopic", Helvetica, Arial, sans-serif;
-  --font-serif: var(--font-reading), var(--font-ethiopic), "Noto Serif Ethiopic", Georgia, "Times New Roman", serif;
-  --font-display: var(--font-display-face), var(--font-ethiopic), Georgia, serif;
-  --font-caps: var(--font-caps-face), var(--font-ethiopic), Georgia, serif;
+    Roboto, var(--eth-face), "Noto Sans Ethiopic", Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-reading), var(--eth-face), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-display-face), var(--eth-face), Georgia, serif;
+  --font-caps: var(--font-caps-face), var(--eth-face), Georgia, serif;
   --font-mono:
     ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas,
     monospace;
@@ -78,6 +78,14 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Amharic on an English page (the footer's እርዳታ, the bilingual crisis lines)
+     uses the phone's own Ethiopic font, so English readers never download the
+     188 KB church Ethiopic face; Amharic pages switch it on. */
+  --eth-face: "Noto Sans Ethiopic", Kefa, Nyala, "Abyssinica SIL";
+}
+
+html[lang="am"] {
+  --eth-face: var(--font-ethiopic);
 }
 
 body {
