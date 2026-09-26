@@ -3,8 +3,9 @@ name: scripture-eval
 # Evaluates the scripture app against eval/scripture-golden.json and commits
 # eval/scripture-results.md. Runs automatically when ingestion reports
 # completion (the ingest workflow pushes ingest-progress.json on every run;
-# this job exits early until that file says complete), and whenever the golden
-# set or the eval script changes.
+# this job exits early until that file says complete), whenever the golden
+# set or the eval script changes, and when corpus/scripture/eval-trigger is
+# touched.
 
 on:
   push:
@@ -14,6 +15,9 @@ on:
       - "eval/scripture-golden.json"
       - "scripts/scripture-eval.ts"
       - ".github/workflows/scripture-eval.yml"
+      # Touch to re-run the eval by hand: workflow_dispatch only works for
+      # workflows on the default branch (same convention as deploy-trigger).
+      - "corpus/scripture/eval-trigger"
   workflow_dispatch:
 
 permissions:

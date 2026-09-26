@@ -40,3 +40,28 @@ export function isTransient(message: string): boolean {
     /statement timeout|canceling statement/i.test(message)
   );
 }
+
+/**
+ * HTTP statuses from a model API that a retry can plausibly fix: rate limits
+ * and the provider being overloaded or briefly down.
+ *
+ * MEASURED: the first scripture eval after ingestion finished died on one
+ * `503 Service Unavailable — "This model is currently experiencing high
+ * demand"` from Gemini, twenty-five minutes in, with no retry. The same
+ * request fails a real reader the same way. 400/401/403/404 are left out on
+ * purpose: a bad request or key fails identically every time.
+ */
+export function isRetryableStatus(status: number): boolean {
+  return status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
+}
+
+/**
+ * How long to wait before retry `attempt` (0-based): the server's Retry-After
+ * when it sends a sane one, else exponential backoff with jitter, capped.
+ */
+export function backoffMs(attempt: number, retryAfter?: string | null, random = Math.random): number {
+  const seconds = retryAfter ? Number(retryAfter) : NaN;
+  if (Number.isFinite(seconds) && seconds >= 0 && seconds <= 30) return seconds * 1000;
+  const base = Math.min(8000, 1000 * 2 ** attempt);
+  return Math.round(base * (0.75 + random() * 0.5));
+}
