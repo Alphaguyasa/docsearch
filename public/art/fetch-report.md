@@ -6,7 +6,7 @@
 - peter: File:The Denial of St. Peter - Gerard Seghers - Google Cultural Institute.jpg — Gerard Seghers — Public domain
 - paul: File:Conversion on the Way to Damascus-Caravaggio (c.1600-1).jpg — Caravaggio — Public domain
 - moses: File:Domenico Fetti - Moses before the burning bush - M.Ob.769 MNW - National Museum in Warsaw.jpg — Domenico Fetti — Public domain
-- abraham: File:Ontwerp voor een titelblad met drie scènes uit het leven van Abraham, RP-T-1903-A-4777.jpg — Rijksmuseum — CC0
+- abraham: File:Molnár Ábrahám kiköltözése 1850.jpg — József Molnár — Public domain
 - jacob: File:Jakob ringt mit dem Engel - Gemäldegalerie Berlin - 5190519.jpg — Rembrandt — Public domain
 - jonah: File:Pieter Lastman - Jonah and the Whale - Google Art Project.jpg — Pieter Lastman — Public domain
 - elijah: File:Frederic, Lord Leighton - Elijah in the Wilderness - Google Art Project.jpg — Frederic Leighton — Public domain
