@@ -38,6 +38,11 @@ export function SiteHeader({ children }: { children: React.ReactNode }) {
   // A new page always starts with the bar showing.
   useEffect(() => setHidden(false), [path]);
 
+  // Let bars pinned beneath this one (.below-nav) follow it up and down.
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-nav-hidden", hidden);
+  }, [hidden]);
+
   return (
     <header
       onFocusCapture={() => setHidden(false)}

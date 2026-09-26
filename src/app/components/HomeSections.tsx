@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ArrowRight } from "./Icons";
 import { RevealGroup } from "./Motion";
 
@@ -42,8 +44,14 @@ export function HowItWorks() {
   );
 }
 
-/** The last word on the page: one line and one button, back up to the box. */
-export function ClosingCta() {
+const CTA =
+  "group relative mt-12 inline-flex min-h-12 items-center gap-2 overflow-hidden rounded-full bg-gold px-8 py-3.5 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_40px_-6px_rgb(232_181_96_/_0.8)] active:scale-[0.98]";
+
+/**
+ * The last word on the page: one line and one button. On the home page it
+ * scrolls back up to the story box; elsewhere (`href`) it links there.
+ */
+export function ClosingCta({ href }: { href?: string }) {
   return (
     <section className="night relative overflow-hidden border-t border-border">
       <div className="candle-still absolute inset-0" aria-hidden />
@@ -53,17 +61,24 @@ export function ClosingCta() {
           <br />
           <span className="text-gold">someone carried it first.</span>
         </h2>
-        <button
-          type="button"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            setTimeout(() => document.getElementById("struggle")?.focus({ preventScroll: true }), 600);
-          }}
-          className="group relative mt-12 inline-flex min-h-12 items-center gap-2 overflow-hidden rounded-full bg-gold px-8 py-3.5 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_40px_-6px_rgb(232_181_96_/_0.8)] active:scale-[0.98]"
-        >
-          Tell what you are carrying
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </button>
+        {href ? (
+          <Link href={href} className={CTA}>
+            Tell what you are carrying
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setTimeout(() => document.getElementById("struggle")?.focus({ preventScroll: true }), 600);
+            }}
+            className={CTA}
+          >
+            Tell what you are carrying
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        )}
       </div>
     </section>
   );
