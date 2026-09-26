@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-26T17:08:15.975Z
+Generated 2026-09-26T17:57:53.004Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -69,6 +69,9 @@ Generated 2026-09-26T17:08:15.975Z
 - ✅ moses_the_ethiopian / restoration: `Lausiac History, Moses The Robber` → 4 chunk(s) (Lausiac History, Moses The Robber; Lausiac History, Moses The Robber (part 2); Lausiac History, Moses The Robber (part 3); …)
 - ✅ moses_the_ethiopian / context: `Paradise of the Holy Fathers, “NOW there was a certain man whose name…”` → 4 chunk(s) (Paradise of the Holy Fathers, “NOW there was a certain man whose name…”; Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 2); Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 3); …)
 - ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium, Sane` → 7 chunk(s) (Ethiopian Synaxarium, Sane; Ethiopian Synaxarium, Sane (part 2); Ethiopian Synaxarium, Sane (part 3); …)
+- ✅ mary_of_egypt / fall: `Ethiopian Synaxarium, Miyazya` → 1 chunk(s) (Ethiopian Synaxarium, Miyazya)
+- ✅ mary_of_egypt / restoration: `Ethiopian Synaxarium, Miyazya` → 1 chunk(s) (Ethiopian Synaxarium, Miyazya (part 2))
+- ✅ mary_of_egypt / restoration: `Ethiopian Synaxarium, Miyazya` → 1 chunk(s) (Ethiopian Synaxarium, Miyazya (part 3))
 - ✅ noah / fall: `Genesis 9:20-27` → 1 chunk(s) (Genesis 9:18-10:5)
 - ✅ noah / context: `Genesis 6:8-9` → 2 chunk(s) (Genesis 5:28-6:8; Genesis 6:9-22)
 - ✅ noah / restoration: `Hebrews 11:7` → 1 chunk(s) (Hebrews 11:5-12)
@@ -87,6 +90,12 @@ Generated 2026-09-26T17:08:15.975Z
 - ✅ sinful_woman / restoration: `Luke 7:36-50` → 2 chunk(s) (Luke 7:31-40; Luke 7:41-8:8)
 - ✅ naomi / fall: `Ruth 1:19-21` → 2 chunk(s) (Ruth 1:10-19; Ruth 1:20-2:7)
 - ✅ naomi / restoration: `Ruth 4:13-17` → 1 chunk(s) (Ruth 4:13-22)
+- ✅ cyprian / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram)
+- ✅ cyprian / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram (part 2))
+- ✅ cyprian / restoration: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram (part 3))
+- ✅ thais / fall: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”)
+- ✅ thais / restoration: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” (part 3))
+- ✅ thais / restoration: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” (part 4))
 
 ## Samples
 
