@@ -23,6 +23,13 @@ const PHRASINGS: [string, string][] = [
   ["I had an affair last year", "adultery"],
   ["I can't stop watching porn", "lust"],
   ["I slept with my girlfriend before marriage", "sexual_sin"],
+  // From the first full scripture eval: each of these missed its person.
+  ["I slept with a married woman", "adultery"],
+  ["I pretended I didn't know Jesus when my friends laughed at me", "denial"],
+  ["I lived for years chasing pleasure and ambition before God found me", "lust"],
+  ["I lived for years chasing pleasure and ambition before God found me", "pride"],
+  ["I was a violent robber", "theft"],
+  ["I robbed people and led a gang", "violence"],
   ["I stole money from my boss", "theft"],
   ["I shoplifted again", "theft"],
   ["I get so angry I yell at my kids", "anger"],
@@ -115,3 +122,18 @@ test("orderedPassages reads fall -> restoration -> context", () => {
   const david = FIGURES.find((f) => f.id === "david")!;
   assert.deepEqual(orderedPassages(david).map((p) => p.role), ["fall", "restoration", "restoration"]);
 });
+
+// The eval's misses, end to end through ranking: the right person must now be in the top three.
+const RESCUED: [string, string, string[]?][] = [
+  ["I slept with a married woman", "david"],
+  ["I pretended I didn't know Jesus when my friends laughed at me", "peter"],
+  ["I lived for years chasing pleasure and ambition before God found me", "augustine"],
+  ["I was a violent robber", "moses_the_ethiopian", ["ethiopian_orthodox"]],
+  ["I used to be a violent robber", "moses_the_ethiopian"],
+];
+for (const [message, figure, filter] of RESCUED) {
+  test(`"${message}" finds ${figure}`, () => {
+    const ids = rankFigures(matchTags(message), filter as never).map((f) => f.id);
+    assert.ok(ids.includes(figure), `${figure} not in ${ids.join(", ")}`);
+  });
+}
