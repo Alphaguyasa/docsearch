@@ -64,7 +64,7 @@ export const TEXT = {
       "<b>You are not the only one.</b> Tell me what you are carrying — a sin, a struggle, something you are ashamed of — and I will tell you the true story of a holy person who fell the same way and was restored, from Scripture and the Church Fathers.\n\n" +
       "Nothing you write is saved.\n\n" +
       "Try: <i>I can't stop lying to my parents.</i>\n\n" +
-      "/today — the story of the day\n" +
+      "/today — the story of the day (or every morning: t.me/you_r_repenter)\n" +
       "/help — if you are in danger, people to call now",
     searching: "Finding someone who carried this too…",
     notOnly: "You are not the only one",
@@ -90,7 +90,7 @@ export const TEXT = {
       "<b>እርስዎ ብቻ አይደሉም።</b> የተሸከሙትን ይንገሩኝ — ኃጢአት፣ ትግል ወይም የሚያሳፍርዎትን ነገር — እኔም በተመሳሳይ መንገድ ወድቆ የተመለሰውን የቅዱስ ሰው እውነተኛ ታሪክ ከመጽሐፍ ቅዱስና ከቤተ ክርስቲያን አባቶች እነግርዎታለሁ።\n\n" +
       "የሚጽፉት ምንም ነገር አይቀመጥም።\n\n" +
       "ለምሳሌ፦ <i>ለወላጆቼ መዋሸት ማቆም አልቻልኩም።</i>\n\n" +
-      "/today — የዕለቱ ታሪክ\n" +
+      "/today — የዕለቱ ታሪክ (በየማለዳው፦ t.me/you_r_repenter)\n" +
       "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
     notOnly: "እርስዎ ብቻ አይደሉም",
