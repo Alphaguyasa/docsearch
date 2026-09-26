@@ -118,14 +118,26 @@ jobs:
             echo "{\"complete\": false, \"total\": $TOTAL, \"done\": $DONE, \"remaining\": $REMAINING, \"continuation\": $NEXT, \"lastOutcome\": \"$OUTCOME\", \"at\": \"$(date -u +%FT%TZ)\"}" > $PROG
           fi
 
+          # Commit ONLY the progress + log files, on top of the latest branch tip.
+          # (The fetch step rewrites other tracked files, and the branch moves
+          # while a 5-hour run is in progress — a plain rebase refused to run on
+          # the dirty tree, which silently broke the chain overnight on Sep 25.)
+          { echo "outcome=$OUTCOME at $(date -u +%FT%TZ) run=$RUN_URL"; tail -n 60 ingest.log 2>/dev/null || echo "(no ingest.log)"; } > corpus/scripture/ingest-last.log
+          cp $PROG /tmp/progress.json
+          cp corpus/scripture/ingest-last.log /tmp/ingest-last.log
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Raw job logs are hard to reach remotely; keep the last lines in the repo.
-          { echo "outcome=$OUTCOME at $(date -u +%FT%TZ) run=$RUN_URL"; tail -n 60 ingest.log 2>/dev/null || echo "(no ingest.log)"; } > corpus/scripture/ingest-last.log
-          git add $PROG corpus/scripture/ingest-last.log
-          if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
-          git commit -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
-          for attempt in 1 2 3; do
-            git push && break
-            git fetch -q origin pivot/scripture && git rebase -q origin/pivot/scripture
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin pivot/scripture
+            git reset -q --hard origin/pivot/scripture
+            cp /tmp/progress.json $PROG
+            cp /tmp/ingest-last.log corpus/scripture/ingest-last.log
+            git add $PROG corpus/scripture/ingest-last.log
+            if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
+            git commit -q -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
+            if git push -q origin HEAD:pivot/scripture; then echo "progress pushed — next run chained"; exit 0; fi
+            echo "push rejected (attempt $attempt), retrying on the new tip"
+            sleep $((attempt * 5))
           done
+          echo "::error title=chain broken::could not push progress after 5 attempts"
+          exit 1
