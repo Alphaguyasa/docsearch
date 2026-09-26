@@ -79,8 +79,11 @@ rate limit and example cache included) and the story comes back with its
 references. `/start` greets, `/help` gives the crisis numbers. Nothing is stored.
 
 - The token lives only in Vercel as `TELEGRAM_BOT_TOKEN` (sensitive, production).
-- After a deploy, open `/api/telegram/setup` once to register the webhook and
-  the English/Amharic command menu. The webhook secret is derived from the token.
+- To register the webhook and the English/Amharic command menu (after changing
+  the token or the site URL), print the setup link and open it once:
+  `TELEGRAM_BOT_TOKEN=… npx tsx scripts/telegram-setup-url.ts`. The link's key and
+  the webhook secret are both derived from the token; without the key the route
+  is a 404.
 
 ## Feedback
 
