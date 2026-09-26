@@ -37,7 +37,7 @@ interface Credit {
   blur: string;
 }
 
-const ACCEPT = /^(public domain|pd|cc0|cc[- ]by(-sa)?([- ]\d(\.\d)?)?)/i;
+const ACCEPT = /^(public domain|pd|no restrictions|cc0|cc[- ]by(-sa)?([- ]\d(\.\d)?)?)/i;
 
 function strip(html: string | undefined): string {
   return (html ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
