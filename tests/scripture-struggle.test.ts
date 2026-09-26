@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { peopleFor } from "../src/lib/scripture/people-for";
+import { addisDay, personOfTheDay } from "../src/lib/scripture/today";
 import { FIGURES, cleanPassage, orderedPassages, rankFigures, refsOverlap } from "../src/lib/scripture/figures";
 import {
   foldEthiopic,
@@ -184,4 +185,16 @@ test("peopleFor finds people with no model when the story can't be written", () 
   assert.ok(peopleFor("ጫት መቃም ማቆም አልቻልኩም").some((f) => f.id === "noah" || f.id === "prodigal_son"));
   assert.ok(!peopleFor("I stole money", "protestant").some((f) => f.kind === "tradition" && f.id === "moses_the_ethiopian"));
   assert.deepEqual(peopleFor("what is the weather today"), []);
+});
+
+test("story of the day: one person per Addis Ababa day, every person in turn", () => {
+  // 20:59 UTC and 21:01 UTC are either side of midnight in Addis Ababa.
+  const before = new Date("2026-09-26T20:59:00Z");
+  const after = new Date("2026-09-26T21:01:00Z");
+  assert.equal(addisDay(after) - addisDay(before), 1);
+  assert.equal(personOfTheDay(before).id, personOfTheDay(new Date("2026-09-26T03:00:00Z")).id);
+  const readable = FIGURES.filter((f) => f.passages.some((p) => p.sourceId !== "pending"));
+  const seen = new Set<string>();
+  for (let d = 0; d < readable.length; d++) seen.add(personOfTheDay(new Date(Date.UTC(2026, 0, 1) + d * 86400000)).id);
+  assert.equal(seen.size, readable.length);
 });
