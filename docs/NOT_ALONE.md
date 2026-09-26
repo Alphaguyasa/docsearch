@@ -81,3 +81,12 @@ references. `/start` greets, `/help` gives the crisis numbers. Nothing is stored
 - The token lives only in Vercel as `TELEGRAM_BOT_TOKEN` (sensitive, production).
 - After a deploy, open `/api/telegram/setup` once to register the webhook and
   the English/Amharic command menu. The webhook secret is derived from the token.
+
+## Feedback
+
+Under each finished story, on the site and in the bot: "Did this story help
+you?" One tap stores a row in `feedback` through `add_feedback` (capped at 500
+an hour): yes/no, the people and tags the story used, the language and the
+channel. Never the question, never anything about the person. Only known
+person ids and vocabulary tags are accepted. See how each person's story is
+landing in the `feedback_by_figure` view in the Supabase dashboard.
