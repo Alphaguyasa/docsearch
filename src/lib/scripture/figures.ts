@@ -65,3 +65,13 @@ export function orderedPassages(f: Figure): Figure["passages"] {
   const rank = { fall: 0, restoration: 1, context: 2 } as const;
   return f.passages.filter((p) => p.sourceId !== "pending").sort((a, b) => rank[a.role] - rank[b.role]);
 }
+
+/** Drop the chunk's leading reference, keep paragraph breaks, join the line wraps of scanned books. */
+export function cleanPassage(content: string, ref: string | null): string {
+  const text = ref && content.startsWith(ref) ? content.slice(ref.length) : content;
+  return text
+    .replace(/[ \t]+/g, " ")
+    .replace(/([^\n])\n(?!\n)/g, "$1 ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
