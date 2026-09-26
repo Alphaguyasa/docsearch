@@ -1,26 +1,122 @@
 {
   "_note": "Artwork for Not Alone. Each entry is resolved on Wikimedia Commons by scripts/fetch-art.ts (GitHub Actions; the dev container cannot reach Commons). `file` pins an exact Commons file; otherwise the best search hit for `query` with an accepted licence is used. Accepted licences: public domain, no known restrictions, CC0, CC BY, CC BY-SA — credits are shown on /credits.",
   "items": [
-    { "id": "hero", "query": "Rembrandt Return of the Prodigal Son Hermitage Google Art Project", "caption": "The Return of the Prodigal Son" },
-    { "id": "lalibela", "query": "Church of Saint George Lalibela Bete Giyorgis", "caption": "Bete Giyorgis, Lalibela" },
-    { "id": "david", "query": "Pieter de Grebber King David in Prayer", "caption": "King David in prayer" },
-    { "id": "peter", "query": "Rembrandt The Denial of Saint Peter Rijksmuseum", "caption": "The Denial of Saint Peter" },
-    { "id": "paul", "query": "Caravaggio Conversion on the Way to Damascus Santa Maria del Popolo", "caption": "The Conversion on the Way to Damascus" },
-    { "id": "moses", "query": "Domenico Fetti Moses before the Burning Bush", "caption": "Moses before the burning bush" },
-    { "id": "abraham", "query": "Tissot God's Promises to Abram Jewish Museum", "caption": "God's promises to Abram" },
-    { "id": "jacob", "query": "Rembrandt Jacob Wrestling with the Angel Gemäldegalerie", "caption": "Jacob wrestling with the angel" },
-    { "id": "jonah", "query": "Pieter Lastman Jonah and the Whale", "caption": "Jonah and the great fish" },
-    { "id": "elijah", "query": "Frederic Leighton Elijah in the Wilderness", "caption": "Elijah in the wilderness" },
-    { "id": "samson", "query": "Rubens Samson and Delilah National Gallery", "caption": "Samson and Delilah" },
-    { "id": "aaron", "query": "Poussin The Adoration of the Golden Calf National Gallery", "caption": "The adoration of the golden calf" },
-    { "id": "rahab", "query": "Tissot Rahab and the Emissaries of Joshua Jewish Museum", "caption": "Rahab and the spies" },
-    { "id": "matthew", "query": "Caravaggio The Calling of Saint Matthew Contarelli", "caption": "The Calling of Saint Matthew" },
-    { "id": "zacchaeus", "query": "Tissot Zacchaeus in the Sycamore Awaiting the Passage of Jesus", "caption": "Zacchaeus in the sycamore" },
-    { "id": "samaritan_woman", "query": "Carl Bloch Woman at the Well", "caption": "Christ and the woman at the well" },
-    { "id": "woman_caught_in_adultery", "query": "Rembrandt Christ and the Woman Taken in Adultery National Gallery", "caption": "Christ and the woman taken in adultery" },
-    { "id": "thomas", "query": "Caravaggio The Incredulity of Saint Thomas Sanssouci", "caption": "The Incredulity of Saint Thomas" },
-    { "id": "john_mark", "query": "Frans Hals Saint Mark Pushkin", "caption": "Saint Mark" },
-    { "id": "nebuchadnezzar", "query": "William Blake Nebuchadnezzar Tate colour print", "caption": "Nebuchadnezzar" },
-    { "id": "augustine", "query": "Philippe de Champaigne Saint Augustine LACMA -intitle:frame", "caption": "Saint Augustine" }
+    {
+      "id": "hero",
+      "query": "Rembrandt Return of the Prodigal Son Hermitage Google Art Project",
+      "caption": "The Return of the Prodigal Son"
+    },
+    {
+      "id": "lalibela",
+      "query": "Church of Saint George Lalibela Bete Giyorgis",
+      "caption": "Bete Giyorgis, Lalibela"
+    },
+    {
+      "id": "david",
+      "query": "Pieter de Grebber King David in Prayer",
+      "caption": "King David in prayer"
+    },
+    {
+      "id": "peter",
+      "query": "Rembrandt The Denial of Saint Peter Rijksmuseum",
+      "caption": "The Denial of Saint Peter"
+    },
+    {
+      "id": "paul",
+      "query": "Caravaggio Conversion on the Way to Damascus Santa Maria del Popolo",
+      "caption": "The Conversion on the Way to Damascus"
+    },
+    {
+      "id": "moses",
+      "query": "Domenico Fetti Moses before the Burning Bush",
+      "caption": "Moses before the burning bush"
+    },
+    {
+      "id": "abraham",
+      "query": [
+        "Tissot God's Promises to Abram",
+        "Gustave Doré Abram journeying into the land of Canaan",
+        "Abraham counting the stars painting"
+      ],
+      "caption": "God's promises to Abram"
+    },
+    {
+      "id": "jacob",
+      "query": "Rembrandt Jacob Wrestling with the Angel Gemäldegalerie",
+      "caption": "Jacob wrestling with the angel"
+    },
+    {
+      "id": "jonah",
+      "query": "Pieter Lastman Jonah and the Whale",
+      "caption": "Jonah and the great fish"
+    },
+    {
+      "id": "elijah",
+      "query": "Frederic Leighton Elijah in the Wilderness",
+      "caption": "Elijah in the wilderness"
+    },
+    {
+      "id": "samson",
+      "query": "Rubens Samson and Delilah National Gallery",
+      "caption": "Samson and Delilah"
+    },
+    {
+      "id": "aaron",
+      "query": "Poussin The Adoration of the Golden Calf National Gallery",
+      "caption": "The adoration of the golden calf"
+    },
+    {
+      "id": "rahab",
+      "query": [
+        "Tissot Rahab and the Emissaries of Joshua",
+        "Rahab and the spies painting",
+        "Gustave Doré Rahab"
+      ],
+      "caption": "Rahab and the spies"
+    },
+    {
+      "id": "matthew",
+      "query": "Caravaggio The Calling of Saint Matthew Contarelli",
+      "caption": "The Calling of Saint Matthew"
+    },
+    {
+      "id": "zacchaeus",
+      "query": [
+        "Tissot Zacchaeus in the Sycamore Awaiting the Passage of Jesus",
+        "Niels Larsen Stevns Zacchaeus",
+        "Zacchaeus sycamore painting"
+      ],
+      "caption": "Zacchaeus in the sycamore"
+    },
+    {
+      "id": "samaritan_woman",
+      "query": "Carl Bloch Woman at the Well",
+      "caption": "Christ and the woman at the well"
+    },
+    {
+      "id": "woman_caught_in_adultery",
+      "query": "Rembrandt Christ and the Woman Taken in Adultery National Gallery",
+      "caption": "Christ and the woman taken in adultery"
+    },
+    {
+      "id": "thomas",
+      "query": "Caravaggio The Incredulity of Saint Thomas Sanssouci",
+      "caption": "The Incredulity of Saint Thomas"
+    },
+    {
+      "id": "john_mark",
+      "query": "Frans Hals Saint Mark Pushkin",
+      "caption": "Saint Mark"
+    },
+    {
+      "id": "nebuchadnezzar",
+      "query": "William Blake Nebuchadnezzar Tate colour print",
+      "caption": "Nebuchadnezzar"
+    },
+    {
+      "id": "augustine",
+      "query": "Philippe de Champaigne Saint Augustine LACMA -intitle:frame",
+      "caption": "Saint Augustine"
+    }
   ]
 }
