@@ -224,15 +224,15 @@
     {
       "id": "augustine",
       "caption": "Saint Augustine",
-      "title": "Saint Augustine Alternative title(s): Saint Augustin",
+      "title": "Saint Augustine Alternative title: Saint Augustin",
       "artist": "Philippe de Champaigne",
       "date": "between circa 1645 and circa 1650date QS:P571,+1650-00-00T00:00:00Z/7,P1319,+1645-00-00T00:00:00Z/9,P1326,+1650-00-00T00:00:00Z/9,P1480,Q5727902",
       "license": "Public domain",
       "licenseUrl": "",
-      "source": "https://commons.wikimedia.org/wiki/File:Philippe_de_Champaigne_-_Saint_Augustine_-_LACMA_-_with_frame.JPG",
+      "source": "https://commons.wikimedia.org/wiki/File:Saint_Augustine_by_Philippe_de_Champaigne.jpg",
       "width": 1920,
-      "height": 2328,
-      "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQBACdASoQABMAPu1iqU2ppaOiMAgBMB2JZwDG9CKfEld0odai2/LgAAD+eN4M9tIEFy+s9KuKMLrjaRdYOPu5nUsIBxpz+xab8mGT1qP0kFyOn+jaB9XzxyQAAA=="
+      "height": 2450,
+      "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAADwAwCdASoQABQAPu1iqU2ppaOiMAgBMB2JZACdABk8a8lnNrajgkBAAP5NlctRtG8uLCUdeviaWlJe34+xOQpZRdSv/Lvl69d+K8ah97oX6mbUrzO5qLScl5hnBZIIl0D6/tXrVZh86E3M+k3bjNR7hCu2FvXuEf0XvSHNzZctScAA"
     }
   ]
 }
