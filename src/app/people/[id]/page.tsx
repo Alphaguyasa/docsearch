@@ -157,10 +157,19 @@ export default async function PersonPage({ params }: Params) {
         <div className="mt-16 border-t border-border pt-10">
           <ShareStory url={`${SITE_URL}/people/${f.id}`} name={text.name} />
           <a
+            href="https://t.me/you_r_repenter"
+            target="_blank"
+            rel="noreferrer"
+            className="group mt-8 flex items-center gap-2 text-sm text-muted underline underline-offset-4 hover:text-foreground"
+          >
+            {tp.channel}
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
+          <a
             href="https://t.me/U_not_the_only_bot"
             target="_blank"
             rel="noreferrer"
-            className="group mt-8 inline-flex items-center gap-2 text-sm text-muted underline underline-offset-4 hover:text-foreground"
+            className="group mt-3 flex items-center gap-2 text-sm text-muted underline underline-offset-4 hover:text-foreground"
           >
             {tp.bot}
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
