@@ -17,6 +17,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 import { config } from "./env";
+import { backoffMs, isRetryableStatus } from "./transient";
 
 export type LlmRole = "system" | "user" | "assistant";
 
@@ -208,38 +209,102 @@ function toGeminiPayload(messages: LlmMessage[]): {
   return { systemText, contents };
 }
 
+// When a model is overloaded or out of free quota, the next one is tried.
+// Each has its own free-tier quota, so a day's traffic is spread across them;
+// Gemma's free quota is by far the largest. Gemma takes no system_instruction,
+// so its system prompt rides at the top of the first user turn.
+const GEMINI_FALLBACKS = ["gemini-flash-lite-latest", "gemma-3-27b-it"];
+const GEMINI_ATTEMPTS = 3;
+
+/**
+ * The model for short classification calls (safety, struggle tags):
+ * Flash-Lite, so Flash's small free quota is kept for writing answers.
+ *
+ * MEASURED: a full eval's worth of classification (about 60 calls) ran on
+ * Flash-Lite's free tier without running out. Moving it to Gemma made every
+ * LLM-tagged question come back with no tags (holdout figure hit 100% -> 60%),
+ * so Gemma stays a last resort only.
+ */
+export function lightModel(): string | undefined {
+  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[0] : undefined;
+}
+
+interface GeminiRequest {
+  systemText: string;
+  contents: { role: string; parts: { text: string }[] }[];
+  generationConfig?: Record<string, unknown>;
+}
+
+function geminiBody(model: string, req: GeminiRequest): unknown {
+  if (model.startsWith("gemma") && req.systemText) {
+    const [first, ...rest] = req.contents;
+    const merged = first
+      ? [{ ...first, parts: [{ text: `${req.systemText}\n\n${first.parts.map((p) => p.text).join("")}` }] }, ...rest]
+      : [{ role: "user", parts: [{ text: req.systemText }] }];
+    return { contents: merged, ...(req.generationConfig ? { generationConfig: req.generationConfig } : {}) };
+  }
+  return {
+    ...(req.systemText ? { system_instruction: { parts: [{ text: req.systemText }] } } : {}),
+    contents: req.contents,
+    ...(req.generationConfig ? { generationConfig: req.generationConfig } : {}),
+  };
+}
+
+/**
+ * POST to Gemini, riding out trouble instead of failing the reader:
+ * - per-minute limits and overload (429 / 5xx) are retried with backoff;
+ * - a used-up daily free quota is not retried (it will not clear today) —
+ *   the next model in the chain is tried instead, as is an overloaded model
+ *   that stays overloaded, a model this key cannot use (404), or a request
+ *   one model rejects (400).
+ * Retrying is safe for streaming too: nothing has been read from the body.
+ * A bad key (401/403) throws at once; anything else throws once every model
+ * in the chain has failed.
+ */
+async function geminiPost(
+  method: "streamGenerateContent?alt=sse&" | "generateContent?",
+  model: string,
+  req: GeminiRequest,
+): Promise<Response> {
+  const post = (m: string) =>
+    fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:${method}key=${config.GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(geminiBody(m, req)),
+    });
+
+  const chain = [model, ...GEMINI_FALLBACKS.filter((m) => m !== model)];
+  let last = "";
+  for (const m of chain) {
+    let res = await post(m);
+    for (let attempt = 0; ; attempt++) {
+      if (res.ok && res.body) return res;
+      const text = await res.text().catch(() => "");
+      last = `Gemini request failed (${m}): ${res.status} ${res.statusText}` + (text ? ` — ${text}` : "");
+      // A bad key fails the same on every model: stop at once.
+      if (res.status === 401 || res.status === 403) throw new Error(last);
+      // A model this key cannot use (404) or a request it rejects (400) may
+      // still work on the next model in the chain.
+      if (!isRetryableStatus(res.status)) break;
+      if (/PerDay/i.test(text) || attempt >= GEMINI_ATTEMPTS - 1) break; // next model
+      await new Promise((r) => setTimeout(r, backoffMs(attempt, res.headers.get("retry-after"))));
+      res = await post(m);
+    }
+  }
+  throw new Error(last);
+}
+
 const geminiProvider: LlmProvider = {
   async *stream(messages: LlmMessage[]): AsyncIterable<string> {
     // Gemini uses "model" for the assistant role and has no system role in
     // `contents` — the system prompt goes in `system_instruction`.
     const { systemText, contents } = toGeminiPayload(messages);
 
-    const url =
-      `https://generativelanguage.googleapis.com/v1beta/models/` +
-      `${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${config.GEMINI_API_KEY}`;
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(systemText
-          ? { system_instruction: { parts: [{ text: systemText }] } }
-          : {}),
-        contents,
-      }),
-    });
-
-    if (!res.ok || !res.body) {
-      const body = await res.text().catch(() => "");
-      throw new Error(
-        `Gemini request failed: ${res.status} ${res.statusText}` +
-          (body ? ` — ${body}` : ""),
-      );
-    }
+    const res = await geminiPost("streamGenerateContent?alt=sse&", GEMINI_MODEL, { systemText, contents });
 
     // Parse the SSE stream: each event is a `data: <json>` line, separated by
     // blank lines. Buffer across chunk boundaries and emit any text parts.
-    const reader = res.body.getReader();
+    const reader = res.body!.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
 
@@ -272,29 +337,11 @@ const geminiProvider: LlmProvider = {
   ): Promise<LlmCompletion> {
     const { systemText, contents } = toGeminiPayload(messages);
 
-    const url =
-      `https://generativelanguage.googleapis.com/v1beta/models/` +
-      `${model ?? GEMINI_MODEL}:generateContent?key=${config.GEMINI_API_KEY}`;
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(systemText
-          ? { system_instruction: { parts: [{ text: systemText }] } }
-          : {}),
-        contents,
-        generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
-      }),
+    const res = await geminiPost("generateContent?", model ?? GEMINI_MODEL, {
+      systemText,
+      contents,
+      generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
     });
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(
-        `Gemini request failed: ${res.status} ${res.statusText}` +
-          (body ? ` — ${body}` : ""),
-      );
-    }
 
     const json = (await res.json()) as GeminiResponse;
     return {

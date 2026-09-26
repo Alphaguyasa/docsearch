@@ -1,0 +1,937 @@
+{
+ "version": 1,
+ "source": "eng-web",
+ "traditions": [
+  "protestant",
+  "catholic",
+  "orthodox",
+  "ethiopian_orthodox"
+ ],
+ "books": [
+  {
+   "code": "GEN",
+   "name": "Genesis",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "EXO",
+   "name": "Exodus",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "LEV",
+   "name": "Leviticus",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "NUM",
+   "name": "Numbers",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "DEU",
+   "name": "Deuteronomy",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JOS",
+   "name": "Joshua",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JDG",
+   "name": "Judges",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "RUT",
+   "name": "Ruth",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1SA",
+   "name": "1 Samuel",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2SA",
+   "name": "2 Samuel",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1KI",
+   "name": "1 Kings",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2KI",
+   "name": "2 Kings",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1CH",
+   "name": "1 Chronicles",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2CH",
+   "name": "2 Chronicles",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "EZR",
+   "name": "Ezra",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "NEH",
+   "name": "Nehemiah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "EST",
+   "name": "Esther",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JOB",
+   "name": "Job",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "PSA",
+   "name": "Psalm",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "PRO",
+   "name": "Proverbs",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ECC",
+   "name": "Ecclesiastes",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "SNG",
+   "name": "Song of Solomon",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ISA",
+   "name": "Isaiah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JER",
+   "name": "Jeremiah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "LAM",
+   "name": "Lamentations",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "EZK",
+   "name": "Ezekiel",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "DAN",
+   "name": "Daniel",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "HOS",
+   "name": "Hosea",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JOL",
+   "name": "Joel",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "AMO",
+   "name": "Amos",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "OBA",
+   "name": "Obadiah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JON",
+   "name": "Jonah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "MIC",
+   "name": "Micah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "NAM",
+   "name": "Nahum",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "HAB",
+   "name": "Habakkuk",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ZEP",
+   "name": "Zephaniah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "HAG",
+   "name": "Haggai",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ZEC",
+   "name": "Zechariah",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "MAL",
+   "name": "Malachi",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "MAT",
+   "name": "Matthew",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "MRK",
+   "name": "Mark",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "LUK",
+   "name": "Luke",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JHN",
+   "name": "John",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ACT",
+   "name": "Acts",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "ROM",
+   "name": "Romans",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1CO",
+   "name": "1 Corinthians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2CO",
+   "name": "2 Corinthians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "GAL",
+   "name": "Galatians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "EPH",
+   "name": "Ephesians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "PHP",
+   "name": "Philippians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "COL",
+   "name": "Colossians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1TH",
+   "name": "1 Thessalonians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2TH",
+   "name": "2 Thessalonians",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1TI",
+   "name": "1 Timothy",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2TI",
+   "name": "2 Timothy",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "TIT",
+   "name": "Titus",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "PHM",
+   "name": "Philemon",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "HEB",
+   "name": "Hebrews",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JAS",
+   "name": "James",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1PE",
+   "name": "1 Peter",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2PE",
+   "name": "2 Peter",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "1JN",
+   "name": "1 John",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "2JN",
+   "name": "2 John",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "3JN",
+   "name": "3 John",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "JUD",
+   "name": "Jude",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "REV",
+   "name": "Revelation",
+   "traditions": [
+    "protestant",
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "protocanon"
+  },
+  {
+   "code": "TOB",
+   "name": "Tobit",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Catholic, Orthodox and Ethiopian canons."
+  },
+  {
+   "code": "JDT",
+   "name": "Judith",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Catholic, Orthodox and Ethiopian canons."
+  },
+  {
+   "code": "WIS",
+   "name": "Wisdom of Solomon",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Catholic, Orthodox and Ethiopian canons."
+  },
+  {
+   "code": "SIR",
+   "name": "Sirach",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Catholic, Orthodox and Ethiopian canons."
+  },
+  {
+   "code": "BAR",
+   "name": "Baruch",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Catholic, Orthodox and Ethiopian canons."
+  },
+  {
+   "code": "LJE",
+   "name": "Letter of Jeremiah",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Baruch 6 in Catholic Bibles; separate book in Orthodox."
+  },
+  {
+   "code": "S3Y",
+   "name": "Song of the Three Young Men",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Addition to Daniel 3."
+  },
+  {
+   "code": "SUS",
+   "name": "Susanna",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Addition to Daniel."
+  },
+  {
+   "code": "BEL",
+   "name": "Bel and the Dragon",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Addition to Daniel."
+  },
+  {
+   "code": "1MA",
+   "name": "1 Maccabees",
+   "traditions": [
+    "catholic",
+    "orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Ethiopian Meqabyan are different books; not tagged ethiopian_orthodox. NEEDS REVIEW."
+  },
+  {
+   "code": "2MA",
+   "name": "2 Maccabees",
+   "traditions": [
+    "catholic",
+    "orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "As 1MA. NEEDS REVIEW."
+  },
+  {
+   "code": "3MA",
+   "name": "3 Maccabees",
+   "traditions": [
+    "orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Greek Orthodox canon."
+  },
+  {
+   "code": "4MA",
+   "name": "4 Maccabees",
+   "traditions": [],
+   "section": "deuterocanon",
+   "note": "Appendix in Greek Bibles; not canonical anywhere here. Skipped.",
+   "skip": true
+  },
+  {
+   "code": "1ES",
+   "name": "1 Esdras",
+   "traditions": [
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Greek Esdras A. NEEDS REVIEW for Ethiopian."
+  },
+  {
+   "code": "2ES",
+   "name": "2 Esdras",
+   "traditions": [
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Ezra Sutuel (4 Ezra) in the Ethiopian canon; Slavonic appendix. NEEDS REVIEW."
+  },
+  {
+   "code": "MAN",
+   "name": "Prayer of Manasseh",
+   "traditions": [
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Appendix in Vulgate, not Catholic canon."
+  },
+  {
+   "code": "PS2",
+   "name": "Psalm 151",
+   "traditions": [
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": ""
+  },
+  {
+   "code": "ESG",
+   "name": "Esther (Greek)",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Full Greek Esther duplicates EST text; ingest only the additions or skip in v1.",
+   "skip": true
+  },
+  {
+   "code": "DAG",
+   "name": "Daniel (Greek)",
+   "traditions": [
+    "catholic",
+    "orthodox",
+    "ethiopian_orthodox"
+   ],
+   "section": "deuterocanon",
+   "note": "Duplicates DAN + additions already ingested separately; skipped in v1.",
+   "skip": true
+  }
+ ]
+}

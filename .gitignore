@@ -37,7 +37,13 @@ CLAUDE.md
 corpus/*
 !corpus/manifest.json
 !corpus/failed.json
+!corpus/scripture/
+corpus/scripture/raw/
+corpus/scripture/chunks/
 ingest-failures.json
 
 # Phase 9 CI writes these next to the workspace root.
 gate-*.md
+
+# Scripture ingestion status (CI writes it; progress is committed separately)
+ingest-status.json

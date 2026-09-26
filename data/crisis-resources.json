@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "_note": "Checked Sept 2026 against several independent listings. Ethiopia has no verified 24/7 suicide or counselling helpline listed on findahelpline.com; re-check before launch and add one if a verified service appears.",
+  "always": [
+    "If you are in immediate danger, call emergency services now.",
+    "Reach out to someone you trust today — a family member, friend, priest or pastor. / ዛሬውኑ ለምታምኑት ሰው — ለቤተሰብ፣ ለጓደኛ፣ ለካህን ወይም ለመጋቢ — ንገሩ።"
+  ],
+  "global": [
+    {
+      "name": "Ethiopia — Ambulance (Red Cross) / አምቡላንስ",
+      "detail": "Emergency medical help",
+      "phone": "907"
+    },
+    {
+      "name": "Ethiopia — Police / ፖሊስ",
+      "detail": "If you or someone else is in danger",
+      "phone": "991"
+    },
+    {
+      "name": "Amanuel Mental Specialized Hospital, Addis Ababa",
+      "detail": "Ethiopia's national psychiatric hospital — you can go in person for urgent mental health care"
+    },
+    {
+      "name": "Find A Helpline (outside Ethiopia)",
+      "detail": "Free, confidential crisis lines in 130+ countries, by phone, text or chat",
+      "url": "https://findahelpline.com"
+    }
+  ]
+}

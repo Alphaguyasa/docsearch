@@ -1,0 +1,143 @@
+name: ingest-scripture
+
+# Embeds the scripture corpus into the not-alone-scripture Supabase project.
+#
+# RESUMABLE AND SELF-CHAINING. Each run embeds until ~320 min, then records
+# progress in corpus/scripture/ingest-progress.json and pushes it with
+# INGEST_PAT. That push is what starts the next run (pushes made with the
+# default GITHUB_TOKEN never trigger workflows, by GitHub design). Scheduled
+# (cron) triggers are not used because they only run on the default branch.
+#
+# Stops chaining when everything is embedded or after MAX_CONTINUATIONS runs.
+# Opens a GitHub issue on completion or when it gives up — that is the
+# notification.
+
+on:
+  push:
+    branches: [pivot/scripture]
+    paths:
+      - "scripts/ingest-scripture.ts"
+      - "src/lib/scripture/plan.ts"
+      - ".github/workflows/ingest-scripture.yml"
+      - "corpus/scripture/ingest-progress.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: ingest-scripture
+  cancel-in-progress: false
+
+env:
+  MAX_CONTINUATIONS: "8"
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.INGEST_PAT }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Restore raw corpus
+        uses: actions/cache@v4
+        with:
+          path: corpus/scripture/raw
+          key: scripture-raw-${{ hashFiles('corpus/scripture/manifest.json') }}
+      - name: Fetch corpus (cached files are skipped by hash)
+        continue-on-error: true
+        run: npm run scripture:fetch
+      - name: Ingest
+        id: ingest
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+          GENERATION_PROVIDER: gemini
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          npm run scripture:ingest -- --max-minutes 320 2>&1 | tee ingest.log
+      - name: Surface the log tail as an annotation
+        if: always()
+        run: |
+          # Annotations are readable through the API even where raw logs are not.
+          TAIL=$(tail -n 25 ingest.log 2>/dev/null | sed 's/%/%25/g' | tr '\n' '|' | cut -c1-3500)
+          if [ "${{ steps.ingest.outcome }}" = "success" ]; then echo "::notice title=ingest tail::$TAIL"; else echo "::error title=ingest tail::$TAIL"; fi
+      - name: Record progress, chain, notify
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTCOME: ${{ steps.ingest.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          PROG=corpus/scripture/ingest-progress.json
+          PREV=$( [ -f $PROG ] && node -p "require('./$PROG').continuation ?? 0" || echo 0 )
+          if [ -f ingest-status.json ]; then
+            TOTAL=$(node -p "require('./ingest-status.json').total")
+            DONE=$(node -p "require('./ingest-status.json').done")
+            REMAINING=$(node -p "require('./ingest-status.json').remaining")
+          else
+            TOTAL=0; DONE=0; REMAINING=-1
+          fi
+          echo "outcome=$OUTCOME total=$TOTAL done=$DONE remaining=$REMAINING continuation=$PREV"
+
+          open_issue () { # title, body — skip if an open issue with this title exists
+            if gh issue list --state open --search "\"$1\" in:title" --json title --jq '.[].title' | grep -qF "$1"; then
+              echo "issue already open: $1"
+            else
+              gh issue create --title "$1" --body "$2"
+            fi
+          }
+
+          if [ "$OUTCOME" = "success" ] && [ "$REMAINING" = "0" ]; then
+            echo "{\"complete\": true, \"total\": $TOTAL, \"continuation\": $PREV}" > $PROG
+            open_issue "Scripture ingestion complete — $TOTAL chunks" \
+              "All $TOTAL chunks are embedded in the not-alone-scripture database. Run: $RUN_URL"
+          else
+            NEXT=$((PREV + 1))
+            if [ "$NEXT" -gt "$MAX_CONTINUATIONS" ]; then
+              open_issue "Scripture ingestion stopped — needs attention" \
+                "Gave up after $PREV chained runs. Last outcome: $OUTCOME, $DONE/$TOTAL embedded. Run: $RUN_URL
+
+          \`\`\`
+          $(tail -n 30 ingest.log 2>/dev/null || true)
+          \`\`\`"
+              exit 1
+            fi
+            echo "{\"complete\": false, \"total\": $TOTAL, \"done\": $DONE, \"remaining\": $REMAINING, \"continuation\": $NEXT, \"lastOutcome\": \"$OUTCOME\", \"at\": \"$(date -u +%FT%TZ)\"}" > $PROG
+          fi
+
+          # Commit ONLY the progress + log files, on top of the latest branch tip.
+          # (The fetch step rewrites other tracked files, and the branch moves
+          # while a 5-hour run is in progress — a plain rebase refused to run on
+          # the dirty tree, which silently broke the chain overnight on Sep 25.)
+          { echo "outcome=$OUTCOME at $(date -u +%FT%TZ) run=$RUN_URL"; tail -n 60 ingest.log 2>/dev/null || echo "(no ingest.log)"; } > corpus/scripture/ingest-last.log
+          cp $PROG /tmp/progress.json
+          cp corpus/scripture/ingest-last.log /tmp/ingest-last.log
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin pivot/scripture
+            git reset -q --hard origin/pivot/scripture
+            cp /tmp/progress.json $PROG
+            cp /tmp/ingest-last.log corpus/scripture/ingest-last.log
+            git add $PROG corpus/scripture/ingest-last.log
+            if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
+            git commit -q -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
+            if git push -q origin HEAD:pivot/scripture; then echo "progress pushed — next run chained"; exit 0; fi
+            echo "push rejected (attempt $attempt), retrying on the new tip"
+            sleep $((attempt * 5))
+          done
+          echo "::error title=chain broken::could not push progress after 5 attempts"
+          exit 1

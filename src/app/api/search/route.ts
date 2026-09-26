@@ -6,13 +6,17 @@
  * Failures BEFORE streaming return a real HTTP status with a readable JSON body
  * { "error": string }:
  *   - 400  invalid request body (missing/empty/too-long question)
+ *   - 429  site-wide search limit reached (Voyage free tier); retry in a minute
  *   - 502  retrieval failed upstream (embedding / database / keyword search)
  *
  * On success the response is 200 with Content-Type application/x-ndjson: one
  * JSON object per line, each with a "type" field. The Phase 4 client can rely on
  * this exact contract:
  *
- *   {"type":"sources","chunks":[...]}   exactly once, first line
+ *   {"type":"crisis","crisis":{...}}     INSTEAD of everything below when the
+ *                                        safety gate trips; followed only by done
+ *   {"type":"sources","chunks":[...],"figures":[...],"tags":[...]}
+ *                                        exactly once, first line
  *   {"type":"delta","text":"..."}        zero or more, in order
  *   {"type":"done"}                      exactly once, last line — on success
  *   {"type":"error","message":"..."}     instead of "done", if generation fails
@@ -31,12 +35,20 @@
  */
 import { z } from "zod";
 
-import { streamAnswer } from "@/lib/answer";
-import { retrieve } from "@/lib/retrieve";
+import { streamAnswer, type FigureHint } from "@/lib/answer";
+import { cacheExample, exampleKey, getCachedExample } from "@/lib/example-cache";
+import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
-import type { SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
+import { TRADITIONS } from "@/lib/scripture/canon";
+import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
+import { BUSY_MESSAGE, takeSearchSlot } from "@/lib/scripture/rate-limit";
+import { checkSafety, crisisResponse } from "@/lib/scripture/safety";
+import { parseRef } from "@/lib/scripture/usfm";
+import type { FigureSummary, SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
 
 const requestSchema = z.object({
+  /** Optional tradition filter: only passages canonical / venerated there. */
+  tradition: z.enum(TRADITIONS).optional(),
   question: z
     .string()
     .trim()
@@ -63,7 +75,7 @@ type WireSource = SourceChunk & {
   keywordScore: number | null;
 };
 
-function sourceLine(chunks: RetrievedChunk[]): string {
+function sourceLine(chunks: RetrievedChunk[], figures: FigureSummary[] = [], tags: string[] = []): string {
   const sources: WireSource[] = chunks.map((chunk, i) => ({
     n: i + 1,
     id: chunk.id,
@@ -71,13 +83,16 @@ function sourceLine(chunks: RetrievedChunk[]): string {
     filename: chunk.filename,
     pageNumber: chunk.pageNumber,
     content: chunk.content,
+    ref: chunk.ref,
+    traditions: chunk.traditions,
+    kind: chunk.ref && !parseRef(chunk.ref) ? "tradition" : "scripture",
     fusedScore: chunk.fusedScore,
     vectorScore: chunk.vectorScore,
     keywordScore: chunk.keywordScore,
   }));
   // Emitted directly (not via line()) because the enriched entry is a superset
   // of the base SearchStreamMessage "sources" shape.
-  return JSON.stringify({ type: "sources", chunks: sources }) + "\n";
+  return JSON.stringify({ type: "sources", chunks: sources, figures, tags }) + "\n";
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -93,30 +108,76 @@ export async function POST(request: Request): Promise<Response> {
   if (!parsed.success) {
     return errorResponse(parsed.error.issues[0]?.message ?? "Invalid request.", 400);
   }
-  const { question } = parsed.data;
+  const { question, tradition } = parsed.data;
+  // Classification runs on the light model, saving the main one's quota for answers.
+  const classify = async (prompt: string) =>
+    (await getLlm().complete([{ role: "user", content: prompt }], 20, lightModel())).text;
 
-  // 2. Retrieve BEFORE opening the stream, so an upstream failure can still
+  // 2. Safety gate FIRST: a person at risk, or describing harm done to them,
+  //    gets help and resources — never a story about a sinner.
+  const safety = await checkSafety(question, classify);
+  if (safety.crisis && safety.kind) {
+    const body =
+      line({ type: "crisis", crisis: crisisResponse(safety.kind) }) + line({ type: "done" });
+    return new Response(body, {
+      status: 200,
+      headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" },
+    });
+  }
+
+  // An example question answered recently is served from memory: no quota spent.
+  const cacheKey = exampleKey(question, tradition);
+  const cached = cacheKey ? getCachedExample(cacheKey) : null;
+  if (cached) {
+    return new Response(cached, {
+      status: 200,
+      headers: { "Content-Type": "application/x-ndjson", "Cache-Control": "no-store" },
+    });
+  }
+
+  // 3. Global rate limit — AFTER the safety gate, so a person in crisis is
+  //    never told to wait.
+  if (!(await takeSearchSlot())) {
+    return errorResponse(BUSY_MESSAGE, 429);
+  }
+
+  // 4. Retrieve BEFORE opening the stream, so an upstream failure can still
   //    return a proper status code and message.
   let chunks: RetrievedChunk[];
+  let figures: FigureSummary[] = [];
+  let tags: string[] = [];
   try {
-    const result = await retrieve(question);
+    const result = await retrieveForStruggle(question, {
+      filterTraditions: tradition ? [tradition] : undefined,
+      llm: classify,
+    });
     chunks = result.results;
+    figures = result.figures;
+    tags = result.tags;
   } catch (err) {
     return errorResponse(`Retrieval failed: ${errorMessage(err)}`, 502);
   }
+  const hints: FigureHint[] = figures.map(({ name, summary, note }) => ({ name, summary, note }));
 
-  // 3. Stream NDJSON: sources first, then answer deltas, then done (or error).
+  // 5. Stream NDJSON: sources first, then answer deltas, then done (or error).
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
+      // Kept only for example questions, and only if the answer completes.
+      const transcript: string[] = [];
+      const send = (l: string) => {
+        if (cacheKey) transcript.push(l);
+        controller.enqueue(encoder.encode(l));
+      };
       try {
-        controller.enqueue(encoder.encode(sourceLine(chunks)));
+        send(sourceLine(chunks, figures, tags));
 
-        for await (const text of streamAnswer(question, chunks)) {
-          controller.enqueue(encoder.encode(line({ type: "delta", text })));
+        for await (const text of streamAnswer(question, chunks, hints)) {
+          send(line({ type: "delta", text }));
         }
 
-        controller.enqueue(encoder.encode(line({ type: "done" })));
+        send(line({ type: "done" }));
+        if (cacheKey) cacheExample(cacheKey, transcript.join(""));
       } catch (err) {
         // The status is already committed (200); report the failure in-band as
         // the terminal line instead of a "done".
