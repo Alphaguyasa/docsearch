@@ -43,7 +43,12 @@ export function LangToggle() {
           onClick={() => {
             if (l === lang) return;
             document.cookie = `${LANG_COOKIE}=${l}; path=/; max-age=31536000; samesite=lax`;
-            start(() => router.refresh());
+            // A ?lang= in the address would override the new choice: drop it.
+            const url = new URL(window.location.href);
+            if (url.searchParams.has("lang")) {
+              url.searchParams.delete("lang");
+              window.location.replace(url.pathname + url.search + url.hash);
+            } else start(() => router.refresh());
           }}
           className={`h-7 rounded-full px-2.5 transition-colors ${
             lang === l ? "bg-[#e8b560] font-semibold text-[#0b0907]" : "text-[#f1e9dc]/75 hover:text-[#f1e9dc]"
