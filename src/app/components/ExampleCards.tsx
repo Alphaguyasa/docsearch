@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CandleScene } from "./CandleScene";
 import { ArrowRight } from "./Icons";
 import { RevealGroup, Tilt } from "./Motion";
+import { useT } from "../i18n/client";
 
 /** Each card rests at its own small angle, as notes do on a prayer wall. */
 const LEAN = [-2.2, 1.6, -1.1, 2.4];
@@ -19,6 +20,7 @@ const LEAN = [-2.2, 1.6, -1.1, 2.4];
  */
 export function ExampleCards({ examples, onPick }: { examples: string[]; onPick: (q: string) => void }) {
   const [lit, setLit] = useState<string | null>(null);
+  const { t } = useT();
 
   function choose(q: string) {
     if (lit) return;
@@ -35,7 +37,7 @@ export function ExampleCards({ examples, onPick }: { examples: string[]; onPick:
         <CandleScene glow={false} embers={0.45} />
       </div>
       <p id="examples-heading" className="relative font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">
-        Or begin with what others have carried
+        {t.examples.heading}
       </p>
       <RevealGroup
         as="ul"
@@ -53,7 +55,7 @@ export function ExampleCards({ examples, onPick }: { examples: string[]; onPick:
               type="button"
               onClick={() => choose(q)}
               max={6}
-              aria-label={`Read a story for: ${q}`}
+              aria-label={`${t.examples.aria} ${q}`}
               className={`votive candle-glare group flex h-full min-h-[15rem] w-full flex-col rounded-[18px] p-6 text-left ${
                 lit === q ? "is-lit" : ""
               }`}
@@ -64,7 +66,7 @@ export function ExampleCards({ examples, onPick }: { examples: string[]; onPick:
               </span>
               <span className="mt-5 block flex-1 font-serif text-[19px] italic leading-8 text-[#efe4cf]">“{q}”</span>
               <span className="mt-6 flex items-center gap-2 font-caps text-[11px] font-semibold tracking-[0.2em] text-[#b3a48f] transition-colors duration-500 group-hover:text-[#e8b560]">
-                Light this candle
+                {t.examples.light}
                 <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1" />
               </span>
             </Tilt>

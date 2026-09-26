@@ -5,15 +5,8 @@ import { createPortal } from "react-dom";
 
 import { TRADITION_OPTIONS, type TraditionChoice } from "@/app/traditions";
 
+import { useT } from "../i18n/client";
 import { Check, ChevronDown, Cross } from "./Icons";
-
-const HINTS: Partial<Record<TraditionChoice, string>> = {
-  all: "Stories from every tradition",
-  ethiopian_orthodox: "Includes the Ethiopian Synaxarium",
-  orthodox: "Includes the longer Old Testament canon",
-  catholic: "Includes the deuterocanonical books",
-  protestant: "The 66-book Bible",
-};
 
 /**
  * "My church": a compact pill in the composer's toolbar. On a desktop it
@@ -32,6 +25,7 @@ export function TraditionSelect({
   disabled?: boolean;
 }) {
   const id = useId();
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [active, setActive] = useState(0);
@@ -132,9 +126,9 @@ export function TraditionSelect({
                 selected ? "font-medium text-[#f1e9dc]" : "text-[#f1e9dc]/80"
               }`}
             >
-              {o.label}
+              {t.church.options[o.value]}
             </span>
-            {big && HINTS[o.value] && <span className="mt-0.5 block text-[13px] text-[#b3a48f]">{HINTS[o.value]}</span>}
+            {big && <span className="mt-0.5 block text-[13px] text-[#b3a48f]">{t.church.hints[o.value]}</span>}
           </span>
           {selected && <Check className={`${big ? "h-5 w-5" : "h-4 w-4"} shrink-0 text-[#e8b560]`} />}
         </li>
@@ -144,7 +138,7 @@ export function TraditionSelect({
   return (
     <div ref={root} className="relative min-w-0">
       <span id={`${id}-label`} className="sr-only">
-        My church
+        {t.church.label}
       </span>
       <button
         ref={button}
@@ -161,9 +155,9 @@ export function TraditionSelect({
         className="flex h-11 min-w-0 items-center gap-2 rounded-full bg-white/[0.06] pl-3 pr-2.5 text-left text-[13px] ring-1 ring-white/10 transition-colors hover:bg-white/[0.1] disabled:opacity-60 aria-expanded:ring-[#e8b560]/60"
       >
         <Cross className="h-4 w-4 shrink-0 text-gold" />
-        <span className="hidden text-muted min-[400px]:inline">My church</span>
+        <span className="hidden text-muted min-[400px]:inline">{t.church.label}</span>
         <span id={`${id}-value`} className="truncate font-medium text-foreground">
-          {current.label}
+          {t.church.options[current.value]}
         </span>
         <ChevronDown
           className={`h-4 w-4 shrink-0 text-muted transition-transform duration-300 ${open ? "rotate-180" : ""}`}
@@ -191,7 +185,7 @@ export function TraditionSelect({
           <div className="fixed inset-0 z-50">
             <button
               type="button"
-              aria-label="Close"
+              aria-label={t.church.close}
               onClick={close}
               className="sheet-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
@@ -203,11 +197,9 @@ export function TraditionSelect({
             >
               <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-white/20" aria-hidden />
               <p id={`${id}-sheet-title`} className="px-4 pb-1 font-display text-2xl font-semibold text-[#f1e9dc]">
-                My church
+                {t.church.label}
               </p>
-              <p className="px-4 pb-3 text-[13px] text-[#b3a48f]">
-                Stories are chosen from the books your church reads.
-              </p>
+              <p className="px-4 pb-3 text-[13px] text-[#b3a48f]">{t.church.sheetNote}</p>
               <ul
                 ref={list}
                 id={`${id}-list`}

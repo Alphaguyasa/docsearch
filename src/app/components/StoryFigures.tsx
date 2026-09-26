@@ -8,13 +8,16 @@ import { ArtImage } from "./ArtImage";
 import { FigureSymbol } from "./FigureSymbol";
 import { RevealGroup, Tilt } from "./Motion";
 import { SymbolPlate } from "./SymbolPlate";
+import { useT } from "../i18n/client";
+import { figureText } from "../i18n/dict";
 
 /** The people this answer is about, each with their symbol, shown before the story begins. */
 export function StoryFigures({ figures }: { figures: FigureSummary[] }) {
+  const { lang, t } = useT();
   if (figures.length === 0) return null;
   return (
     <div className="mb-8">
-      <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">You are not the only one</p>
+      <p className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">{t.story.notOnly}</p>
       <RevealGroup as="ul" className="mt-3 grid gap-3 sm:grid-cols-2">
         {figures.map((f, i) => (
           <li key={f.id} data-reveal style={{ "--i": i } as React.CSSProperties}>
@@ -38,9 +41,9 @@ export function StoryFigures({ figures }: { figures: FigureSummary[] }) {
                     href={`/people#${f.id}`}
                     className="font-display text-xl font-semibold leading-tight hover:underline"
                   >
-                    {f.name}
+                    {figureText(lang, f).name}
                   </Link>
-                  <p className="mt-1 text-sm leading-6 text-muted">{f.summary}</p>
+                  <p className="mt-1 text-sm leading-6 text-muted">{figureText(lang, f).summary}</p>
                 </div>
               </div>
             </Tilt>

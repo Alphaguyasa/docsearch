@@ -29,9 +29,7 @@ export function CitationTargets({ sources, activeCitation, onSelect, onHover }: 
               onMouseEnter={() => onHover(s.n)}
               onMouseLeave={() => onHover(null)}
               className={`flex items-baseline gap-1.5 border px-2 py-1 text-xs transition-colors ${
-                activeCitation === s.n
-                  ? "border-accent bg-accent/10"
-                  : "border-border hover:border-accent/50"
+                activeCitation === s.n ? "border-accent bg-accent/10" : "border-border hover:border-accent/50"
               }`}
             >
               <span className="font-mono text-accent">[{s.n}]</span>
