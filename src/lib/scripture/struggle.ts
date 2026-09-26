@@ -116,6 +116,12 @@ export async function mapStruggle(message: string, llm?: TagLlm): Promise<Strugg
   const tags = matchTags(message);
   if (tags.length) return { tags, via: "synonyms" };
   if (!llm) return { tags: [], via: "none" };
-  const fromLlm = parseLlmTags(await llm(tagPrompt(message)).catch(() => "[]"));
+  const fromLlm = parseLlmTags(
+    await llm(tagPrompt(message)).catch((err: unknown) => {
+      // Still falls back to hybrid search, but never silently again.
+      console.warn(`[struggle] LLM tagging failed: ${(err as Error)?.message ?? err}`);
+      return "[]";
+    }),
+  );
   return fromLlm.length ? { tags: fromLlm, via: "llm" } : { tags: [], via: "none" };
 }
