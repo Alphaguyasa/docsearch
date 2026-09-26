@@ -149,3 +149,15 @@ test("can't forgive MYSELF is shame, not resentment; can't forgive my father sta
   assert.ok(self.includes("shame") && !self.includes("resentment"), self.join(","));
   assert.ok(matchTags("I can't forgive my father").includes("resentment"));
 });
+
+test("addiction and gossip are recognised in English and Amharic", () => {
+  assert.deepEqual(matchTags("I can't stop drinking"), ["addiction"]);
+  assert.deepEqual(matchTags("ጫት መቃም ማቆም አልቻልኩም"), ["addiction"]);
+  assert.deepEqual(matchTags("የመጠጥ ሱሰኛ ነኝ"), ["addiction"]);
+  assert.deepEqual(matchTags("I gossip about my friends"), ["gossip"]);
+  assert.deepEqual(matchTags("ሐሜት ማቆም አልቻልኩም"), ["gossip"]);
+});
+
+test("the name of Jesus never reads as addiction", () => {
+  assert.ok(!matchTags("ኢየሱስን እወዳለሁ ግን ሁልጊዜ እዋሻለሁ").includes("addiction"));
+});

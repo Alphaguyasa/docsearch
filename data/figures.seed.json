@@ -2,6 +2,7 @@
   "version": 1,
   "vocabulary": [
     "abandonment",
+    "addiction",
     "adultery",
     "anger",
     "betrayal",
@@ -14,6 +15,7 @@
     "envy",
     "exploitation",
     "fear",
+    "gossip",
     "greed",
     "hypocrisy",
     "idolatry",
@@ -721,6 +723,245 @@
         }
       ],
       "note": "No verified public-domain source in corpus v1; do not surface until sourced."
+    },
+    {
+      "id": "noah",
+      "name": "Noah",
+      "kind": "scripture",
+      "sins": [
+        "addiction",
+        "shame"
+      ],
+      "summary": "After the flood he planted a vineyard, got drunk and lay uncovered in his tent; Scripture still remembers him among the faithful.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Genesis 9:20-27",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Genesis 6:8-9",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Hebrews 11:7",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "prodigal_son",
+      "name": "The prodigal son",
+      "kind": "scripture",
+      "sins": [
+        "addiction",
+        "sexual_sin",
+        "greed",
+        "shame"
+      ],
+      "summary": "Took his inheritance and wasted it on wild living until he fed pigs; came home to a father who ran to meet him.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Luke 15:11-16",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Luke 15:17-24",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Luke 15:25-32",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "miriam",
+      "name": "Miriam",
+      "kind": "scripture",
+      "sins": [
+        "envy",
+        "pride",
+        "gossip"
+      ],
+      "summary": "Spoke against her brother Moses out of jealousy and was struck with leprosy; Moses prayed for her and she was healed.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Numbers 12:1-10",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Numbers 12:11-15",
+          "sourceId": "web"
+        },
+        {
+          "role": "context",
+          "ref": "Micah 6:4",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "judah",
+      "name": "Judah",
+      "kind": "scripture",
+      "sins": [
+        "betrayal",
+        "sexual_sin",
+        "deceit"
+      ],
+      "summary": "Sold his brother Joseph into slavery and slept with a woman he took for a prostitute; later offered his own life for his brother Benjamin.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Genesis 37:26-28",
+          "sourceId": "web"
+        },
+        {
+          "role": "fall",
+          "ref": "Genesis 38:12-26",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Genesis 44:18-34",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "job",
+      "name": "Job",
+      "kind": "scripture",
+      "sins": [
+        "despair",
+        "doubt",
+        "resentment"
+      ],
+      "summary": "Lost everything, cursed the day he was born and accused God; God answered him out of the whirlwind and restored him.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Job 3:1-26",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Job 42:1-10",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "penitent_thief",
+      "name": "The penitent thief",
+      "kind": "scripture",
+      "sins": [
+        "shame",
+        "despair"
+      ],
+      "summary": "A criminal crucified beside Jesus who, in his last hour, asked to be remembered, and was promised paradise that same day.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Luke 23:39-43",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "sinful_woman",
+      "name": "The woman who anointed Jesus",
+      "kind": "scripture",
+      "sins": [
+        "sexual_sin",
+        "shame"
+      ],
+      "summary": "Known in her town as a sinner, she washed Jesus' feet with her tears; he told her, “Your sins are forgiven.”",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Luke 7:36-50",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "naomi",
+      "name": "Naomi",
+      "kind": "scripture",
+      "sins": [
+        "resentment",
+        "despair"
+      ],
+      "summary": "After losing her husband and sons she said, “Call me Mara, for the Almighty has dealt very bitterly with me”; she lived to hold her grandson.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ruth 1:19-21",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ruth 4:13-17",
+          "sourceId": "web"
+        }
+      ]
     }
   ]
 }
