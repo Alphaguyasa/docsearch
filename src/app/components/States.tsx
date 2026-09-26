@@ -30,19 +30,22 @@ export function IdleExamples({
   );
 }
 
-/** Loading state: skeleton bars shown after submit, before sources arrive. */
+/** Loading state: a still candle and a line of reassurance while the story is found. */
 export function LoadingSkeleton() {
   const widths = ["w-3/4", "w-full", "w-11/12", "w-2/3", "w-5/6"];
   return (
-    <div className="animate-pulse space-y-2.5" aria-label="Loading">
-      {widths.map((w, i) => (
-        <div key={i} className={`h-4 ${w} bg-border`} />
-      ))}
+    <div aria-live="polite">
+      <p className="text-sm text-muted">Finding someone who walked this road before you…</p>
+      <div className="mt-4 animate-pulse space-y-3" aria-hidden>
+        {widths.map((w, i) => (
+          <div key={i} className={`h-4 ${w} rounded bg-border`} />
+        ))}
+      </div>
     </div>
   );
 }
 
-/** Error state: readable message plus a retry of the last question. */
+/** Error state: calm, readable, one way forward. Not alarm-red — the reader has done nothing wrong. */
 export function ErrorState({
   message,
   onRetry,
@@ -51,14 +54,14 @@ export function ErrorState({
   onRetry: () => void;
 }) {
   return (
-    <div className="border border-red-500/40 bg-red-500/5 px-4 py-3">
-      <p className="text-sm text-red-600 dark:text-red-400">{message}</p>
+    <div role="status" className="border border-border bg-panel px-5 py-4">
+      <p className="leading-7">{message}</p>
       <button
         type="button"
         onClick={onRetry}
-        className="mt-2 border border-border px-3 py-1 text-xs transition-colors hover:border-accent"
+        className="mt-3 border border-border bg-background px-4 py-1.5 text-sm transition-colors hover:border-accent"
       >
-        Retry
+        Try again
       </button>
     </div>
   );

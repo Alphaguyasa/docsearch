@@ -1,32 +1,57 @@
 @import "tailwindcss";
 
 /*
- * Not Alone — quiet, readable, made for someone reading alone at night on a phone.
- * Stone-grey paper, slate ink, one accent: lapis, the blue of Ethiopian icon
- * painting. Stories are set in a reading serif; interface text stays sans.
+ * Not Alone — a candle in a church at night.
+ *
+ * Made for someone reading alone on a phone, often late. Warm parchment by
+ * day, warm dark by night; one lapis accent (the blue of Ethiopian icon
+ * painting) for things you can press, and candle gold for light. Stories are
+ * set in a reading serif; interface text stays sans.
+ *
+ * `.night` re-scopes the tokens to the dark palette, whatever the system
+ * theme: the hero is always night, so the candle has darkness to shine in.
  */
 :root {
-  --background: #f3f5f4;
-  --foreground: #1d2a30;
-  --muted: #5b686c;
-  --border: #d3dad8;
-  --panel: #e9eeec;
+  --background: #f5f0e7;
+  --foreground: #241e18;
+  --muted: #6c6258;
+  --border: #ddd3c4;
+  --panel: #ede5d8;
+  --card: #fbf8f2;
   --accent: #27458f; /* lapis */
   --accent-fg: #ffffff;
-  --care: #7a2e2e; /* used only on the crisis card */
+  --gold: #9a6516;
+  --care: #8a3030; /* used only for crisis help */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #11171d;
-    --foreground: #e3e8ea;
-    --muted: #97a3a8;
-    --border: #28323a;
-    --panel: #172029;
-    --accent: #93aef0;
+    --background: #100d0a;
+    --foreground: #ede5d7;
+    --muted: #a69885;
+    --border: #2d261e;
+    --panel: #181410;
+    --card: #15110d;
+    --accent: #a4b8f2;
     --accent-fg: #0d1526;
-    --care: #e8a3a3;
+    --gold: #e2ac55;
+    --care: #eba5a5;
   }
+}
+
+.night {
+  --background: #0b0907;
+  --foreground: #f1e9dc;
+  --muted: #b3a48f;
+  --border: #3a3026;
+  --panel: #16120e;
+  --card: #120f0b;
+  --accent: #a4b8f2;
+  --accent-fg: #0d1526;
+  --gold: #e8b560;
+  background: var(--background);
+  color: var(--foreground);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -35,8 +60,10 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-panel: var(--panel);
+  --color-card: var(--card);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
+  --color-gold: var(--gold);
   --color-care: var(--care);
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -47,11 +74,16 @@
     monospace;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 15px;
+  overflow-x: hidden;
 }
 
 :focus-visible {
@@ -59,9 +91,56 @@ body {
   outline-offset: 2px;
 }
 
+/* The candle, still: the first thing everyone sees and all some phones see. */
+.candle-still {
+  background:
+    radial-gradient(ellipse 30% 26% at 50% 62%, rgb(255 170 80 / 0.22), transparent 70%),
+    radial-gradient(ellipse 70% 55% at 50% 64%, rgb(255 140 60 / 0.09), transparent 75%),
+    radial-gradient(circle at 30% 30%, rgb(255 200 140 / 0.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 42%, rgb(255 200 140 / 0.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 58% 22%, rgb(255 200 140 / 0.05) 0 1px, transparent 2px);
+}
+
+/* Symbols draw themselves in once, as a page is read. */
+@keyframes draw {
+  from {
+    stroke-dashoffset: 240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-in path,
+.draw-in ellipse,
+.draw-in circle {
+  stroke-dasharray: 240;
+  animation: draw 2.4s ease-out both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
+  }
+  .draw-in path,
+  .draw-in ellipse,
+  .draw-in circle {
+    stroke-dasharray: none;
   }
 }
