@@ -8,6 +8,7 @@
  */
 import { createHmac } from "node:crypto";
 
+import { figureText } from "../app/i18n/dict";
 import { FIGURES } from "./scripture/figures";
 import type { CrisisPayload, FigureSummary, SearchStreamMessage, SourceChunk } from "./search-stream";
 
@@ -147,7 +148,13 @@ export function storyMessages(result: SearchResult, lang: BotLang): string[] {
     .map((c) => `[${c.n}] ${escapeHtml(c.ref || c.title)}`);
   const tail =
     (refs.length ? `\n\n<b>${escapeHtml(t.sources)}</b>\n${refs.join("\n")}` : "") +
-    `\n\n<a href="${SITE_URL}/">${escapeHtml(t.more)} →</a>`;
+    "\n\n" +
+    (result.figures.length
+      ? `<b>${escapeHtml(t.more)}</b>\n` +
+        result.figures
+          .map((f) => `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(figureText(lang, f).name)}</a>`)
+          .join("\n")
+      : `<a href="${SITE_URL}/">${escapeHtml(t.more)} →</a>`);
   return splitMessage(head + markdownToHtml(result.answer.trim()) + tail);
 }
 
