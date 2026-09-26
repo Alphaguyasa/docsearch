@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { FIGURES, orderedPassages, rankFigures, refsOverlap } from "../src/lib/scripture/figures";
+import { FIGURES, cleanPassage, orderedPassages, rankFigures, refsOverlap } from "../src/lib/scripture/figures";
 import {
   foldEthiopic,
   mapStruggle,
@@ -170,4 +170,10 @@ test("going to a witch doctor reads as idolatry, and Cyprian answers it", () => 
   assert.deepEqual(matchTags("ወደ ጠንቋይ ሄጃለሁ"), ["idolatry"]);
   assert.deepEqual(matchTags("I went to a witch doctor"), ["idolatry"]);
   assert.ok(rankFigures(["idolatry"], ["ethiopian_orthodox"], 3).some((f) => f.id === "cyprian"));
+});
+
+test("cleanPassage drops the leading reference and joins scanned line wraps", () => {
+  assert.equal(cleanPassage("Luke 22:9-22\n\nThey said to him.\n\nHe said.", "Luke 22:9-22"), "They said to him.\n\nHe said.");
+  assert.equal(cleanPassage("Ethiopian Synaxarium, Miyazya On this day\ndied   Saint MARY", "Ethiopian Synaxarium, Miyazya"), "On this day died Saint MARY");
+  assert.equal(cleanPassage("no ref here", null), "no ref here");
 });
