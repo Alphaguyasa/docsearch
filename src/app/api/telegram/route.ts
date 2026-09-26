@@ -10,6 +10,7 @@
 import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
+import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
   SITE_URL,
@@ -17,6 +18,8 @@ import {
   collectStream,
   crisisMessage,
   detectLang,
+  feedbackKeyboard,
+  parseFeedbackData,
   storyMessages,
   tg,
   webhookSecret,
@@ -30,6 +33,11 @@ interface Update {
     chat: { id: number; type: string };
     from?: { first_name?: string; language_code?: string };
     text?: string;
+  };
+  callback_query?: {
+    id: string;
+    data?: string;
+    message?: { chat: { id: number }; message_id: number };
   };
 }
 
@@ -45,6 +53,8 @@ export async function POST(request: Request): Promise<Response> {
   if (msg && msg.chat.type === "private") {
     after(() => handle(token, msg).catch((err) => console.error("telegram:", err)));
   }
+  const cb = update.callback_query;
+  if (cb) after(() => handleFeedback(token, cb).catch((err) => console.error("telegram feedback:", err)));
   return new Response("ok");
 }
 
@@ -82,5 +92,32 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   const result = await collectStream(parseSearchStream(res.body));
   if (result.crisis) return void (await send(crisisMessage(result.crisis, lang)));
   if (result.error || !result.answer.trim()) return void (await send(t.failed));
-  for (const part of storyMessages(result, lang)) await send(part);
+  const parts = storyMessages(result, lang);
+  for (const [i, part] of parts.entries()) {
+    if (i < parts.length - 1) await send(part);
+    else
+      await tg(token, "sendMessage", {
+        chat_id,
+        text: part,
+        parse_mode: "HTML",
+        link_preview_options: { is_disabled: true },
+        reply_markup: feedbackKeyboard(result, result.tags, lang),
+      });
+  }
+}
+
+/** A tap on "This helped" / "Not really": store it, thank them, remove the buttons. */
+async function handleFeedback(token: string, cb: NonNullable<Update["callback_query"]>): Promise<void> {
+  const fb = parseFeedbackData(cb.data ?? "");
+  if (!fb) return void (await tg(token, "answerCallbackQuery", { callback_query_id: cb.id }));
+  const parsed = feedbackSchema.safeParse(fb);
+  if (parsed.success) await recordFeedback({ ...parsed.data, channel: "telegram" });
+  await tg(token, "answerCallbackQuery", { callback_query_id: cb.id, text: TEXT[fb.lang].thanks });
+  if (cb.message) {
+    await tg(token, "editMessageReplyMarkup", {
+      chat_id: cb.message.chat.id,
+      message_id: cb.message.message_id,
+      reply_markup: { inline_keyboard: [] },
+    }).catch(() => {});
+  }
 }

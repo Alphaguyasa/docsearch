@@ -13,7 +13,7 @@ export async function GET(): Promise<Response> {
     await tg(token, "setWebhook", {
       url: `${SITE_URL}/api/telegram`,
       secret_token: webhookSecret(token),
-      allowed_updates: ["message"],
+      allowed_updates: ["message", "callback_query"],
     });
     const commands = (start: string, help: string) => [
       { command: "start", description: start },
