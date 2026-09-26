@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { isTransient } from "../src/lib/transient";
+import { backoffMs, isRetryableStatus, isTransient } from "../src/lib/transient";
 
 /**
  * The predicate that decides whether a failed search is retried.
@@ -83,5 +83,42 @@ describe("isTransient", () => {
       assert.equal(isTransient("returned 208001 rows"), false);
       assert.equal(isTransient("cost estimate 0800123"), false);
     });
+  });
+});
+
+/** Which model-API responses are retried: overload and rate limits, never a bad request or key. */
+describe("isRetryableStatus", () => {
+  it("retries the 503 'high demand' that killed the first scripture eval", () => {
+    assert.equal(isRetryableStatus(503), true);
+  });
+
+  it("retries rate limits and other transient server errors", () => {
+    for (const s of [429, 500, 502, 504]) assert.equal(isRetryableStatus(s), true, String(s));
+  });
+
+  it("does not retry errors that fail identically every time", () => {
+    for (const s of [200, 400, 401, 403, 404]) assert.equal(isRetryableStatus(s), false, String(s));
+  });
+});
+
+describe("backoffMs", () => {
+  const mid = () => 0.5;
+
+  it("doubles per attempt, with jitter around the base", () => {
+    assert.equal(backoffMs(0, null, mid), 1000);
+    assert.equal(backoffMs(1, null, mid), 2000);
+    assert.equal(backoffMs(2, null, mid), 4000);
+    assert.equal(backoffMs(0, null, () => 0), 750);
+    assert.equal(backoffMs(0, null, () => 1), 1250);
+  });
+
+  it("caps the wait", () => {
+    assert.equal(backoffMs(10, null, mid), 8000);
+  });
+
+  it("honours a sane Retry-After, ignores a silly one", () => {
+    assert.equal(backoffMs(0, "3", mid), 3000);
+    assert.equal(backoffMs(0, "600", mid), 1000);
+    assert.equal(backoffMs(0, "soon", mid), 1000);
   });
 });
