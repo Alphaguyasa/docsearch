@@ -37,11 +37,32 @@ function cleanRef(ref: string): string {
 /** The fall and the restoration, each as "Book 1:2-3; Book 4:5". Context passages are left out. */
 export function storyRefs(f: Figure): { fall: string[]; restoration: string[] } {
   const live = f.passages.filter((p) => p.sourceId !== "pending");
-  const refs = (role: "fall" | "restoration") => [...new Set(live.filter((p) => p.role === role).map((p) => cleanRef(p.ref)))];
+  const refs = (role: "fall" | "restoration") => [
+    ...new Set(live.filter((p) => p.role === role).map((p) => cleanRef(p.ref))),
+  ];
   return { fall: refs("fall"), restoration: refs("restoration") };
 }
 
 /** People with at least one passage in the library, i.e. whose story can actually be read. */
 export function readablePeople(all: Figure[]): Figure[] {
   return all.filter((f) => f.passages.some((p) => p.sourceId !== "pending"));
+}
+
+/** Struggle groups a reader would recognise, each gathering several seed tags. */
+export const GROUPS: { id: string; label: string; tags: string[] }[] = [
+  { id: "lust", label: "Lust", tags: ["lust", "sexual_sin", "adultery"] },
+  { id: "anger", label: "Anger & violence", tags: ["anger", "violence", "murder", "persecution", "resentment"] },
+  { id: "lying", label: "Lying", tags: ["deceit", "hypocrisy", "denial", "betrayal"] },
+  { id: "pride", label: "Pride", tags: ["pride"] },
+  { id: "greed", label: "Greed & theft", tags: ["greed", "theft", "exploitation", "envy"] },
+  { id: "fear", label: "Fear & shame", tags: ["fear", "cowardice", "shame"] },
+  { id: "away", label: "Turning away", tags: ["idolatry", "disobedience", "quitting", "abandonment"] },
+  { id: "despair", label: "Despair & doubt", tags: ["despair", "doubt"] },
+];
+
+/** The group ids a person belongs to, for their card's data-groups attribute. */
+export function groupsFor(sins: string[]): string {
+  return GROUPS.filter((g) => g.tags.some((t) => sins.includes(t)))
+    .map((g) => g.id)
+    .join(" ");
 }
