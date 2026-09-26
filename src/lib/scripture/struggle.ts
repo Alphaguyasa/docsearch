@@ -75,6 +75,11 @@ export function matchTags(message: string): string[] {
     if (enStems.some((s) => en.includes(` ${s}`))) tags.add(tag);
     if (amStems.some((s) => am.includes(foldEthiopic(s)))) tags.add(tag);
   }
+  // "I can't forgive myself" is shame, not resentment of someone else.
+  if (/ forgiv(e|ing) (myself|me) /.test(en)) {
+    tags.delete("resentment");
+    tags.add("shame");
+  }
   return [...tags].filter((t) => VOCABULARY.includes(t));
 }
 
