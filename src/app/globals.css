@@ -144,3 +144,16 @@ body {
     stroke-dasharray: none;
   }
 }
+
+/* The hero painting before (or instead of) WebGL: the same candle pool, in CSS. */
+.painting-still {
+  object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 42% 58%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 42% 58%, #000 40%, transparent 100%);
+  filter: brightness(0.72) sepia(0.18);
+}
+@media (max-width: 899px) {
+  .painting-still {
+    filter: brightness(0.45) sepia(0.2);
+  }
+}
