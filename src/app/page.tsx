@@ -12,6 +12,7 @@ import { Hero } from "./components/Hero";
 import { Passages } from "./components/Passages";
 import { ErrorState, LoadingSkeleton } from "./components/States";
 import { StoryFigures } from "./components/StoryFigures";
+import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
@@ -143,11 +144,11 @@ export default function Home() {
         )}
       </Hero>
 
-      <div ref={results} className={`mx-auto max-w-3xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
+      <div ref={results} className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
         {status === "idle" && (
           <div>
             <p className="text-sm text-muted">Or start from something others have carried:</p>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
               {EXAMPLES.map((q) => (
                 <li key={q}>
                   <button
@@ -160,15 +161,22 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+            <StoryGallery />
           </div>
         )}
-        {status === "loading" && <LoadingSkeleton />}
+        {status === "loading" && (
+          <div className="mx-auto max-w-3xl">
+            <LoadingSkeleton />
+          </div>
+        )}
         {status === "error" && (
+          <div className="mx-auto max-w-3xl">
           <ErrorState message={error ?? "Something went wrong."} onRetry={() => run(lastQuestion.current)} />
+          </div>
         )}
 
         {showResults && (
-          <article className="min-w-0">
+          <article className="mx-auto min-w-0 max-w-3xl">
             <StoryFigures figures={figures} />
             <div className="font-serif text-[18px] leading-8 sm:text-[19px] sm:leading-9">
               <AnswerView

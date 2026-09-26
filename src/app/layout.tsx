@@ -68,6 +68,10 @@ export default function RootLayout({
             <a href="mailto:alphaguyasa@gmail.com" className="underline underline-offset-4 hover:text-foreground">
               alphaguyasa@gmail.com
             </a>
+            {" · "}
+            <Link href="/credits" className="underline underline-offset-4 hover:text-foreground">
+              Image credits
+            </Link>
           </p>
         </footer>
       </body>
