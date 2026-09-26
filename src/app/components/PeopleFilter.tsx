@@ -10,7 +10,16 @@ import { GROUPS } from "@/app/people";
  * this only toggles `hidden` on them, so the page works without JavaScript
  * (everyone shown, no bar).
  */
-export function PeopleFilter({ children, total }: { children: React.ReactNode; total: number }) {
+export function PeopleFilter({
+  children,
+  total,
+  counts,
+}: {
+  children: React.ReactNode;
+  total: number;
+  /** People per group id, shown on each chip. */
+  counts: Record<string, number>;
+}) {
   const [active, setActive] = useState("all");
   const [shown, setShown] = useState(total);
   const list = useRef<HTMLDivElement>(null);
@@ -28,19 +37,27 @@ export function PeopleFilter({ children, total }: { children: React.ReactNode; t
     setShown(n);
   }, [active]);
 
-  const chip = (id: string, label: string) => (
+  // Same pill as the church picker: a thin ring at rest, gilt when chosen.
+  const chip = (id: string, label: string, n: number) => (
     <button
       key={id}
       type="button"
       aria-pressed={active === id}
       onClick={() => setActive(id)}
-      className={`shrink-0 snap-start rounded-full px-4 py-2 text-[14px] transition-colors duration-300 ${
+      className={`flex h-10 shrink-0 snap-start items-center gap-2 rounded-full pl-4 pr-3 text-[14px] ring-1 transition-[background-color,color,box-shadow] duration-300 active:scale-[0.97] ${
         active === id
-          ? "bg-foreground text-background"
-          : "bg-foreground/[0.07] text-foreground hover:bg-foreground/[0.14]"
+          ? "bg-gold text-background ring-gold shadow-[0_0_24px_-6px_rgb(232_181_96_/_0.7)]"
+          : "bg-foreground/[0.06] text-foreground ring-foreground/10 hover:bg-foreground/[0.1]"
       }`}
     >
       {label}
+      <span
+        className={`grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-semibold tabular-nums ${
+          active === id ? "bg-background/15" : "bg-foreground/10 text-muted"
+        }`}
+      >
+        {n}
+      </span>
     </button>
   );
 
@@ -50,10 +67,10 @@ export function PeopleFilter({ children, total }: { children: React.ReactNode; t
         <div
           role="toolbar"
           aria-label="Filter by struggle"
-          className="gallery-track flex snap-x gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="gallery-track chip-row flex snap-x gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {chip("all", "Everyone")}
-          {GROUPS.map((g) => chip(g.id, g.label))}
+          {chip("all", "Everyone", total)}
+          {GROUPS.map((g) => chip(g.id, g.label, counts[g.id] ?? 0))}
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
