@@ -102,3 +102,6 @@ posts the story of the day to https://t.me/you_r_repenter (override with
 and a link to the person's page. `/api/telegram/daily` claims the day in
 `channel_posts` before posting, so extra calls never post twice; a failed post
 releases the day so it can be retried. The bot must stay an admin of the channel.
+As a backup in case the cron doesn't fire, from 07:00 Addis time any bot message
+or person-page view checks (in the background) that today's post went out and
+sends it if not — still at most once a day.
