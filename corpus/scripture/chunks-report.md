@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-26T12:47:27.840Z
+Generated 2026-09-26T17:08:15.975Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -69,6 +69,24 @@ Generated 2026-09-26T12:47:27.840Z
 - ✅ moses_the_ethiopian / restoration: `Lausiac History, Moses The Robber` → 4 chunk(s) (Lausiac History, Moses The Robber; Lausiac History, Moses The Robber (part 2); Lausiac History, Moses The Robber (part 3); …)
 - ✅ moses_the_ethiopian / context: `Paradise of the Holy Fathers, “NOW there was a certain man whose name…”` → 4 chunk(s) (Paradise of the Holy Fathers, “NOW there was a certain man whose name…”; Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 2); Paradise of the Holy Fathers, “NOW there was a certain man whose name…” (part 3); …)
 - ✅ moses_the_ethiopian / context: `Ethiopian Synaxarium, Sane` → 7 chunk(s) (Ethiopian Synaxarium, Sane; Ethiopian Synaxarium, Sane (part 2); Ethiopian Synaxarium, Sane (part 3); …)
+- ✅ noah / fall: `Genesis 9:20-27` → 1 chunk(s) (Genesis 9:18-10:5)
+- ✅ noah / context: `Genesis 6:8-9` → 2 chunk(s) (Genesis 5:28-6:8; Genesis 6:9-22)
+- ✅ noah / restoration: `Hebrews 11:7` → 1 chunk(s) (Hebrews 11:5-12)
+- ✅ prodigal_son / fall: `Luke 15:11-16` → 1 chunk(s) (Luke 15:11-21)
+- ✅ prodigal_son / restoration: `Luke 15:17-24` → 2 chunk(s) (Luke 15:11-21; Luke 15:22-32)
+- ✅ prodigal_son / context: `Luke 15:25-32` → 1 chunk(s) (Luke 15:22-32)
+- ✅ miriam / fall: `Numbers 12:1-10` → 1 chunk(s) (Numbers 11:35-12:10)
+- ✅ miriam / restoration: `Numbers 12:11-15` → 1 chunk(s) (Numbers 12:11-13:6)
+- ✅ miriam / context: `Micah 6:4` → 1 chunk(s) (Micah 6:1-9)
+- ✅ judah / fall: `Genesis 37:26-28` → 1 chunk(s) (Genesis 37:25-36)
+- ✅ judah / fall: `Genesis 38:12-26` → 3 chunk(s) (Genesis 38:1-16; Genesis 38:17-25; Genesis 38:26-39:6)
+- ✅ judah / restoration: `Genesis 44:18-34` → 2 chunk(s) (Genesis 44:11-30; Genesis 44:31-45:14)
+- ✅ job / fall: `Job 3:1-26` → 2 chunk(s) (Job 3:1-14; Job 3:15-4:4)
+- ✅ job / restoration: `Job 42:1-10` → 2 chunk(s) (Job 41:21-42:3; Job 42:4-11)
+- ✅ penitent_thief / restoration: `Luke 23:39-43` → 1 chunk(s) (Luke 23:38-49)
+- ✅ sinful_woman / restoration: `Luke 7:36-50` → 2 chunk(s) (Luke 7:31-40; Luke 7:41-8:8)
+- ✅ naomi / fall: `Ruth 1:19-21` → 2 chunk(s) (Ruth 1:10-19; Ruth 1:20-2:7)
+- ✅ naomi / restoration: `Ruth 4:13-17` → 1 chunk(s) (Ruth 4:13-22)
 
 ## Samples
 
