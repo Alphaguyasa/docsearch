@@ -32,11 +32,15 @@ const caps = Cinzel({
   variable: "--font-caps-face",
   display: "swap",
 });
+// Not preloaded: at 188 KB it is the heaviest file on the site, and only
+// Amharic pages use it (globals.css --eth-face); on English pages the few
+// Amharic words fall back to the phone's own Ethiopic font.
 const ethiopic = Noto_Serif_Ethiopic({
   subsets: ["ethiopic"],
   weight: ["400", "600"],
   variable: "--font-ethiopic",
   display: "swap",
+  preload: false,
 });
 
 const DESCRIPTION =
