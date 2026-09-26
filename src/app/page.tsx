@@ -5,8 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { TRADITION_KEY, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
+import { peopleFor } from "@/lib/scripture/people-for";
+import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 
 import { AnswerView } from "./components/AnswerView";
+import { StoryFallback } from "./components/StoryFallback";
 import { StoryFeedback } from "./components/StoryFeedback";
 import { CrisisCard } from "./components/CrisisCard";
 import { Hero } from "./components/Hero";
@@ -40,6 +43,7 @@ export default function Home() {
   const [crisis, setCrisis] = useState<CrisisPayload | null>(null);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [busyServer, setBusyServer] = useState(false);
   const [activeCitation, setActiveCitation] = useState<number | null>(null);
   const lastQuestion = useRef("");
   const results = useRef<HTMLDivElement>(null);
@@ -59,6 +63,22 @@ export default function Home() {
   }
 
   const busy = status === "loading" || status === "streaming";
+
+  /**
+   * A failure before the server answered never passed its safety gate, so run
+   * the same phrase check here first: a person at risk gets help, not stories.
+   */
+  function failEarly(message: string, busyNow = false) {
+    const kind = phraseCheck(lastQuestion.current);
+    if (kind) {
+      setCrisis(crisisResponse(kind));
+      setStatus("crisis");
+      return;
+    }
+    setBusyServer(busyNow);
+    setError(message);
+    setStatus("error");
+  }
 
   function reset() {
     setStatus("idle");
@@ -81,6 +101,7 @@ export default function Home() {
     setCrisis(null);
     setAnswer("");
     setError(null);
+    setBusyServer(false);
     setActiveCitation(null);
     // Bring the reader down to where the story will appear.
     requestAnimationFrame(() => results.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
@@ -93,14 +114,12 @@ export default function Home() {
         body: JSON.stringify({ question: query, ...(tradition !== "all" ? { tradition } : {}) }),
       });
     } catch {
-      setError(t.story.errors.offline);
-      setStatus("error");
+      failEarly(t.story.errors.offline);
       return;
     }
     if (!res.ok || !res.body) {
       const body = await res.json().catch(() => null);
-      setError(body?.error ?? t.story.errors.failed(res.status));
-      setStatus("error");
+      failEarly(body?.error ?? t.story.errors.failed(res.status), res.status === 429);
       return;
     }
 
@@ -130,6 +149,13 @@ export default function Home() {
   }
 
   const showResults = status === "streaming" || status === "done";
+  // People the server already chose, or — if it never got that far — the free synonym match.
+  const fallbackPeople =
+    status !== "error"
+      ? []
+      : figures.length
+        ? figures
+        : peopleFor(lastQuestion.current, tradition !== "all" ? tradition : undefined);
 
   return (
     <main>
@@ -158,11 +184,14 @@ export default function Home() {
             <LoadingSkeleton />
           </div>
         )}
-        {status === "error" && (
-          <div className="mx-auto max-w-3xl">
-            <ErrorState message={error ?? t.story.errors.generic} onRetry={() => run(lastQuestion.current)} />
-          </div>
-        )}
+        {status === "error" &&
+          (fallbackPeople.length > 0 ? (
+            <StoryFallback people={fallbackPeople} busy={busyServer} onRetry={() => run(lastQuestion.current)} />
+          ) : (
+            <div className="mx-auto max-w-3xl">
+              <ErrorState message={error ?? t.story.errors.generic} onRetry={() => run(lastQuestion.current)} />
+            </div>
+          ))}
 
         {showResults && (
           <article className="mx-auto min-w-0 max-w-3xl">

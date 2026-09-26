@@ -163,6 +163,11 @@ const en = {
       thanksNo: "Thank you for telling us. We will keep making these stories better.",
       privacy: "Only your answer is kept — never what you wrote.",
     },
+    fallback: {
+      title: "The story couldn't be written just now.",
+      busy: "Many people are asking right now, and this free service can only write a few stories at a time.",
+      body: "You are still not alone. These people carried this too — tap one to read their story straight from the text.",
+    },
     errors: {
       offline: "Could not reach the server. Check your connection and try again.",
       failed: (status: number) => `The request failed (${status}). Try again.`,
@@ -402,6 +407,11 @@ const am: Dict = {
       thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
       thanksNo: "ስለ ነገሩን እናመሰግናለን። እነዚህን ታሪኮች ማሻሻላችንን እንቀጥላለን።",
       privacy: "የሚቀመጠው መልስዎ ብቻ ነው — የጻፉት በፍጹም አይቀመጥም።",
+    },
+    fallback: {
+      title: "ታሪኩ አሁን ሊጻፍ አልቻለም።",
+      busy: "አሁን ብዙ ሰዎች እየጠየቁ ነው፤ ይህ ነጻ አገልግሎት በአንድ ጊዜ ጥቂት ታሪኮችን ብቻ ነው መጻፍ የሚችለው።",
+      body: "አሁንም ብቻዎን አይደሉም። እነዚህ ሰዎችም ይህን ተሸክመዋል — ታሪካቸውን በቀጥታ ከመጽሐፉ ለማንበብ አንዱን ይንኩ።",
     },
     errors: {
       offline: "ከአገልጋዩ ጋር መገናኘት አልተቻለም። ኢንተርኔትዎን አረጋግጠው እንደገና ይሞክሩ።",

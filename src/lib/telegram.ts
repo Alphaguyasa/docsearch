@@ -63,6 +63,8 @@ export const TEXT = {
     more: "Read it with the full passages",
     busy: "Many people are asking right now. Please send your message again in a minute.",
     failed: "Something went wrong while finding a story. Please try again in a moment.",
+    fallback:
+      "The story couldn't be written just now — but you are still not alone. These people carried this too; tap one to read their story straight from the text:",
     tooLong: "That is a lot to carry. Could you say it in fewer words (under 1000 characters)?",
     textOnly: "Please write what you are carrying in words, and I will find a story for you.",
     helpTitle: "If you are in danger, reach someone now.",
@@ -84,6 +86,7 @@ export const TEXT = {
     more: "ከሙሉ ምንባቦቹ ጋር ያንብቡት",
     busy: "አሁን ብዙ ሰዎች እየጠየቁ ነው። እባክዎ ከአንድ ደቂቃ በኋላ መልእክትዎን እንደገና ይላኩ።",
     failed: "ታሪክ በመፈለግ ላይ ችግር ተፈጠረ። እባክዎ ትንሽ ቆይተው እንደገና ይሞክሩ።",
+    fallback: "ታሪኩ አሁን ሊጻፍ አልቻለም — ግን አሁንም ብቻዎን አይደሉም። እነዚህ ሰዎችም ይህን ተሸክመዋል፤ ታሪካቸውን በቀጥታ ከመጽሐፉ ለማንበብ አንዱን ይንኩ፦",
     tooLong: "ይህ ብዙ ሸክም ነው። በአጭሩ (ከ1000 ፊደል በታች) ሊነግሩኝ ይችላሉ?",
     textOnly: "እባክዎ የተሸከሙትን በቃላት ይጻፉ፣ እኔም ታሪክ እፈልግልዎታለሁ።",
     helpTitle: "አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።",
@@ -233,4 +236,23 @@ export function parseFeedbackData(
       .filter((id): id is string => !!id),
     tags: tags.split(".").filter(Boolean),
   };
+}
+
+/**
+ * When no story can be written (quota spent, site busy, stream broken): the
+ * reason, then the people who carried the same thing, each linking to their
+ * page — read straight from the text, no model needed. Null when there is no one.
+ */
+export function fallbackMessage(
+  people: Pick<FigureSummary, "id" | "name" | "summary">[],
+  lang: BotLang,
+  busy: boolean,
+) {
+  if (!people.length) return null;
+  const t = TEXT[lang];
+  const lines = people.map((f) => {
+    const x = figureText(lang, f);
+    return `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(x.name)}</a> — ${escapeHtml(x.summary)}`;
+  });
+  return `${busy ? `${escapeHtml(t.busy)}\n\n` : ""}${escapeHtml(t.fallback)}\n\n${lines.join("\n\n")}`;
 }
