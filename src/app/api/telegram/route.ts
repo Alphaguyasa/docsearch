@@ -10,6 +10,7 @@
 import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
+import { ensureDailyStory } from "@/lib/channel";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import credits from "../../../../public/art/credits.json";
 import { peopleFor } from "@/lib/scripture/people-for";
@@ -59,6 +60,8 @@ export async function POST(request: Request): Promise<Response> {
   if (msg && msg.chat.type === "private") {
     after(() => handle(token, msg).catch((err) => console.error("telegram:", err)));
   }
+  // Backup for the morning channel post, in case the cron didn't fire.
+  after(() => ensureDailyStory().catch(() => {}));
   const cb = update.callback_query;
   if (cb) after(() => handleFeedback(token, cb).catch((err) => console.error("telegram feedback:", err)));
   return new Response("ok");
