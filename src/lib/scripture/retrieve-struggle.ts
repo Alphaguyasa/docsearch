@@ -8,7 +8,7 @@
  * hybrid results add anything else in the corpus that speaks to the message.
  */
 import { db } from "../db";
-import { getLlm } from "../llm";
+import { getLlm, lightModel } from "../llm";
 import { retrieve, type RetrievedChunk } from "../retrieve";
 import { canonByCode, type Tradition } from "./canon";
 import { orderedPassages, rankFigures, refsOverlap, type Figure } from "./figures";
@@ -46,7 +46,7 @@ const COLS = "id,document_id,content,page_number,ref,traditions,chunk_index";
 const PER_PASSAGE = 3;
 
 const defaultLlm: TagLlm = async (prompt) =>
-  (await getLlm().complete([{ role: "user", content: prompt }], 60)).text;
+  (await getLlm().complete([{ role: "user", content: prompt }], 60, lightModel())).text;
 
 export async function retrieveForStruggle(
   message: string,
