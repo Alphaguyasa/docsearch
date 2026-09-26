@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { TRADITION_KEY, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
+import { EXAMPLE_QUESTIONS } from "@/lib/example-cache";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 
 import { AnswerView } from "./components/AnswerView";
@@ -21,12 +22,7 @@ import { StruggleInput } from "./components/StruggleInput";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
 
-const EXAMPLES = [
-  "I keep lying to my parents and I can't stop.",
-  "I cheated on my wife. I don't know how to live with it.",
-  "I have walked away from God for years.",
-  "ሁልጊዜ በጣም እቆጣለሁ፣ ቤተሰቤን እጎዳለሁ።",
-];
+const EXAMPLES = [...EXAMPLE_QUESTIONS];
 
 function extractCited(text: string): number[] {
   const set = new Set<number>();

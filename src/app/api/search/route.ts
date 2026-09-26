@@ -36,6 +36,7 @@
 import { z } from "zod";
 
 import { streamAnswer, type FigureHint } from "@/lib/answer";
+import { cacheExample, exampleKey, getCachedExample } from "@/lib/example-cache";
 import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
 import { TRADITIONS } from "@/lib/scripture/canon";
@@ -124,6 +125,16 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
+  // An example question answered recently is served from memory: no quota spent.
+  const cacheKey = exampleKey(question, tradition);
+  const cached = cacheKey ? getCachedExample(cacheKey) : null;
+  if (cached) {
+    return new Response(cached, {
+      status: 200,
+      headers: { "Content-Type": "application/x-ndjson", "Cache-Control": "no-store" },
+    });
+  }
+
   // 3. Global rate limit — AFTER the safety gate, so a person in crisis is
   //    never told to wait.
   if (!(await takeSearchSlot())) {
@@ -152,14 +163,21 @@ export async function POST(request: Request): Promise<Response> {
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
+      // Kept only for example questions, and only if the answer completes.
+      const transcript: string[] = [];
+      const send = (l: string) => {
+        if (cacheKey) transcript.push(l);
+        controller.enqueue(encoder.encode(l));
+      };
       try {
-        controller.enqueue(encoder.encode(sourceLine(chunks, figures, tags)));
+        send(sourceLine(chunks, figures, tags));
 
         for await (const text of streamAnswer(question, chunks, hints)) {
-          controller.enqueue(encoder.encode(line({ type: "delta", text })));
+          send(line({ type: "delta", text }));
         }
 
-        controller.enqueue(encoder.encode(line({ type: "done" })));
+        send(line({ type: "done" }));
+        if (cacheKey) cacheExample(cacheKey, transcript.join(""));
       } catch (err) {
         // The status is already committed (200); report the failure in-band as
         // the terminal line instead of a "done".
