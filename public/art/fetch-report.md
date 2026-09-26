@@ -29,3 +29,5 @@
 - penitent_thief: File:Tiziano Vecellio e aiuti, Gesù Cristo e il buon ladrone, 1563 circa.jpg — Mongolo1984 — CC BY-SA 4.0
 - sinful_woman: File:Bouts anoiting.jpg — Dieric Bouts — Public domain
 - naomi: File:1795-William-Blake-Naomi-entreating-Ruth-Orpah.jpg — William Blake — Public domain
+- mary_of_egypt: File:Ribera-marie-égyptienne-musée-Fabre.jpg — Jusepe de Ribera — Public domain
+- cyprian: File:Kiprian and justina.JPG — Biso — CC BY 3.0

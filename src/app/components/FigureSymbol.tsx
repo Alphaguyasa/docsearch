@@ -139,6 +139,25 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M24 44 L40 44" />
     </>
   ),
+  // The books of magic he burned.
+  cyprian: (
+    <>
+      <path d="M10 50 L32 56 L54 50 L54 36 L32 42 L10 36 Z" />
+      <path d="M32 42 L32 56" />
+      <path d="M22 30 C18 24 22 18 26 12 C27 18 32 20 30 26 C33 24 34 20 34 16 C40 22 40 30 36 34" />
+      <path d="M38 30 C38 26 41 23 44 20 C45 25 46 28 44 32" />
+    </>
+  ),
+  // Everything earned by sin, burned in the middle of the city.
+  thais: (
+    <>
+      <path d="M14 56 L50 56" />
+      <path d="M18 56 L24 46 L30 56 M28 56 L36 44 L44 56" />
+      <path d="M32 40 C24 34 26 24 32 12 C34 20 40 22 40 30 C40 35 37 39 32 40 Z" />
+      <path d="M22 42 C18 38 20 32 23 28 C24 32 27 34 26 38" />
+      <path d="M44 42 C47 38 46 33 43 30 C42 34 40 36 41 39" />
+    </>
+  ),
   // The great fish.
   jonah: (
     <>
