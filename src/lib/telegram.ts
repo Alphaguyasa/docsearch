@@ -61,6 +61,7 @@ export const TEXT = {
       "<b>You are not the only one.</b> Tell me what you are carrying — a sin, a struggle, something you are ashamed of — and I will tell you the true story of a holy person who fell the same way and was restored, from Scripture and the Church Fathers.\n\n" +
       "Nothing you write is saved.\n\n" +
       "Try: <i>I can't stop lying to my parents.</i>\n\n" +
+      "/today — the story of the day\n" +
       "/help — if you are in danger, people to call now",
     searching: "Finding someone who carried this too…",
     notOnly: "You are not the only one",
@@ -74,6 +75,8 @@ export const TEXT = {
     textOnly: "Please write what you are carrying in words, and I will find a story for you.",
     helpTitle: "If you are in danger, reach someone now.",
     call: "Call",
+    today: "Story of the day",
+    readStory: "Read their story",
     helped: "🙏 This helped",
     notReally: "Not really",
     thanks: "Thank you. It helps us find the right stories for others.",
@@ -84,6 +87,7 @@ export const TEXT = {
       "<b>እርስዎ ብቻ አይደሉም።</b> የተሸከሙትን ይንገሩኝ — ኃጢአት፣ ትግል ወይም የሚያሳፍርዎትን ነገር — እኔም በተመሳሳይ መንገድ ወድቆ የተመለሰውን የቅዱስ ሰው እውነተኛ ታሪክ ከመጽሐፍ ቅዱስና ከቤተ ክርስቲያን አባቶች እነግርዎታለሁ።\n\n" +
       "የሚጽፉት ምንም ነገር አይቀመጥም።\n\n" +
       "ለምሳሌ፦ <i>ለወላጆቼ መዋሸት ማቆም አልቻልኩም።</i>\n\n" +
+      "/today — የዕለቱ ታሪክ\n" +
       "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
     notOnly: "እርስዎ ብቻ አይደሉም",
@@ -96,6 +100,8 @@ export const TEXT = {
     textOnly: "እባክዎ የተሸከሙትን በቃላት ይጻፉ፣ እኔም ታሪክ እፈልግልዎታለሁ።",
     helpTitle: "አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።",
     call: "ይደውሉ",
+    today: "የዕለቱ ታሪክ",
+    readStory: "ታሪካቸውን ያንብቡ",
     helped: "🙏 ረድቶኛል",
     notReally: "ብዙም አይደለም",
     thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
@@ -260,4 +266,14 @@ export function fallbackMessage(
     return `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(x.name)}</a> — ${escapeHtml(x.summary)}`;
   });
   return `${busy ? `${escapeHtml(t.busy)}\n\n` : ""}${escapeHtml(t.fallback)}\n\n${lines.join("\n\n")}`;
+}
+
+/** The /today caption: who, what they carried, and a link to their page (fits a photo caption). */
+export function todayCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, lang: BotLang): string {
+  const t = TEXT[lang];
+  const x = figureText(lang, f);
+  return (
+    `<b>${escapeHtml(t.today)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
+    `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
+  );
 }

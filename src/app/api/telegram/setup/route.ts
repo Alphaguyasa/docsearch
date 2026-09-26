@@ -20,13 +20,16 @@ export async function GET(request: Request): Promise<Response> {
       secret_token: webhookSecret(token),
       allowed_updates: ["message", "callback_query"],
     });
-    const commands = (start: string, help: string) => [
+    const commands = (start: string, today: string, help: string) => [
       { command: "start", description: start },
+      { command: "today", description: today },
       { command: "help", description: help },
     ];
-    await tg(token, "setMyCommands", { commands: commands("Begin", "If you are in danger — people to call now") });
     await tg(token, "setMyCommands", {
-      commands: commands("ጀምር", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
+      commands: commands("Begin", "The story of the day", "If you are in danger — people to call now"),
+    });
+    await tg(token, "setMyCommands", {
+      commands: commands("ጀምር", "የዕለቱ ታሪክ", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
       language_code: "am",
     });
     await tg(token, "setMyDescription", {

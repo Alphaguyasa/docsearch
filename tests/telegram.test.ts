@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { FIGURES } from "../src/lib/scripture/figures";
 import type { SearchStreamMessage } from "../src/lib/search-stream";
 import {
   MAX_MESSAGE,
@@ -12,6 +13,7 @@ import {
   setupKey,
   splitMessage,
   storyMessages,
+  todayCaption,
   webhookSecret,
 } from "../src/lib/telegram";
 
@@ -105,4 +107,14 @@ test("the setup key is token-bound and differs from the webhook secret", () => {
   assert.equal(setupKey("123:abc"), setupKey("123:abc"));
   assert.notEqual(setupKey("123:abc"), setupKey("123:abd"));
   assert.notEqual(setupKey("123:abc"), webhookSecret("123:abc").slice(0, 32));
+});
+
+test("the /today caption fits a Telegram photo caption and links the person's page", () => {
+  for (const f of FIGURES) {
+    for (const lang of ["en", "am"] as const) {
+      const c = todayCaption(f, lang);
+      assert.ok(c.replace(/<[^>]+>/g, "").length <= 1024, `${f.id} ${lang}`);
+      assert.match(c, new RegExp(`/people/${f.id}"`));
+    }
+  }
 });

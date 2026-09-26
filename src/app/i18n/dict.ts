@@ -49,6 +49,7 @@ const en = {
       protestant: "The 66-book Bible",
     },
   },
+  today: { eyebrow: "Story of the day", read: "Read their story" },
   examples: {
     heading: "Or begin with what others have carried",
     light: "Light this candle",
@@ -299,6 +300,7 @@ const am: Dict = {
       protestant: "66ቱ የመጽሐፍ ቅዱስ መጻሕፍት",
     },
   },
+  today: { eyebrow: "የዕለቱ ታሪክ", read: "ታሪካቸውን ያንብቡ" },
   examples: {
     heading: "ወይም ሌሎች በተሸከሙት ይጀምሩ",
     light: "ይህን ሻማ ያብሩ",
