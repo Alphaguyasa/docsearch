@@ -3,6 +3,7 @@ import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "ne
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
+import { SiteHeader } from "./components/SiteHeader";
 
 import "./globals.css";
 
@@ -65,8 +66,8 @@ export default function RootLayout({
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg">
           Skip to content
         </a>
-        <header className="night relative z-20 border-b border-border">
-          <nav className="mx-auto flex h-14 max-w-5xl items-center gap-5 px-4 text-sm sm:px-6">
+        <SiteHeader>
+          <nav className="mx-auto flex h-12 max-w-6xl items-center gap-6 px-4 text-[13px] sm:px-6">
             <Link href="/" className="flex items-center gap-2 font-caps text-[15px] font-semibold tracking-[0.12em]">
               <CandleMark className="h-6 w-6 text-gold" />
               Not Alone
@@ -86,12 +87,12 @@ export default function RootLayout({
             )}
             <Link
               href="/help"
-              className="ml-auto rounded-full border border-border px-3 py-1.5 text-foreground transition-colors hover:border-gold"
+              className="ml-auto rounded-full bg-white/10 px-3.5 py-1.5 text-foreground transition-colors hover:bg-gold hover:text-background"
             >
               Need help now?
             </Link>
           </nav>
-        </header>
+        </SiteHeader>
         <div id="main">{children}</div>
         <footer className="mx-auto max-w-5xl border-t border-border px-4 py-8 text-sm leading-6 text-muted sm:px-6">
           <p>
