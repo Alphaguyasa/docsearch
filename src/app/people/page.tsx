@@ -8,7 +8,7 @@ import { RevealGroup, Tilt } from "../components/Motion";
 import { ClosingCta } from "../components/HomeSections";
 import { PeopleFilter } from "../components/PeopleFilter";
 import { SymbolPlate } from "../components/SymbolPlate";
-import { groupsFor, readablePeople, readerNote, storyRefs, tagLabel, TRADITION_NAMES } from "../people";
+import { groupCounts, groupsFor, readablePeople, readerNote, storyRefs, tagLabel, TRADITION_NAMES } from "../people";
 
 export const metadata = { title: "People — Not Alone" };
 
@@ -47,7 +47,7 @@ export default function PeoplePage() {
         )}
       </section>
 
-      <PeopleFilter total={people.length}>
+      <PeopleFilter total={people.length} counts={groupCounts(people)}>
         <div className="mx-auto max-w-6xl px-4 pb-20 pt-6 sm:px-6">
           <RevealGroup as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {people.map((f, i) => {
@@ -65,7 +65,7 @@ export default function PeoplePage() {
                 >
                   <Tilt
                     max={3}
-                    className="candle-glare lit-border group flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-card p-6 shadow-[0_30px_60px_-34px_rgb(0_0_0_/_0.9)]"
+                    className="paper candle-glare lit-border group flex h-full flex-col overflow-hidden rounded-[22px] border border-border p-6 shadow-[0_30px_60px_-34px_rgb(0_0_0_/_0.9)] hover:border-gold/40 hover:shadow-[0_40px_70px_-30px_rgb(0_0_0_/_1),0_0_50px_-20px_rgb(232_181_96_/_0.35)]"
                   >
                     <div className="art-frame relative -mx-6 -mt-6 mb-5">
                       {artFor(f.id) ? (
