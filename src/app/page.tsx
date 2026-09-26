@@ -22,6 +22,7 @@ import { ScrollWords } from "./components/ScrollWords";
 import { StickyStories } from "./components/StickyStories";
 import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
+import { TodayStory } from "./components/TodayStory";
 import { useT } from "./i18n/client";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
@@ -222,6 +223,7 @@ export default function Home() {
 
       {status === "idle" && (
         <>
+          <TodayStory />
           <ScrollWords />
           <StickyStories />
           <StoryGallery />
