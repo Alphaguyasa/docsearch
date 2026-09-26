@@ -79,6 +79,19 @@
       "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACQAwCdASoQABIAPu1iqU2ppaOiMAgBMB2JZQC7ACHfUVsb3RRQAP7r2rpAWcL0lDvQLwEtzm5WM6zPFeiwxYQZREAAAA=="
     },
     {
+      "id": "abraham",
+      "caption": "God's promises to Abram",
+      "title": "Ontwerp voor een titelblad met drie scènes uit het leven van Abraham, RP-T-1903-A-4777",
+      "artist": "Rijksmuseum",
+      "date": "between 1694 and 1696date QS:P,+1694-00-00T00:00:00Z/8,P1319,+1694-00-00T00:00:00Z/9,P1326,+1696-00-00T00:00:00Z/9",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "https://commons.wikimedia.org/wiki/File:Ontwerp_voor_een_titelblad_met_drie_sc%C3%A8nes_uit_het_leven_van_Abraham,_RP-T-1903-A-4777.jpg",
+      "width": 1920,
+      "height": 3010,
+      "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwBACdASoQABkAPu1iqk2ppaQiMAgBMB2JZQCw7CHfIfbx3B4OfusLrAAA/uFPsPIUhCrha200ppb2+Je8k46fgg00a96PiQ2NXcXkVBC83Le5dS4etuDtO+HOlRdwU3c17a4OcZ0V00i1r0CSwAAA"
+    },
+    {
       "id": "jacob",
       "caption": "Jacob wrestling with the angel",
       "title": "German: Jakob ringt mit dem Engel Jacob wrestling with the angeltitle QS:P1476,de:\"Jakob ringt mit dem Engel \"label QS:Lde,\"Jakob ringt mit dem Engel \"label QS:Lja,\"天使と闘うヤコブ\"label QS:Lfr,\"Lutte de Jacob avec l'Ange\"label QS:Len,\"Jacob wrestling with the angel\"label QS:Lpl,\"Walka Jakuba z aniołem\"label QS:Lnl,\"Jakob worstelend met de engel\"",
@@ -133,15 +146,28 @@
     {
       "id": "aaron",
       "caption": "The adoration of the golden calf",
-      "title": "The Adoration of the Golden Calf",
+      "title": "The adoration of the golden calf 1633-36",
       "artist": "Nicolas Poussin",
-      "date": "circa 1634date QS:P571,+1634-00-00T00:00:00Z/9,P1480,Q5727902",
+      "date": "1634",
       "license": "Public domain",
       "licenseUrl": "",
-      "source": "https://commons.wikimedia.org/wiki/File:Nicolas_Poussin_-_The_Adoration_of_the_Golden_Calf_alt.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:The_adoration_of_the_golden_calf_1633-36.jpg",
+      "width": 819,
+      "height": 584,
+      "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAQCdASoQAAsAA4BaJZgCdAED4UiSaAD+76FZHTMvl1KhOS0fWslCo2sz/7z5ieUGQ0zQaSyw6K7NeBElDmJCE/ubogpVt0ZpQsNlA13YAAAA"
+    },
+    {
+      "id": "rahab",
+      "caption": "Rahab and the spies",
+      "title": "Tissot The Harlot of Jericho and the Two Spies",
+      "artist": "James Tissot",
+      "date": "between circa 1896 and circa 1902date QS:P,+1500-00-00T00:00:00Z/6,P1319,+1896-00-00T00:00:00Z/9,P1326,+1902-00-00T00:00:00Z/9,P1480,Q5727902",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:Tissot_The_Harlot_of_Jericho_and_the_Two_Spies.jpg",
       "width": 1920,
-      "height": 1376,
-      "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAQCdASoQAAsAA4BaJYgCdADpjiX0AAD+8bJPfyGQuY7Rvry1upChZNeyviyeFNViHHjTjP/NN8j76SOxjfP6aHslmBN0FM2M/r7KCaZyAAAA"
+      "height": 2597,
+      "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACwAwCdASoQABYAPu1iqU2ppaOiMAgBMB2JYwCw7BMaF+7sCuI9AADnkrXj+CnZh2PF54aqLiHwZWHimXPY7tgRlC9oDBwnWylevnmfi//Ta2emryepR0H96JxXUIBKA5Gn7z361rEwcy80EIc8gycAAAA="
     },
     {
       "id": "matthew",
@@ -155,6 +181,19 @@
       "width": 1920,
       "height": 1813,
       "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoQAA8AA4BaJYwC7AEPAoTrbKUoAP73fKO8is/8EgW2/7mp4/Um/LOCohWFWdowt42yMOjnHyzhzyuoAAA="
+    },
+    {
+      "id": "zacchaeus",
+      "caption": "Zacchaeus in the sycamore",
+      "title": "Zacchaeus in the Sycamore Awaiting the Passage of Jesus",
+      "artist": "James Tissot",
+      "date": "between 1886 and 1894date QS:P571,+1850-00-00T00:00:00Z/7,P1319,+1886-00-00T00:00:00Z/9,P1326,+1894-00-00T00:00:00Z/9",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:Brooklyn_Museum_-_Zacchaeus_in_the_Sycamore_Awaiting_the_Passage_of_Jesus_(Zach%C3%A9e_sur_le_sycomore_attendant_le_passage_de_J%C3%A9sus)_-_James_Tissot.jpg",
+      "width": 731,
+      "height": 522,
+      "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoQAAsAA4BaJYwCdAEJ3cnTVv/gAP7kNAfjx9azWBpWduCtsbsXFuBy+80VaWbnJ4i+Zjmi+BKLJM+o0wdxWdHTiUmr6fcjjItsnDAAAAA="
     },
     {
       "id": "samaritan_woman",
