@@ -709,20 +709,31 @@
         "sexual_sin",
         "shame"
       ],
-      "summary": "Lived for years in sexual sin, then spent decades in repentance in the desert.",
+      "summary": "From the age of twelve lived for twenty-seven years in sexual sin; turned back at the door of the church in Jerusalem, she wept, and spent forty-seven years in repentance in the desert of the Jordan.",
       "traditions": [
-        "catholic",
-        "orthodox",
         "ethiopian_orthodox"
       ],
       "passages": [
         {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Miyazya",
+          "sourceId": "synaxarium",
+          "match": "made her to love fornication"
+        },
+        {
           "role": "restoration",
-          "ref": "Life of St. Mary of Egypt",
-          "sourceId": "pending"
+          "ref": "Ethiopian Synaxarium, Miyazya",
+          "sourceId": "synaxarium",
+          "match": "desert of the Jordan thou wilt find rest"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Miyazya",
+          "sourceId": "synaxarium",
+          "match": "Bury mary, the poor woman"
         }
       ],
-      "note": "No verified public-domain source in corpus v1; do not surface until sourced."
+      "note": "Read from the Ethiopian Synaxarium (Miyazya)."
     },
     {
       "id": "noah",
@@ -960,6 +971,77 @@
           "role": "restoration",
           "ref": "Ruth 4:13-17",
           "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "cyprian",
+      "name": "St. Cyprian",
+      "kind": "tradition",
+      "sins": [
+        "idolatry",
+        "lust",
+        "pride"
+      ],
+      "summary": "A famous sorcerer who used magic to try to take a praying girl for another man; when it failed he burned his books of magic, was baptized, and died a bishop and martyr.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "teacher of sorcery"
+        },
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "all the works of his sorcery"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "destroyed his books of magic"
+        }
+      ],
+      "note": "Cyprian of Antioch, not Cyprian of Carthage. Read from the Ethiopian Synaxarium (Maskaram)."
+    },
+    {
+      "id": "thais",
+      "name": "St. Thais",
+      "kind": "tradition",
+      "sins": [
+        "sexual_sin",
+        "shame",
+        "greed"
+      ],
+      "summary": "A prostitute in Egypt who burned everything she had earned by sin in the middle of the city, and spent three years in a cell praying, “You who made me, have mercy on me.”",
+      "traditions": [
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”",
+          "sourceId": "paradise",
+          "match": "take up a position in the market"
+        },
+        {
+          "role": "restoration",
+          "ref": "Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”",
+          "sourceId": "paradise",
+          "match": "burnt it with fire in the midst of the city"
+        },
+        {
+          "role": "restoration",
+          "ref": "Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”",
+          "sourceId": "paradise",
+          "match": "This couch is not for Anthony"
         }
       ]
     }
