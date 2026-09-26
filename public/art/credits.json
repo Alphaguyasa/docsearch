@@ -376,6 +376,32 @@
       "width": 1024,
       "height": 754,
       "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAABQAgCdASoQAAwAA4BaJbACdAYu5mx0tyoUM3AA/sEqUZXL8epiEgbigBh1zCfrslNh3/rgErUgxt9UYqZnDaYzRcQpwLR/lXcddaHE46l/g14XkzhH9NaDhQf0miDSdg70xyho3XsPucGMpcAAAA=="
+    },
+    {
+      "id": "mary_of_egypt",
+      "caption": "Saint Mary of Egypt",
+      "title": "French: Sainte Marie l'Égyptienne Saint Mary of Egypttitle QS:P1476,fr:\"Sainte Marie l'Égyptienne \"label QS:Lfr,\"Sainte Marie l'Égyptienne \"label QS:Lit,\"Santa Maria Egiziaca (Ribera Montpellier)\"label QS:Lja,\"エジプトの聖マリア (リベーラ、モンペリエ)\"label QS:Len,\"Saint Mary of Egypt\"label QS:Les,\"Santa María Egipcíaca (Ribera, Montpellier)\"label QS:Lnl,\"De heilige Maria van Egypte\"",
+      "artist": "Jusepe de Ribera",
+      "date": "1641date QS:P571,+1641-00-00T00:00:00Z/9",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:Ribera-marie-%C3%A9gyptienne-mus%C3%A9e-Fabre.jpg",
+      "width": 1920,
+      "height": 2455,
+      "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAACQAwCdASoQABQAPu1iqU2ppaOiMAgBMB2JQBOmUABVdIEh5HLoAPqIu3z/tMh3VuKalnsRcGfil1W9nGrRHWOHnC+z3QfVTlAPAzMHee4Yt7emltpo08MwUFosWsUTPtkSwaEAd6mFtPheu/EAAA=="
+    },
+    {
+      "id": "cyprian",
+      "caption": "Saints Cyprian and Justina",
+      "title": "Kiprian and justina",
+      "artist": "Biso",
+      "date": "2009-10-26",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kiprian_and_justina.JPG",
+      "width": 1920,
+      "height": 2903,
+      "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAACwBACdASoQABgAPu1iqU2ppaOiMAgBMB2JbACdMoR3JoFyAAR65Ds6tA6Fi574AP4D9yRCIc3zJmOQT7V9Fq9YHB7XWRXyC0ca/PSwnIWk3NrnTuFahBdxw95UFk7vr2l14qGZ+qJfsuJvZiNt8FwLqK09O+Vjjgwub7Dmzbh+k3tssv6WwS3lIu4DLNxjtym59jVqaFbJAsyl9XTHtxy/4hIxK++ZpjTB/Oifl6sAEo6GugA="
     }
   ]
 }

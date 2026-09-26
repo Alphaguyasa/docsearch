@@ -156,6 +156,16 @@
       "id": "naomi",
       "query": "William Blake Naomi entreating Ruth and Orpah",
       "caption": "Naomi Entreating Ruth and Orpah"
+    },
+    {
+      "id": "mary_of_egypt",
+      "query": "Jusepe de Ribera Saint Mary of Egypt 1641",
+      "caption": "Saint Mary of Egypt"
+    },
+    {
+      "id": "cyprian",
+      "query": "Saints Cyprian and Justina icon",
+      "caption": "Saints Cyprian and Justina"
     }
   ]
 }
