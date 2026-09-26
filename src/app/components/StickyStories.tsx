@@ -8,37 +8,9 @@ import { artByline, artFor } from "@/app/art";
 import { ArtImage } from "./ArtImage";
 import { ArrowRight } from "./Icons";
 import { prefersCalm, useScrollProgress } from "./Motion";
+import { useT } from "../i18n/client";
 
-const STORIES = [
-  {
-    id: "david",
-    name: "King David",
-    fall: "Took another man’s wife, then arranged her husband’s death.",
-    rise: "Confronted by the prophet Nathan, he confessed — and his prayer of repentance became Psalm 51.",
-    read: "2 Samuel 11–12 · Psalm 51",
-  },
-  {
-    id: "peter",
-    name: "Peter",
-    fall: "Swore three times that he had never known Jesus.",
-    rise: "The risen Jesus asked him three times, “Do you love me?” — and gave him his flock to feed.",
-    read: "Luke 22:54–62 · John 21:15–19",
-  },
-  {
-    id: "paul",
-    name: "Paul",
-    fall: "Hunted Christians and dragged them off to prison.",
-    rise: "Met on the road to Damascus, he became the apostle to the nations, calling himself the foremost of sinners.",
-    read: "Acts 9 · 1 Timothy 1:12–16",
-  },
-  {
-    id: "augustine",
-    name: "St. Augustine",
-    fall: "Stole for the thrill of it, and lived for years in lust and ambition.",
-    rise: "Converted in a garden in Milan, he became one of the great teachers of the Church.",
-    read: "Confessions, Books II and VIII",
-  },
-];
+const ORDER = ["david", "peter", "paul", "augustine"] as const;
 
 /**
  * Four lives, one pinned screen. As the reader scrolls, each painting
@@ -50,6 +22,8 @@ export function StickyStories() {
   const section = useRef<HTMLElement>(null);
   const layers = useRef<HTMLDivElement[]>([]);
   const [active, setActive] = useState(0);
+  const { t } = useT();
+  const STORIES = ORDER.map((id) => ({ id, ...t.stories.items[id] }));
   const n = STORIES.length;
 
   useScrollProgress(section, (p) => {
@@ -66,7 +40,12 @@ export function StickyStories() {
 
   const story = STORIES[active];
   return (
-    <section ref={section} aria-label="Four lives" className="night relative" style={{ height: `${(n + 1) * 100}vh` }}>
+    <section
+      ref={section}
+      aria-label={t.stories.aria}
+      className="night relative"
+      style={{ height: `${(n + 1) * 100}vh` }}
+    >
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* Paintings */}
         <div className="absolute inset-0 overflow-hidden min-[900px]:left-[46%]">
@@ -101,22 +80,24 @@ export function StickyStories() {
               <h3 className="mt-4 font-display text-5xl font-semibold leading-none sm:text-6xl">{story.name}</h3>
               <p className="mt-6 font-serif text-[20px] leading-8 text-muted">
                 <span className="font-caps text-[11px] font-semibold tracking-[0.2em] text-foreground/70">
-                  The fall
+                  {t.stories.fall}
                 </span>
                 <br />
                 {story.fall}
               </p>
               <p className="mt-5 font-serif text-[20px] leading-8">
-                <span className="font-caps text-[11px] font-semibold tracking-[0.2em] text-gold">The restoration</span>
+                <span className="font-caps text-[11px] font-semibold tracking-[0.2em] text-gold">{t.stories.rise}</span>
                 <br />
                 {story.rise}
               </p>
-              <p className="mt-6 text-sm text-muted">Read it: {story.read}</p>
+              <p className="mt-6 text-sm text-muted">
+                {t.stories.read} {story.read}
+              </p>
               <Link
                 href={`/people#${story.id}`}
                 className="group mt-6 inline-flex items-center gap-2 font-caps text-[12px] font-semibold tracking-[0.18em] text-gold"
               >
-                Their story{" "}
+                {t.stories.more}{" "}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>

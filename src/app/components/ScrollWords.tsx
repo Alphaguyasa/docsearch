@@ -3,14 +3,7 @@
 import { useRef } from "react";
 
 import { prefersCalm, useScrollProgress } from "./Motion";
-
-const LINES: { text: string; gold?: boolean }[] = [
-  { text: "David took another man’s wife." },
-  { text: "Peter swore he never knew Jesus." },
-  { text: "Paul dragged believers to prison." },
-  { text: "Augustine stole for the thrill of it." },
-  { text: "None of them was left where they fell.", gold: true },
-];
+import { useT } from "../i18n/client";
 
 /**
  * A pinned statement whose words light up one by one as the reader scrolls,
@@ -21,6 +14,11 @@ const LINES: { text: string; gold?: boolean }[] = [
 export function ScrollWords() {
   const section = useRef<HTMLElement>(null);
   const words = useRef<HTMLSpanElement[]>([]);
+  const { t } = useT();
+  const LINES: { text: string; gold?: boolean }[] = [
+    ...t.words.lines.map((text) => ({ text })),
+    { text: t.words.last, gold: true },
+  ];
 
   useScrollProgress(section, (p) => {
     const all = words.current;
@@ -36,8 +34,9 @@ export function ScrollWords() {
   });
 
   let n = 0;
+  words.current = [];
   return (
-    <section ref={section} aria-label="They fell too" className="relative h-[240vh]">
+    <section ref={section} aria-label={t.words.aria} className="relative h-[240vh]">
       <div className="sticky top-0 flex h-[100svh] items-center">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <p className="font-display text-[2.1rem] font-semibold leading-[1.12] tracking-[-0.01em] sm:text-6xl lg:text-7xl">

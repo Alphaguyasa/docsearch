@@ -17,6 +17,10 @@ export const EXAMPLE_QUESTIONS = [
   "I cheated on my wife. I don't know how to live with it.",
   "I have walked away from God for years.",
   "ሁልጊዜ በጣም እቆጣለሁ፣ ቤተሰቤን እጎዳለሁ።",
+  // The same cards when the site is shown in Amharic (src/app/i18n/dict.ts).
+  "ለወላጆቼ መዋሸት ማቆም አልቻልኩም።",
+  "በትዳሬ ላይ አመነዘርኩ። ከዚህ ጋር እንዴት እንደምኖር አላውቅም።",
+  "ለዓመታት ከእግዚአብሔር ርቄያለሁ።",
 ] as const;
 
 const TTL_MS = 6 * 60 * 60 * 1000;

@@ -3,9 +3,11 @@
 import Link from "next/link";
 
 import type { CrisisPayload } from "@/lib/search-stream";
+import { useT } from "../i18n/client";
 
 /** Shown instead of a story when the safety gate trips. Calm, direct, first; numbers dial on one tap. */
 export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: () => void }) {
+  const { t } = useT();
   const phones = crisis.resources.filter((r) => r.phone);
   const others = crisis.resources.filter((r) => !r.phone);
   return (
@@ -22,7 +24,9 @@ export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: 
               >
                 <span className="font-serif text-4xl text-gold">{r.phone}</span>
                 <span className="mt-1 font-medium">{r.name}</span>
-                <span className="text-sm text-muted">{r.detail} · tap to call</span>
+                <span className="text-sm text-muted">
+                  {r.detail} · {t.crisis.tap}
+                </span>
               </a>
             </li>
           ))}
@@ -40,7 +44,12 @@ export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: 
           {others.map((r) => (
             <li key={r.name}>
               {r.url ? (
-                <a href={r.url} target="_blank" rel="noreferrer" className="font-medium text-accent underline underline-offset-4">
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-accent underline underline-offset-4"
+                >
                   {r.name}
                 </a>
               ) : (
@@ -54,10 +63,10 @@ export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: 
 
       <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
         <Link href="/help" className="underline underline-offset-4 hover:text-foreground">
-          All help, in one place
+          {t.crisis.allHelp}
         </Link>
         <button type="button" onClick={onBack} className="underline underline-offset-4 hover:text-foreground">
-          Write something else
+          {t.crisis.other}
         </button>
       </div>
     </section>
