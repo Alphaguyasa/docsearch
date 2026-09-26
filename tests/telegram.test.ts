@@ -9,6 +9,7 @@ import {
   detectLang,
   fallbackMessage,
   markdownToHtml,
+  setupKey,
   splitMessage,
   storyMessages,
   webhookSecret,
@@ -98,4 +99,10 @@ test("fallback message links each person's page, or is null with no one to offer
   assert.match(en, /\/people\/peter">Peter<\/a>/);
   assert.match(fallbackMessage(people, "am", false)!, /\/people\/peter">ጴጥሮስ<\/a>/);
   assert.equal(fallbackMessage([], "en", false), null);
+});
+
+test("the setup key is token-bound and differs from the webhook secret", () => {
+  assert.equal(setupKey("123:abc"), setupKey("123:abc"));
+  assert.notEqual(setupKey("123:abc"), setupKey("123:abd"));
+  assert.notEqual(setupKey("123:abc"), webhookSecret("123:abc").slice(0, 32));
 });

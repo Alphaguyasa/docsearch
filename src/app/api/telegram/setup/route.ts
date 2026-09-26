@@ -1,14 +1,19 @@
 /**
- * GET /api/telegram/setup — points the Telegram bot at this site. Safe to call
- * any time: it always registers the production URL (never the request's host)
- * with the secret derived from the token, and sets the bot's command menu and
+ * GET /api/telegram/setup?key=… — points the Telegram bot at this site. It
+ * always registers the production URL (never the request's host) with the
+ * secret derived from the token, and sets the bot's command menu and
  * descriptions in English and Amharic.
+ *
+ * `key` must be setupKey(token), so only whoever holds the bot token can run
+ * it; anyone else gets a plain 404 and no Telegram calls are made.
  */
-import { SITE_URL, tg, webhookSecret } from "@/lib/telegram";
+import { SITE_URL, setupKey, tg, webhookSecret } from "@/lib/telegram";
 
-export async function GET(): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) return Response.json({ ok: false, error: "TELEGRAM_BOT_TOKEN is not set" }, { status: 503 });
+  if (!token || new URL(request.url).searchParams.get("key") !== setupKey(token)) {
+    return new Response("Not found", { status: 404 });
+  }
   try {
     await tg(token, "setWebhook", {
       url: `${SITE_URL}/api/telegram`,
