@@ -20,6 +20,11 @@ export function addisDay(date: Date): number {
   return Math.floor((date.getTime() + ADDIS_OFFSET_MS) / DAY_MS);
 }
 
+/** Hour of the day in Addis Ababa (UTC+3). */
+export function addisHour(date: Date): number {
+  return (date.getUTCHours() + 3) % 24;
+}
+
 export function personOfTheDay(date: Date, all: Figure[] = FIGURES): Figure {
   const readable = all
     .filter((f) => f.passages.some((p) => p.sourceId !== "pending"))

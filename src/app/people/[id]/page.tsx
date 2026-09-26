@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { after } from "next/server";
 import { notFound } from "next/navigation";
 
+import { ensureDailyStory } from "@/lib/channel";
 import { FIGURES } from "@/lib/scripture/figures";
 import { figureStory, type StoryPart } from "@/lib/scripture/retrieve-struggle";
 import { SITE_URL } from "@/lib/telegram";
@@ -50,6 +52,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function PersonPage({ params }: Params) {
   const f = findPerson((await params).id);
   if (!f) notFound();
+  // Backup for the morning channel post, in case the cron didn't fire.
+  after(() => ensureDailyStory().catch(() => {}));
   const { lang, t } = await getDict();
   const tp = t.person;
   const text = figureText(lang, f);
