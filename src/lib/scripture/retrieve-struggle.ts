@@ -11,7 +11,7 @@ import { db } from "../db";
 import { getLlm, lightModel } from "../llm";
 import { retrieve, type RetrievedChunk } from "../retrieve";
 import { canonByCode, type Tradition } from "./canon";
-import { orderedPassages, rankFigures, refsOverlap, type Figure } from "./figures";
+import { cleanPassage, orderedPassages, rankFigures, refsOverlap, type Figure } from "./figures";
 import { mapStruggle, type TagLlm } from "./struggle";
 import { parseRef } from "./usfm";
 
@@ -159,4 +159,29 @@ async function documentMeta(ids: string[]): Promise<Map<string, { title: string;
   if (error) throw new Error(`document metadata lookup failed: ${error.message}`);
   for (const d of data ?? []) out.set(d.id, d);
   return out;
+}
+
+/** One part of a person's story as the text tells it: the fall, the restoration, or context. */
+export interface StoryPart {
+  role: "fall" | "restoration" | "context";
+  ref: string;
+  passages: { id: string; ref: string; content: string }[];
+}
+
+/**
+ * The texts behind one person, in reading order, for their own page. Straight
+ * from the corpus — no model involved — so it works even when the answer
+ * quota is spent. A chunk that serves two passages is shown once.
+ */
+export async function figureStory(f: Figure): Promise<StoryPart[]> {
+  const seen = new Set<string>();
+  const parts: StoryPart[] = [];
+  for (const p of orderedPassages(f)) {
+    const rows = (await passageChunks(p.ref, p.sourceId, undefined, p.match)).slice(0, PER_PASSAGE);
+    const passages = rows
+      .filter((r) => !seen.has(r.id) && seen.add(r.id))
+      .map((r) => ({ id: r.id, ref: r.ref ?? p.ref, content: cleanPassage(r.content, r.ref) }));
+    if (passages.length) parts.push({ role: p.role, ref: p.ref, passages });
+  }
+  return parts;
 }

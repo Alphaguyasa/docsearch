@@ -1,9 +1,12 @@
+import Link from "next/link";
+
 import { FIGURES } from "@/lib/scripture/figures";
 
 import { artByline, artFor, artSrc } from "../art";
 import { CandleScene } from "../components/CandleScene";
 import { ArtImage } from "../components/ArtImage";
 import { FigureSymbol } from "../components/FigureSymbol";
+import { ArrowRight } from "../components/Icons";
 import { RevealGroup, Tilt } from "../components/Motion";
 import { ClosingCta } from "../components/HomeSections";
 import { PeopleFilter } from "../components/PeopleFilter";
@@ -67,7 +70,7 @@ export default async function PeoplePage() {
                 >
                   <Tilt
                     max={3}
-                    className="paper candle-glare lit-border group flex h-full flex-col overflow-hidden rounded-[22px] border border-border p-6 shadow-[0_30px_60px_-34px_rgb(0_0_0_/_0.9)] hover:border-gold/40 hover:shadow-[0_40px_70px_-30px_rgb(0_0_0_/_1),0_0_50px_-20px_rgb(232_181_96_/_0.35)]"
+                    className="paper candle-glare lit-border group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-border p-6 shadow-[0_30px_60px_-34px_rgb(0_0_0_/_0.9)] hover:border-gold/40 hover:shadow-[0_40px_70px_-30px_rgb(0_0_0_/_1),0_0_50px_-20px_rgb(232_181_96_/_0.35)]"
                   >
                     <div className="art-frame relative -mx-6 -mt-6 mb-5">
                       {artFor(f.id) ? (
@@ -113,6 +116,14 @@ export default async function PeoplePage() {
                     </dl>
 
                     {note && <p className="mt-3 text-sm italic leading-6 text-muted">{note}</p>}
+
+                    <Link
+                      href={`/people/${f.id}`}
+                      className="group/link mt-5 inline-flex min-h-11 items-center gap-2 self-start font-caps text-[12px] font-semibold tracking-[0.18em] text-gold after:absolute after:inset-0 after:content-['']"
+                    >
+                      {t.person.readStory}
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-1" />
+                    </Link>
 
                     <div className="mt-auto pt-4">
                       <ul className="flex flex-wrap gap-1.5">

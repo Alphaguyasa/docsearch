@@ -38,7 +38,7 @@ export function StoryFigures({ figures }: { figures: FigureSummary[] }) {
                 </div>
                 <div className="min-w-0">
                   <Link
-                    href={`/people#${f.id}`}
+                    href={`/people/${f.id}`}
                     className="font-display text-xl font-semibold leading-tight hover:underline"
                   >
                     {figureText(lang, f).name}
