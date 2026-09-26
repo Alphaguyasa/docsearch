@@ -11,6 +11,8 @@ import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
+import { peopleFor } from "@/lib/scripture/people-for";
+import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
   SITE_URL,
@@ -18,6 +20,7 @@ import {
   collectStream,
   crisisMessage,
   detectLang,
+  fallbackMessage,
   feedbackKeyboard,
   parseFeedbackData,
   storyMessages,
@@ -75,6 +78,15 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   }
   if (text.length > 1000) return void (await send(t.tooLong));
 
+  // No story could be written: still send the people who carried this, or — if the
+  // server never answered, so its safety gate never ran — check for crisis first.
+  const fallback = async (busy: boolean, people = peopleFor(text), checked = false) => {
+    const kind = checked ? undefined : phraseCheck(text);
+    if (kind) return void (await send(crisisMessage(crisisResponse(kind), lang)));
+    const msg = fallbackMessage(people, lang, busy);
+    await send(msg ?? (busy ? t.busy : t.failed));
+  };
+
   await tg(token, "sendChatAction", { chat_id, action: "typing" }).catch(() => {});
   let res: Response;
   try {
@@ -84,14 +96,18 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
       body: JSON.stringify({ question: text }),
     });
   } catch {
-    return void (await send(t.failed));
+    return fallback(false);
   }
-  if (res.status === 429) return void (await send(t.busy));
-  if (!res.ok || !res.body) return void (await send(t.failed));
+  // A 429 comes after the server's safety gate, so the message was already checked.
+  if (res.status === 429) return fallback(true, peopleFor(text), true);
+  if (!res.ok || !res.body) return fallback(false);
 
-  const result = await collectStream(parseSearchStream(res.body));
+  const result = await collectStream(parseSearchStream(res.body)).catch(() => null);
+  if (!result) return fallback(false);
   if (result.crisis) return void (await send(crisisMessage(result.crisis, lang)));
-  if (result.error || !result.answer.trim()) return void (await send(t.failed));
+  if (result.error || !result.answer.trim()) {
+    return fallback(false, result.figures.length ? result.figures : peopleFor(text), true);
+  }
   const parts = storyMessages(result, lang);
   for (const [i, part] of parts.entries()) {
     if (i < parts.length - 1) await send(part);
