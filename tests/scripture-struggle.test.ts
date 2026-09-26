@@ -129,6 +129,7 @@ const RESCUED: [string, string, string[]?][] = [
   ["I pretended I didn't know Jesus when my friends laughed at me", "peter"],
   ["I lived for years chasing pleasure and ambition before God found me", "augustine"],
   ["I was a violent robber", "moses_the_ethiopian", ["ethiopian_orthodox"]],
+  ["I cheated on my wife and I can't forgive myself", "david"],
   ["I used to be a violent robber", "moses_the_ethiopian"],
 ];
 for (const [message, figure, filter] of RESCUED) {
@@ -137,3 +138,14 @@ for (const [message, figure, filter] of RESCUED) {
     assert.ok(ids.includes(figure), `${figure} not in ${ids.join(", ")}`);
   });
 }
+
+test("the more specific match comes first: denial names Peter before lying names David", () => {
+  const ids = rankFigures(matchTags("I pretended I didn't know Jesus when my friends laughed at me")).map((f) => f.id);
+  assert.equal(ids[0], "peter");
+});
+
+test("can't forgive MYSELF is shame, not resentment; can't forgive my father stays resentment", () => {
+  const self = matchTags("I cheated on my wife and I can't forgive myself");
+  assert.ok(self.includes("shame") && !self.includes("resentment"), self.join(","));
+  assert.ok(matchTags("I can't forgive my father").includes("resentment"));
+});
