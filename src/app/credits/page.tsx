@@ -6,7 +6,7 @@ export const metadata = { title: "Image credits — Not Alone" };
 export default function CreditsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 pb-20 pt-10 sm:px-6 sm:pt-16">
-      <h1 className="font-serif text-[2rem] leading-tight sm:text-4xl">Image credits</h1>
+      <h1 className="font-display text-[2.3rem] font-semibold leading-tight sm:text-5xl">Image credits</h1>
       <p className="mt-3 max-w-prose leading-7 text-muted">
         The paintings on Not Alone are in the public domain. Photographs are used under the licence shown. All were
         found through Wikimedia Commons; follow a link to see the original and its full details.

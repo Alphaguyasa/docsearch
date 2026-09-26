@@ -14,7 +14,7 @@ export default function HelpPage() {
   const others = resources.global.filter((r) => !("phone" in r && r.phone));
   return (
     <main className="mx-auto max-w-2xl px-4 pb-20 pt-10 sm:px-6 sm:pt-16">
-      <h1 className="font-serif text-[2rem] leading-tight sm:text-4xl">If you are in danger, reach someone now.</h1>
+      <h1 className="font-display text-[2.3rem] font-semibold leading-tight sm:text-5xl">If you are in danger, reach someone now.</h1>
       <p lang="am" className="mt-2 font-serif text-xl text-muted">
         አደጋ ላይ ከሆኑ፣ አሁኑኑ ሰው ያግኙ።
       </p>

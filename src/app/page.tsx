@@ -10,6 +10,7 @@ import { AnswerView } from "./components/AnswerView";
 import { CrisisCard } from "./components/CrisisCard";
 import { Hero } from "./components/Hero";
 import { Passages } from "./components/Passages";
+import { ExampleCards } from "./components/ExampleCards";
 import { ErrorState, LoadingSkeleton } from "./components/States";
 import { StoryFigures } from "./components/StoryFigures";
 import { StoryGallery } from "./components/StoryGallery";
@@ -147,20 +148,7 @@ export default function Home() {
       <div ref={results} className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}>
         {status === "idle" && (
           <div>
-            <p className="text-sm text-muted">Or start from something others have carried:</p>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {EXAMPLES.map((q) => (
-                <li key={q}>
-                  <button
-                    type="button"
-                    onClick={() => run(q)}
-                    className="block h-full w-full border border-border bg-card px-4 py-3 text-left font-serif text-[17px] leading-7 transition-colors hover:border-gold"
-                  >
-                    {q}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <ExampleCards examples={EXAMPLES} onPick={run} />
             <StoryGallery />
           </div>
         )}
@@ -178,7 +166,7 @@ export default function Home() {
         {showResults && (
           <article className="mx-auto min-w-0 max-w-3xl">
             <StoryFigures figures={figures} />
-            <div className="font-serif text-[18px] leading-8 sm:text-[19px] sm:leading-9">
+            <div className="illuminated font-serif text-[19px] leading-8 sm:text-[20px] sm:leading-9">
               <AnswerView
                 answer={answer}
                 sources={sources}
