@@ -1,0 +1,23 @@
+# Artwork fetch
+
+- hero: File:Rembrandt Harmensz van Rijn - Return of the Prodigal Son - Google Art Project.jpg — Rembrandt — Public domain
+- lalibela: File:Bete Giyorgis 03.jpg — Bernard Gagnon — CC BY-SA 3.0
+- david: File:5201-king-david-in-prayer-pieter-de-grebber.jpg — Pieter de Grebber — Public domain
+- peter: File:The Denial of St. Peter - Gerard Seghers - Google Cultural Institute.jpg — Gerard Seghers — Public domain
+- paul: File:Conversion on the Way to Damascus-Caravaggio (c.1600-1).jpg — Caravaggio — Public domain
+- moses: File:Domenico Fetti - Moses before the burning bush - M.Ob.769 MNW - National Museum in Warsaw.jpg — Domenico Fetti — Public domain
+- abraham: NO MATCH (File:Tissot God's Promises to Abram.jpg)
+- jacob: File:Jakob ringt mit dem Engel - Gemäldegalerie Berlin - 5190519.jpg — Rembrandt — Public domain
+- jonah: File:Pieter Lastman - Jonah and the Whale - Google Art Project.jpg — Pieter Lastman — Public domain
+- elijah: File:Frederic, Lord Leighton - Elijah in the Wilderness - Google Art Project.jpg — Frederic Leighton — Public domain
+- samson: File:Samson and Delilah by Rubens.jpg — Peter Paul Rubens — Public domain
+- aaron: File:Nicolas Poussin - The Adoration of the Golden Calf alt.jpg — Nicolas Poussin — Public domain
+- rahab: NO MATCH ()
+- matthew: File:Caravaggio — The Calling of Saint Matthew.jpg — Gleb Simonov — CC0
+- zacchaeus: NO MATCH (File:Brooklyn Museum - Zacchaeus in the Sycamore Awaiting the Passage of Jesus (Zachée sur le sycomore attendant le passage de Jésus) - James Tissot.jpg)
+- samaritan_woman: File:Carl Heinrich Bloch - Woman at the Well.jpg — Carl Bloch — Public domain
+- woman_caught_in_adultery: File:Rembrandt Christ and the Woman Taken in Adultery.jpg — Rembrandt — Public domain
+- thomas: File:Der ungläubige Thomas - Michelangelo Merisi, named Caravaggio.jpg — Caravaggio — Public domain
+- john_mark: File:Frans Hals 085 detail 01.jpg — Frans Hals — Public domain
+- nebuchadnezzar: File:William Blake - Nebuchadnezzar (Tate Britain).jpg — William Blake — Public domain
+- augustine: File:Philippe de Champaigne - Saint Augustine - LACMA - with frame.JPG — Philippe de Champaigne — Public domain
