@@ -75,7 +75,16 @@ jobs:
         if: steps.gate.outputs.go == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        # Vercel's build fetches the Google fonts; that download has failed
+        # transiently more than once, so try the deploy a second time.
         run: |
-          URL=$(npx --yes vercel@latest deploy --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN")
+          for attempt in 1 2; do
+            if URL=$(npx --yes vercel@latest deploy --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"); then
+              break
+            fi
+            if [ "$attempt" = 2 ]; then echo "Deploy failed twice." >&2; exit 1; fi
+            echo "Deploy attempt $attempt failed; retrying in 30s."
+            sleep 30
+          done
           echo "Deployed: $URL"
           echo "::notice title=Not Alone deployed::$URL"
