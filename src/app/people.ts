@@ -66,3 +66,11 @@ export function groupsFor(sins: string[]): string {
     .map((g) => g.id)
     .join(" ");
 }
+
+/** How many people fall under each group, for the filter's chip counts. */
+export function groupCounts(people: Figure[]): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const f of people)
+    for (const g of groupsFor(f.sins).split(" ").filter(Boolean)) counts[g] = (counts[g] ?? 0) + 1;
+  return counts;
+}

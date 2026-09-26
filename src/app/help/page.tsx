@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import resources from "../../../data/crisis-resources.json";
-import { Building, Globe, Phone } from "../components/Icons";
+import { ArrowRight, Building, Globe, Phone } from "../components/Icons";
 
 export const metadata = { title: "Help now — Not Alone" };
 
@@ -35,9 +35,9 @@ export default function HelpPage() {
             <li key={r.name}>
               <a
                 href={`tel:${"phone" in r ? r.phone : ""}`}
-                className="group flex h-full items-center gap-5 rounded-[22px] bg-care/[0.08] p-6 ring-1 ring-care/30 transition-[background-color,transform] duration-300 hover:bg-care/[0.14] active:scale-[0.99] sm:p-8"
+                className="paper group relative flex h-full items-center gap-5 overflow-hidden rounded-[22px] p-6 ring-1 ring-care/35 transition-[box-shadow,transform] duration-300 hover:shadow-[0_0_50px_-18px_rgb(232_150_150_/_0.5)] active:scale-[0.98] sm:p-8"
               >
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-care text-background">
+                <span className="call-pulse grid h-14 w-14 shrink-0 place-items-center rounded-full bg-care text-background">
                   <Phone className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
@@ -60,7 +60,7 @@ export default function HelpPage() {
               <li key={r.name}>
                 <Tag
                   {...(link ? { href: link, target: "_blank", rel: "noreferrer" } : {})}
-                  className="flex h-full items-start gap-4 rounded-[22px] bg-foreground/[0.05] p-6 ring-1 ring-border transition-colors duration-300 hover:bg-foreground/[0.08]"
+                  className="paper flex h-full items-start gap-4 rounded-[22px] p-6 ring-1 ring-border transition-[box-shadow,transform] duration-300 hover:shadow-[0_0_40px_-18px_rgb(232_181_96_/_0.35)] active:scale-[0.99]"
                 >
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-foreground/10 text-foreground">
                     {link ? <Globe className="h-5 w-5" /> : <Building className="h-5 w-5" />}
@@ -80,20 +80,27 @@ export default function HelpPage() {
         <h2 id="now-heading" className="font-display text-3xl font-semibold">
           Right now
         </h2>
-        <ol className="mt-5 space-y-4">
+        <ol className="mt-5 space-y-3">
           {resources.always.map((s, i) => (
-            <li key={s} className="flex gap-4 font-serif text-[19px] leading-8">
+            <li
+              key={s}
+              className="paper flex gap-4 rounded-[22px] p-5 font-serif text-[19px] leading-8 ring-1 ring-border sm:p-6"
+            >
               <span className="font-display text-3xl font-semibold leading-8 text-gold">{i + 1}</span>
               <span>{s}</span>
             </li>
           ))}
         </ol>
-        <p className="mt-12 text-muted">
-          When you are safe, the stories are still here.{" "}
-          <Link href="/" className="text-accent hover:underline">
+        <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <p className="text-muted">When you are safe, the stories are still here.</p>
+          <Link
+            href="/"
+            className="group inline-flex h-11 items-center gap-2 rounded-full bg-foreground/[0.06] px-5 text-[14px] ring-1 ring-foreground/10 transition-colors hover:bg-foreground/[0.1]"
+          >
             Back to Not Alone
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
-        </p>
+        </div>
       </section>
     </main>
   );
