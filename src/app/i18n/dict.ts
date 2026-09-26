@@ -155,6 +155,14 @@ const en = {
     scripture: "Scripture",
     tradition: "Church tradition",
     passage: (n: number) => `Read passage ${n}`,
+    feedback: {
+      question: "Did this story help you?",
+      yes: "Yes, it helped",
+      no: "Not really",
+      thanks: "Thank you. It helps us find the right stories for others.",
+      thanksNo: "Thank you for telling us. We will keep making these stories better.",
+      privacy: "Only your answer is kept — never what you wrote.",
+    },
     errors: {
       offline: "Could not reach the server. Check your connection and try again.",
       failed: (status: number) => `The request failed (${status}). Try again.`,
@@ -372,6 +380,14 @@ const am: Dict = {
     scripture: "መጽሐፍ ቅዱስ",
     tradition: "የቤተ ክርስቲያን ትውፊት",
     passage: (n: number) => `ክፍል ${n}ን ያንብቡ`,
+    feedback: {
+      question: "ይህ ታሪክ ረድቶዎታል?",
+      yes: "አዎ፣ ረድቶኛል",
+      no: "ብዙም አይደለም",
+      thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
+      thanksNo: "ስለ ነገሩን እናመሰግናለን። እነዚህን ታሪኮች ማሻሻላችንን እንቀጥላለን።",
+      privacy: "የሚቀመጠው መልስዎ ብቻ ነው — የጻፉት በፍጹም አይቀመጥም።",
+    },
     errors: {
       offline: "ከአገልጋዩ ጋር መገናኘት አልተቻለም። ኢንተርኔትዎን አረጋግጠው እንደገና ይሞክሩ።",
       failed: (status: number) => `ጥያቄው አልተሳካም (${status})። እንደገና ይሞክሩ።`,
