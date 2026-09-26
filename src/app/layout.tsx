@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "next/font/google";
 import Link from "next/link";
 
@@ -34,10 +34,26 @@ const ethiopic = Noto_Serif_Ethiopic({
   display: "swap",
 });
 
+const DESCRIPTION =
+  "Tell what you are struggling with, and read the true stories of holy people who fell the same way and were restored — cited from Scripture and the Church Fathers.";
+
 export const metadata: Metadata = {
-  title: "Not Alone",
-  description:
-    "Tell what you are struggling with, and read the true stories of holy people who fell the same way and were restored — cited from Scripture and the Church Fathers.",
+  metadataBase: new URL("https://not-alone-seven.vercel.app"),
+  title: { default: "Not Alone", template: "%s" },
+  description: DESCRIPTION,
+  applicationName: "Not Alone",
+  openGraph: {
+    type: "website",
+    siteName: "Not Alone",
+    title: "Not Alone — You are not the only one",
+    description: DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: "Not Alone — You are not the only one", description: DESCRIPTION },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b0907",
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
