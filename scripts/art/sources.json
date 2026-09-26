@@ -1,5 +1,5 @@
 {
-  "_note": "Artwork for Not Alone. Each entry is resolved on Wikimedia Commons by scripts/fetch-art.ts (GitHub Actions; the dev container cannot reach Commons). `file` pins an exact Commons file; otherwise the best search hit for `query` with an accepted licence is used. Accepted licences: public domain, CC0, CC BY, CC BY-SA — credits are shown on /credits.",
+  "_note": "Artwork for Not Alone. Each entry is resolved on Wikimedia Commons by scripts/fetch-art.ts (GitHub Actions; the dev container cannot reach Commons). `file` pins an exact Commons file; otherwise the best search hit for `query` with an accepted licence is used. Accepted licences: public domain, no known restrictions, CC0, CC BY, CC BY-SA — credits are shown on /credits.",
   "items": [
     { "id": "hero", "query": "Rembrandt Return of the Prodigal Son Hermitage Google Art Project", "caption": "The Return of the Prodigal Son" },
     { "id": "lalibela", "query": "Church of Saint George Lalibela Bete Giyorgis", "caption": "Bete Giyorgis, Lalibela" },
@@ -13,7 +13,7 @@
     { "id": "elijah", "query": "Frederic Leighton Elijah in the Wilderness", "caption": "Elijah in the wilderness" },
     { "id": "samson", "query": "Rubens Samson and Delilah National Gallery", "caption": "Samson and Delilah" },
     { "id": "aaron", "query": "Poussin The Adoration of the Golden Calf National Gallery", "caption": "The adoration of the golden calf" },
-    { "id": "rahab", "query": "Tissot Rahab and the Emissaries of Joshua", "caption": "Rahab and the spies" },
+    { "id": "rahab", "query": "Tissot Rahab and the Emissaries of Joshua Jewish Museum", "caption": "Rahab and the spies" },
     { "id": "matthew", "query": "Caravaggio The Calling of Saint Matthew Contarelli", "caption": "The Calling of Saint Matthew" },
     { "id": "zacchaeus", "query": "Tissot Zacchaeus in the Sycamore Awaiting the Passage of Jesus", "caption": "Zacchaeus in the sycamore" },
     { "id": "samaritan_woman", "query": "Carl Bloch Woman at the Well", "caption": "Christ and the woman at the well" },
@@ -21,6 +21,6 @@
     { "id": "thomas", "query": "Caravaggio The Incredulity of Saint Thomas Sanssouci", "caption": "The Incredulity of Saint Thomas" },
     { "id": "john_mark", "query": "Frans Hals Saint Mark Pushkin", "caption": "Saint Mark" },
     { "id": "nebuchadnezzar", "query": "William Blake Nebuchadnezzar Tate colour print", "caption": "Nebuchadnezzar" },
-    { "id": "augustine", "query": "Philippe de Champaigne Saint Augustine LACMA", "caption": "Saint Augustine" }
+    { "id": "augustine", "query": "Philippe de Champaigne Saint Augustine LACMA -intitle:frame", "caption": "Saint Augustine" }
   ]
 }
