@@ -67,8 +67,8 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader>
-          <nav className="mx-auto flex h-12 max-w-6xl items-center gap-6 px-4 text-[13px] sm:px-6">
-            <Link href="/" className="flex items-center gap-2 font-caps text-[15px] font-semibold tracking-[0.12em]">
+          <nav className="mx-auto flex h-12 max-w-6xl items-center gap-4 whitespace-nowrap px-4 text-[13px] sm:gap-6 sm:px-6">
+            <Link href="/" className="flex shrink-0 items-center gap-2 font-caps text-[14px] font-semibold tracking-[0.1em] sm:text-[15px] sm:tracking-[0.12em]">
               <CandleMark className="h-6 w-6 text-gold" />
               Not Alone
             </Link>
@@ -87,7 +87,7 @@ export default function RootLayout({
             )}
             <Link
               href="/help"
-              className="ml-auto rounded-full bg-white/10 px-3.5 py-1.5 text-foreground transition-colors hover:bg-gold hover:text-background"
+              className="ml-auto shrink-0 rounded-full bg-white/10 px-3 py-1.5 sm:px-3.5 text-foreground transition-colors hover:bg-gold hover:text-background"
             >
               Need help now?
             </Link>
