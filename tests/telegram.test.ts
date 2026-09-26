@@ -7,6 +7,7 @@ import {
   collectStream,
   crisisMessage,
   detectLang,
+  fallbackMessage,
   markdownToHtml,
   splitMessage,
   storyMessages,
@@ -88,4 +89,13 @@ test("long answers are split under Telegram's limit", () => {
   for (const p of parts) assert.ok(p.length <= MAX_MESSAGE);
   assert.equal(parts.join("\n\n"), long);
   for (const p of splitMessage("y".repeat(MAX_MESSAGE * 2 + 5))) assert.ok(p.length <= MAX_MESSAGE);
+});
+
+test("fallback message links each person's page, or is null with no one to offer", () => {
+  const people = [{ id: "peter", name: "Peter", summary: "Denied Jesus three times." }];
+  const en = fallbackMessage(people, "en", true)!;
+  assert.match(en, /Many people are asking/);
+  assert.match(en, /\/people\/peter">Peter<\/a>/);
+  assert.match(fallbackMessage(people, "am", false)!, /\/people\/peter">ጴጥሮስ<\/a>/);
+  assert.equal(fallbackMessage([], "en", false), null);
 });

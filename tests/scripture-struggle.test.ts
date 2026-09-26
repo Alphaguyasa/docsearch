@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { peopleFor } from "../src/lib/scripture/people-for";
 import { FIGURES, cleanPassage, orderedPassages, rankFigures, refsOverlap } from "../src/lib/scripture/figures";
 import {
   foldEthiopic,
@@ -176,4 +177,11 @@ test("cleanPassage drops the leading reference and joins scanned line wraps", ()
   assert.equal(cleanPassage("Luke 22:9-22\n\nThey said to him.\n\nHe said.", "Luke 22:9-22"), "They said to him.\n\nHe said.");
   assert.equal(cleanPassage("Ethiopian Synaxarium, Miyazya On this day\ndied   Saint MARY", "Ethiopian Synaxarium, Miyazya"), "On this day died Saint MARY");
   assert.equal(cleanPassage("no ref here", null), "no ref here");
+});
+
+test("peopleFor finds people with no model when the story can't be written", () => {
+  assert.equal(peopleFor("I denied Jesus when my friends laughed")[0]?.id, "peter");
+  assert.ok(peopleFor("ጫት መቃም ማቆም አልቻልኩም").some((f) => f.id === "noah" || f.id === "prodigal_son"));
+  assert.ok(!peopleFor("I stole money", "protestant").some((f) => f.kind === "tradition" && f.id === "moses_the_ethiopian"));
+  assert.deepEqual(peopleFor("what is the weather today"), []);
 });
