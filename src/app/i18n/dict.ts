@@ -190,6 +190,7 @@ const en = {
     copied: "Link copied",
     tellYours: "Tell what you are carrying",
     bot: "Read stories on Telegram",
+    channel: "Get the story of the day on Telegram",
   },
   crisis: { tap: "tap to call", allHelp: "All help, in one place", other: "Write something else" },
   people: {
@@ -231,6 +232,8 @@ const en = {
     tell: "Tell what you carry",
     people: "The people",
     credits: "Image credits",
+    channel: "Daily story on Telegram",
+    bot: "Telegram bot",
     help: "Help",
     helpNow: "Help now · እርዳታ",
     ambulance: "Ambulance · 907",
@@ -436,6 +439,7 @@ const am: Dict = {
     copied: "ተቀድቷል",
     tellYours: "የተሸከሙትን ይንገሩ",
     bot: "ታሪኮችን በቴሌግራም ያንብቡ",
+    channel: "የዕለቱን ታሪክ በቴሌግራም ያግኙ",
   },
   crisis: { tap: "ለመደወል ይንኩ", allHelp: "ሁሉም እርዳታ በአንድ ቦታ", other: "ሌላ ነገር ይጻፉ" },
   people: {
@@ -477,6 +481,8 @@ const am: Dict = {
     tell: "የተሸከሙትን ይንገሩን",
     people: "ሰዎቹ",
     credits: "የሥዕሎቹ ምንጭ",
+    channel: "የዕለቱ ታሪክ በቴሌግራም",
+    bot: "የቴሌግራም ቦት",
     help: "እርዳታ",
     helpNow: "አሁኑኑ እርዳታ",
     ambulance: "አምቡላንስ · 907",
