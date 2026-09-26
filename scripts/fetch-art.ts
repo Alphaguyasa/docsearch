@@ -18,7 +18,8 @@ const OUT = "public/art";
 
 interface Source {
   id: string;
-  query?: string;
+  /** Tried in order until one yields an image with an accepted licence. */
+  query?: string | string[];
   file?: string;
   caption: string;
 }
@@ -53,10 +54,42 @@ async function api(params: Record<string, string>): Promise<any> {
   throw new Error(`Commons API failed: ${url}`);
 }
 
-async function candidates(s: Source): Promise<string[]> {
-  if (s.file) return [s.file.startsWith("File:") ? s.file : `File:${s.file}`];
-  const r = await api({ action: "query", list: "search", srsearch: `${s.query} filetype:bitmap`, srnamespace: "6", srlimit: "12" });
+async function search(query: string): Promise<string[]> {
+  const r = await api({ action: "query", list: "search", srsearch: `${query} filetype:bitmap`, srnamespace: "6", srlimit: "12" });
   return (r.query?.search ?? []).map((h: { title: string }) => h.title);
+}
+
+function usable(p: any): boolean {
+  const ii = p.imageinfo?.[0];
+  if (!ii || !/image\/(jpeg|png|tiff)/.test(ii.mime) || ii.width < 700) return false;
+  return ACCEPT.test(strip(ii.extmetadata?.LicenseShortName?.value));
+}
+
+/** Why a candidate was rejected, for the report. */
+function why(p: any): string {
+  const ii = p.imageinfo?.[0];
+  if (!ii) return `${p.title} (no info)`;
+  return `${p.title} [${ii.mime} ${ii.width}px, "${strip(ii.extmetadata?.LicenseShortName?.value)}"]`;
+}
+
+async function resolve(s: Source): Promise<{ pick?: any; rejected: string[] }> {
+  if (s.file) {
+    const pages = await info([s.file.startsWith("File:") ? s.file : `File:${s.file}`]);
+    return { pick: pages.find(usable), rejected: pages.map(why) };
+  }
+  const rejected: string[] = [];
+  for (const q of Array.isArray(s.query) ? s.query : [s.query ?? ""]) {
+    const titles = await search(q);
+    if (titles.length === 0) {
+      rejected.push(`"${q}": no results`);
+      continue;
+    }
+    const pages = await info(titles);
+    const pick = pages.find(usable);
+    if (pick) return { pick, rejected };
+    rejected.push(...pages.slice(0, 2).map(why));
+  }
+  return { rejected };
 }
 
 async function info(titles: string[]): Promise<any[]> {
@@ -80,14 +113,9 @@ async function main() {
 
   for (const s of items) {
     try {
-      const pages = await info(await candidates(s));
-      const pick = pages.find((p) => {
-        const ii = p.imageinfo?.[0];
-        if (!ii || !/image\/(jpeg|png|tiff)/.test(ii.mime) || ii.width < 900) return false;
-        return ACCEPT.test(strip(ii.extmetadata?.LicenseShortName?.value));
-      });
+      const { pick, rejected } = await resolve(s);
       if (!pick) {
-        log.push(`- ${s.id}: NO MATCH (${pages.map((p) => p.title).slice(0, 3).join(" | ")})`);
+        log.push(`- ${s.id}: NO MATCH — ${rejected.join("; ")}`);
         continue;
       }
       const ii = pick.imageinfo[0];
