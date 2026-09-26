@@ -5,18 +5,26 @@ import { SITE_URL } from "@/lib/telegram";
 
 import { readablePeople } from "./people";
 
-/** Every public page, so search engines can find each person's story. */
+/**
+ * Every public page in both languages, so search engines find each person's
+ * story in English and in Amharic. Pages choose their language from ?lang=
+ * (see middleware.ts); the bare address follows the reader's own setting.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const page = (path: string, priority: number, changeFrequency: "daily" | "monthly" = "monthly") => ({
-    url: `${SITE_URL}${path}`,
-    changeFrequency,
-    priority,
-  });
-  return [
-    page("/", 1, "daily"),
-    page("/people", 0.9),
-    page("/help", 0.8),
-    ...readablePeople(FIGURES).map((f) => page(`/people/${f.id}`, 0.7)),
-    page("/credits", 0.3),
+  const paths: [string, number, "daily" | "monthly"][] = [
+    ["/", 1, "daily"],
+    ["/people", 0.9, "monthly"],
+    ["/help", 0.8, "monthly"],
+    ...readablePeople(FIGURES).map((f): [string, number, "monthly"] => [`/people/${f.id}`, 0.7, "monthly"]),
+    ["/credits", 0.3, "monthly"],
   ];
+  return paths.flatMap(([path, priority, changeFrequency]) => {
+    const languages = { en: `${SITE_URL}${path}?lang=en`, am: `${SITE_URL}${path}?lang=am` };
+    return (["en", "am"] as const).map((lang) => ({
+      url: languages[lang],
+      changeFrequency,
+      priority,
+      alternates: { languages },
+    }));
+  });
 }
