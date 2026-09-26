@@ -10,16 +10,17 @@ import { FIGURES } from "@/lib/scripture/figures";
 import { ArtImage } from "./ArtImage";
 import { ArrowRight } from "./Icons";
 import { RevealGroup, Tilt } from "./Motion";
+import { SymbolPlate } from "./SymbolPlate";
 
 /**
- * "Holy people, true stories": every painted person in one row that scrolls
+ * "Holy people, true stories": every person in one row that scrolls
  * sideways — a thumb on phones, the round arrows (or a trackpad) on desktop —
  * snapping card by card. The row starts aligned with the page's text column
  * and runs off the right edge, inviting the swipe.
  */
 export function StoryGallery() {
-  const people = readablePeople(FIGURES).filter((f) => artFor(f.id));
-  const track = useRef<HTMLUListElement>(null);
+  const people = readablePeople(FIGURES);
+  const track = useRef<HTMLElement>(null);
   const [edge, setEdge] = useState({ start: true, end: false });
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export function StoryGallery() {
 
       <RevealGroup
         as="ul"
+        elRef={track}
         className="gallery-track mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {people.map((f, i) => (
@@ -77,7 +79,11 @@ export function StoryGallery() {
               className="candle-glare lit-border group relative block overflow-hidden rounded-[22px] bg-card shadow-[0_30px_60px_-30px_rgb(0_0_0_/_0.9)]"
             >
               <div className="art-frame">
-                <ArtImage id={f.id} sizes="(min-width: 640px) 360px, 78vw" className="aspect-[4/5] w-full" />
+                {artFor(f.id) ? (
+                  <ArtImage id={f.id} sizes="(min-width: 640px) 360px, 78vw" className="aspect-[4/5] w-full" />
+                ) : (
+                  <SymbolPlate id={f.id} className="aspect-[4/5] w-full pb-[22%]" />
+                )}
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6 text-[#f1e9dc] transition-transform duration-700 [transition-timing-function:var(--ease-out)] group-hover:-translate-y-1">

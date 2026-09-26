@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 import type { TraditionChoice } from "@/app/traditions";
 
-import { ArrowRight } from "./Icons";
+import { ArrowRight, Lock } from "./Icons";
+import { prefersCalm } from "./Motion";
 import { TraditionSelect } from "./TraditionSelect";
 
 interface Props {
@@ -14,13 +17,87 @@ interface Props {
   onTradition: (t: TraditionChoice) => void;
 }
 
-/** A sentence-sized box: people describe a struggle, they don't type keywords. */
+const MAX = 1000;
+
+/** What the empty box quietly writes to itself, one line at a time. */
+const WHISPERS = [
+  "I keep lying to the people I love…",
+  "I cheated, and I don’t know how to live with it…",
+  "I have walked away from God for years…",
+  "My anger is hurting my family…",
+  "ሁልጊዜ በጣም እቆጣለሁ…",
+];
+
+/**
+ * The typewriter placeholder: types a line, rests, erases, moves on. Only
+ * while the box is empty and not focused, and never under reduced motion.
+ */
+function useWhisper(active: boolean): string {
+  const [text, setText] = useState(WHISPERS[0]);
+  useEffect(() => {
+    if (!active || prefersCalm()) {
+      setText(WHISPERS[0]);
+      return;
+    }
+    let line = 0;
+    let i = 0;
+    let erasing = false;
+    let timer = 0;
+    const tick = () => {
+      const full = WHISPERS[line];
+      if (!erasing) {
+        i++;
+        setText(full.slice(0, i));
+        if (i >= full.length) {
+          erasing = true;
+          timer = window.setTimeout(tick, 2200);
+          return;
+        }
+        timer = window.setTimeout(tick, 42 + Math.random() * 60);
+      } else {
+        i -= 2;
+        setText(full.slice(0, Math.max(0, i)));
+        if (i <= 0) {
+          erasing = false;
+          line = (line + 1) % WHISPERS.length;
+          timer = window.setTimeout(tick, 500);
+          return;
+        }
+        timer = window.setTimeout(tick, 18);
+      }
+    };
+    timer = window.setTimeout(tick, 900);
+    return () => window.clearTimeout(timer);
+  }, [active]);
+  return text;
+}
+
+/**
+ * The composer. A sentence-sized box — people describe a struggle, they don't
+ * type keywords — built like a message you are about to send: the send button
+ * lives inside the box, the church picker sits in its toolbar, and the rim
+ * warms like candlelight while you write. On a phone everything stays inside
+ * one card; the picker opens as a bottom sheet.
+ */
 export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, onTradition }: Props) {
+  const box = useRef<HTMLTextAreaElement>(null);
+  const [focused, setFocused] = useState(false);
+  const whisper = useWhisper(!focused && value.length === 0);
+  const ready = value.trim().length > 0 && !disabled;
+
+  // Grow with the words; shrink back when cleared (e.g. after picking an example).
+  useEffect(() => {
+    const t = box.current;
+    if (!t) return;
+    t.style.height = "auto";
+    t.style.height = `${Math.min(t.scrollHeight, 320)}px`;
+  }, [value]);
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit();
+        if (ready) onSubmit();
       }}
     >
       <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] sm:text-7xl">You are not the only one.</h1>
@@ -28,45 +105,80 @@ export function StruggleInput({ value, onChange, onSubmit, disabled, tradition, 
         David, Peter, Augustine, Abba Moses — holy people fell the same way you have, and were restored. Tell what you
         are carrying, in English or Amharic, and read their true story from Scripture and the Church Fathers.
       </p>
+
       <label htmlFor="struggle" className="mt-10 block font-display text-[1.75rem] font-semibold">
         What are you carrying?
       </label>
-      <textarea
-        id="struggle"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) onSubmit();
-        }}
-        disabled={disabled}
-        maxLength={1000}
-        rows={3}
-        onInput={(e) => {
-          // Grow with the words instead of showing a resize handle.
-          const t = e.currentTarget;
-          t.style.height = "auto";
-          t.style.height = `${Math.min(t.scrollHeight, 320)}px`;
-        }}
-        placeholder="I keep lying to the people I love…"
-        className="mt-3 block min-h-[7.5rem] w-full resize-none rounded-sm border border-border bg-background/70 px-5 py-4 font-serif text-[19px] leading-8 shadow-[0_0_40px_-12px_rgb(232_181_96_/_0.35)] outline-none backdrop-blur-sm transition-[border-color,box-shadow] duration-500 placeholder:italic placeholder:text-muted/70 focus:border-gold/80 focus:shadow-[0_0_60px_-10px_rgb(232_181_96_/_0.55)] disabled:opacity-60"
-      />
-      <p className="mt-2 text-xs text-muted">Nothing you write is saved.</p>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <TraditionSelect value={tradition} onChange={onTradition} disabled={disabled} />
-        <button
-          type="submit"
-          disabled={disabled || value.trim().length === 0}
-          className="group relative inline-flex min-h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gold px-6 py-3 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-[transform,opacity,box-shadow] duration-300 hover:shadow-[0_0_32px_-4px_rgb(232_181_96_/_0.7)] active:scale-[0.98] disabled:opacity-40 disabled:shadow-none sm:w-auto"
-        >
-          {/* A sheen passes over the button, like light over gilt. */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/30 opacity-0 transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100 group-disabled:hidden"
-          />
-          {disabled ? "Finding a story…" : "Show me a story"}
-          {!disabled && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
-        </button>
+
+      <div
+        className={`composer mt-3 ${focused ? "is-focused" : ""} ${ready ? "is-ready" : ""} ${disabled ? "is-busy" : ""}`}
+      >
+        <div className="composer-inner rounded-[20px] bg-[#120e0a]/90 backdrop-blur-md">
+          <div className="relative">
+            <textarea
+              ref={box}
+              id="struggle"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onKeyDown={(e) => {
+                // Enter sends on a keyboard; Shift+Enter is a new line. Phones keep Enter as a new line.
+                if (e.key === "Enter" && !e.shiftKey && window.matchMedia("(pointer: fine)").matches) {
+                  e.preventDefault();
+                  if (ready) onSubmit();
+                }
+              }}
+              disabled={disabled}
+              maxLength={MAX}
+              rows={3}
+              aria-describedby="struggle-privacy"
+              className="block min-h-[7.5rem] w-full resize-none bg-transparent focus-visible:outline-none px-5 pb-2 pt-5 font-serif text-[19px] leading-8 text-foreground caret-[#e8b560] outline-none disabled:opacity-60 sm:px-6 sm:text-[20px]"
+            />
+            {value.length === 0 && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-5 right-5 top-5 font-serif text-[19px] italic leading-8 text-muted/70 sm:left-6 sm:text-[20px]"
+              >
+                {focused ? WHISPERS[0] : whisper}
+                {!focused && <span className="composer-caret" />}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 px-3 pb-3 pt-1 sm:px-4">
+            <TraditionSelect value={tradition} onChange={onTradition} disabled={disabled} />
+            <span
+              className={`ml-auto hidden text-xs tabular-nums text-muted transition-opacity duration-300 sm:inline ${
+                focused && value.length > MAX * 0.6 ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {value.length} / {MAX}
+            </span>
+            <button
+              type="submit"
+              disabled={!ready}
+              aria-label={disabled ? "Finding a story" : "Show me a story"}
+              className="composer-send group ml-auto inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full px-4 font-caps text-[12px] font-semibold tracking-[0.14em] sm:ml-0 sm:px-5"
+            >
+              {disabled ? (
+                <span className="composer-spinner" aria-hidden />
+              ) : (
+                <>
+                  <span className="hidden sm:inline">Show me a story</span>
+                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
+
+      <p id="struggle-privacy" className="mt-3 flex items-center gap-2 px-1 text-[13px] text-muted">
+        <Lock className="h-3.5 w-3.5 shrink-0 text-gold/80" />
+        Nothing you write is saved.
+        <span className="hidden sm:inline">Enter to send · Shift+Enter for a new line</span>
+      </p>
     </form>
   );
 }

@@ -14,12 +14,16 @@ export function RevealGroup({
   as = "div",
   className,
   children,
+  elRef,
 }: {
   as?: React.ElementType;
   className?: string;
   children: React.ReactNode;
+  /** The rendered element, for callers that need it too (e.g. to scroll it). */
+  elRef?: React.RefObject<HTMLElement | null>;
 }) {
-  const ref = useRef<HTMLElement>(null);
+  const own = useRef<HTMLElement>(null);
+  const ref = elRef ?? own;
   useEffect(() => {
     const el = ref.current;
     if (!el || calm()) return;
