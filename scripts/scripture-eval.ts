@@ -12,7 +12,7 @@ import { writeFileSync } from "node:fs";
 
 import golden from "../eval/scripture-golden.json";
 import { answerOnce, NOT_COVERED_PHRASE } from "../src/lib/answer";
-import { getLlm } from "../src/lib/llm";
+import { getLlm, lightModel } from "../src/lib/llm";
 import type { RetrievedChunk } from "../src/lib/retrieve";
 import type { Tradition } from "../src/lib/scripture/canon";
 import { refsOverlap } from "../src/lib/scripture/figures";
@@ -35,7 +35,25 @@ interface Q {
 }
 
 const questions = golden.questions as Q[];
-const llm = async (prompt: string) => (await getLlm().complete([{ role: "user", content: prompt }], 60)).text;
+const llm = async (prompt: string) =>
+  (await getLlm().complete([{ role: "user", content: prompt }], 60, lightModel())).text;
+
+/**
+ * Items that could not be evaluated because a model or API was unavailable
+ * (free-tier quota, outage). They are reported, not counted as passes or
+ * failures, so one exhausted quota no longer throws away the whole run.
+ */
+const skipped: string[] = [];
+function skip(id: string, err: unknown): string {
+  const msg = (err as Error).message ?? String(err);
+  const why = /PerDay|quota/i.test(msg) ? "model quota used up" : msg.split("\n")[0].slice(0, 120);
+  skipped.push(`${id}: ${why}`);
+  return why;
+}
+
+// Module-level so a crash still writes what was measured (see the catch at the bottom).
+const lines: string[] = ["# Scripture eval", "", `Run ${new Date().toISOString()}`, ""];
+const failures: string[] = [];
 const FORBIDDEN = /you are forgiven|god (has )?forgiven you|god forgives you|your sins are forgiven|i absolve/i;
 
 function refHit(results: RetrievedChunk[], expected: string): number {
@@ -49,15 +67,19 @@ function refHit(results: RetrievedChunk[], expected: string): number {
 async function main(): Promise<void> {
   const genIdx = process.argv.indexOf("--generate");
   const generateN = genIdx >= 0 ? Number(process.argv[genIdx + 1] ?? 8) : 0;
-  const lines: string[] = ["# Scripture eval", "", `Run ${new Date().toISOString()}`, ""];
-  const failures: string[] = [];
 
   // Struggle retrieval
   const rows: string[] = [];
   const stats = { dev: { n: 0, fig: 0, ref: 0 }, holdout: { n: 0, fig: 0, ref: 0 } };
   const generated: { q: Q; chunks: RetrievedChunk[]; figures: { name: string; summary: string; note?: string }[] }[] = [];
   for (const q of questions.filter((q) => q.type === "struggle")) {
-    const r = await retrieveForStruggle(q.question, { filterTraditions: q.tradition ? [q.tradition] : undefined, llm });
+    let r: Awaited<ReturnType<typeof retrieveForStruggle>>;
+    try {
+      r = await retrieveForStruggle(q.question, { filterTraditions: q.tradition ? [q.tradition] : undefined, llm });
+    } catch (err) {
+      rows.push(`| ${q.id} | ${q.split} | ⚠️ | ⚠️ | skipped: ${skip(q.id, err)} | | ${q.question.slice(0, 60)} |`);
+      continue;
+    }
     const figIds = r.figures.map((f) => f.id);
     const figOk = (q.expectFigures ?? []).some((f) => figIds.includes(f));
     const ranks = (q.expectRefs ?? []).map((e) => refHit(r.results, e));
@@ -75,13 +97,19 @@ async function main(): Promise<void> {
     `| dev | ${stats.dev.n} | ${pct(stats.dev.fig, stats.dev.n)}% | ${pct(stats.dev.ref, stats.dev.n)}% |`,
     `| holdout | ${stats.holdout.n} | ${pct(stats.holdout.fig, stats.holdout.n)}% | ${pct(stats.holdout.ref, stats.holdout.n)}% |`,
     "", "| id | split | figure | passage | tags | figures | question |", "|---|---|---|---|---|---|---|", ...rows, "");
-  if (stats.dev.fig / stats.dev.n < 0.8) failures.push(`dev figure hit@3 ${pct(stats.dev.fig, stats.dev.n)}% < 80%`);
-  if (stats.dev.ref / stats.dev.n < 0.7) failures.push(`dev passage hit ${pct(stats.dev.ref, stats.dev.n)}% < 70%`);
+  if (stats.dev.n && stats.dev.fig / stats.dev.n < 0.8) failures.push(`dev figure hit@3 ${pct(stats.dev.fig, stats.dev.n)}% < 80%`);
+  if (stats.dev.n && stats.dev.ref / stats.dev.n < 0.7) failures.push(`dev passage hit ${pct(stats.dev.ref, stats.dev.n)}% < 70%`);
 
   // Tradition filter
   lines.push("## Tradition filter", "");
   for (const q of questions.filter((q) => q.type === "tradition")) {
-    const r = await retrieveForStruggle(q.question, { filterTraditions: [q.tradition!], llm });
+    let r: Awaited<ReturnType<typeof retrieveForStruggle>>;
+    try {
+      r = await retrieveForStruggle(q.question, { filterTraditions: [q.tradition!], llm });
+    } catch (err) {
+      lines.push(`- ⚠️ ${q.id}: skipped — ${skip(q.id, err)}`);
+      continue;
+    }
     const problems: string[] = [];
     for (const c of r.results) {
       if (!c.traditions.includes(q.tradition!)) problems.push(`${c.ref} lacks ${q.tradition}`);
@@ -98,7 +126,13 @@ async function main(): Promise<void> {
   // Crisis routing
   lines.push("", "## Crisis routing", "");
   for (const q of questions.filter((q) => q.type === "crisis")) {
-    const s = await checkSafety(q.question, llm);
+    let s: Awaited<ReturnType<typeof checkSafety>>;
+    try {
+      s = await checkSafety(q.question, llm);
+    } catch (err) {
+      lines.push(`- ⚠️ ${q.id}: skipped — ${skip(q.id, err)}`);
+      continue;
+    }
     const got = s.crisis ? s.kind : null;
     const ok = got === (q.expectKind ?? null);
     lines.push(`- ${ok ? "✅" : "❌"} ${q.id}: expected ${q.expectKind ?? "none"}, got ${got ?? "none"} (${s.via})`);
@@ -108,13 +142,17 @@ async function main(): Promise<void> {
   // Unanswerable: no figures should be pulled for off-topic questions
   lines.push("", "## Off-topic", "");
   for (const q of questions.filter((q) => q.type === "unanswerable")) {
-    const r = await retrieveForStruggle(q.question, { llm });
-    lines.push(`- ${r.figures.length ? "⚠️" : "✅"} ${q.id}: figures ${r.figures.map((f) => f.id).join(", ") || "none"}`);
-    if (generateN) {
-      const a = await answerOnce(q.question, r.results);
-      const refused = a.text.includes(NOT_COVERED_PHRASE);
-      lines.push(`  - answer ${refused ? "refused ✅" : "did not refuse ❌"}`);
-      if (!refused) failures.push(`unanswerable ${q.id} answered`);
+    try {
+      const r = await retrieveForStruggle(q.question, { llm });
+      lines.push(`- ${r.figures.length ? "⚠️" : "✅"} ${q.id}: figures ${r.figures.map((f) => f.id).join(", ") || "none"}`);
+      if (generateN) {
+        const a = await answerOnce(q.question, r.results);
+        const refused = a.text.includes(NOT_COVERED_PHRASE);
+        lines.push(`  - answer ${refused ? "refused ✅" : "did not refuse ❌"}`);
+        if (!refused) failures.push(`unanswerable ${q.id} answered`);
+      }
+    } catch (err) {
+      lines.push(`- ⚠️ ${q.id}: skipped — ${skip(q.id, err)}`);
     }
   }
 
@@ -123,7 +161,13 @@ async function main(): Promise<void> {
     lines.push("", "## Generated answers", "");
     for (const g of generated) {
       const { buildMessages } = await import("../src/lib/answer");
-      const a = await getLlm().complete(buildMessages(g.q.question, g.chunks, g.figures), 900);
+      let a: Awaited<ReturnType<ReturnType<typeof getLlm>["complete"]>>;
+      try {
+        a = await getLlm().complete(buildMessages(g.q.question, g.chunks, g.figures), 900);
+      } catch (err) {
+        lines.push(`### ⚠️ ${g.q.id}: skipped — ${skip(g.q.id, err)}`, "");
+        continue;
+      }
       const cites = (a.text.match(/\[\d+\]/g) ?? []).length;
       const bad = FORBIDDEN.test(a.text);
       const ok = cites > 0 && !bad;
@@ -132,7 +176,13 @@ async function main(): Promise<void> {
     }
   }
 
-  lines.splice(4, 0, failures.length ? `**Gates failed:** ${failures.join("; ")}` : "**All gates passed.**", "");
+  lines.splice(
+    4,
+    0,
+    failures.length ? `**Gates failed:** ${failures.join("; ")}` : "**All gates passed.**",
+    ...(skipped.length ? ["", `**Skipped ${skipped.length} item(s)** (model unavailable): ${skipped.join("; ")}`] : []),
+    "",
+  );
   writeFileSync("eval/scripture-results.md", lines.join("\n") + "\n");
   console.log(lines.slice(0, 16).join("\n"));
   if (failures.length) process.exitCode = 1;
@@ -145,5 +195,8 @@ function bookOf(c: RetrievedChunk): string | null {
 
 main().catch((err) => {
   console.error(err);
+  // Keep what was measured before the crash.
+  lines.splice(4, 0, `**Run crashed:** ${(err as Error).message?.split("\n")[0]}`, "");
+  writeFileSync("eval/scripture-results.md", lines.join("\n") + "\n");
   process.exit(1);
 });

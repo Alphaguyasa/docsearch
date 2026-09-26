@@ -209,44 +209,75 @@ function toGeminiPayload(messages: LlmMessage[]): {
   return { systemText, contents };
 }
 
-// Tried once, after retries, when the main model reports it is overloaded.
-const GEMINI_FALLBACK_MODEL = "gemini-flash-lite-latest";
-const GEMINI_ATTEMPTS = 4;
+// When a model is overloaded or out of free quota, the next one is tried.
+// Each has its own free-tier quota, so a day's traffic is spread across them;
+// Gemma's free quota is by far the largest. Gemma takes no system_instruction,
+// so its system prompt rides at the top of the first user turn.
+const GEMINI_FALLBACKS = ["gemini-flash-lite-latest", "gemma-3-27b-it"];
+const GEMINI_ATTEMPTS = 3;
+
+/** The cheaper model for short classification calls (safety, struggle tags). */
+export function lightModel(): string | undefined {
+  return config.GENERATION_PROVIDER === "gemini" ? GEMINI_FALLBACKS[0] : undefined;
+}
+
+interface GeminiRequest {
+  systemText: string;
+  contents: { role: string; parts: { text: string }[] }[];
+  generationConfig?: Record<string, unknown>;
+}
+
+function geminiBody(model: string, req: GeminiRequest): unknown {
+  if (model.startsWith("gemma") && req.systemText) {
+    const [first, ...rest] = req.contents;
+    const merged = first
+      ? [{ ...first, parts: [{ text: `${req.systemText}\n\n${first.parts.map((p) => p.text).join("")}` }] }, ...rest]
+      : [{ role: "user", parts: [{ text: req.systemText }] }];
+    return { contents: merged, ...(req.generationConfig ? { generationConfig: req.generationConfig } : {}) };
+  }
+  return {
+    ...(req.systemText ? { system_instruction: { parts: [{ text: req.systemText }] } } : {}),
+    contents: req.contents,
+    ...(req.generationConfig ? { generationConfig: req.generationConfig } : {}),
+  };
+}
 
 /**
- * POST to a Gemini endpoint, retrying rate limits and overload (429 / 5xx)
- * with backoff, then once more on the lighter fallback model if the main one
- * is still overloaded. Retrying here is safe for streaming too: nothing has
- * been read from the body, so the reader has seen nothing yet. Errors that
- * will not change (bad key, bad request) throw on the first attempt.
+ * POST to Gemini, riding out trouble instead of failing the reader:
+ * - per-minute limits and overload (429 / 5xx) are retried with backoff;
+ * - a used-up daily free quota is not retried (it will not clear today) —
+ *   the next model in the chain is tried instead, as is an overloaded model
+ *   that stays overloaded.
+ * Retrying is safe for streaming too: nothing has been read from the body.
+ * Errors that will not change (bad key, bad request) throw at once.
  */
 async function geminiPost(
   method: "streamGenerateContent?alt=sse&" | "generateContent?",
   model: string,
-  body: unknown,
+  req: GeminiRequest,
 ): Promise<Response> {
   const post = (m: string) =>
     fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:${method}key=${config.GEMINI_API_KEY}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify(geminiBody(m, req)),
     });
 
-  let res = await post(model);
-  for (let attempt = 0; attempt < GEMINI_ATTEMPTS - 1 && isRetryableStatus(res.status); attempt++) {
-    await res.body?.cancel().catch(() => {});
-    await new Promise((r) => setTimeout(r, backoffMs(attempt, res.headers.get("retry-after"))));
-    res = await post(model);
+  const chain = [model, ...GEMINI_FALLBACKS.filter((m) => m !== model)];
+  let last = "";
+  for (const m of chain) {
+    let res = await post(m);
+    for (let attempt = 0; ; attempt++) {
+      if (res.ok && res.body) return res;
+      const text = await res.text().catch(() => "");
+      last = `Gemini request failed (${m}): ${res.status} ${res.statusText}` + (text ? ` — ${text}` : "");
+      if (!isRetryableStatus(res.status)) throw new Error(last);
+      if (/PerDay/i.test(text) || attempt >= GEMINI_ATTEMPTS - 1) break; // next model
+      await new Promise((r) => setTimeout(r, backoffMs(attempt, res.headers.get("retry-after"))));
+      res = await post(m);
+    }
   }
-  if (res.status === 503 && model !== GEMINI_FALLBACK_MODEL) {
-    await res.body?.cancel().catch(() => {});
-    res = await post(GEMINI_FALLBACK_MODEL);
-  }
-  if (!res.ok || !res.body) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Gemini request failed: ${res.status} ${res.statusText}` + (text ? ` — ${text}` : ""));
-  }
-  return res;
+  throw new Error(last);
 }
 
 const geminiProvider: LlmProvider = {
@@ -255,10 +286,7 @@ const geminiProvider: LlmProvider = {
     // `contents` — the system prompt goes in `system_instruction`.
     const { systemText, contents } = toGeminiPayload(messages);
 
-    const res = await geminiPost("streamGenerateContent?alt=sse&", GEMINI_MODEL, {
-      ...(systemText ? { system_instruction: { parts: [{ text: systemText }] } } : {}),
-      contents,
-    });
+    const res = await geminiPost("streamGenerateContent?alt=sse&", GEMINI_MODEL, { systemText, contents });
 
     // Parse the SSE stream: each event is a `data: <json>` line, separated by
     // blank lines. Buffer across chunk boundaries and emit any text parts.
@@ -296,7 +324,7 @@ const geminiProvider: LlmProvider = {
     const { systemText, contents } = toGeminiPayload(messages);
 
     const res = await geminiPost("generateContent?", model ?? GEMINI_MODEL, {
-      ...(systemText ? { system_instruction: { parts: [{ text: systemText }] } } : {}),
+      systemText,
       contents,
       generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },
     });
