@@ -5,6 +5,7 @@ import { FIGURES } from "../src/lib/scripture/figures";
 import type { SearchStreamMessage } from "../src/lib/search-stream";
 import {
   MAX_MESSAGE,
+  channelCaption,
   collectStream,
   crisisMessage,
   detectLang,
@@ -116,5 +117,14 @@ test("the /today caption fits a Telegram photo caption and links the person's pa
       assert.ok(c.replace(/<[^>]+>/g, "").length <= 1024, `${f.id} ${lang}`);
       assert.match(c, new RegExp(`/people/${f.id}"`));
     }
+  }
+});
+
+test("the channel caption is bilingual, fits a photo caption, and links the page", () => {
+  for (const f of FIGURES) {
+    const c = channelCaption(f);
+    assert.ok(c.replace(/<[^>]+>/g, "").length <= 1024, f.id);
+    assert.match(c, new RegExp(`/people/${f.id}"`));
+    assert.match(c, /የዕለቱ ታሪክ · Story of the day/);
   }
 });

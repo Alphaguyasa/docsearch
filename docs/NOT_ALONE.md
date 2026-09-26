@@ -93,3 +93,12 @@ an hour): yes/no, the people and tags the story used, the language and the
 channel. Never the question, never anything about the person. Only known
 person ids and vocabulary tags are accepted. See how each person's story is
 landing in the `feedback_by_figure` view in the Supabase dashboard.
+
+## Telegram channel
+
+Each morning at 06:00 in Addis Ababa (03:00 UTC, `vercel.json` cron) the bot
+posts the story of the day to https://t.me/you_r_repenter (override with
+`TELEGRAM_CHANNEL`): the painting, the name and summary in Amharic and English,
+and a link to the person's page. `/api/telegram/daily` claims the day in
+`channel_posts` before posting, so extra calls never post twice; a failed post
+releases the day so it can be retried. The bot must stay an admin of the channel.

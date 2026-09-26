@@ -17,6 +17,9 @@ export type BotLang = "en" | "am";
 /** Telegram's hard limit is 4096 characters; stay under it with room for tags. */
 export const MAX_MESSAGE = 3900;
 
+/** The public channel the bot posts the story of the day to. */
+export const CHANNEL = process.env.TELEGRAM_CHANNEL || "@you_r_repenter";
+
 export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : "https://not-alone-seven.vercel.app";
@@ -275,5 +278,17 @@ export function todayCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, 
   return (
     `<b>${escapeHtml(t.today)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
     `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
+  );
+}
+
+/** The channel post: Amharic first, then English, one link (fits a photo caption). */
+export function channelCaption(f: Pick<FigureSummary, "id" | "name" | "summary">): string {
+  const am = figureText("am", f);
+  return (
+    `<b>${escapeHtml(TEXT.am.today)} · ${escapeHtml(TEXT.en.today)}</b>\n\n` +
+    `<b>${escapeHtml(am.name)}</b>\n${escapeHtml(am.summary)}\n\n` +
+    `<b>${escapeHtml(f.name)}</b>\n${escapeHtml(f.summary)}\n\n` +
+    `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(TEXT.am.readStory)} · ${escapeHtml(TEXT.en.readStory)}</a>\n` +
+    `🙏 <a href="https://t.me/U_not_the_only_bot">@U_not_the_only_bot</a>`
   );
 }
