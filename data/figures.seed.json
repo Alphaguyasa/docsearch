@@ -1230,6 +1230,59 @@
         }
       ],
       "note": "Read from the Ethiopian Synaxarium (Genbot). The text does not give her name."
+    },
+    {
+      "id": "hero_of_alexandria",
+      "name": "Hero of Alexandria",
+      "kind": "tradition",
+      "sins": [
+        "pride",
+        "addiction",
+        "sexual_sin"
+      ],
+      "summary": "A brilliant young monk who knew the Scriptures by heart, he fell through pride into the taverns, the theatres and drunkenness, and then into lust; broken by sickness, he came back to the desert, confessed everything to the fathers, and died repenting with tears.",
+      "traditions": [
+        "ethiopian_orthodox",
+        "orthodox",
+        "catholic"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”",
+          "sourceId": "paradise",
+          "match": "seized by the passion of boasting and pridefulness"
+        },
+        {
+          "role": "restoration",
+          "ref": "Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”",
+          "sourceId": "paradise",
+          "match": "confessed all these things to the fathers"
+        }
+      ],
+      "note": "Read from the Paradise of the Holy Fathers (Palladius), where he is called Ahron (Hero); Heron in the Lausiac History."
+    },
+    {
+      "id": "robber_captain",
+      "name": "The robber captain who came to Abba Daniel’s nuns",
+      "kind": "tradition",
+      "sins": [
+        "theft",
+        "deceit"
+      ],
+      "summary": "He disguised himself as the holy Abba Daniel to rob a convent; when a blind nun washed her face and could see, he repented and became a monk with Abba Daniel.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Takhsas",
+          "sourceId": "synaxarium",
+          "match": "captain of the thieves saw this he repented"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Takhsas), in the story of Abba Daniel. The text does not give his name."
     }
   ]
 }

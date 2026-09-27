@@ -24,6 +24,9 @@ const READER_NOTES: Record<string, string> = {
     "Read from the Ethiopian Synaxarium (Yakatit). His story includes the killing of two people; it is here because the text says even this was forgiven.",
   mary_niece_of_abraham: "Read from the Ethiopian Synaxarium (Nahase), in the story of her uncle, Abba Abraham.",
   martianus_woman: "Read from the Ethiopian Synaxarium (Genbot). The text does not give her name.",
+  hero_of_alexandria:
+    "Read from the Paradise of the Holy Fathers (Palladius), where he is called Ahron (Hero); Heron in the Lausiac History.",
+  robber_captain: "Read from the Ethiopian Synaxarium (Takhsas), in the story of Abba Daniel. The text does not give his name.",
   martha_of_egypt: "Her story is read here from the Ethiopian Synaxarium (Sane).",
   basils_young_man:
     "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",
