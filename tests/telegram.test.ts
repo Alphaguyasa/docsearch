@@ -128,3 +128,21 @@ test("the channel caption is bilingual, fits a photo caption, and links the page
     assert.match(c, /የዕለቱ ታሪክ · Story of the day/);
   }
 });
+
+test("inline mode finds people by name in either language, then by struggle", async () => {
+  const { inlinePeople, inlineResults, shareCaption } = await import("../src/lib/telegram");
+  assert.equal(inlinePeople("peter")[0].id, "peter");
+  assert.equal(inlinePeople("ጴጥሮስ")[0].id, "peter");
+  const angry = inlinePeople("anger");
+  assert.ok(angry.length > 0 && angry.every((f) => f.sins.some((s) => ["anger", "violence", "resentment", "murder"].includes(s))));
+  assert.equal(inlinePeople("").length, 8);
+  assert.deepEqual(inlinePeople("zzzz"), []);
+  for (const r of inlineResults(inlinePeople(""), "am")) {
+    assert.ok(r.id.length <= 64 && r.title && r.description);
+  }
+  for (const lang of ["en", "am"] as const) {
+    const c = shareCaption(FIGURES[0], lang);
+    assert.ok(c.replace(/<[^>]+>/g, "").length <= 1024);
+    assert.match(c, /\/people\/david"/);
+  }
+});

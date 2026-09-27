@@ -23,6 +23,8 @@ import {
   crisisMessage,
   detectLang,
   fallbackMessage,
+  inlinePeople,
+  inlineResults,
   feedbackKeyboard,
   parseFeedbackData,
   storyMessages,
@@ -39,6 +41,7 @@ interface Update {
     from?: { first_name?: string; language_code?: string };
     text?: string;
   };
+  inline_query?: { id: string; query: string; from?: { language_code?: string } };
   callback_query?: {
     id: string;
     data?: string;
@@ -60,6 +63,8 @@ export async function POST(request: Request): Promise<Response> {
   }
   // Backup for the morning channel post, in case the cron didn't fire.
   after(() => ensureDailyStory().catch(() => {}));
+  const iq = update.inline_query;
+  if (iq) after(() => answerInline(token, iq).catch((err) => console.error("telegram inline:", err)));
   const cb = update.callback_query;
   if (cb) after(() => handleFeedback(token, cb).catch((err) => console.error("telegram feedback:", err)));
   return new Response("ok");
@@ -134,6 +139,16 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
         reply_markup: feedbackKeyboard(result, result.tags, lang),
       });
   }
+}
+
+/** "@U_not_the_only_bot anger" in any chat: story cards to send there. */
+async function answerInline(token: string, iq: NonNullable<Update["inline_query"]>): Promise<void> {
+  const lang = detectLang(iq.query, iq.from?.language_code);
+  await tg(token, "answerInlineQuery", {
+    inline_query_id: iq.id,
+    results: inlineResults(inlinePeople(iq.query.slice(0, 100)), lang),
+    cache_time: 300,
+  });
 }
 
 /** A tap on "This helped" / "Not really": store it, thank them, remove the buttons. */
