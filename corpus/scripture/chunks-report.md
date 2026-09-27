@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-27T18:33:48.829Z
+Generated 2026-09-27T19:29:16.850Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -113,6 +113,8 @@ Generated 2026-09-27T18:33:48.829Z
 - ✅ hero_of_alexandria / fall: `Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”)
 - ✅ hero_of_alexandria / restoration: `Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” (part 2))
 - ✅ robber_captain / restoration: `Ethiopian Synaxarium, Takhsas` → 1 chunk(s) (Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” (part 3))
+- ✅ envious_elder / restoration: `Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…”` → 1 chunk(s) (Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…” (part 29))
+- ✅ gelasius_cook / restoration: `Ethiopian Synaxarium, Yakatit` → 1 chunk(s) (Ethiopian Synaxarium, Yakatit (part 3))
 
 ## Samples
 
