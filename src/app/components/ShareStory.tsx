@@ -9,7 +9,7 @@ import { useT } from "../i18n/client";
  * first, then WhatsApp, then a plain link. On phones with a share sheet the
  * link button opens it instead.
  */
-export function ShareStory({ url, name }: { url: string; name: string }) {
+export function ShareStory({ url, name, imageUrl }: { url: string; name: string; imageUrl?: string }) {
   const { t } = useT();
   const [copied, setCopied] = useState(false);
   const text = t.person.shareText(name);
@@ -24,6 +24,21 @@ export function ShareStory({ url, name }: { url: string; name: string }) {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* dismissed */
+    }
+  }
+
+  // A tall picture for a WhatsApp or Telegram status: straight into the phone's
+  // share sheet where it takes files, otherwise a plain download.
+  async function shareImage(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!imageUrl || !navigator.canShare) return;
+    e.preventDefault();
+    try {
+      const blob = await (await fetch(imageUrl)).blob();
+      const file = new File([blob], `${name}.png`, { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: `${text} ${url}` });
+      else window.open(imageUrl, "_blank");
     } catch {
       /* dismissed */
     }
@@ -50,6 +65,11 @@ export function ShareStory({ url, name }: { url: string; name: string }) {
         <button type="button" className={pill} onClick={copy} aria-live="polite">
           {copied ? t.person.copied : t.person.copy}
         </button>
+        {imageUrl && (
+          <a className={pill} href={imageUrl} download onClick={shareImage}>
+            {t.person.statusImage}
+          </a>
+        )}
       </div>
     </div>
   );
