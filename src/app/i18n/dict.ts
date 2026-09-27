@@ -213,6 +213,7 @@ const en = {
     marked: "Read ✓",
     next: "Next",
     all: "All 40 days",
+    telegram: "Get one each morning on Telegram",
     finished: "You finished all 40 days. Every one of them came back — so can you.",
   },
   person: {
@@ -504,6 +505,7 @@ const am: Dict = {
     marked: "ተነቧል ✓",
     next: "ቀጣይ",
     all: "40ዎቹም ቀናት",
+    telegram: "በየማለዳው በቴሌግራም ያግኙት",
     finished: "40ዎቹንም ቀናት ጨርሰዋል። እያንዳንዳቸው ተመልሰዋል — እርስዎም ይችላሉ።",
   },
   person: {
