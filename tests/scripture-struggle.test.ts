@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { peopleFor } from "../src/lib/scripture/people-for";
+import { STRUGGLES, STRUGGLE_IDS, peopleForStruggle } from "../src/app/struggles";
 import { addisDay, personOfTheDay } from "../src/lib/scripture/today";
 import { FIGURES, cleanPassage, orderedPassages, rankFigures, refsOverlap } from "../src/lib/scripture/figures";
 import {
@@ -197,4 +198,15 @@ test("story of the day: one person per Addis Ababa day, every person in turn", (
   const seen = new Set<string>();
   for (let d = 0; d < readable.length; d++) seen.add(personOfTheDay(new Date(Date.UTC(2026, 0, 1) + d * 86400000)).id);
   assert.equal(seen.size, readable.length);
+});
+
+test("every struggle page has text in both languages and at least two people", () => {
+  for (const id of STRUGGLE_IDS) {
+    for (const lang of ["en", "am"] as const) {
+      assert.ok(STRUGGLES[id][lang].h1 && STRUGGLES[id][lang].example, `${id} ${lang}`);
+    }
+    assert.ok(peopleForStruggle(id, FIGURES).length >= 2, id);
+  }
+  assert.equal(STRUGGLE_IDS.length, 9);
+  assert.equal(peopleForStruggle("addiction", FIGURES)[0]?.id, "noah");
 });
