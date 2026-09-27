@@ -10,6 +10,7 @@ import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 
 import { AnswerView } from "./components/AnswerView";
 import { StoryFallback } from "./components/StoryFallback";
+import { PrayerCard } from "./components/PrayerCard";
 import { StoryFeedback } from "./components/StoryFeedback";
 import { CrisisCard } from "./components/CrisisCard";
 import { Hero } from "./components/Hero";
@@ -212,7 +213,12 @@ export default function Home() {
                 onCiteClick={setActiveCitation}
               />
             </div>
-            {status === "done" && answer.trim() && <StoryFeedback figures={figures.map((f) => f.id)} tags={tags} />}
+            {status === "done" && answer.trim() && (
+              <>
+                <PrayerCard tags={tags} figureId={figures.length === 1 ? figures[0].id : undefined} />
+                <StoryFeedback figures={figures.map((f) => f.id)} tags={tags} />
+              </>
+            )}
             {sources.length > 0 && (
               <div className="mt-12">
                 <Passages
