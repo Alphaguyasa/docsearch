@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-27T17:34:06.118Z
+Generated 2026-09-27T18:25:44.013Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -103,6 +103,13 @@ Generated 2026-09-27T17:34:06.118Z
 - ✅ abba_moses_hermit / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 3))
 - ✅ abba_moses_hermit / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 4))
 - ✅ abba_moses_hermit / restoration: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 5))
+- ✅ jacob_the_monk / fall: `Ethiopian Synaxarium, Yakatit` → 1 chunk(s) (Ethiopian Synaxarium, Yakatit)
+- ✅ jacob_the_monk / fall: `Ethiopian Synaxarium, Yakatit` → 1 chunk(s) (Ethiopian Synaxarium, Yakatit (part 2))
+- ✅ jacob_the_monk / restoration: `Ethiopian Synaxarium, Yakatit` → 1 chunk(s) (Ethiopian Synaxarium, Yakatit (part 3))
+- ✅ mary_niece_of_abraham / fall: `Ethiopian Synaxarium, Nahase` → 1 chunk(s) (Ethiopian Synaxarium, Nahase (part 2))
+- ✅ mary_niece_of_abraham / restoration: `Ethiopian Synaxarium, Nahase` → 1 chunk(s) (Ethiopian Synaxarium, Nahase (part 3))
+- ✅ martianus_woman / fall: `Ethiopian Synaxarium, Genbot` → 1 chunk(s) (Ethiopian Synaxarium, Genbot (part 2))
+- ✅ martianus_woman / restoration: `Ethiopian Synaxarium, Genbot` → 1 chunk(s) (Ethiopian Synaxarium, Genbot (part 3))
 
 ## Samples
 
