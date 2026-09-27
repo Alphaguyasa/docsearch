@@ -5,16 +5,15 @@
  * retries) and do the work after the response: the text is sent to
  * /api/search exactly as the website sends it — safety gate, rate limit and
  * example cache included — and the story comes back to the chat. Only private
- * chats are answered; nothing is stored.
+ * chats are answered; nothing written is stored (only /daily keeps the chat
+ * number, until /stop).
  */
 import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
-import { ensureDailyStory } from "@/lib/channel";
+import { ensureDailyStory, sendToday, subscribe, unsubscribe } from "@/lib/channel";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
-import credits from "../../../../public/art/credits.json";
 import { peopleFor } from "@/lib/scripture/people-for";
-import { personOfTheDay } from "@/lib/scripture/today";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
@@ -27,7 +26,6 @@ import {
   feedbackKeyboard,
   parseFeedbackData,
   storyMessages,
-  todayCaption,
   tg,
   webhookSecret,
   type BotLang,
@@ -82,17 +80,15 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
       crisisMessage({ message: t.helpTitle, steps: resources.always, resources: resources.global }, lang),
     ));
   }
-  if (text.startsWith("/today")) {
-    const f = personOfTheDay(new Date());
-    const caption = todayCaption(f, lang);
-    const hasArt = (credits as { credits: { id: string }[] }).credits.some((a) => a.id === f.id);
-    if (!hasArt) return void (await send(caption));
-    return void (await tg(token, "sendPhoto", {
-      chat_id,
-      photo: `${SITE_URL}/art/og/${f.id}.jpg`,
-      caption,
-      parse_mode: "HTML",
-    }).catch(() => send(caption)));
+  if (text.startsWith("/today")) return void (await sendToday(token, chat_id, lang));
+  if (text.startsWith("/daily")) {
+    await subscribe(chat_id, lang);
+    await send(t.dailyOn);
+    return void (await sendToday(token, chat_id, lang));
+  }
+  if (text.startsWith("/stop")) {
+    await unsubscribe(chat_id);
+    return void (await send(t.dailyOff));
   }
   if (text.length > 1000) return void (await send(t.tooLong));
 
