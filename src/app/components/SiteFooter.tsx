@@ -21,6 +21,7 @@ export async function SiteFooter() {
         { href: "/struggles", label: f.struggles },
         { href: "/return", label: f.comingBack },
         { href: "/journey", label: f.journey },
+        { href: "/about", label: f.about },
         { href: "/credits", label: f.credits },
         { href: "https://t.me/you_r_repenter", label: f.channel },
         { href: "https://t.me/U_not_the_only_bot", label: f.bot },
