@@ -1137,6 +1137,99 @@
         }
       ],
       "note": "Read from the Ethiopian Synaxarium (Maskaram). Not Abba Moses the Black."
+    },
+    {
+      "id": "jacob_the_monk",
+      "name": "Jacob the monk",
+      "kind": "tradition",
+      "sins": [
+        "lust",
+        "sexual_sin",
+        "murder",
+        "despair"
+      ],
+      "summary": "A hermit of fifteen years, he fell into sin with a girl brought to him for healing, then killed her and her brother to hide it; in despair he met a monk who said, “Cut not off hope,” and after forty years of repentance God answered his prayer with rain.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Yakatit",
+          "sourceId": "synaxarium",
+          "match": "made him to fall into sin with her"
+        },
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Yakatit",
+          "sourceId": "synaxarium",
+          "match": "he killed the woman and her brother"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Yakatit",
+          "sourceId": "synaxarium",
+          "match": "had accepted his prayer and his repentance"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Yakatit)."
+    },
+    {
+      "id": "mary_niece_of_abraham",
+      "name": "Mary, niece of Abba Abraham",
+      "kind": "tradition",
+      "sins": [
+        "sexual_sin",
+        "shame",
+        "quitting"
+      ],
+      "summary": "Raised in prayer by her uncle, she fell with a monk, left her life and went to work in a tavern; her uncle came for her in disguise, took her hand and said, “Thy sin lieth upon me… Come, return,” and she did.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Nahase",
+          "sourceId": "synaxarium",
+          "match": "intimate terms with a certain monk"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Nahase",
+          "sourceId": "synaxarium",
+          "match": "thy sin lieth upon me"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Nahase), in the story of Abba Abraham."
+    },
+    {
+      "id": "martianus_woman",
+      "name": "The woman who came to tempt Abba Martianus",
+      "kind": "tradition",
+      "sins": [
+        "sexual_sin",
+        "greed"
+      ],
+      "summary": "She took money to make a holy hermit fall; when she found him burning his hands in a fire rather than sin, she came to herself, begged him to save her soul, and repented with all her heart.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Genbot",
+          "sourceId": "synaxarium",
+          "match": "How much money will ye give me"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Genbot",
+          "sourceId": "synaxarium",
+          "match": "she repented with all her heart"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Genbot). The text does not give her name."
     }
   ]
 }

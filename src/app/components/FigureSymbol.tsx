@@ -177,6 +177,28 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 2 L32 16 M26 7 L38 7" />
     </>
   ),
+  // The rain that came when his repentance was accepted.
+  jacob_the_monk: (
+    <>
+      <path d="M14 26 C14 18 22 14 28 16 C32 8 46 8 48 18 C56 18 58 28 50 30 L18 30 C14 30 14 28 14 26 Z" />
+      <path d="M20 38 L17 46 M30 38 L27 46 M40 38 L37 46 M25 50 L22 58 M35 50 L32 58 M45 50 L42 58" />
+    </>
+  ),
+  // The horse her uncle led home by the bridle.
+  mary_niece_of_abraham: (
+    <>
+      <path d="M20 54 L22 36 C22 28 28 22 36 22 L44 14 L46 22 C50 26 52 32 50 36 L44 34 L42 54" />
+      <path d="M44 22 L40 28 L10 44" />
+    </>
+  ),
+  // The fire he chose over sin.
+  martianus_woman: (
+    <>
+      <path d="M32 8 C40 20 46 28 44 40 C43 50 36 56 32 56 C28 56 21 50 20 40 C18 28 26 22 28 14 C30 20 32 22 34 24 C34 18 33 12 32 8 Z" />
+      <path d="M32 56 C28 52 27 46 30 40 C32 44 34 44 35 40 C38 46 37 52 32 56 Z" />
+      <path d="M12 58 L52 58" />
+    </>
+  ),
   // His desert cave, and the rain he prayed down for the animals.
   abba_moses_hermit: (
     <>
