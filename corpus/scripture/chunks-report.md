@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-27T17:19:24.924Z
+Generated 2026-09-27T17:24:33.750Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -100,6 +100,9 @@ Generated 2026-09-27T17:19:24.924Z
 - ✅ martha_of_egypt / restoration: `Ethiopian Synaxarium, Sane` → 1 chunk(s) (Ethiopian Synaxarium, Sane (part 2))
 - ✅ basils_young_man / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram)
 - ✅ basils_young_man / restoration: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram (part 3))
+- ✅ abba_moses_hermit / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 3))
+- ✅ abba_moses_hermit / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 4))
+- ✅ abba_moses_hermit / restoration: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” (part 5))
 
 ## Samples
 
