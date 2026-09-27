@@ -177,6 +177,15 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 2 L32 16 M26 7 L38 7" />
     </>
   ),
+  // His desert cave, and the rain he prayed down for the animals.
+  abba_moses_hermit: (
+    <>
+      <path d="M6 56 C10 40 20 30 32 30 C44 30 54 40 58 56 Z" />
+      <path d="M24 56 C24 48 27 42 32 42 C37 42 40 48 40 56" />
+      <path d="M18 8 C24 4 32 6 34 12 C40 10 46 14 44 20 L16 20 C12 18 12 12 18 8 Z" />
+      <path d="M20 24 L18 28 M28 24 L26 28 M36 24 L34 28" />
+    </>
+  ),
   // The great fish.
   jonah: (
     <>
