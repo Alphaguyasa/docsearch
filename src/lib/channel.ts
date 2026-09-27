@@ -6,6 +6,7 @@
  */
 import credits from "../../public/art/credits.json";
 import { db } from "./db";
+import { FIGURES, type Figure } from "./scripture/figures";
 import { addisDay, addisHour, personOfTheDay } from "./scripture/today";
 import { CHANNEL, SITE_URL, channelCaption, tg, todayCaption, type BotLang } from "./telegram";
 
@@ -80,9 +81,25 @@ export async function unsubscribe(chatId: number): Promise<void> {
   if (error) throw new Error(error.message);
 }
 
+/**
+ * Today's person as the channel posted it, so the site, /today and the
+ * morning messages all agree even if people were added since the morning
+ * (which shifts the computed rotation). Falls back to the rotation.
+ */
+export async function todaysFigure(now = new Date()): Promise<Figure> {
+  const { data } = await db.from("channel_posts").select("figure").eq("day", addisDay(now)).maybeSingle();
+  return FIGURES.find((f) => f.id === data?.figure) ?? personOfTheDay(now);
+}
+
 /** The story of the day in one private chat, with the painting when there is one. */
-export async function sendToday(token: string, chatId: number, lang: BotLang, now = new Date()): Promise<void> {
-  const f = personOfTheDay(now);
+export async function sendToday(
+  token: string,
+  chatId: number,
+  lang: BotLang,
+  now = new Date(),
+  f?: Figure,
+): Promise<void> {
+  f ??= await todaysFigure(now);
   const caption = todayCaption(f, lang);
   const text = () =>
     tg(token, "sendMessage", {
@@ -116,13 +133,14 @@ export async function sendToSubscribers(now = new Date(), budgetMs = 40_000): Pr
   const out = { sent: 0, gone: 0 };
   if (!token) return out;
   const day = addisDay(now);
+  const f = await todaysFigure(now);
   const start = Date.now();
   while (Date.now() - start < budgetMs) {
     const { data, error } = await db.rpc("claim_daily_subscribers", { p_day: day, p_limit: 50 });
     if (error || !data?.length) break;
     for (const s of data as { chat_id: number; lang: BotLang }[]) {
       try {
-        await sendToday(token, s.chat_id, s.lang === "am" ? "am" : "en", now);
+        await sendToday(token, s.chat_id, s.lang === "am" ? "am" : "en", now, f);
         out.sent++;
       } catch (err) {
         if (isGone(err)) {
