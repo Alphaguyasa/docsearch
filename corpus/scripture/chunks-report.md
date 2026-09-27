@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-26T20:24:54.717Z
+Generated 2026-09-27T17:19:24.924Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -96,6 +96,10 @@ Generated 2026-09-26T20:24:54.717Z
 - ✅ thais / fall: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”)
 - ✅ thais / restoration: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” (part 3))
 - ✅ thais / restoration: `Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” (part 4))
+- ✅ martha_of_egypt / fall: `Ethiopian Synaxarium, Sane` → 1 chunk(s) (Ethiopian Synaxarium, Sane)
+- ✅ martha_of_egypt / restoration: `Ethiopian Synaxarium, Sane` → 1 chunk(s) (Ethiopian Synaxarium, Sane (part 2))
+- ✅ basils_young_man / fall: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram)
+- ✅ basils_young_man / restoration: `Ethiopian Synaxarium, Maskaram` → 1 chunk(s) (Ethiopian Synaxarium, Maskaram (part 3))
 
 ## Samples
 
