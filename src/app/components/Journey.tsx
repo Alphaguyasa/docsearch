@@ -35,6 +35,18 @@ function useJourney() {
   return { done, mark };
 }
 
+/**
+ * Tomorrow's reading, saved now into the service worker's page cache (see
+ * public/sw.js), so it opens even without a connection.
+ */
+function saveForOffline(path: string) {
+  try {
+    void caches?.open("pages-v2").then((c) => c.add(path)).catch(() => {});
+  } catch {
+    /* no Cache API */
+  }
+}
+
 const nameOf = (lang: "en" | "am", id: string) => {
   const f = FIGURES.find((x) => x.id === id)!;
   return figureText(lang, f);
@@ -114,7 +126,10 @@ export function JourneyMark({ id }: { id: string }) {
       </Link>
       <button
         type="button"
-        onClick={() => mark(id)}
+        onClick={() => {
+          mark(id);
+          if (nextId) saveForOffline(`/people/${nextId}`);
+        }}
         disabled={read}
         aria-pressed={read}
         className={`min-h-11 rounded-full border px-5 py-2 text-sm transition-colors ${
