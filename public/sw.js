@@ -2,10 +2,11 @@
 // paintings and the fonts, so the site opens on a weak or lost connection —
 // above all the Help page with its crisis numbers. Nothing a person types is
 // cached: /api requests always go to the network.
-const VERSION = "v1";
+const VERSION = "v2";
+// src/app/components/Journey.tsx saves tomorrow's reading into this cache by name.
 const PAGES = `pages-${VERSION}`;
 const ASSETS = `assets-${VERSION}`;
-const PRECACHE = ["/", "/help", "/people"];
+const PRECACHE = ["/", "/help", "/people", "/return", "/journey"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
