@@ -33,9 +33,11 @@
  * mid-stream generation failure surfaces as a terminal {"type":"error"} line
  * rather than an HTTP error.
  */
+import { after } from "next/server";
 import { z } from "zod";
 
 import { streamAnswer, type FigureHint } from "@/lib/answer";
+import { bump, searchCounts } from "@/lib/counts";
 import { cacheExample, exampleKey, getCachedExample } from "@/lib/example-cache";
 import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
@@ -109,6 +111,10 @@ export async function POST(request: Request): Promise<Response> {
     return errorResponse(parsed.error.issues[0]?.message ?? "Invalid request.", 400);
   }
   const { question, tradition } = parsed.data;
+  // Numbers only (see lib/counts.ts): which kind of answer, never the words.
+  const via = request.headers.get("x-not-alone-client") === "telegram" ? "telegram" : "web";
+  const count = (e: Omit<Parameters<typeof searchCounts>[0], "question" | "via">) =>
+    after(() => bump(searchCounts({ question, via, ...e })));
   // Classification runs on the light model, saving the main one's quota for answers.
   const classify = async (prompt: string) =>
     (await getLlm().complete([{ role: "user", content: prompt }], 20, lightModel())).text;
@@ -117,6 +123,7 @@ export async function POST(request: Request): Promise<Response> {
   //    gets help and resources — never a story about a sinner.
   const safety = await checkSafety(question, classify);
   if (safety.crisis && safety.kind) {
+    count({ kind: "crisis", crisisKind: safety.kind });
     const body =
       line({ type: "crisis", crisis: crisisResponse(safety.kind) }) + line({ type: "done" });
     return new Response(body, {
@@ -129,6 +136,7 @@ export async function POST(request: Request): Promise<Response> {
   const cacheKey = exampleKey(question, tradition);
   const cached = cacheKey ? getCachedExample(cacheKey) : null;
   if (cached) {
+    count({ kind: "cached" });
     return new Response(cached, {
       status: 200,
       headers: { "Content-Type": "application/x-ndjson", "Cache-Control": "no-store" },
@@ -138,6 +146,7 @@ export async function POST(request: Request): Promise<Response> {
   // 3. Global rate limit — AFTER the safety gate, so a person in crisis is
   //    never told to wait.
   if (!(await takeSearchSlot())) {
+    count({ kind: "busy" });
     return errorResponse(BUSY_MESSAGE, 429);
   }
 
@@ -157,6 +166,7 @@ export async function POST(request: Request): Promise<Response> {
   } catch (err) {
     return errorResponse(`Retrieval failed: ${errorMessage(err)}`, 502);
   }
+  count({ kind: "story", tags, figures });
   const hints: FigureHint[] = figures.map(({ name, summary, note }) => ({ name, summary, note }));
 
   // 5. Stream NDJSON: sources first, then answer deltas, then done (or error).
@@ -179,6 +189,7 @@ export async function POST(request: Request): Promise<Response> {
         send(line({ type: "done" }));
         if (cacheKey) cacheExample(cacheKey, transcript.join(""));
       } catch (err) {
+        void bump(["error"]);
         // The status is already committed (200); report the failure in-band as
         // the terminal line instead of a "done".
         controller.enqueue(
