@@ -82,6 +82,7 @@ export const TEXT = {
     searching: "Finding someone who carried this too…",
     notOnly: "You are not the only one",
     sources: "Where to read it",
+    aiNote: "Written by an AI from these passages. It can make mistakes, so read them for yourself.",
     more: "Read it with the full passages",
     busy: "Many people are asking right now. Please send your message again in a minute.",
     failed: "Something went wrong while finding a story. Please try again in a moment.",
@@ -119,6 +120,7 @@ export const TEXT = {
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
     notOnly: "እርስዎ ብቻ አይደሉም",
     sources: "የት እንደሚነበብ",
+    aiNote: "ከእነዚህ ክፍሎች በሰው ሠራሽ አስተውሎት (AI) የተጻፈ ነው፤ ሊሳሳት ስለሚችል ራስዎ ያንብቧቸው።",
     more: "ከሙሉ ምንባቦቹ ጋር ያንብቡት",
     busy: "አሁን ብዙ ሰዎች እየጠየቁ ነው። እባክዎ ከአንድ ደቂቃ በኋላ መልእክትዎን እንደገና ይላኩ።",
     failed: "ታሪክ በመፈለግ ላይ ችግር ተፈጠረ። እባክዎ ትንሽ ቆይተው እንደገና ይሞክሩ።",
@@ -197,6 +199,7 @@ export function storyMessages(result: SearchResult, lang: BotLang): string[] {
     .map((c) => `[${c.n}] ${escapeHtml(c.ref || c.title)}`);
   const tail =
     (refs.length ? `\n\n<b>${escapeHtml(t.sources)}</b>\n${refs.join("\n")}` : "") +
+    `\n<i>${escapeHtml(t.aiNote)}</i>` +
     "\n\n" +
     (result.figures.length
       ? `<b>${escapeHtml(t.more)}</b>\n` +
