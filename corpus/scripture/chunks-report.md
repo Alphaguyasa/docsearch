@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-27T18:25:44.013Z
+Generated 2026-09-27T18:33:48.829Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -110,6 +110,9 @@ Generated 2026-09-27T18:25:44.013Z
 - ✅ mary_niece_of_abraham / restoration: `Ethiopian Synaxarium, Nahase` → 1 chunk(s) (Ethiopian Synaxarium, Nahase (part 3))
 - ✅ martianus_woman / fall: `Ethiopian Synaxarium, Genbot` → 1 chunk(s) (Ethiopian Synaxarium, Genbot (part 2))
 - ✅ martianus_woman / restoration: `Ethiopian Synaxarium, Genbot` → 1 chunk(s) (Ethiopian Synaxarium, Genbot (part 3))
+- ✅ hero_of_alexandria / fall: `Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”)
+- ✅ hero_of_alexandria / restoration: `Paradise of the Holy Fathers, “AND there was also my neighbour, a man…”` → 1 chunk(s) (Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” (part 2))
+- ✅ robber_captain / restoration: `Ethiopian Synaxarium, Takhsas` → 1 chunk(s) (Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” (part 3))
 
 ## Samples
 
