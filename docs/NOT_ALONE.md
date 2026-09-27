@@ -134,3 +134,12 @@ to the page and to the bot. `inlinePeople` matches names first, then
 struggles; an empty query starts with the story of the day. Needs inline mode
 switched on once in @BotFather (`/setinline`), and `inline_query` in the
 webhook's allowed updates (`registerWebhook`, refreshed by the morning cron).
+
+### The 40-day journey in the bot (/journey)
+
+`/journey` sends day 1 at once and stores `journey_day = 2` on the chat's
+`bot_subscribers` row; each morning's run sends that day's person instead of
+the story of the day and moves the day on, and after day 40 says so and falls
+back to the story of the day. `/daily` switches back to the story of the day;
+`/stop` deletes the row. The order is `JOURNEY` in src/app/journey.ts, the same
+as the website's /journey page.
