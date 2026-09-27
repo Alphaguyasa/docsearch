@@ -11,7 +11,7 @@
 import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
-import { ensureDailyStory, sendToday, subscribe, unsubscribe } from "@/lib/channel";
+import { ensureDailyStory, sendJourneyDay, sendToday, subscribe, unsubscribe } from "@/lib/channel";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
@@ -90,6 +90,11 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
     await subscribe(chat_id, lang);
     await send(t.dailyOn);
     return void (await sendToday(token, chat_id, lang));
+  }
+  if (text.startsWith("/journey")) {
+    await subscribe(chat_id, lang, new Date(), 2);
+    await send(t.journeyOn);
+    return void (await sendJourneyDay(token, chat_id, lang, 1));
   }
   if (text.startsWith("/stop")) {
     await unsubscribe(chat_id);
