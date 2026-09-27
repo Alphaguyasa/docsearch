@@ -1,28 +1,65 @@
-# DocSearch
+# The Orthodox Library
 
-Ask questions about a corpus of PDFs and get answers that are **grounded and
-cited** — every factual claim carries an inline `[n]` citation back to the source
-chunk, and the system refuses plainly when the documents don't cover the
-question instead of guessing.
+Ask a question and get an answer from the Orthodox Christian tradition — the
+scriptures, the Fathers, the councils, the liturgies and the desert sayings of
+**both the Eastern Orthodox and the Oriental Orthodox Churches** — with every
+claim carrying an inline `[n]` citation back to the passage it came from, and a
+plain refusal when the books do not cover the question.
 
-Retrieval is **hybrid**: vector similarity (Voyage embeddings over pgvector) and
-Postgres full-text keyword search, fused with Reciprocal Rank Fusion. Generation
-is provider-agnostic (Anthropic or Google Gemini) and streamed to the browser
-with the citation targets rendered before the answer text.
+The library is public domain end to end: 38 volumes of the Ante-Nicene and
+Nicene & Post-Nicene Fathers, the Septuagint and the full Orthodox canon, the
+Ethiopian Tewahedo books, the sayings of the desert fathers, the Eastern
+liturgies, and the Byzantine service books. See [docs/CORPUS.md](docs/CORPUS.md)
+for the complete list, the provenance of every text, and — just as importantly —
+what is missing and why.
 
 ## What it does
 
-- **Ingest** PDFs — via the CLI (`npm run ingest`) or drag-and-drop in the
-  browser. Each PDF is extracted per page, chunked (~800 tokens, page-bounded),
-  embedded with `voyage-4` (1024-dim), and stored in Postgres.
-- **Search** — a question runs hybrid retrieval (vector + keyword + RRF); the top
-  chunks are numbered and fed to the model, which streams a cited answer. Inline
-  `[n]` chips open a panel with the source chunk's full text, title, and page.
-- **Refuse** — if the retrieved chunks don't answer the question, the model
-  replies "…not covered by these documents" with no citation, rather than
-  answering from general knowledge.
-- **Manage** — list documents with page/chunk counts and status, delete them
-  (chunks cascade), and watch uploads progress from `pending` → `complete`.
+Three ways to ask, because these are genuinely different questions:
+
+- **Ask** — a direct question, answered from across the whole library.
+  *"What do the Fathers teach about the resurrection of the body?"*
+- **Compare sources** — what **each** book says on its own terms, grouped by
+  tradition, with the disagreements left visible rather than smoothed over.
+  *"Is there anyone besides Christ who rose from the dead?"*
+- **For my situation** — someone describes something in their own life and gets
+  what the Fathers, the sayings, the scriptures and the lives of the saints
+  actually say to it. *"I keep falling into the same sin and I am losing hope."*
+
+And underneath all three:
+
+- **Two communions, honestly.** Every work is catalogued with the tradition that
+  holds it. Everything before Chalcedon is marked as belonging to both, so
+  filtering to one side never hides the shared Fathers. Where a source is
+  received by one communion and not the other — the Seven Ecumenical Councils
+  most of all — the answer is required to say so.
+- **Citations a reader can check.** Not "page 412" of a file they do not have,
+  but `Wisdom 3:1-12` and `NPNF2-13 — Demonstration VII. Of Penitents`.
+  Each source is segmented by its own structure before chunking, so no passage
+  ever straddles the reference that names it.
+- **Refusal over invention.** If the retrieved passages do not answer the
+  question, the model says so and cites nothing. On a corpus where being
+  confidently wrong about which Church holds what is the worst possible failure,
+  this constraint is the product.
+- **Care in the counsel mode.** It is told not to diagnose, not to give medical
+  advice, not to offer ascetic counsel as a substitute for treatment, and to
+  point to emergency help first if someone describes danger to life.
+
+## Building the library
+
+```bash
+npm run corpus:verify      # check every source resolves (downloads nothing)
+npm run corpus:orthodox    # fetch the public-domain texts (~200MB, deliberately slow)
+npm run corpus:inspect     # OCR quality distribution, for calibration
+npm run ingest:orthodox    # segment, chunk, embed, store — resumable
+```
+
+Ingestion is **rate-limited and designed to be interrupted**. On a free Voyage
+account (3 requests/minute, 10k tokens/minute) the full corpus — 101k chunks,
+44M tokens — is roughly three days of embedding, so works are ingested in
+priority order — scripture and the pastoral texts first — and every run resumes
+at the first chunk the database does not have. Run `--hours 3` to work in
+sessions, or raise `VOYAGE_RPM`/`VOYAGE_TPM` after upgrading the account.
 
 ## Architecture
 

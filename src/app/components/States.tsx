@@ -64,20 +64,22 @@ export function ErrorState({
   );
 }
 
-/** Empty state: no documents ingested — point the user at the ingest command. */
+/** Empty state: the library has no books yet — point at the two setup commands. */
 export function EmptyState() {
   return (
     <div className="border border-border p-6">
-      <h2 className="text-base font-semibold">No documents ingested</h2>
+      <h2 className="text-base font-semibold">The library is empty</h2>
       <p className="mt-1 text-muted">
-        The corpus is empty, so there is nothing to search. Ingest one or more
-        PDFs, then reload this page.
+        No books have been loaded yet, so there is nothing to answer from. Fetch
+        the public-domain corpus and ingest it, then reload this page.
       </p>
       <pre className="mt-3 overflow-x-auto border border-border bg-panel p-3 font-mono text-xs">
-        npm run ingest -- ./path/to/file.pdf
+        npm run corpus:orthodox{"\n"}npm run ingest:orthodox
       </pre>
       <p className="mt-2 text-xs text-muted">
-        See the project README for ingestion details.
+        Ingestion is rate-limited and resumable — the scriptures and the pastoral
+        texts load first, so the library can answer questions long before the
+        whole corpus is in. See docs/CORPUS.md for what it contains.
       </p>
     </div>
   );

@@ -25,7 +25,11 @@
     "test:eval:cov": "vitest run --coverage",
     "eval:calibrate": "tsx scripts/calibrate-judge.ts",
     "eval:judge-smoke": "tsx scripts/judge-smoke.ts",
-    "corpus:fetch": "tsx scripts/fetch-corpus.ts"
+    "corpus:fetch": "tsx scripts/fetch-corpus.ts",
+    "corpus:orthodox": "tsx scripts/fetch-orthodox.ts",
+    "corpus:verify": "tsx scripts/fetch-orthodox.ts --verify",
+    "ingest:orthodox": "tsx scripts/ingest-orthodox.ts",
+    "corpus:inspect": "tsx scripts/inspect-corpus.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.114.0",
