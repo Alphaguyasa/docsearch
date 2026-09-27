@@ -158,6 +158,25 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M44 42 C47 38 46 33 43 30 C42 34 40 36 41 39" />
     </>
   ),
+  // The church door she was turned away from, and walked back through.
+  martha_of_egypt: (
+    <>
+      <path d="M14 58 L14 28 C14 16 22 8 32 8 C42 8 50 16 50 28 L50 58" />
+      <path d="M22 58 L22 32 C22 25 26 20 32 20 C38 20 42 25 42 32 L42 58" />
+      <path d="M32 20 L32 58" />
+      <path d="M8 58 L56 58" />
+      <path d="M32 2 L32 8 M29.5 4.5 L34.5 4.5" />
+    </>
+  ),
+  // The paper of his denial, torn, under the Cross.
+  basils_young_man: (
+    <>
+      <path d="M14 22 L30 22 L28 30 L31 38 L28 46 L30 58 L14 58 Z" />
+      <path d="M36 22 L50 22 L50 58 L36 58 L38 46 L35 38 L38 30 Z" />
+      <path d="M18 30 L25 30 M18 36 L26 36 M18 42 L24 42 M41 30 L46 30 M40 36 L46 36" />
+      <path d="M32 2 L32 16 M26 7 L38 7" />
+    </>
+  ),
   // The great fish.
   jonah: (
     <>

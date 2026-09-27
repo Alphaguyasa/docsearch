@@ -1044,6 +1044,64 @@
           "match": "This couch is not for Anthony"
         }
       ]
+    },
+    {
+      "id": "martha_of_egypt",
+      "name": "St. Martha of Egypt",
+      "kind": "tradition",
+      "sins": [
+        "sexual_sin",
+        "shame"
+      ],
+      "summary": "Lived openly in sexual sin in Cairo; turned away at the church door at Christmas, she burned all her wealth and spent twenty-five years in repentance in a convent.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Sane",
+          "sourceId": "synaxarium",
+          "match": "She loved fornication"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Sane",
+          "sourceId": "synaxarium",
+          "match": "sent her to a house for virgins"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Sane)."
+    },
+    {
+      "id": "basils_young_man",
+      "name": "The young man St. Basil restored",
+      "kind": "tradition",
+      "sins": [
+        "denial",
+        "idolatry",
+        "lust",
+        "despair"
+      ],
+      "summary": "For the love of a woman he went to a magician and denied Christ in writing; afraid it was too late, he wept, and St. Basil prayed with him for forty days until he was free.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "denied Christ our God"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "Dost thou wish to return and to be a Christian once more"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Maskaram), a miracle of St. Basil the Great."
     }
   ]
 }
