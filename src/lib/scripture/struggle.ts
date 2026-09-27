@@ -37,7 +37,7 @@ const SYNONYMS: Record<string, { en: string[]; am?: string[] }> = {
   sexual_sin: { en: ["fornicat", "sex before marriage", "premarital", "slept with", "sleep with", "prostitut", "hook up", "hooking up", "sexual sin", "sexually"], am: ["ዝሙት", "ሴሰኝነት"] },
   murder: { en: ["murder", "killed", "kill someone", "took a life"], am: ["ነፍስ ማጥፋት", "ግድያ", "ገደልኩ"] },
   violence: { en: ["violen", "hit my", "beat my", "hurt someone", "gang", "armed"], am: ["ደበደብ", "መታሁ", "ግፍ"] },
-  anger: { en: ["anger", "angry", "rage", "temper", "furious", "yell", "shout", "hatred", "resent"], am: ["ቁጣ", "ተቆጣ", "ንዴት", "ተናደ", "ጥላቻ"] },
+  anger: { en: ["anger", "angry", "rage", "temper", "furious", "yell", "shout", "hatred", "resent"], am: ["ቁጣ", "ተቆጣ", "ንዴት", "ተናደ", "ተናድ", "ጥላቻ"] },
   resentment: { en: ["resent", "bitter", "can't forgive", "cannot forgive", "grudge", "unforgiv"], am: ["ቂም", "ይቅር ማለት አልቻል"] },
   deceit: { en: ["lie", "lied", "lying", "liar", "deceiv", "decept", "dishonest", "manipulat", "fake", "pretend"], am: ["ውሸት", "ዋሸ", "እዋሻ", "ማታለ", "አታለል"] },
   theft: { en: ["steal", "stole", "stolen", "theft", "thief", "shoplift", "took money", "robber", "robbed", "robbing", "robbery", "bandit", "mugged"], am: ["ስርቆት", "ሰረቅ", "ሌብነት", "ሌባ"] },

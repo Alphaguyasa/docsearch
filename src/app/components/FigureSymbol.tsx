@@ -177,6 +177,21 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 2 L32 16 M26 7 L38 7" />
     </>
   ),
+  // The bread Abba Poemen brought to his door.
+  envious_elder: (
+    <>
+      <path d="M10 40 C10 28 20 22 32 22 C44 22 54 28 54 40 C54 46 48 48 32 48 C16 48 10 46 10 40 Z" />
+      <path d="M22 30 L26 38 M32 28 L32 38 M42 30 L38 38" />
+      <path d="M8 56 L56 56" />
+    </>
+  ),
+  // The fish, and the boy who walked out of the sanctuary.
+  gelasius_cook: (
+    <>
+      <path d="M8 22 C14 14 30 12 40 20 L48 14 L46 22 L48 30 L40 24 C30 32 14 30 8 22 Z" />
+      <path d="M32 58 L32 44 M26 50 L38 50 M32 44 C28 44 26 40 26 38 C26 34 29 32 32 32 C35 32 38 34 38 38 C38 40 36 44 32 44" />
+    </>
+  ),
   // The wine cup he left behind.
   hero_of_alexandria: (
     <>

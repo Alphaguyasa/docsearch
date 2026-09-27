@@ -27,6 +27,9 @@ const READER_NOTES: Record<string, string> = {
   hero_of_alexandria:
     "Read from the Paradise of the Holy Fathers (Palladius), where he is called Ahron (Hero); Heron in the Lausiac History.",
   robber_captain: "Read from the Ethiopian Synaxarium (Takhsas), in the story of Abba Daniel. The text does not give his name.",
+  envious_elder: "Read from the Sayings of the Fathers in the Paradise of the Holy Fathers. The text does not give his name.",
+  gelasius_cook:
+    "Read from the Ethiopian Synaxarium (Yakatit), in the story of Abba Gelasius. The text does not give his name.",
   martha_of_egypt: "Her story is read here from the Ethiopian Synaxarium (Sane).",
   basils_young_man:
     "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",
