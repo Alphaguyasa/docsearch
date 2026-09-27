@@ -125,3 +125,12 @@ channel posts. The search route bumps plain names in `daily_counts`
 (`bump_counts`) after responding — never anything a person wrote. Without the
 key, or if `STATS_KEY` is unset, the page is a 404; it is kept out of robots.txt
 and the sitemap.
+
+### Sharing a story in any chat (inline mode)
+
+Typing `@U_not_the_only_bot anger` (or a name, in English or Amharic) in any
+Telegram chat offers story cards — the painting, the name and summary, a link
+to the page and to the bot. `inlinePeople` matches names first, then
+struggles; an empty query starts with the story of the day. Needs inline mode
+switched on once in @BotFather (`/setinline`), and `inline_query` in the
+webhook's allowed updates (`registerWebhook`, refreshed by the morning cron).

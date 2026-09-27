@@ -7,7 +7,7 @@
  * `key` must be setupKey(token), so only whoever holds the bot token can run
  * it; anyone else gets a plain 404 and no Telegram calls are made.
  */
-import { SITE_URL, setCommands, setupKey, tg, webhookSecret } from "@/lib/telegram";
+import { SITE_URL, registerWebhook, setCommands, setupKey, tg } from "@/lib/telegram";
 
 export async function GET(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -15,11 +15,7 @@ export async function GET(request: Request): Promise<Response> {
     return new Response("Not found", { status: 404 });
   }
   try {
-    await tg(token, "setWebhook", {
-      url: `${SITE_URL}/api/telegram`,
-      secret_token: webhookSecret(token),
-      allowed_updates: ["message", "callback_query"],
-    });
+    await registerWebhook(token);
     await setCommands(token);
     await tg(token, "setMyDescription", {
       description:

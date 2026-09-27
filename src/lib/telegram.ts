@@ -10,8 +10,11 @@
  */
 import { createHmac } from "node:crypto";
 
+import credits from "../../public/art/credits.json";
 import { figureText } from "../app/i18n/dict";
-import { FIGURES } from "./scripture/figures";
+import { FIGURES, type Figure } from "./scripture/figures";
+import { foldEthiopic, matchTags } from "./scripture/struggle";
+import { personOfTheDay } from "./scripture/today";
 import type { CrisisPayload, FigureSummary, SearchStreamMessage, SourceChunk } from "./search-stream";
 
 export type BotLang = "en" | "am";
@@ -68,7 +71,8 @@ export const TEXT = {
       "Try: <i>I can't stop lying to my parents.</i>\n\n" +
       "/today — the story of the day\n" +
       "/daily — get the story of the day here every morning\n" +
-      "/help — if you are in danger, people to call now",
+      "/help — if you are in danger, people to call now\n\n" +
+      "To share a story in any chat, type @U_not_the_only_bot and a word — like <i>anger</i> or <i>Peter</i>.",
     searching: "Finding someone who carried this too…",
     notOnly: "You are not the only one",
     sources: "Where to read it",
@@ -98,7 +102,8 @@ export const TEXT = {
       "ለምሳሌ፦ <i>ለወላጆቼ መዋሸት ማቆም አልቻልኩም።</i>\n\n" +
       "/today — የዕለቱ ታሪክ\n" +
       "/daily — የዕለቱን ታሪክ በየማለዳው እዚህ ያግኙ\n" +
-      "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው",
+      "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው\n\n" +
+      "በማንኛውም ውይይት ታሪክ ለማጋራት፣ @U_not_the_only_bot ብለው አንድ ቃል ይጻፉ — ለምሳሌ <i>ቁጣ</i> ወይም <i>ጴጥሮስ</i>።",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
     notOnly: "እርስዎ ብቻ አይደሉም",
     sources: "የት እንደሚነበብ",
@@ -311,6 +316,86 @@ export function todayCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, 
     `<b>${escapeHtml(t.today)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
     `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
   );
+}
+
+/**
+ * Inline mode: typing "@U_not_the_only_bot anger" (or a name, in English or
+ * Amharic) in any chat offers story cards to send there. Names match first,
+ * then struggles; an empty query offers the story of the day first.
+ */
+export function inlinePeople(query: string, now = new Date(), limit = 8): Figure[] {
+  const readable = FIGURES.filter((f) => f.passages.some((p) => p.sourceId !== "pending"));
+  const q = foldEthiopic(query.trim().toLowerCase());
+  if (!q) {
+    const today = personOfTheDay(now, FIGURES);
+    return [today, ...readable.filter((f) => f.id !== today.id)].slice(0, limit);
+  }
+  const byName = readable.filter((f) =>
+    [f.name, figureText("am", f).name].some((n) => foldEthiopic(n.toLowerCase()).includes(q)),
+  );
+  const tags = matchTags(query);
+  const byTag = readable
+    .map((f) => ({ f, n: f.sins.filter((s) => tags.includes(s)).length }))
+    .filter((x) => x.n > 0 && !byName.includes(x.f))
+    .sort((a, b) => b.n - a.n)
+    .map((x) => x.f);
+  return [...byName, ...byTag].slice(0, limit);
+}
+
+/** A story card for someone to send to a friend or a group. */
+export function shareCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, lang: BotLang): string {
+  const t = TEXT[lang];
+  const x = figureText(lang, f);
+  return (
+    `<b>${escapeHtml(t.notOnly)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
+    `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>\n` +
+    `🙏 <a href="https://t.me/U_not_the_only_bot">@U_not_the_only_bot</a>`
+  );
+}
+
+const PAINTED = new Set((credits as { credits: { id: string }[] }).credits.map((a) => a.id));
+
+/** Telegram InlineQueryResults for those people: the painting where there is one. */
+export function inlineResults(people: Figure[], lang: BotLang) {
+  return people.map((f) => {
+    const x = figureText(lang, f);
+    const caption = shareCaption(f, lang);
+    if (PAINTED.has(f.id)) {
+      const photo = `${SITE_URL}/art/og/${f.id}.jpg`;
+      return {
+        type: "photo",
+        id: `${f.id}.${lang}`,
+        photo_url: photo,
+        thumbnail_url: photo,
+        photo_width: 1200,
+        photo_height: 630,
+        title: x.name,
+        description: x.summary,
+        caption,
+        parse_mode: "HTML",
+      };
+    }
+    return {
+      type: "article",
+      id: `${f.id}.${lang}`,
+      title: x.name,
+      description: x.summary,
+      input_message_content: {
+        message_text: caption,
+        parse_mode: "HTML",
+        link_preview_options: { url: `${SITE_URL}/people/${f.id}` },
+      },
+    };
+  });
+}
+
+/** Points Telegram at the webhook, for every kind of update the bot handles. */
+export async function registerWebhook(token: string): Promise<void> {
+  await tg(token, "setWebhook", {
+    url: `${SITE_URL}/api/telegram`,
+    secret_token: webhookSecret(token),
+    allowed_updates: ["message", "callback_query", "inline_query"],
+  });
 }
 
 /** The channel post: Amharic first, then English, one link (fits a photo caption). */
