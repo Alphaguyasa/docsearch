@@ -170,6 +170,15 @@ const en = {
     scripture: "Scripture",
     tradition: "Church tradition",
     passage: (n: number) => `Read passage ${n}`,
+    prayer: {
+      label: "A prayer you can pray",
+      titles: {
+        psalm51: "David’s prayer after his fall",
+        tax_collector: "The tax collector’s prayer",
+        manasseh: "King Manasseh’s prayer of repentance",
+      },
+      note: "World English Bible.",
+    },
     feedback: {
       question: "Did this story help you?",
       yes: "Yes, it helped",
@@ -433,6 +442,15 @@ const am: Dict = {
     scripture: "መጽሐፍ ቅዱስ",
     tradition: "የቤተ ክርስቲያን ትውፊት",
     passage: (n: number) => `ክፍል ${n}ን ያንብቡ`,
+    prayer: {
+      label: "ሊጸልዩት የሚችሉት ጸሎት",
+      titles: {
+        psalm51: "ዳዊት ከወደቀ በኋላ የጸለየው",
+        tax_collector: "የቀራጩ ጸሎት",
+        manasseh: "የንጉሥ ምናሴ የንስሐ ጸሎት",
+      },
+      note: "ከዓለም እንግሊዝኛ መጽሐፍ ቅዱስ (WEB) የተወሰደ። በአማርኛ መጽሐፍ ቅዱስዎ ከላይ ባለው ቦታ ያንብቡት።",
+    },
     feedback: {
       question: "ይህ ታሪክ ረድቶዎታል?",
       yes: "አዎ፣ ረድቶኛል",
