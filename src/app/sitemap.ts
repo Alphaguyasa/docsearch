@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/", 1, "daily"],
     ["/people", 0.9, "monthly"],
     ["/help", 0.8, "monthly"],
+    ["/return", 0.85, "monthly"],
     ["/struggles", 0.9, "monthly"],
     ...STRUGGLE_IDS.map((id): [string, number, "monthly"] => [`/struggles/${id}`, 0.85, "monthly"]),
     ...readablePeople(FIGURES).map((f): [string, number, "monthly"] => [`/people/${f.id}`, 0.7, "monthly"]),
