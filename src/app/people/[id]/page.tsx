@@ -205,7 +205,7 @@ export default async function PersonPage({ params }: Params) {
         <PrayerCard tags={f.sins} figureId={f.id} />
 
         <div className="mt-16 border-t border-border pt-10">
-          <ShareStory url={`${SITE_URL}/people/${f.id}`} name={text.name} />
+          <ShareStory url={`${SITE_URL}/people/${f.id}`} name={text.name} imageUrl={`/status/${f.id}/${lang}`} />
           <a
             href="https://t.me/you_r_repenter"
             target="_blank"
