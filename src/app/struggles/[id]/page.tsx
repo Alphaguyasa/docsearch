@@ -3,9 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { FIGURES } from "@/lib/scripture/figures";
+import { SITE_URL } from "@/lib/telegram";
 
 import { artFor } from "../../art";
 import { ArtImage } from "../../components/ArtImage";
+import { JsonLd } from "../../components/JsonLd";
 import { ClosingCta } from "../../components/HomeSections";
 import { ArrowRight } from "../../components/Icons";
 import { SymbolPlate } from "../../components/SymbolPlate";
@@ -42,8 +44,27 @@ export default async function StrugglePage({ params }: Params) {
   const ts = t.struggles;
   const people = peopleForStruggle(id, FIGURES);
 
+  const structured = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: s[lang].h1,
+    description: ts.intro,
+    inLanguage: lang,
+    url: `${SITE_URL}/struggles/${id}?lang=${lang}`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: people.map((f, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: figureText(lang, f).name,
+        url: `${SITE_URL}/people/${f.id}?lang=${lang}`,
+      })),
+    },
+  };
+
   return (
     <main>
+      <JsonLd data={structured} />
       <section className="night relative overflow-hidden border-b border-border">
         <div className="candle-still absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-4xl px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28">

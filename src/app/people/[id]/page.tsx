@@ -10,6 +10,7 @@ import { SITE_URL } from "@/lib/telegram";
 
 import { artByline, artFor } from "../../art";
 import { ArtImage } from "../../components/ArtImage";
+import { JsonLd } from "../../components/JsonLd";
 import { ClosingCta } from "../../components/HomeSections";
 import { ArrowRight } from "../../components/Icons";
 import { ShareStory } from "../../components/ShareStory";
@@ -69,8 +70,34 @@ export default async function PersonPage({ params }: Params) {
   const refs = storyRefs(f);
   const heading = { fall: tp.fall, restoration: tp.rise, context: tp.context };
 
+  const pageUrl = `${SITE_URL}/people/${f.id}?lang=${lang}`;
+  const structured = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: text.name,
+        description: text.summary,
+        inLanguage: lang,
+        url: pageUrl,
+        ...(art ? { image: `${SITE_URL}/art/og/${f.id}.jpg` } : {}),
+        about: { "@type": "Person", name: f.name },
+        isPartOf: { "@type": "WebSite", name: "Not Alone", url: SITE_URL },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Not Alone", item: `${SITE_URL}/?lang=${lang}` },
+          { "@type": "ListItem", position: 2, name: t.nav.people, item: `${SITE_URL}/people?lang=${lang}` },
+          { "@type": "ListItem", position: 3, name: text.name, item: pageUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <main>
+      <JsonLd data={structured} />
       <section className="night relative overflow-hidden border-b border-border">
         <div className="absolute inset-0" aria-hidden={!art}>
           {art ? (
