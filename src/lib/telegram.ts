@@ -25,6 +25,11 @@ export const MAX_MESSAGE = 3900;
 /** The public channel the bot posts the story of the day to. */
 export const CHANNEL = process.env.TELEGRAM_CHANNEL || "@you_r_repenter";
 
+/** Opens the bot and starts the 40-day journey (or the morning story) in one tap. */
+export function botLink(start?: "journey" | "daily", lang?: BotLang): string {
+  return `https://t.me/U_not_the_only_bot${start ? `?start=${start}${lang ? `_${lang}` : ""}` : ""}`;
+}
+
 export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : "https://not-alone-seven.vercel.app";
@@ -430,6 +435,7 @@ export function channelCaption(f: Pick<FigureSummary, "id" | "name" | "summary">
     `<b>${escapeHtml(am.name)}</b>\n${escapeHtml(am.summary)}\n\n` +
     `<b>${escapeHtml(f.name)}</b>\n${escapeHtml(f.summary)}\n\n` +
     `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(TEXT.am.readStory)} · ${escapeHtml(TEXT.en.readStory)}</a>\n` +
-    `🙏 <a href="https://t.me/U_not_the_only_bot">@U_not_the_only_bot</a>`
+    `🙏 <a href="https://t.me/U_not_the_only_bot">@U_not_the_only_bot</a>\n` +
+    `🕯 <a href="${botLink("journey")}">40 ቀናት፣ 40 ሰዎች · 40 days, 40 people</a>`
   );
 }
