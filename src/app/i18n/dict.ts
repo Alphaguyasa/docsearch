@@ -51,6 +51,7 @@ const en = {
   },
   struggles: {
     nav: "Struggles",
+    find: "Or find your struggle",
     eyebrow: "You are not the only one",
     intro:
       "These holy people fell this way too — and were not left there. Every story is read straight from Scripture and the Church Fathers.",
@@ -319,6 +320,7 @@ const am: Dict = {
   },
   struggles: {
     nav: "ትግሎች",
+    find: "ወይም ትግልዎን ያግኙ",
     eyebrow: "እርስዎ ብቻ አይደሉም",
     intro: "እነዚህ ቅዱሳን ሰዎችም በዚህ መንገድ ወድቀው ነበር — ግን በዚያ አልቀሩም። እያንዳንዱ ታሪክ በቀጥታ ከመጽሐፍ ቅዱስና ከቤተ ክርስቲያን አባቶች ይነበባል።",
     perhaps: "ምናልባት እንዲህ ይሉ ይሆናል፦",
