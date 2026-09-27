@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { personOfTheDay } from "@/lib/scripture/today";
-import type { Figure } from "@/lib/scripture/figures";
+import { FIGURES, type Figure } from "@/lib/scripture/figures";
 
 import { artFor } from "../art";
 import { ArtImage } from "./ArtImage";
@@ -21,7 +21,17 @@ import { figureText } from "../i18n/dict";
 export function TodayStory() {
   const { lang, t } = useT();
   const [f, setF] = useState<Figure | null>(null);
-  useEffect(() => setF(personOfTheDay(new Date())), []);
+  useEffect(() => {
+    setF(personOfTheDay(new Date()));
+    // The channel's pick wins, so the site agrees with the morning post.
+    fetch("/api/today")
+      .then((r) => r.json())
+      .then(({ id }: { id: string | null }) => {
+        const posted = FIGURES.find((x) => x.id === id);
+        if (posted) setF(posted);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section aria-labelledby="today-heading" className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
