@@ -146,3 +146,17 @@ test("inline mode finds people by name in either language, then by struggle", as
     assert.match(c, /\/people\/david"/);
   }
 });
+
+test("every journey day fits a photo caption and says which day it is", async () => {
+  const { journeyCaption } = await import("../src/lib/telegram");
+  const { JOURNEY } = await import("../src/app/journey");
+  JOURNEY.forEach((id, i) => {
+    const f = FIGURES.find((x) => x.id === id)!;
+    for (const lang of ["en", "am"] as const) {
+      const c = journeyCaption(f, lang, i + 1);
+      assert.ok(c.replace(/<[^>]+>/g, "").length <= 1024, `${id} ${lang}`);
+      assert.match(c, new RegExp(`${i + 1}`));
+      assert.match(c, new RegExp(`/people/${id}"`));
+    }
+  });
+});
