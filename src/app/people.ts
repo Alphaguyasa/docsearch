@@ -19,6 +19,9 @@ const READER_NOTES: Record<string, string> = {
   sinful_woman: "Luke does not name her. She is often identified with Mary Magdalene, but the Gospel does not say so.",
   mary_of_egypt:
     "Her story is read here from the Ethiopian Synaxarium (Miyazya). She is also honoured by Catholics and the Orthodox.",
+  martha_of_egypt: "Her story is read here from the Ethiopian Synaxarium (Sane).",
+  basils_young_man:
+    "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",
   cyprian:
     "Cyprian of Antioch, not Cyprian the bishop of Carthage. His story is read from the Ethiopian Synaxarium (Maskaram); he is also honoured by Catholics and the Orthodox.",
   manasseh: "The Prayer of Manasseh is Scripture in the Orthodox and Ethiopian Orthodox Churches.",
