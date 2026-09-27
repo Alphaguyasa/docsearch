@@ -3,6 +3,7 @@ import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "ne
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
+import { JsonLd } from "./components/JsonLd";
 import { ServiceWorker } from "./components/ServiceWorker";
 import { SiteFooter } from "./components/SiteFooter";
 import { LangProvider, LangToggle } from "./i18n/client";
@@ -117,6 +118,16 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <div id="main">{children}</div>
           <SiteFooter />
           <ServiceWorker />
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Not Alone",
+              alternateName: "እርስዎ ብቻ አይደሉም",
+              url: "https://not-alone-seven.vercel.app",
+              inLanguage: ["en", "am"],
+            }}
+          />
         </LangProvider>
       </body>
     </html>
