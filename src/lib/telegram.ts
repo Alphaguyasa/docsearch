@@ -5,6 +5,8 @@
  *
  * Nothing a person writes is stored: the text goes to /api/search exactly as
  * it would from the website, and the reply goes straight back to the chat.
+ * The one exception is opt-in: /daily keeps the chat number (and language) to
+ * send the morning story, and /stop deletes it.
  */
 import { createHmac } from "node:crypto";
 
@@ -64,7 +66,8 @@ export const TEXT = {
       "<b>You are not the only one.</b> Tell me what you are carrying — a sin, a struggle, something you are ashamed of — and I will tell you the true story of a holy person who fell the same way and was restored, from Scripture and the Church Fathers.\n\n" +
       "Nothing you write is saved.\n\n" +
       "Try: <i>I can't stop lying to my parents.</i>\n\n" +
-      "/today — the story of the day (or every morning: t.me/you_r_repenter)\n" +
+      "/today — the story of the day\n" +
+      "/daily — get the story of the day here every morning\n" +
       "/help — if you are in danger, people to call now",
     searching: "Finding someone who carried this too…",
     notOnly: "You are not the only one",
@@ -83,6 +86,9 @@ export const TEXT = {
     helped: "🙏 This helped",
     notReally: "Not really",
     thanks: "Thank you. It helps us find the right stories for others.",
+    dailyOn:
+      "🌅 Every morning you will get the story of the day here.\n\nOnly your chat number is kept, to send it — never anything you write. Send /stop to end it.",
+    dailyOff: "The morning stories are stopped. Send /daily any time to start again.",
   },
   am: {
     welcome: (name?: string) =>
@@ -90,7 +96,8 @@ export const TEXT = {
       "<b>እርስዎ ብቻ አይደሉም።</b> የተሸከሙትን ይንገሩኝ — ኃጢአት፣ ትግል ወይም የሚያሳፍርዎትን ነገር — እኔም በተመሳሳይ መንገድ ወድቆ የተመለሰውን የቅዱስ ሰው እውነተኛ ታሪክ ከመጽሐፍ ቅዱስና ከቤተ ክርስቲያን አባቶች እነግርዎታለሁ።\n\n" +
       "የሚጽፉት ምንም ነገር አይቀመጥም።\n\n" +
       "ለምሳሌ፦ <i>ለወላጆቼ መዋሸት ማቆም አልቻልኩም።</i>\n\n" +
-      "/today — የዕለቱ ታሪክ (በየማለዳው፦ t.me/you_r_repenter)\n" +
+      "/today — የዕለቱ ታሪክ\n" +
+      "/daily — የዕለቱን ታሪክ በየማለዳው እዚህ ያግኙ\n" +
       "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
     notOnly: "እርስዎ ብቻ አይደሉም",
@@ -108,6 +115,9 @@ export const TEXT = {
     helped: "🙏 ረድቶኛል",
     notReally: "ብዙም አይደለም",
     thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
+    dailyOn:
+      "🌅 በየማለዳው የዕለቱን ታሪክ እዚህ ያገኛሉ።\n\nየሚቀመጠው ለመላክ የሚያስፈልገው የውይይት ቁጥርዎ ብቻ ነው — የሚጽፉት በፍጹም አይቀመጥም። ለማቆም /stop ይላኩ።",
+    dailyOff: "የማለዳ ታሪኮቹ ቆመዋል። እንደገና ለመጀመር በማንኛውም ጊዜ /daily ይላኩ።",
   },
 } as const;
 
@@ -209,6 +219,28 @@ export async function tg(token: string, method: string, body: Record<string, unk
   const json = (await res.json().catch(() => ({}))) as { ok?: boolean; description?: string };
   if (!json.ok) throw new Error(`Telegram ${method} failed: ${json.description ?? res.status}`);
   return json;
+}
+
+/** The bot's command menu, in English and Amharic. */
+export async function setCommands(token: string): Promise<void> {
+  const commands = (start: string, today: string, daily: string, help: string) => [
+    { command: "start", description: start },
+    { command: "today", description: today },
+    { command: "daily", description: daily },
+    { command: "help", description: help },
+  ];
+  await tg(token, "setMyCommands", {
+    commands: commands(
+      "Begin",
+      "The story of the day",
+      "Get the story of the day every morning",
+      "If you are in danger — people to call now",
+    ),
+  });
+  await tg(token, "setMyCommands", {
+    commands: commands("ጀምር", "የዕለቱ ታሪክ", "የዕለቱን ታሪክ በየማለዳው ያግኙ", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
+    language_code: "am",
+  });
 }
 
 /**

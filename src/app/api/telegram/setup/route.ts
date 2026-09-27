@@ -7,7 +7,7 @@
  * `key` must be setupKey(token), so only whoever holds the bot token can run
  * it; anyone else gets a plain 404 and no Telegram calls are made.
  */
-import { SITE_URL, setupKey, tg, webhookSecret } from "@/lib/telegram";
+import { SITE_URL, setCommands, setupKey, tg, webhookSecret } from "@/lib/telegram";
 
 export async function GET(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -20,18 +20,7 @@ export async function GET(request: Request): Promise<Response> {
       secret_token: webhookSecret(token),
       allowed_updates: ["message", "callback_query"],
     });
-    const commands = (start: string, today: string, help: string) => [
-      { command: "start", description: start },
-      { command: "today", description: today },
-      { command: "help", description: help },
-    ];
-    await tg(token, "setMyCommands", {
-      commands: commands("Begin", "The story of the day", "If you are in danger — people to call now"),
-    });
-    await tg(token, "setMyCommands", {
-      commands: commands("ጀምር", "የዕለቱ ታሪክ", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
-      language_code: "am",
-    });
+    await setCommands(token);
     await tg(token, "setMyDescription", {
       description:
         "You are not the only one. Tell what you are carrying, and read the true story of a holy person who fell the same way and was restored — from Scripture and the Church Fathers. Nothing you write is saved.",
