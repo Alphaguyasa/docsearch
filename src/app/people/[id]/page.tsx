@@ -10,6 +10,7 @@ import { SITE_URL } from "@/lib/telegram";
 
 import { artByline, artFor } from "../../art";
 import { ArtImage } from "../../components/ArtImage";
+import { JourneyMark } from "../../components/Journey";
 import { JsonLd } from "../../components/JsonLd";
 import { PrayerCard } from "../../components/PrayerCard";
 import { ClosingCta } from "../../components/HomeSections";
@@ -203,6 +204,7 @@ export default async function PersonPage({ params }: Params) {
         )}
 
         <PrayerCard tags={f.sins} figureId={f.id} />
+        <JourneyMark id={f.id} />
 
         <div className="mt-16 border-t border-border pt-10">
           <ShareStory url={`${SITE_URL}/people/${f.id}`} name={text.name} imageUrl={`/status/${f.id}/${lang}`} />
