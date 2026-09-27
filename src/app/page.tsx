@@ -25,6 +25,7 @@ import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
 import { StruggleLinks } from "./components/StruggleLinks";
 import { TodayStory } from "./components/TodayStory";
+import { JourneyInvite } from "./components/Journey";
 import { useT } from "./i18n/client";
 
 type Status = "idle" | "loading" | "streaming" | "done" | "error" | "crisis";
@@ -236,6 +237,7 @@ export default function Home() {
       {status === "idle" && (
         <>
           <TodayStory />
+          <JourneyInvite />
           <ScrollWords />
           <StickyStories />
           <StoryGallery />
