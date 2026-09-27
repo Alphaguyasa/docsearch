@@ -105,3 +105,13 @@ releases the day so it can be retried. The bot must stay an admin of the channel
 As a backup in case the cron doesn't fire, from 07:00 Addis time any bot message
 or person-page view checks (in the background) that today's post went out and
 sends it if not — still at most once a day.
+
+### Morning story in private (/daily)
+
+`/daily` in the bot subscribes that chat: its number and language go into
+`bot_subscribers` (nothing the person wrote), today's story is sent at once,
+and the same morning run sends it every day after. `/stop` deletes the row, as
+does Telegram reporting that the person blocked the bot. Sending claims
+subscribers in batches with `claim_daily_subscribers`, which marks the day in
+the same statement, so the cron and the 07:00 backup never double-send. The
+cron also refreshes the bot's command menu each morning.
