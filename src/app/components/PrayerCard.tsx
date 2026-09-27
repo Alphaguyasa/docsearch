@@ -1,13 +1,25 @@
 "use client";
 
+import Link from "next/link";
+
 import { prayerFor } from "@/lib/scripture/prayers";
+import { ArrowRight } from "./Icons";
 import { useT } from "../i18n/client";
 
 /**
  * A short prayer of repentance under a story, chosen by its struggle and
  * quoted word for word from Scripture — something to do after reading.
  */
-export function PrayerCard({ tags, figureId }: { tags: readonly string[]; figureId?: string }) {
+export function PrayerCard({
+  tags,
+  figureId,
+  showReturn = true,
+}: {
+  tags: readonly string[];
+  figureId?: string;
+  /** Link to the "coming back to God" steps (off on that page itself). */
+  showReturn?: boolean;
+}) {
   const { lang, t } = useT();
   const p = prayerFor(tags, figureId);
   const tp = t.story.prayer;
@@ -27,6 +39,15 @@ export function PrayerCard({ tags, figureId }: { tags: readonly string[]; figure
       <p className="mt-4 text-sm text-muted">
         {lang === "am" ? p.refAm : p.ref} · {tp.note}
       </p>
+      {showReturn && (
+        <Link
+          href="/return"
+          className="group mt-5 inline-flex items-center gap-2 text-sm font-medium text-gold underline underline-offset-4"
+        >
+          {t.footer.comingBack}
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      )}
     </section>
   );
 }
