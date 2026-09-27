@@ -1283,6 +1283,52 @@
         }
       ],
       "note": "Read from the Ethiopian Synaxarium (Takhsas), in the story of Abba Daniel. The text does not give his name."
+    },
+    {
+      "id": "envious_elder",
+      "name": "The old man who envied Abba Poemen",
+      "kind": "tradition",
+      "sins": [
+        "envy",
+        "resentment"
+      ],
+      "summary": "When his followers left him for Abba Poemen, he was filled with envy and cursed them; Poemen came to his door with bread and waited humbly until the old man repented, opened the door, and became his friend.",
+      "traditions": [
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…”",
+          "sourceId": "paradise",
+          "match": "the old man was filled with envy"
+        }
+      ],
+      "note": "Read from the Sayings of the Fathers in the Paradise of the Holy Fathers. The text does not give his name."
+    },
+    {
+      "id": "gelasius_cook",
+      "name": "The cook in Abba Gelasius’s monastery",
+      "kind": "tradition",
+      "sins": [
+        "anger",
+        "violence"
+      ],
+      "summary": "In a rage over a fish he kicked a boy, who fell and died; terrified, he went and told Abba Gelasius, who laid the boy in the sanctuary, and after the evening prayer the boy walked out alive; the cook was given a penance.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Yakatit",
+          "sourceId": "synaxarium",
+          "match": "wrath came upon him, and he kicked him"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Yakatit), in the story of Abba Gelasius. The text does not give his name."
     }
   ]
 }

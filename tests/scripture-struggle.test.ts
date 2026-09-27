@@ -210,3 +210,8 @@ test("every struggle page has text in both languages and at least two people", (
   assert.equal(STRUGGLE_IDS.length, 9);
   assert.equal(peopleForStruggle("addiction", FIGURES)[0]?.id, "noah");
 });
+
+test("Amharic 'I got angry' (ተናድጄ) is anger", () => {
+  assert.ok(matchTags("ተናድጄ ወንድሜን መታሁት").includes("anger"));
+  assert.ok(matchTags("በጣም ተናድጃለሁ").includes("anger"));
+});
