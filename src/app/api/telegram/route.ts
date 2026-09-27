@@ -106,7 +106,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   try {
     res = await fetch(`${SITE_URL}/api/search`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-not-alone-client": "telegram" },
       body: JSON.stringify({ question: text }),
     });
   } catch {

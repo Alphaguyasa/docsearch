@@ -115,3 +115,13 @@ does Telegram reporting that the person blocked the bot. Sending claims
 subscribers in batches with `claim_daily_subscribers`, which marks the day in
 the same statement, so the cron and the 07:00 backup never double-send. The
 cron also refreshes the bot's command menu each morning.
+
+## Numbers page (/stats)
+
+`/stats?key=<STATS_KEY>` shows the last 30 days: stories read (web and
+Telegram, English and Amharic), crisis answers, "too busy" waits, which
+struggles and people came up, "this helped" taps, morning subscribers and
+channel posts. The search route bumps plain names in `daily_counts`
+(`bump_counts`) after responding — never anything a person wrote. Without the
+key, or if `STATS_KEY` is unset, the page is a 404; it is kept out of robots.txt
+and the sitemap.

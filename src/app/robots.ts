@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/telegram";
 /** Index the stories; keep crawlers out of the API and the internal pages. */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/documents", "/evals"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/documents", "/evals", "/stats"] },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
