@@ -73,25 +73,27 @@ export async function POST(request: Request): Promise<Response> {
 async function handle(token: string, msg: NonNullable<Update["message"]>): Promise<void> {
   const chat_id = msg.chat.id;
   const text = (msg.text ?? "").trim();
-  const lang: BotLang = detectLang(text, msg.from?.language_code);
+  // Deep links (t.me/U_not_the_only_bot?start=journey_am) arrive as "/start journey_am".
+  const deep = /^\/start (journey|daily)(?:_(en|am))?$/.exec(text);
+  const lang: BotLang = (deep?.[2] as BotLang | undefined) ?? detectLang(text, msg.from?.language_code);
   const t = TEXT[lang];
   const send = (html: string) =>
     tg(token, "sendMessage", { chat_id, text: html, parse_mode: "HTML", link_preview_options: { is_disabled: true } });
 
   if (!text) return void (await send(t.textOnly));
-  if (text.startsWith("/start")) return void (await send(t.welcome(msg.from?.first_name)));
+  if (text.startsWith("/start") && !deep) return void (await send(t.welcome(msg.from?.first_name)));
   if (text.startsWith("/help")) {
     return void (await send(
       crisisMessage({ message: t.helpTitle, steps: resources.always, resources: resources.global }, lang),
     ));
   }
   if (text.startsWith("/today")) return void (await sendToday(token, chat_id, lang));
-  if (text.startsWith("/daily")) {
+  if (text.startsWith("/daily") || deep?.[1] === "daily") {
     await subscribe(chat_id, lang);
     await send(t.dailyOn);
     return void (await sendToday(token, chat_id, lang));
   }
-  if (text.startsWith("/journey")) {
+  if (text.startsWith("/journey") || deep?.[1] === "journey") {
     await subscribe(chat_id, lang, new Date(), 2);
     await send(t.journeyOn);
     return void (await sendJourneyDay(token, chat_id, lang, 1));

@@ -160,3 +160,10 @@ test("every journey day fits a photo caption and says which day it is", async ()
     }
   });
 });
+
+test("bot deep links start the journey or the morning story in one tap", async () => {
+  const { botLink, channelCaption } = await import("../src/lib/telegram");
+  assert.equal(botLink(), "https://t.me/U_not_the_only_bot");
+  assert.equal(botLink("journey", "am"), "https://t.me/U_not_the_only_bot?start=journey_am");
+  assert.match(channelCaption(FIGURES[0]), /\?start=journey"/);
+});

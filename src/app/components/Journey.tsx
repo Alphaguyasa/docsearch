@@ -74,6 +74,14 @@ export function JourneyList() {
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       )}
+      <a
+        href={`https://t.me/U_not_the_only_bot?start=journey_${lang}`}
+        target="_blank"
+        rel="noreferrer"
+        className="ml-0 mt-4 inline-flex h-12 items-center gap-2 rounded-full border border-border px-6 text-sm transition-colors hover:border-gold/60 sm:ml-3 sm:mt-0"
+      >
+        {tj.telegram}
+      </a>
       <ol className="mt-10 grid gap-3 sm:grid-cols-2">
         {JOURNEY.map((id, i) => {
           const x = nameOf(lang, id);
