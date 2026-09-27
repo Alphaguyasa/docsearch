@@ -71,6 +71,7 @@ export const TEXT = {
       "Try: <i>I can't stop lying to my parents.</i>\n\n" +
       "/today — the story of the day\n" +
       "/daily — get the story of the day here every morning\n" +
+      "/journey — 40 days, 40 people: one each morning\n" +
       "/help — if you are in danger, people to call now\n\n" +
       "To share a story in any chat, type @U_not_the_only_bot and a word — like <i>anger</i> or <i>Peter</i>.",
     searching: "Finding someone who carried this too…",
@@ -93,6 +94,11 @@ export const TEXT = {
     dailyOn:
       "🌅 Every morning you will get the story of the day here.\n\nOnly your chat number is kept, to send it — never anything you write. Send /stop to end it.",
     dailyOff: "The morning stories are stopped. Send /daily any time to start again.",
+    journeyOn:
+      "🕯 The 40-day journey has begun: one person a day who fell and came back. Here is day 1 — day 2 comes tomorrow morning.\n\nOnly your chat number, language and day are kept. Send /stop to end it.",
+    journeyHeader: (n: number) => `Day ${n} of 40 · 40 days, 40 people`,
+    journeyDone:
+      "You finished all 40 days. Every one of them came back — so can you. The story of the day will keep coming each morning; send /stop to end it.",
   },
   am: {
     welcome: (name?: string) =>
@@ -102,6 +108,7 @@ export const TEXT = {
       "ለምሳሌ፦ <i>ለወላጆቼ መዋሸት ማቆም አልቻልኩም።</i>\n\n" +
       "/today — የዕለቱ ታሪክ\n" +
       "/daily — የዕለቱን ታሪክ በየማለዳው እዚህ ያግኙ\n" +
+      "/journey — 40 ቀናት፣ 40 ሰዎች፦ በየማለዳው አንድ\n" +
       "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው\n\n" +
       "በማንኛውም ውይይት ታሪክ ለማጋራት፣ @U_not_the_only_bot ብለው አንድ ቃል ይጻፉ — ለምሳሌ <i>ቁጣ</i> ወይም <i>ጴጥሮስ</i>።",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
@@ -123,6 +130,11 @@ export const TEXT = {
     dailyOn:
       "🌅 በየማለዳው የዕለቱን ታሪክ እዚህ ያገኛሉ።\n\nየሚቀመጠው ለመላክ የሚያስፈልገው የውይይት ቁጥርዎ ብቻ ነው — የሚጽፉት በፍጹም አይቀመጥም። ለማቆም /stop ይላኩ።",
     dailyOff: "የማለዳ ታሪኮቹ ቆመዋል። እንደገና ለመጀመር በማንኛውም ጊዜ /daily ይላኩ።",
+    journeyOn:
+      "🕯 የ40 ቀን ጉዞው ጀምሯል፦ በቀን አንድ የወደቀና የተመለሰ ሰው። ቀን 1 ይኸውና — ቀን 2 ነገ ማለዳ ይመጣል።\n\nየሚቀመጠው የውይይት ቁጥርዎ፣ ቋንቋዎና ቀኑ ብቻ ነው። ለማቆም /stop ይላኩ።",
+    journeyHeader: (n: number) => `ቀን ${n} ከ40 · 40 ቀናት፣ 40 ሰዎች`,
+    journeyDone:
+      "40ዎቹንም ቀናት ጨርሰዋል። እያንዳንዳቸው ተመልሰዋል — እርስዎም ይችላሉ። የዕለቱ ታሪክ በየማለዳው መምጣቱን ይቀጥላል፤ ለማቆም /stop ይላኩ።",
   },
 } as const;
 
@@ -228,10 +240,11 @@ export async function tg(token: string, method: string, body: Record<string, unk
 
 /** The bot's command menu, in English and Amharic. */
 export async function setCommands(token: string): Promise<void> {
-  const commands = (start: string, today: string, daily: string, help: string) => [
+  const commands = (start: string, today: string, daily: string, journey: string, help: string) => [
     { command: "start", description: start },
     { command: "today", description: today },
     { command: "daily", description: daily },
+    { command: "journey", description: journey },
     { command: "help", description: help },
   ];
   await tg(token, "setMyCommands", {
@@ -239,11 +252,12 @@ export async function setCommands(token: string): Promise<void> {
       "Begin",
       "The story of the day",
       "Get the story of the day every morning",
+      "40 days, 40 people who came back",
       "If you are in danger — people to call now",
     ),
   });
   await tg(token, "setMyCommands", {
-    commands: commands("ጀምር", "የዕለቱ ታሪክ", "የዕለቱን ታሪክ በየማለዳው ያግኙ", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
+    commands: commands("ጀምር", "የዕለቱ ታሪክ", "የዕለቱን ታሪክ በየማለዳው ያግኙ", "40 ቀናት፣ የተመለሱ 40 ሰዎች", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
     language_code: "am",
   });
 }
@@ -340,6 +354,16 @@ export function inlinePeople(query: string, now = new Date(), limit = 8): Figure
     .sort((a, b) => b.n - a.n)
     .map((x) => x.f);
   return [...byName, ...byTag].slice(0, limit);
+}
+
+/** One day of the 40-day journey in the bot. */
+export function journeyCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, lang: BotLang, day: number): string {
+  const t = TEXT[lang];
+  const x = figureText(lang, f);
+  return (
+    `<b>${escapeHtml(t.journeyHeader(day))}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
+    `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
+  );
 }
 
 /** A story card for someone to send to a friend or a group. */
