@@ -20,6 +20,10 @@ const READER_NOTES: Record<string, string> = {
   mary_of_egypt:
     "Her story is read here from the Ethiopian Synaxarium (Miyazya). She is also honoured by Catholics and the Orthodox.",
   abba_moses_hermit: "Read from the Ethiopian Synaxarium (Maskaram). This is not Abba Moses the Black.",
+  jacob_the_monk:
+    "Read from the Ethiopian Synaxarium (Yakatit). His story includes the killing of two people; it is here because the text says even this was forgiven.",
+  mary_niece_of_abraham: "Read from the Ethiopian Synaxarium (Nahase), in the story of her uncle, Abba Abraham.",
+  martianus_woman: "Read from the Ethiopian Synaxarium (Genbot). The text does not give her name.",
   martha_of_egypt: "Her story is read here from the Ethiopian Synaxarium (Sane).",
   basils_young_man:
     "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",
