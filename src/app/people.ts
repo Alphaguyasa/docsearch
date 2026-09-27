@@ -19,6 +19,7 @@ const READER_NOTES: Record<string, string> = {
   sinful_woman: "Luke does not name her. She is often identified with Mary Magdalene, but the Gospel does not say so.",
   mary_of_egypt:
     "Her story is read here from the Ethiopian Synaxarium (Miyazya). She is also honoured by Catholics and the Orthodox.",
+  abba_moses_hermit: "Read from the Ethiopian Synaxarium (Maskaram). This is not Abba Moses the Black.",
   martha_of_egypt: "Her story is read here from the Ethiopian Synaxarium (Sane).",
   basils_young_man:
     "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",

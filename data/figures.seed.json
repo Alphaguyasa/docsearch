@@ -1102,6 +1102,41 @@
         }
       ],
       "note": "Read from the Ethiopian Synaxarium (Maskaram), a miracle of St. Basil the Great."
+    },
+    {
+      "id": "abba_moses_hermit",
+      "name": "Abba Moses the hermit",
+      "kind": "tradition",
+      "sins": [
+        "lust",
+        "denial",
+        "despair"
+      ],
+      "summary": "After thirty-five years of holiness in the desert he was lured away by a woman and denied his faith; left to die, he wept with dust on his face, and an angel told him, “Your sin is forgiven.”",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "thirty and five years"
+        },
+        {
+          "role": "fall",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "How can I who am a monk"
+        },
+        {
+          "role": "restoration",
+          "ref": "Ethiopian Synaxarium, Maskaram",
+          "sourceId": "synaxarium",
+          "match": "Thy sin is remitted unto thee"
+        }
+      ],
+      "note": "Read from the Ethiopian Synaxarium (Maskaram). Not Abba Moses the Black."
     }
   ]
 }
