@@ -4,6 +4,7 @@ import { FIGURES } from "@/lib/scripture/figures";
 import { SITE_URL } from "@/lib/telegram";
 
 import { readablePeople } from "./people";
+import { STRUGGLE_IDS } from "./struggles";
 
 /**
  * Every public page in both languages, so search engines find each person's
@@ -15,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/", 1, "daily"],
     ["/people", 0.9, "monthly"],
     ["/help", 0.8, "monthly"],
+    ["/struggles", 0.9, "monthly"],
+    ...STRUGGLE_IDS.map((id): [string, number, "monthly"] => [`/struggles/${id}`, 0.85, "monthly"]),
     ...readablePeople(FIGURES).map((f): [string, number, "monthly"] => [`/people/${f.id}`, 0.7, "monthly"]),
     ["/credits", 0.3, "monthly"],
   ];

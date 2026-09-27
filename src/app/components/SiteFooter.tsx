@@ -18,6 +18,7 @@ export async function SiteFooter() {
       links: [
         { href: "/", label: f.tell },
         { href: "/people", label: f.people },
+        { href: "/struggles", label: f.struggles },
         { href: "/credits", label: f.credits },
         { href: "https://t.me/you_r_repenter", label: f.channel },
         { href: "https://t.me/U_not_the_only_bot", label: f.bot },
