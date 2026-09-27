@@ -135,3 +135,28 @@ export function JourneyMark({ id }: { id: string }) {
     </section>
   );
 }
+
+/** On the home page: an invitation into the 40 days, or where the reader left off. */
+export function JourneyInvite() {
+  const { t } = useT();
+  const tj = t.journey;
+  const { done } = useJourney();
+  const nextDay = JOURNEY.findIndex((id) => !done.has(id)) + 1;
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <Link
+        href="/journey"
+        className="group flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-border bg-card px-6 py-5 transition-colors hover:border-gold/40"
+      >
+        <span>
+          <span className="block font-caps text-[12px] font-semibold tracking-[0.2em] text-gold">{tj.eyebrow}</span>
+          <span className="mt-1 block font-display text-2xl font-semibold leading-tight">{tj.title}</span>
+        </span>
+        <span className="inline-flex items-center gap-2 text-sm font-medium text-gold">
+          {done.size === 0 ? tj.start : nextDay === 0 ? tj.all : tj.continue(nextDay)}
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </Link>
+    </section>
+  );
+}
