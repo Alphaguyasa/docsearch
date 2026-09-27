@@ -22,6 +22,7 @@ import { ScrollWords } from "./components/ScrollWords";
 import { StickyStories } from "./components/StickyStories";
 import { StoryGallery } from "./components/StoryGallery";
 import { StruggleInput } from "./components/StruggleInput";
+import { StruggleLinks } from "./components/StruggleLinks";
 import { TodayStory } from "./components/TodayStory";
 import { useT } from "./i18n/client";
 
@@ -179,7 +180,12 @@ export default function Home() {
         ref={results}
         className={`mx-auto max-w-5xl scroll-mt-4 px-4 sm:px-6 ${status === "crisis" ? "" : "pb-20 pt-10"}`}
       >
-        {status === "idle" && <ExampleCards examples={t.examples.list} onPick={run} />}
+        {status === "idle" && (
+          <>
+            <ExampleCards examples={t.examples.list} onPick={run} />
+            <StruggleLinks />
+          </>
+        )}
         {status === "loading" && (
           <div className="mx-auto max-w-3xl">
             <LoadingSkeleton />

@@ -16,7 +16,7 @@ import { ShareStory } from "../../components/ShareStory";
 import { SymbolPlate } from "../../components/SymbolPlate";
 import { figureText } from "../../i18n/dict";
 import { getDict } from "../../i18n/server";
-import { readablePeople, readerNote, storyRefs, tagLabel } from "../../people";
+import { GROUPS, readablePeople, readerNote, storyRefs, tagLabel } from "../../people";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -99,11 +99,27 @@ export default async function PersonPage({ params }: Params) {
           <p className="mt-5 max-w-xl font-serif text-[20px] leading-8">{text.summary}</p>
           {note && <p className="mt-4 max-w-xl text-sm italic leading-6 text-muted">{note}</p>}
           <ul className="mt-6 flex flex-wrap gap-1.5">
-            {f.sins.map((s) => (
-              <li key={s} className="rounded-full bg-panel/80 px-2.5 py-0.5 text-xs text-muted">
-                {t.tags[s] ?? tagLabel(s)}
-              </li>
-            ))}
+            {f.sins.map((s) => {
+              // Each tag opens the page for its struggle, e.g. "lust" → /struggles/lust.
+              const group = GROUPS.find((g) => g.tags.includes(s));
+              const label = t.tags[s] ?? tagLabel(s);
+              return (
+                <li key={s}>
+                  {group ? (
+                    <Link
+                      href={`/struggles/${group.id}`}
+                      className="inline-flex min-h-8 items-center rounded-full bg-panel/80 px-3 text-xs text-muted underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    >
+                      {label}
+                    </Link>
+                  ) : (
+                    <span className="inline-flex min-h-8 items-center rounded-full bg-panel/80 px-3 text-xs text-muted">
+                      {label}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
         {art && (
