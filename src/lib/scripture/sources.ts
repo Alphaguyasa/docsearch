@@ -81,6 +81,29 @@ export const TEXT_RULES: Record<string, TextRule> = {
     sections: { sectionStart: /^CHAPTER [IVXLCxil ]+\.?$/, name: "chapterNumeral" },
     paragraphNumbers: true,
   },
+  kebra_nagast: {
+    refPrefix: "Kebra Nagast",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^THE\s+GLORY\s+OF\s+KINGS$/,
+      // OCR slips in the chapter titles.
+      replace: [
+        [/KlNG/g, "KING"],
+        [/ZlON/g, "ZION"],
+        [/GlFT/g, "GIFT"],
+        [/^GLDRY/m, "GLORY"],
+        [/ROB\^L/g, "ROBEL"],
+        [/TAMR!N/g, "TAMRIN"],
+        [/R6M[&£]|RoMK/g, "ROME"],
+      ],
+      endAt: /^INDEX$/,
+      dropLines: [/^THE GLORY OF KINGS$/, /^The Queen of[- ]?Sh.ba and her Son Menyelek$/, /^PL.TE\b/, /^From Brit\./, /^Colophon$/],
+      // Page-foot notes: "1 Genesis i, 26.", "* Compare Genesis ix, 25-27."
+      dropParagraphs: /^[1-9*•†§]\s+[A-Z(]/,
+    },
+    defaultHeading: "The Glory of Kings",
+    sections: { sectionStart: /^([0-9iIl]{1,3})\s?[.,:-]\s?(.{4,})$/, name: "numberedChapter" },
+  },
   ephrem: {
     refPrefix: "Ephrem the Syrian",
     traditions: ALL,

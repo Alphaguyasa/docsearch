@@ -294,9 +294,22 @@ export interface SectionRule {
   /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
-  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral";
+  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral" | "numberedChapter";
   /** Map the runningContext capture to a canonical label (OCR-proof). */
   contextLabel?: (capture: string) => string;
+}
+
+/** Mostly capitals: an OCR'd heading like "How THE MERCHANT RETURNED". */
+function isCaps(text: string): boolean {
+  const letters = text.replace(/[^A-Za-z]/g, "");
+  return letters.length >= 4 && letters.replace(/[^A-Z]/g, "").length / letters.length >= 0.7;
+}
+
+function capsTitle(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[\s.,;:]+$/, "")
+    .replace(/(^|[\s(\[“"-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
 }
 
 function roman(n: number): string {
@@ -369,10 +382,32 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
     cur = { heading, paragraphs: [] };
   };
 
+  let titling = false;
   for (const line of lines) {
     if (line === "") {
       endPara();
       continue;
+    }
+    if (rule.name === "numberedChapter" && rule.sectionStart) {
+      // "22. CONCERNING TAMRIN, THE MERCHANT": group 1 the number (OCR may read 1 as i/l), group 2 the title.
+      const m = line.match(rule.sectionStart);
+      const n = m ? Number(m[1].replace(/[iIl]/g, "1")) : NaN;
+      if (m && n > counter && n <= counter + 6 && isCaps(m[2])) {
+        // Headings the scan lost: the section before runs up to this one.
+        if (n > counter + 1 && counter > 0) cur.heading = cur.heading.replace(/^Chapter (\d+)/, `Chapters $1–${n - 1}`);
+        open(`Chapter ${n}: ${capsTitle(m[2])}`);
+        counter = n;
+        titling = true;
+        continue;
+      }
+      // A heading wrapped onto the next line ("TO THEM").
+      if (titling && !para.length && isCaps(line) && line.length < 70) {
+        const more = capsTitle(line);
+        // "THE COM-" + "MANDER OF HIS ARMY"
+        cur.heading = /[A-Za-z]-$/.test(cur.heading) ? cur.heading.slice(0, -1) + more.charAt(0).toLowerCase() + more.slice(1) : `${cur.heading} ${more}`;
+        continue;
+      }
+      titling = false;
     }
     const ctx = rule.runningContext ? line.match(rule.runningContext) : null;
     if (ctx) {
@@ -389,7 +424,7 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       if (title !== cur.heading) open(title);
       continue;
     }
-    if (rule.sectionStart?.test(line)) {
+    if (rule.name !== "numberedChapter" && rule.sectionStart?.test(line)) {
       if (rule.name === "contextFirstWords") {
         open(context || defaultHeading);
         pendingName = true;
