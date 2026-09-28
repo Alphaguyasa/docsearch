@@ -1,8 +1,27 @@
-outcome=success at 2026-09-27T20:16:39Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36347392763
+outcome=success at 2026-09-28T10:26:43Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36406285357
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
-built 6390 chunks across 82 documents
-done 6390, to embed 0, stale 0
-finished: 6390/6390
+built 6741 chunks across 84 documents
+done 6390, to embed 351, stale 0
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2609 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2806 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2809 tokens
+  6454/6741 embedded (5.7 min)
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2937 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2605 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2969 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2743 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2725 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2573 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2786 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2696 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2774 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2473 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2594 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2571 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 3 chunk(s) / 1598 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2834 tokens
+  6741/6741 embedded (31.4 min)
+finished: 6741/6741
