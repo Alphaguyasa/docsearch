@@ -190,8 +190,6 @@ export function toSections(lines: string[], defaultHeading: string): Section[] {
 
 /** A paragraph that opens with its own number: "12. And now…". */
 const PARA_NO = /^(\d{1,3})\.\s/;
-/** A paragraph that opens with the edition's page number: "{10} As I walked…". */
-const PAGE_MARK = /^\{(\d{1,3})\}\s*/;
 
 /** Pack sections into chunks; a chunk never spans two sections. */
 export function chunkSections(
@@ -203,8 +201,6 @@ export function chunkSections(
     traditions: Tradition[];
     /** Name chunks by the text's own paragraph numbers ("2. His teaching…") as "§2–4" instead of "(part N)". */
     paragraphNumbers?: boolean;
-    /** Name chunks by the edition's page marks ("{10} As I walked…") as "p. 10–12"; the marks are removed. */
-    pageMarks?: boolean;
   },
   opts: PackOptions = {},
 ): ScriptureChunk[] {
@@ -224,15 +220,13 @@ export function chunkSections(
     let para = 1;
     let firstPara = 1;
     const head = s.heading ? `${meta.refPrefix}, ${titleCase(s.heading)}` : meta.refPrefix;
-    const mark = meta.pageMarks ? PAGE_MARK : PARA_NO;
-    const label = meta.pageMarks ? "p. " : "§";
-    const numbered = (meta.paragraphNumbers || meta.pageMarks) && units.some((u) => mark.test(u));
+    const numbered = meta.paragraphNumbers && units.some((u) => PARA_NO.test(u));
     // A long paragraph spread over several chunks: "§4", "§4 (part 2)", …
     const seen = new Map<string, number>();
     const emit = () => {
       if (!buf.length) return;
       let ref = numbered
-        ? `${head}${meta.pageMarks ? "," : ""} ${label}${firstPara}${para > firstPara ? `–${para}` : ""}`
+        ? `${head} §${firstPara}${para > firstPara ? `–${para}` : ""}`
         : `${head}${part > 1 ? ` (part ${part})` : ""}`;
       const n = (seen.get(ref) ?? 0) + 1;
       seen.set(ref, n);
@@ -260,10 +254,10 @@ export function chunkSections(
     for (const u of units) {
       const t = countTokens(u);
       if (buf.length && tokens + t > target) emit();
-      const n = numbered ? u.match(mark) : null;
+      const n = numbered ? u.match(PARA_NO) : null;
       if (n && Number(n[1]) > para) para = Number(n[1]);
       if (!buf.length) firstPara = para;
-      buf.push(meta.pageMarks && n ? u.slice(n[0].length) : u);
+      buf.push(u);
       tokens += t;
     }
     emit();

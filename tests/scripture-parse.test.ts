@@ -143,36 +143,6 @@ test("sectionize: Paradise chapters are named by their opening words", () => {
   assert.equal(s[0].heading, "“THEY say concerning Abba Apollo, who lived in…”");
 });
 
-test("Imitation of Christ: book + chapter sections, refs by the text's own paragraph numbers", () => {
-  const rule = TEXT_RULES.imitation;
-  const raw = [
-    "THE FIRST BOOK", "", "ADMONITIONS PROFITABLE FOR THE SPIRITUAL LIFE", "", "CHAPTER I", "",
-    "Of the imitation of Christ", "", "He that followeth me shall not walk in darkness,(1) saith the Lord.", "",
-    "2. His teaching surpasseth all teaching of holy men.", "", "(1) John viii. 12.", "",
-    "THE SECOND BOOK", "", "CHAPTER III", "", "Of the good, peaceable man", "", "First keep thyself in peace.",
-  ].join("\n");
-  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
-  assert.deepEqual(s.map((x) => x.heading), ["Book I, Chapter I", "Book II, Chapter III"]);
-  const chunks = chunkSections(s, { sourceId: "imitation", title: "I", refPrefix: rule.refPrefix, traditions: [], paragraphNumbers: true });
-  assert.deepEqual(chunks.map((c) => c.ref), ["The Imitation of Christ, Book I, Chapter I §1–2", "The Imitation of Christ, Book II, Chapter III"]);
-  assert.doesNotMatch(chunks[0].content, /\(1\)|John viii|ADMONITIONS/);
-});
-
-test("Grace Abounding: numbered paragraphs give §refs, unnumbered sections keep parts, italics lose their underscores", () => {
-  const rule = TEXT_RULES.grace_abounding;
-  const raw = [
-    "A PREFACE", "", "CHILDREN, Grace be with you. _Amen_. I write from the _lions’ dens_, to you.", "",
-    "GRACE ABOUNDING TO THE CHIEF OF SINNERS", "", "SERVANT, JOHN BUNYAN", "",
-    "IN this my relation of the merciful working of God upon my soul.", "", "2.  For my descent then, it was of a low generation.",
-  ].join("\n");
-  const sections = toSections(cleanText(raw, rule.clean), rule.defaultHeading).map((s) =>
-    s.heading in rule.renameHeadings! ? { ...s, heading: rule.renameHeadings![s.heading] } : s,
-  );
-  const chunks = chunkSections(sections, { sourceId: "ga", title: "G", refPrefix: rule.refPrefix, traditions: [], paragraphNumbers: true });
-  assert.deepEqual(chunks.map((c) => c.ref), ["Grace Abounding, A Preface", "Grace Abounding §1–2"]);
-  assert.match(chunks[0].content, /Amen\. I write from the lions’ dens, to you/);
-});
-
 test("OCR chapter numerals: repaired by the sequence, reordered chapters kept", () => {
   assert.equal(ocrNumeral("XxiIll.", 22), 23);
   assert.equal(ocrNumeral("LXxXiIll.", 72), 73);
@@ -230,18 +200,6 @@ test("Jubilees: a roman numeral opens a chapter and its first verse; notes and n
   assert.match(all, /^.*And it came to pass in the first year of the exodus, in the third month, on the sixteenth/);
   assert.doesNotMatch(all, /solar year|BOOK OF JUBILEES/);
   assert.match(all, /II\. And for Tubal/); // out of sequence: a verse, not a chapter
-});
-
-test("Pilgrim's Progress: cited by the edition's page marks, which leave the text", () => {
-  const rule = TEXT_RULES.pilgrims_progress;
-  const raw = ["In the Similitude of a Dream", "", "{10} As I walked through the wilderness of this world, I lighted on a den.", "",
-    "Then I saw in my dream that he wept and trembled greatly.", "", "{11} In this plight, therefore, he went home and refrained himself.", "",
-    "THAT SITTETH UPON THE THRONE, AND UNTO THE LAMB, FOR EVER AND EVER.\"", "", "*** END OF THE PROJECT GUTENBERG EBOOK X ***"].join("\n");
-  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
-  const c = chunkSections(s, { sourceId: "pp", title: "P", refPrefix: rule.refPrefix, traditions: [], pageMarks: true });
-  assert.deepEqual(c.map((x) => x.ref), ["The Pilgrim's Progress, p. 10–11"]);
-  assert.doesNotMatch(c[0].content, /\{\d+\}/);
-  assert.match(c[0].content, /UNTO THE LAMB/);
 });
 
 test("Isaac of Nineveh: a lone OCR numeral opens a treatise, its capital title is joined and cut short", () => {

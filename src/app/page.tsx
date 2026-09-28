@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { TRADITION_KEY, type TraditionChoice } from "@/app/traditions";
+import { TRADITION_KEY, TRADITION_OPTIONS, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 import { peopleFor } from "@/lib/scripture/people-for";
@@ -56,7 +56,8 @@ export default function Home() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(TRADITION_KEY) as TraditionChoice | null;
-      if (saved) setTradition(saved);
+      // A choice the picker no longer offers (e.g. "catholic") falls back to "all".
+      if (saved && TRADITION_OPTIONS.some((o) => o.value === saved)) setTradition(saved);
     } catch {}
   }, []);
   function chooseTradition(t: TraditionChoice) {

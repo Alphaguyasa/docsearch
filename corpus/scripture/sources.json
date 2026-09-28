@@ -20,34 +20,6 @@
    "status": "verified-at-fetch"
   },
   {
-   "id": "imitation",
-   "title": "The Imitation of Christ (Thomas \u00e0 Kempis, tr. William Benham)",
-   "kind": "tradition",
-   "format": "gutenberg-txt",
-   "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
-   "license": "Public domain (Project Gutenberg #1653; Benham d. 1910)",
-   "status": "verified-at-fetch"
-  },
-  {
-   "id": "grace_abounding",
-   "title": "Grace Abounding to the Chief of Sinners (John Bunyan, 1666)",
-   "kind": "tradition",
-   "format": "gutenberg-txt",
-   "url": "https://www.gutenberg.org/cache/epub/654/pg654.txt",
-   "license": "Public domain (Project Gutenberg #654; Bunyan d. 1688, 1905 RTS text)",
-   "status": "verified-at-fetch"
-  },
-  {
-   "id": "pilgrims_progress",
-   "title": "The Pilgrim's Progress, Part One (John Bunyan, 1678)",
-   "kind": "tradition",
-   "format": "gutenberg-txt",
-   "url": "https://www.gutenberg.org/cache/epub/131/pg131.txt",
-   "license": "Public domain (Project Gutenberg #131; Bunyan d. 1688)",
-   "status": "verified-at-fetch",
-   "note": "Cited by the edition's page marks ({10} -> p. 10)."
-  },
-  {
    "id": "enoch",
    "title": "The Book of Enoch (tr. R. H. Charles, 1917)",
    "kind": "tradition",
