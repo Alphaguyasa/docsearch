@@ -52,6 +52,20 @@
    "note": "Canonical in the Ethiopian Orthodox Bible. Pinned: SPCK 1917 text (Global Grey 2013 e-book scan)."
   },
   {
+   "id": "kebra_nagast",
+   "title": "The Kebra Nagast: The Queen of Sheba and her only son Menyelek (tr. E. A. Wallis Budge, 1922)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(queen of sheba) AND creator:(budge)",
+   "titleHint": "queen sheba menyelek",
+   "archiveIds": [
+    "queenofshebahero00budgrich"
+   ],
+   "license": "Public domain (published 1922; Budge d. 1934)",
+   "status": "verified",
+   "note": "Ethiopia's national epic, read in the Ethiopian Orthodox Church. Chapters found by numbered caps headings checked against the sequence; lost headings become ranges (Chapters 17-18)."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

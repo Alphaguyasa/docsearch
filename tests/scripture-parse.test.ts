@@ -197,3 +197,20 @@ test("CCEL: footnote paragraphs dropped, calls removed without stray spaces, hom
   assert.match(chunks[0].content, /doctrine; of free-will is the word of life\. Whoso is willing\./);
   assert.doesNotMatch(chunks[0].content, /Luke ii|footnote|\[\d+\]/);
 });
+
+test("Kebra Nagast: numbered caps headings checked against the sequence, lost ones become ranges", () => {
+  const rule = TEXT_RULES.kebra_nagast;
+  const raw = [
+    "THE  GLORY  OF   KINGS", "", "i.  CONCERNING  THE  GLORY  OF  KINGS", "", "Come  then,  let  us  consider  the  glory.", "",
+    "2  Kings  xviii,  4.", "", "3.  How  KlNG  SOLOMON  SENT  TO  HIS  SON  THE  COM-", "MANDER  OF  HIS  ARMY", "",
+    "And  the  king  sent  his  captain  to  him.", "", "5.  CONCERNING  THE  SIN  OF  SOLOMON", "", "Now  Solomon  sinned  an  exceedingly  great  sin.",
+    "", "1. The angels appearing to Mary", "", "INDEX",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), [
+    "Chapters 1–2: Concerning The Glory Of Kings",
+    "Chapters 3–4: How King Solomon Sent To His Son The Commander Of His Army",
+    "Chapter 5: Concerning The Sin Of Solomon",
+  ]);
+  assert.doesNotMatch(s.map((x) => x.paragraphs.join(" ")).join(" "), /Kings xviii/);
+});
