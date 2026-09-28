@@ -35,6 +35,8 @@ const READER_NOTES: Record<string, string> = {
     "The Synaxarium does not give his name; it remembers this as a miracle of St. Basil the Great (Maskaram).",
   cyprian:
     "Cyprian of Antioch, not Cyprian the bishop of Carthage. His story is read from the Ethiopian Synaxarium (Maskaram); he is also honoured by Catholics and the Orthodox.",
+  solomon:
+    "His fall is told in Scripture (1 Kings 11). That God had mercy on him is Ethiopian tradition, from the Kebra Nagast (chapter 65), so he is shown to Ethiopian Orthodox readers.",
   manasseh: "The Prayer of Manasseh is Scripture in the Orthodox and Ethiopian Orthodox Churches.",
 };
 
