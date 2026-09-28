@@ -116,38 +116,6 @@
       ]
     },
     {
-      "id": "grace_abounding",
-      "title": "Grace Abounding to the Chief of Sinners (John Bunyan, 1666)",
-      "kind": "tradition",
-      "format": "gutenberg-txt",
-      "license": "Public domain (Project Gutenberg #654; Bunyan d. 1688, 1905 RTS text)",
-      "retrievedAt": "2026-09-28T09:51:44.418Z",
-      "files": [
-        {
-          "name": "pg654.txt",
-          "url": "https://www.gutenberg.org/cache/epub/654/pg654.txt",
-          "sha256": "d8a435e82bc4b95b81a19cf3adb412c920098099f16fe920b6fa646d012d1dbb",
-          "bytes": 336361
-        }
-      ]
-    },
-    {
-      "id": "imitation",
-      "title": "The Imitation of Christ (Thomas à Kempis, tr. William Benham)",
-      "kind": "tradition",
-      "format": "gutenberg-txt",
-      "license": "Public domain (Project Gutenberg #1653; Benham d. 1910)",
-      "retrievedAt": "2026-09-28T09:51:44.340Z",
-      "files": [
-        {
-          "name": "pg1653.txt",
-          "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
-          "sha256": "7631799607b0ede62f1bd7ed2a8eb62d89524451a3c41e9ad2b5cbf4c2aa5383",
-          "bytes": 374954
-        }
-      ]
-    },
-    {
       "id": "isaac",
       "title": "Mystic Treatises by Isaac of Nineveh (tr. A. J. Wensinck, 1923)",
       "kind": "tradition",
@@ -236,22 +204,6 @@
           "sha256": "0390ab503364de72f8720ee838bef42edb98dbd86a13c04c66ac16f97dadf659",
           "bytes": 1138769,
           "archiveId": "paradiseorgarden02anan"
-        }
-      ]
-    },
-    {
-      "id": "pilgrims_progress",
-      "title": "The Pilgrim's Progress, Part One (John Bunyan, 1678)",
-      "kind": "tradition",
-      "format": "gutenberg-txt",
-      "license": "Public domain (Project Gutenberg #131; Bunyan d. 1688)",
-      "retrievedAt": "2026-09-28T13:05:52.074Z",
-      "files": [
-        {
-          "name": "pg131.txt",
-          "url": "https://www.gutenberg.org/cache/epub/131/pg131.txt",
-          "sha256": "13188e0d8cdc003befb5f70a41234c7b619c142cbbe4871564fd06406bda94bb",
-          "bytes": 331509
         }
       ]
     },
