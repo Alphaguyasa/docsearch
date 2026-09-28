@@ -177,6 +177,23 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 2 L32 16 M26 7 L38 7" />
     </>
   ),
+  // The censer in the sanctuary, where the angel came to him.
+  zechariah: (
+    <>
+      <path d="M20 30 C20 42 26 48 32 48 C38 48 44 42 44 30 Z" />
+      <path d="M18 30 L46 30 M32 8 L32 22 M24 22 L40 22 L32 30" />
+      <path d="M28 12 C26 8 30 6 28 2 M36 12 C34 8 38 6 36 2" />
+      <path d="M32 48 L32 58" />
+    </>
+  ),
+  // The rock-hewn tomb, and the stone.
+  joseph_of_arimathea: (
+    <>
+      <path d="M6 56 C8 34 20 22 34 22 C48 22 58 34 58 56 Z" />
+      <path d="M22 56 C22 44 26 38 32 38 C38 38 42 44 42 56" />
+      <circle cx="50" cy="48" r="8" />
+    </>
+  ),
   // The bread Abba Poemen brought to his door.
   envious_elder: (
     <>

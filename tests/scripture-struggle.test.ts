@@ -215,3 +215,8 @@ test("Amharic 'I got angry' (ተናድጄ) is anger", () => {
   assert.ok(matchTags("ተናድጄ ወንድሜን መታሁት").includes("anger"));
   assert.ok(matchTags("በጣም ተናድጃለሁ").includes("anger"));
 });
+
+test("Amharic 'I doubt' (እጠራጠራለሁ) is doubt", () => {
+  assert.ok(matchTags("እግዚአብሔርን እጠራጠራለሁ").includes("doubt"));
+  assert.ok(matchTags("ተጠራጠርኩ").includes("doubt"));
+});

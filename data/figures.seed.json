@@ -1329,6 +1329,60 @@
         }
       ],
       "note": "Read from the Ethiopian Synaxarium (Yakatit), in the story of Abba Gelasius. The text does not give his name."
+    },
+    {
+      "id": "zechariah",
+      "name": "Zechariah",
+      "kind": "scripture",
+      "sins": [
+        "doubt"
+      ],
+      "summary": "An old priest who, when the angel Gabriel promised him a son, asked “How can I be sure of this?” and was struck silent; when the child was born, his mouth was opened and he blessed God.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Luke 1:18-20",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Luke 1:63-64",
+          "sourceId": "web"
+        }
+      ]
+    },
+    {
+      "id": "joseph_of_arimathea",
+      "name": "Joseph of Arimathea",
+      "kind": "scripture",
+      "sins": [
+        "fear"
+      ],
+      "summary": "A rich man and a disciple of Jesus, but secretly, for fear; when Jesus had died, he went in boldly to Pilate, asked for His body, and buried Him.",
+      "traditions": [
+        "protestant",
+        "catholic",
+        "orthodox",
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "John 19:38",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Mark 15:43",
+          "sourceId": "web"
+        }
+      ]
     }
   ]
 }
