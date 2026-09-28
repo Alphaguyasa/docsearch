@@ -1,22 +1,41 @@
-outcome=failure at 2026-09-28T11:03:39Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36411653387
+outcome=success at 2026-09-28T12:02:50Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36413373293
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
-built 7240 chunks across 90 documents
-done 6741, to embed 499, stale 0
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2721 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2679 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2538 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2561 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2780 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2846 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2832 tokens
-  6805/7240 embedded (8.3 min)
-  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2906 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2577 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2590 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2667 tokens
-Error: chunk upsert failed: canceling statement due to statement timeout
-    at main (/home/runner/work/docsearch/docsearch/scripts/ingest-scripture.ts:148:26)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+built 7492 chunks across 91 documents
+done 6805, to embed 687, stale 0
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2957 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2897 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2607 tokens
+  6869/7492 embedded (5.4 min)
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2791 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2739 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2412 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2479 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2854 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2817 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2768 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2805 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2397 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2701 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 1 chunk(s) / 470 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 8 chunk(s) / 2883 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2774 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 2 chunk(s) / 1094 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2953 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2632 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 10 chunk(s) / 2915 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 8 chunk(s) / 2761 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2945 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2098 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2451 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2594 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2982 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2947 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2552 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 1 chunk(s) / 470 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2843 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2527 tokens
+  7492/7492 embedded (58.6 min)
+finished: 7492/7492
