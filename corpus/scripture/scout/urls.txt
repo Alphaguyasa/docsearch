@@ -1,7 +1,7 @@
-npnf213 https://www.ccel.org/ccel/schaff/npnf213.txt
-npnf207 https://www.ccel.org/ccel/schaff/npnf207.txt
-npnf109 https://www.ccel.org/ccel/schaff/npnf109.txt
-npnf204 https://www.ccel.org/ccel/schaff/npnf204.txt
-q-enoch https://archive.org/advancedsearch.php?q=title%3A%28book+of+enoch%29+AND+creator%3A%28charles%29&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&rows=30&output=json
-q-jubilees https://archive.org/advancedsearch.php?q=title%3A%28jubilees%29+AND+creator%3A%28charles%29&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&rows=30&output=json
-q-kebra https://archive.org/advancedsearch.php?q=title%3A%28kebra+nagast%29+OR+title%3A%28queen+of+sheba+and+her+only+son%29&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&fl%5B%5D=creator&rows=30&output=json
+npnf213 https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt
+npnf207 https://ccel.org/ccel/s/schaff/npnf207/cache/npnf207.txt
+npnf109 https://ccel.org/ccel/s/schaff/npnf109/cache/npnf109.txt
+npnf204 https://ccel.org/ccel/s/schaff/npnf204/cache/npnf204.txt
+m-enoch https://archive.org/metadata/book-of-enoch_1917/files
+m-jub https://archive.org/metadata/bookofjubileesor01char/files
+m-kebra https://archive.org/metadata/queenofshebahero00budgrich/files
