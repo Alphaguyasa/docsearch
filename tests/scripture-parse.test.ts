@@ -112,7 +112,7 @@ test("toSections + chunkSections: refs name the work and section, never cross se
   assert.match(chunks[1].content, /Pears were stolen/);
 });
 
-import { sectionize } from "../src/lib/scripture/chunk-scripture";
+import { ocrNumeral, sectionize } from "../src/lib/scripture/chunk-scripture";
 import { TEXT_RULES } from "../src/lib/scripture/sources";
 
 test("sectionize: Lausiac running titles become chapter sections", () => {
@@ -171,4 +171,29 @@ test("Grace Abounding: numbered paragraphs give §refs, unnumbered sections keep
   const chunks = chunkSections(sections, { sourceId: "ga", title: "G", refPrefix: rule.refPrefix, traditions: [], paragraphNumbers: true });
   assert.deepEqual(chunks.map((c) => c.ref), ["Grace Abounding, A Preface", "Grace Abounding §1–2"]);
   assert.match(chunks[0].content, /Amen\. I write from the lions’ dens, to you/);
+});
+
+test("OCR chapter numerals: repaired by the sequence, reordered chapters kept", () => {
+  assert.equal(ocrNumeral("XxiIll.", 22), 23);
+  assert.equal(ocrNumeral("LXxXiIll.", 72), 73);
+  assert.equal(ocrNumeral("XXX VIII", 37), 38);
+  assert.equal(ocrNumeral("XCll.", 90), 92); // Charles prints 92 before 91
+  assert.equal(ocrNumeral("XCl.", 92), 91);
+});
+
+test("CCEL: footnote paragraphs dropped, calls removed without stray spaces, homilies by title", () => {
+  const rule = TEXT_RULES.ephrem;
+  const raw = [
+    "   Three Homilies.", "", "   ------------------------", "", "   On Admonition and Repentance.", "",
+    "   1.  Not of compulsion is the doctrine [612] ; of free-will is the word", "   of life. [613]  Whoso is willing.", "",
+    "   [612] Luke ii. 29.", "", "   [613] A long footnote that", "   runs over two lines.", "",
+    "   2.  Thou canst not hear His words.", "     __________________________________________________________________", "",
+    "   Aphrahat.",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), ["On Admonition and Repentance"]);
+  const chunks = chunkSections(s, { sourceId: "ephrem", title: "E", refPrefix: rule.refPrefix, traditions: [], paragraphNumbers: true });
+  assert.equal(chunks[0].ref, "Ephrem the Syrian, On Admonition and Repentance §1–2");
+  assert.match(chunks[0].content, /doctrine; of free-will is the word of life\. Whoso is willing\./);
+  assert.doesNotMatch(chunks[0].content, /Luke ii|footnote|\[\d+\]/);
 });

@@ -38,6 +38,66 @@
    "status": "verified-at-fetch"
   },
   {
+   "id": "enoch",
+   "title": "The Book of Enoch (tr. R. H. Charles, 1917)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(book of enoch) AND creator:(charles)",
+   "titleHint": "book of enoch",
+   "archiveIds": [
+    "book-of-enoch_1917"
+   ],
+   "license": "Public domain (published 1917; Charles d. 1931)",
+   "status": "verified",
+   "note": "Canonical in the Ethiopian Orthodox Bible. Pinned: SPCK 1917 text (Global Grey 2013 e-book scan)."
+  },
+  {
+   "id": "ephrem",
+   "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+   "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+   "status": "verified-at-fetch",
+   "note": "Plain text from CCEL (format name aside, any plain-text URL)."
+  },
+  {
+   "id": "aphrahat",
+   "title": "Aphrahat, Select Demonstrations (tr. J. Gwynn, NPNF II/13)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+   "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+   "status": "verified-at-fetch"
+  },
+  {
+   "id": "cyril_repentance",
+   "title": "Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://ccel.org/ccel/s/schaff/npnf207/cache/npnf207.txt",
+   "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+   "status": "verified-at-fetch"
+  },
+  {
+   "id": "chrysostom_theodore",
+   "title": "John Chrysostom, Letters to Theodore after his Fall (NPNF I/9)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://ccel.org/ccel/s/schaff/npnf109/cache/npnf109.txt",
+   "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+   "status": "verified-at-fetch"
+  },
+  {
+   "id": "antony",
+   "title": "Athanasius, Life of Antony (tr. H. Ellershaw, NPNF II/4)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://ccel.org/ccel/s/schaff/npnf204/cache/npnf204.txt",
+   "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+   "status": "verified-at-fetch"
+  },
+  {
    "id": "synaxarium",
    "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
    "kind": "tradition",
