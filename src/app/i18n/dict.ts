@@ -291,7 +291,7 @@ const en = {
     notice: "Not Alone is not a counselling or emergency service. If you are in danger, reach someone now.",
     needHelp: "Need help now?",
     sources:
-      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, St. Ephrem, Aphrahat, St. Cyril of Jerusalem, St. John Chrysostom, the Life of Antony, The Imitation of Christ and Bunyan’s Grace Abounding.",
+      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, St. Ephrem, Aphrahat, St. Isaac the Syrian, St. Cyril of Jerusalem, St. John Chrysostom, the Life of Antony, The Imitation of Christ and Bunyan’s Grace Abounding and Pilgrim’s Progress.",
     care: "Made with care for anyone carrying something alone.",
     nav: "Footer",
   },
@@ -587,7 +587,7 @@ const am: Dict = {
     notice: "Not Alone የምክር ወይም የአደጋ ጊዜ አገልግሎት አይደለም። አደጋ ላይ ከሆኑ አሁኑኑ ሰው ያግኙ።",
     needHelp: "እርዳታ ይፈልጋሉ?",
     sources:
-      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅ፣ የቅዱስ እንጦንስ ሕይወት፣ «ክርስቶስን መምሰል» እና የበንያን «የበዛ ጸጋ»።",
+      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅ፣ የቅዱስ እንጦንስ ሕይወት፣ «ክርስቶስን መምሰል» እና የበንያን «የበዛ ጸጋ» እና «የመንገደኛው ጉዞ»።",
     care: "ብቻውን ሸክም ለተሸከመ ሁሉ በፍቅር የተሠራ።",
     nav: "የግርጌ ማውጫ",
   },

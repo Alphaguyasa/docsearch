@@ -300,7 +300,9 @@ export interface SectionRule {
   /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
-  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral" | "numberedChapter" | "romanChapterStart";
+  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral" | "numberedChapter" | "romanChapterStart" | "loneNumeral";
+  /** Section label for "loneNumeral" ("Treatise"); default "Chapter". */
+  label?: string;
   /** Map the runningContext capture to a canonical label (OCR-proof). */
   contextLabel?: (capture: string) => string;
 }
@@ -309,6 +311,12 @@ export interface SectionRule {
 function isCaps(text: string): boolean {
   const letters = text.replace(/[^A-Za-z]/g, "");
   return letters.length >= 4 && letters.replace(/[^A-Z]/g, "").length / letters.length >= 0.7;
+}
+
+/** Long titles are cut at a word boundary: "Treatise VII: On Other Subjects, Chapter By…". */
+function shortTitle(heading: string, max = 90): string {
+  if (heading.length <= max) return heading;
+  return heading.slice(0, max).replace(/[\s,.;:]+\S*$/, "") + "…";
 }
 
 function capsTitle(text: string): string {
@@ -394,6 +402,28 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       endPara();
       continue;
     }
+    if (rule.name === "loneNumeral" && rule.sectionStart) {
+      // "XXX" alone on a line, then the title in capitals over one or more lines.
+      const m = line.match(rule.sectionStart);
+      const n = m ? ocrNumeral(m[1], counter) : NaN;
+      // The first numeral may come after unnumbered opening treatises.
+      if (m && n > counter && n <= counter + (counter ? 5 : 10)) {
+        if (n > counter + 1 && counter > 0) cur.heading = cur.heading.replace(/^(\S+) (\S+?):/, `$1s $2–${roman(n - 1)}:`);
+        open(`${rule.label ?? "Chapter"} ${roman(n)}:`);
+        counter = n;
+        titling = true;
+        continue;
+      }
+      if (titling && !para.length && isCaps(line)) {
+        const more = capsTitle(line.replace(/^\d+\s+/, "")); // a page number set before the title
+        cur.heading = /[A-Za-z]-$/.test(cur.heading)
+          ? cur.heading.slice(0, -1) + more.charAt(0).toLowerCase() + more.slice(1)
+          : `${cur.heading} ${more}`;
+        continue;
+      }
+      if (titling) cur.heading = shortTitle(cur.heading);
+      titling = false;
+    }
     if (rule.name === "romanChapterStart" && rule.sectionStart) {
       // "VI. And on the new moon…": the numeral opens a chapter and the rest of the line is its first verse.
       const m = line.match(rule.sectionStart);
@@ -442,7 +472,7 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       if (title !== cur.heading) open(title);
       continue;
     }
-    if (rule.name !== "numberedChapter" && rule.name !== "romanChapterStart" && rule.sectionStart?.test(line)) {
+    if (!["numberedChapter", "romanChapterStart", "loneNumeral"].includes(rule.name ?? "") && rule.sectionStart?.test(line)) {
       if (rule.name === "contextFirstWords") {
         open(context || defaultHeading);
         pendingName = true;
