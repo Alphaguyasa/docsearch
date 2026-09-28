@@ -1,7 +1,8 @@
 /**
  * "Coming back to God": a few plain steps for someone who wants to return,
- * each resting on a verse quoted word for word from the World English Bible
- * chunks in the corpus (`chunkId`; every quote checked by SQL when added).
+ * each resting on a passage quoted word for word from the corpus — the World
+ * English Bible, and once the Ethiopian Synaxarium (`chunkId`; every quote
+ * checked by SQL when added).
  * The words around the verses are ours and say only what the verse says,
  * except the one pastoral pointer to a father of confession.
  */
@@ -106,6 +107,21 @@ export const RETURN_STEPS: ReturnStep[] = [
     am: {
       title: "ይቅር እንደተባሉ ይመኑ",
       body: "ይቅርታ ከዚያ በኋላ በሚሰማዎ ስሜት ላይ የተመሠረተ አይደለም። በእግዚአብሔር ታማኝነት ላይ ነው። ኀፍረት የመጨረሻውን ቃል አይናገርም።",
+    },
+  },
+  {
+    chunkId: "a3cfb41b-9a7e-40ce-b8e4-e345e0ed4e7f",
+    ref: "Ethiopian Synaxarium, Takhsas — the council against Novatus",
+    refAm: "ስንክሳር፣ ታኅሣሥ — ኖቫጦስን የተቃወመው ጉባኤ",
+    quote:
+      "Our Lord Jesus Christ hath placed repentance so that it may be found by everyone who hath denied the Faith, or who hath fallen into sin.",
+    en: {
+      title: "No fall is too far",
+      body: "When a priest taught that those who had denied Christ could never be taken back, the bishops answered with David and Peter: repentance is open to everyone.",
+    },
+    am: {
+      title: "የማይመለስ ውድቀት የለም",
+      body: "አንድ ካህን ክርስቶስን የካዱ ፈጽሞ ሊመለሱ አይችሉም ብሎ ባስተማረ ጊዜ፣ ጳጳሳቱ በዳዊትና በጴጥሮስ መለሱለት፤ ንስሐ ለሁሉ የተከፈተ ነው።",
     },
   },
   {

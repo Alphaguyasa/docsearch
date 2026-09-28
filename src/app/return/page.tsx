@@ -45,7 +45,7 @@ export default async function ReturnPage() {
                     “{s.quote}”
                   </p>
                   <cite className="mt-2 block text-sm font-medium not-italic text-gold">
-                    {lang === "am" ? `${s.refAm} · ${p.readIn}` : s.ref}
+                    {lang !== "am" ? s.ref : s.ref.startsWith("Ethiopian Synaxarium") ? s.refAm : `${s.refAm} · ${p.readIn}`}
                   </cite>
                 </blockquote>
               </div>
