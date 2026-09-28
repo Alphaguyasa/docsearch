@@ -39,8 +39,6 @@ interface TextRule {
   sections?: SectionRule;
   /** The text numbers its own paragraphs: refs become "§12–15" (see chunkSections). */
   paragraphNumbers?: boolean;
-  /** The text carries its edition's page marks ("{10}"): refs become "p. 10–12". */
-  pageMarks?: boolean;
   /** Rename detected headings (exact match); "" leaves just the work's name in the ref. */
   renameHeadings?: Record<string, string>;
 }
@@ -183,46 +181,6 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "",
     paragraphNumbers: true,
   },
-  imitation: {
-    refPrefix: "The Imitation of Christ",
-    traditions: ["catholic", "protestant"],
-    clean: {
-      startAt: /^THE FIRST BOOK$/,
-      endAt: /^\*\*\* ?END OF (THE|THIS) PROJECT GUTENBERG/i,
-      // Book subtitles ("ADMONITIONS PROFITABLE FOR THE SPIRITUAL LIFE") and footnote lines ("(1) John viii. 12.").
-      dropLines: [/^(?!CHAPTER |THE \w+ BOOK$)[A-Z][A-Z ,]+$/, /^\(\d+\)\s/],
-      // Footnote calls sit on the word: "darkness,(1)".
-      inline: [/(?<=\S)\(\d+\)/g],
-    },
-    defaultHeading: "Book I",
-    sections: {
-      runningContext: /^THE (FIRST|SECOND|THIRD|FOURTH) BOOK$/,
-      contextLabel: (n: string) => `Book ${{ FIRST: "I", SECOND: "II", THIRD: "III", FOURTH: "IV" }[n] ?? n}`,
-      sectionStart: /^CHAPTER [IVXLC]+$/,
-      name: "contextLine",
-    },
-    paragraphNumbers: true,
-  },
-  grace_abounding: {
-    refPrefix: "Grace Abounding",
-    traditions: ["protestant"],
-    clean: {
-      startAt: /^A PREFACE$/,
-      endAt: /^FOOTNOTES$/,
-      dropLines: [
-        /^\[Picture:/,
-        /^JOHN BUNYAN\.$/,
-        // Sub-titles under the preface and the main title.
-        /^(OR, BRIEF ACCOUNT|THEREOF, AND DEDICATED|TO FAITH, BY HIS MINISTRY|A BRIEF RELATION OF THE EXCEEDING|SERVANT, JOHN BUNYAN)/,
-      ],
-      // Page-note markers ("{7}", "{187a}"); underscores mark italics.
-      inline: [/\{\d+[a-z]?\}/g],
-      strip: /_/g,
-    },
-    defaultHeading: "A Preface",
-    paragraphNumbers: true,
-    renameHeadings: { "GRACE ABOUNDING TO THE CHIEF OF SINNERS": "" },
-  },
   isaac: {
     refPrefix: "Isaac of Nineveh",
     traditions: ALL,
@@ -240,19 +198,6 @@ export const TEXT_RULES: Record<string, TextRule> = {
     },
     defaultHeading: "Treatise I: Six Treatises on the Behaviour of Excellence",
     sections: { sectionStart: /^([IVXLCxil]{1,7})$/, name: "loneNumeral", label: "Treatise" },
-  },
-  pilgrims_progress: {
-    refPrefix: "The Pilgrim's Progress",
-    traditions: ["protestant"],
-    clean: {
-      startAt: /^In the Similitude of a Dream$/,
-      endAt: /^\*\*\* ?END OF (THE|THIS) PROJECT GUTENBERG/i,
-      dropLines: [/^In the Similitude of a Dream$/],
-    },
-    defaultHeading: "",
-    // One continuous dream: no headings (an all-caps quotation is not one).
-    sections: {},
-    pageMarks: true,
   },
   confessions: {
     refPrefix: "Confessions",
@@ -366,7 +311,6 @@ export function buildSource(rawDir: string, manifest: Manifest, sourceId: string
     refPrefix: rule.refPrefix,
     traditions: rule.traditions,
     paragraphNumbers: rule.paragraphNumbers,
-    pageMarks: rule.pageMarks,
   });
   return { chunks, skippedBooks: [] };
 }

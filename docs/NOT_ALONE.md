@@ -9,11 +9,12 @@ Holy Fathers* and the Ethiopian Synaxarium), plus the Books of Enoch and Jubilee
 (Ephrem's three homilies, Aphrahat's Demonstrations, and from archive.org
 Wensinck's 1923 *Mystic Treatises* of St. Isaac of Nineveh, Cyril of Jerusalem's
 Lecture II *On Repentance*, Chrysostom's letters to Theodore, Athanasius's
-*Life of Antony*), Thomas à Kempis's *Imitation of Christ* (Catholic) and
-Bunyan's *Grace Abounding* and *The Pilgrim's Progress* (Protestant; cited by
-the edition's page marks, "p. 10–12"). Texts that number their own
-paragraphs or verses are cited by them: "Grace Abounding §45–47", "Book of
-Enoch, Chapter XCVIII §1–3".
+*Life of Antony*). The site serves the Oriental Orthodox churches: only
+books they read are kept, and the church picker offers "Oriental Orthodox"
+(everything) or "Ethiopian Orthodox Tewahedo" (adds the Ethiopian books).
+Texts that number their own paragraphs or verses are cited by them:
+"Ephrem the Syrian, On Admonition and Repentance §3–5", "Book of Enoch,
+Chapter XCVIII §1–3".
 
 Where a scan lost a chapter heading (four in the Kebra Nagast, a few in
 Jubilees), those chapters are cited as a range ("Chapters 17–18") rather
