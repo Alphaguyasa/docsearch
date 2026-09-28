@@ -23,21 +23,26 @@ export function PrayerCard({
   const { lang, t } = useT();
   const p = prayerFor(tags, figureId);
   const tp = t.story.prayer;
+  // Amharic readers pray in the 1962 Amharic Bible's words where it has the book.
+  const amharic = lang === "am" ? p.linesAm : undefined;
   return (
     <section className="rise mt-12 rounded-[22px] border border-gold/40 bg-panel/60 px-6 py-7 sm:px-8">
       <p className="font-caps text-[12px] font-semibold tracking-[0.14em] text-gold">{tp.label}</p>
       <h2 className="mt-2 font-display text-2xl font-semibold">{tp.titles[p.id]}</h2>
-      <blockquote lang="en" className="mt-4 space-y-3 font-serif text-[18px] italic leading-8 text-foreground/90">
-        {p.lines.map((line, i) => (
+      <blockquote
+        lang={amharic ? "am" : "en"}
+        className={`mt-4 space-y-3 font-serif text-[18px] leading-8 text-foreground/90 ${amharic ? "" : "italic"}`}
+      >
+        {(amharic ?? p.lines).map((line, i) => (
           <p key={i}>
             {i > 0 && "… "}
             {line}
           </p>
         ))}
-        <p className="not-italic">Amen.</p>
+        <p className="not-italic">{lang === "am" ? "አሜን።" : "Amen."}</p>
       </blockquote>
       <p className="mt-4 text-sm text-muted">
-        {lang === "am" ? p.refAm : p.ref} · {tp.note}
+        {lang === "am" ? p.refAm : p.ref} · {amharic ? tp.noteAm : tp.note}
       </p>
       {showReturn && (
         <Link

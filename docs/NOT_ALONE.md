@@ -143,3 +143,19 @@ the story of the day and moves the day on, and after day 40 says so and falls
 back to the story of the day. `/daily` switches back to the story of the day;
 `/stop` deletes the row. The order is `JOURNEY` in src/app/journey.ts, the same
 as the website's /journey page.
+
+## The Amharic Bible (1962)
+
+`data/bible-am.json` holds the 1962 Amharic Bible (Haile Selassie
+translation), built by `scripts/build-amharic-bible.py`: the New Testament
+from the e-text published with the Bible Society of Ethiopia's permission for
+non-commercial use (its verse numbers match the English), the Old Testament
+from github.com/magna25/amharic-bible-json. `lib/scripture/amharic.ts` looks
+passages up by our English references and returns null — so the page stays
+English — for Jonah 1:17–2 (numbered as in Hebrew), the Prayer of Manasseh
+(not in this Bible) and the ~50 Old Testament verses that still carry
+transliteration leftovers. Amharic readers see it on person pages (Amharic
+first, English below), in the prayers and in "Coming back to God"; every
+Amharic line there is checked word for word by tests/amharic-bible.test.ts.
+The copyright statement is on /about and under the verses. Non-commercial use
+only; commercial use needs the Bible Society of Ethiopia's written permission.

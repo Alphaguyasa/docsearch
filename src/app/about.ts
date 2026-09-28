@@ -18,7 +18,7 @@ export const ABOUT: Record<"en" | "am", { eyebrow: string; title: string; intro:
       {
         title: "Where the words come from",
         body: [
-          "Scripture: the World English Bible (public domain).",
+          "Scripture: the World English Bible (public domain), and for Amharic readers the 1962 Amharic Bible — Amharic Bible © United Bible Societies 1962, the Bible Society of Ethiopia; the New Testament e-text by the Lapsley/Brooks Foundation (1994) and Dirk Röckmann (2003), with kind permission of the Bible Society of Ethiopia. Used here for non-commercial purposes only.",
           "The Church Fathers: St. Augustine’s Confessions, the Lausiac History and the Paradise of the Holy Fathers (tr. E. A. Wallis Budge), and the Ethiopian Synaxarium, the Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge).",
           "Every person’s page shows their story straight from these texts, with the reference, so you can find it in your own Bible or book.",
         ],
@@ -56,7 +56,7 @@ export const ABOUT: Record<"en" | "am", { eyebrow: string; title: string; intro:
       {
         title: "ቃላቱ ከየት ይመጣሉ",
         body: [
-          "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት የሆነ የእንግሊዝኛ ትርጉም)።",
+          "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት የሆነ የእንግሊዝኛ ትርጉም)፤ ለአማርኛ አንባቢዎች ደግሞ የ1962ቱ የአማርኛ መጽሐፍ ቅዱስ — © United Bible Societies 1962፣ የኢትዮጵያ መጽሐፍ ቅዱስ ማኅበር፤ የአዲስ ኪዳኑ ኤሌክትሮኒክ ጽሑፍ በLapsley/Brooks Foundation (1994) እና በDirk Röckmann (2003)፣ በኢትዮጵያ መጽሐፍ ቅዱስ ማኅበር ፈቃድ። እዚህ ለንግድ ላልሆነ ዓላማ ብቻ ጥቅም ላይ ውሏል።",
           "የቤተ ክርስቲያን አባቶች፦ የቅዱስ አውግስጢኖስ «ኑዛዜ»፣ የላውሲያክ ታሪክና «የአባቶች ገነት» (በE. A. Wallis Budge የተተረጎሙ)፣ እንዲሁም የኢትዮጵያ ቤተ ክርስቲያን ስንክሳር (በE. A. Wallis Budge የተተረጎመ)።",
           "የእያንዳንዱ ሰው ገጽ ታሪኩን በቀጥታ ከእነዚህ መጻሕፍት ከማጣቀሻው ጋር ያሳያል፤ በራስዎ መጽሐፍ ቅዱስ ወይም መጽሐፍ ሊያገኙት ይችላሉ።",
         ],
