@@ -218,6 +218,15 @@ async function main(): Promise<void> {
     }
   }
 
+  // A source removed from sources.json leaves the manifest too, or ingest would keep building it.
+  const listed = new Set(activeSources(sources).map((x) => x.id));
+  const dropped = manifest.entries.filter((e) => !listed.has(e.id)).map((e) => e.id);
+  if (dropped.length && !only) {
+    manifest.entries = manifest.entries.filter((e) => listed.has(e.id));
+    console.log(`dropped from manifest (no longer in sources.json): ${dropped.join(", ")}`);
+    report.push(`\n## Dropped\n${dropped.map((id) => `- ${id}`).join("\n")}`);
+  }
+
   manifest.entries.sort((a, b) => a.id.localeCompare(b.id));
   // generatedAt only moves when an entry did, for the same cache-key reason.
   const latest = manifest.entries.map((e) => e.retrievedAt).sort().at(-1) ?? "";
