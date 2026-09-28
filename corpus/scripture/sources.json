@@ -20,6 +20,24 @@
    "status": "verified-at-fetch"
   },
   {
+   "id": "imitation",
+   "title": "The Imitation of Christ (Thomas \u00e0 Kempis, tr. William Benham)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
+   "license": "Public domain (Project Gutenberg #1653; Benham d. 1910)",
+   "status": "verified-at-fetch"
+  },
+  {
+   "id": "grace_abounding",
+   "title": "Grace Abounding to the Chief of Sinners (John Bunyan, 1666)",
+   "kind": "tradition",
+   "format": "gutenberg-txt",
+   "url": "https://www.gutenberg.org/cache/epub/654/pg654.txt",
+   "license": "Public domain (Project Gutenberg #654; Bunyan d. 1688, 1905 RTS text)",
+   "status": "verified-at-fetch"
+  },
+  {
    "id": "synaxarium",
    "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
    "kind": "tradition",

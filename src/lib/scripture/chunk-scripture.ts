@@ -96,8 +96,10 @@ export interface CleanOptions {
   endAt?: RegExp;
   /** Running headers / page furniture to drop. */
   dropLines?: RegExp[];
-  /** Inline fragments to remove from every line. */
+  /** Inline fragments to remove from every line (replaced by a space). */
   inline?: RegExp[];
+  /** Characters to delete outright, e.g. the underscores Gutenberg uses for italics. */
+  strip?: RegExp;
 }
 
 /**
@@ -117,7 +119,7 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
   }
   const out: string[] = [];
   for (const rawLine of lines) {
-    const line = stripInline(rawLine, opts.inline ?? []);
+    const line = stripInline(opts.strip ? rawLine.replace(opts.strip, "") : rawLine, opts.inline ?? []);
     if (line === "") {
       out.push("");
       continue;
@@ -175,10 +177,20 @@ export function toSections(lines: string[], defaultHeading: string): Section[] {
   return sections;
 }
 
+/** A paragraph that opens with its own number: "12. And now…". */
+const PARA_NO = /^(\d{1,3})\.\s/;
+
 /** Pack sections into chunks; a chunk never spans two sections. */
 export function chunkSections(
   sections: Section[],
-  meta: { sourceId: string; title: string; refPrefix: string; traditions: Tradition[] },
+  meta: {
+    sourceId: string;
+    title: string;
+    refPrefix: string;
+    traditions: Tradition[];
+    /** Name chunks by the text's own paragraph numbers ("2. His teaching…") as "§2–4" instead of "(part N)". */
+    paragraphNumbers?: boolean;
+  },
   opts: PackOptions = {},
 ): ScriptureChunk[] {
   const target = opts.targetTokens ?? DEFAULT_TARGET;
@@ -193,9 +205,16 @@ export function chunkSections(
     let buf: string[] = [];
     let tokens = 0;
     let part = 1;
+    // Paragraph numbers: an unnumbered paragraph belongs to the last number seen (1 at a section's start).
+    let para = 1;
+    let firstPara = 1;
+    const head = s.heading ? `${meta.refPrefix}, ${titleCase(s.heading)}` : meta.refPrefix;
+    const numbered = meta.paragraphNumbers && units.some((u) => PARA_NO.test(u));
     const emit = () => {
       if (!buf.length) return;
-      const ref = `${meta.refPrefix}, ${titleCase(s.heading)}${part > 1 ? ` (part ${part})` : ""}`;
+      const ref = numbered
+        ? `${head} §${firstPara}${para > firstPara ? `–${para}` : ""}`
+        : `${head}${part > 1 ? ` (part ${part})` : ""}`;
       const body = buf.join("\n\n");
       const content = `${ref}\n\n${body}`;
       chunks.push({
@@ -219,6 +238,9 @@ export function chunkSections(
     for (const u of units) {
       const t = countTokens(u);
       if (buf.length && tokens + t > target) emit();
+      const n = numbered ? u.match(PARA_NO) : null;
+      if (n && Number(n[1]) > para) para = Number(n[1]);
+      if (!buf.length) firstPara = para;
       buf.push(u);
       tokens += t;
     }
@@ -256,7 +278,7 @@ export interface SectionRule {
   /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
-  name?: "firstWords" | "contextCounter" | "contextFirstWords";
+  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine";
   /** Map the runningContext capture to a canonical label (OCR-proof). */
   contextLabel?: (capture: string) => string;
 }
@@ -318,6 +340,9 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       if (rule.name === "contextFirstWords") {
         open(context || defaultHeading);
         pendingName = true;
+      } else if (rule.name === "contextLine") {
+        // "Book I" + "CHAPTER III" -> "Book I, Chapter III".
+        open(context ? `${context}, ${titleCase(line)}` : titleCase(line));
       } else if (rule.name === "contextCounter") {
         counter++;
         open(`${context || defaultHeading}, entry ${counter}`);
