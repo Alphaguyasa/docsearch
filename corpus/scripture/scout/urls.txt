@@ -1,7 +1,3 @@
-npnf213 https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt
-npnf207 https://ccel.org/ccel/s/schaff/npnf207/cache/npnf207.txt
-npnf109 https://ccel.org/ccel/s/schaff/npnf109/cache/npnf109.txt
-npnf204 https://ccel.org/ccel/s/schaff/npnf204/cache/npnf204.txt
-m-enoch https://archive.org/metadata/book-of-enoch_1917/files
-m-jub https://archive.org/metadata/bookofjubileesor01char/files
-m-kebra https://archive.org/metadata/queenofshebahero00budgrich/files
+enoch https://archive.org/download/book-of-enoch_1917/BookOfEnoch_1917_djvu.txt
+jubilees https://archive.org/download/bookofjubileesor01char/bookofjubileesor01char_djvu.txt
+kebra https://archive.org/download/queenofshebahero00budgrich/queenofshebahero00budgrich_djvu.txt
