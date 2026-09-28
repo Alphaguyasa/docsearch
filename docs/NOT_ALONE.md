@@ -6,10 +6,12 @@ Scripture (World English Bible with deuterocanon) and the Church Fathers
 (Augustine's *Confessions*, the *Lausiac History*, Budge's *Paradise of the
 Holy Fathers* and the Ethiopian Synaxarium), plus the Books of Enoch and Jubilees
 (Charles, 1917; both in the Ethiopian Orthodox canon), the Kebra Nagast (Budge, 1922), five Fathers from Schaff's NPNF via CCEL
-(Ephrem's three homilies, Aphrahat's Demonstrations, Cyril of Jerusalem's
+(Ephrem's three homilies, Aphrahat's Demonstrations, and from archive.org
+Wensinck's 1923 *Mystic Treatises* of St. Isaac of Nineveh, Cyril of Jerusalem's
 Lecture II *On Repentance*, Chrysostom's letters to Theodore, Athanasius's
 *Life of Antony*), Thomas à Kempis's *Imitation of Christ* (Catholic) and
-Bunyan's *Grace Abounding* (Protestant). Texts that number their own
+Bunyan's *Grace Abounding* and *The Pilgrim's Progress* (Protestant; cited by
+the edition's page marks, "p. 10–12"). Texts that number their own
 paragraphs or verses are cited by them: "Grace Abounding §45–47", "Book of
 Enoch, Chapter XCVIII §1–3".
 

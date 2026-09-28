@@ -231,3 +231,29 @@ test("Jubilees: a roman numeral opens a chapter and its first verse; notes and n
   assert.doesNotMatch(all, /solar year|BOOK OF JUBILEES/);
   assert.match(all, /II\. And for Tubal/); // out of sequence: a verse, not a chapter
 });
+
+test("Pilgrim's Progress: cited by the edition's page marks, which leave the text", () => {
+  const rule = TEXT_RULES.pilgrims_progress;
+  const raw = ["In the Similitude of a Dream", "", "{10} As I walked through the wilderness of this world, I lighted on a den.", "",
+    "Then I saw in my dream that he wept and trembled greatly.", "", "{11} In this plight, therefore, he went home and refrained himself.", "",
+    "THAT SITTETH UPON THE THRONE, AND UNTO THE LAMB, FOR EVER AND EVER.\"", "", "*** END OF THE PROJECT GUTENBERG EBOOK X ***"].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  const c = chunkSections(s, { sourceId: "pp", title: "P", refPrefix: rule.refPrefix, traditions: [], pageMarks: true });
+  assert.deepEqual(c.map((x) => x.ref), ["The Pilgrim's Progress, p. 10–11"]);
+  assert.doesNotMatch(c[0].content, /\{\d+\}/);
+  assert.match(c[0].content, /UNTO THE LAMB/);
+});
+
+test("Isaac of Nineveh: a lone OCR numeral opens a treatise, its capital title is joined and cut short", () => {
+  const rule = TEXT_RULES.isaac;
+  const raw = ["SIX TREATISES ON THE BEHAVIOUR OF", "EXCELLENCE", "", "The fear of God is the foundation of excellence.", "",
+    "EX", "", "ON SINS [COMMITTED] INTENTIONALLY AND WITH", "EVIL WILL", "", "There are sins in which a man is entangled through weakness.", "",
+    "ON SINS [COMMITTED] INTENTIONALLY AND WITT ETC. 73", "", "XII", "", "ON THE POWER OF SIN", "", "A man is not freed from the allurements of sin.", "", "REGISTER"].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), [
+    "Treatise I: Six Treatises on the Behaviour of Excellence",
+    "Treatises IX–XI: On Sins [Committed] Intentionally And With Evil Will",
+    "Treatise XII: On The Power Of Sin",
+  ]);
+  assert.doesNotMatch(s.map((x) => x.paragraphs.join(" ")).join(" "), /ETC/);
+});
