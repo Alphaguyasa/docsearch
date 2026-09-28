@@ -210,10 +210,10 @@ function toGeminiPayload(messages: LlmMessage[]): {
 }
 
 // When a model is overloaded or out of free quota, the next one is tried.
-// Each has its own free-tier quota, so a day's traffic is spread across them;
-// Gemma's free quota is by far the largest. Gemma takes no system_instruction,
-// so its system prompt rides at the top of the first user turn.
-const GEMINI_FALLBACKS = ["gemini-flash-lite-latest", "gemma-3-27b-it"];
+// Each has its own free-tier quota, so a day's traffic is spread across them.
+// (gemma-3-27b-it was dropped: Google now answers 404 for it. Gemma models take
+// no system_instruction — see geminiBody — should one be added back.)
+const GEMINI_FALLBACKS = ["gemini-flash-lite-latest"];
 const GEMINI_ATTEMPTS = 3;
 
 /**
@@ -275,23 +275,31 @@ async function geminiPost(
 
   const chain = [model, ...GEMINI_FALLBACKS.filter((m) => m !== model)];
   let last = "";
+  const tried: string[] = [];
   for (const m of chain) {
     let res = await post(m);
     for (let attempt = 0; ; attempt++) {
       if (res.ok && res.body) return res;
       const text = await res.text().catch(() => "");
-      last = `Gemini request failed (${m}): ${res.status} ${res.statusText}` + (text ? ` — ${text}` : "");
+      last = `Gemini request failed (${m}): ${res.status} ${res.statusText}` + (text ? ` — ${text.slice(0, 300)}` : "");
       // A bad key fails the same on every model: stop at once.
       if (res.status === 401 || res.status === 403) throw new Error(last);
       // A model this key cannot use (404) or a request it rejects (400) may
       // still work on the next model in the chain.
-      if (!isRetryableStatus(res.status)) break;
-      if (/PerDay/i.test(text) || attempt >= GEMINI_ATTEMPTS - 1) break; // next model
+      if (!isRetryableStatus(res.status)) {
+        tried.push(`${m} ${res.status}`);
+        break;
+      }
+      if (/PerDay/i.test(text) || attempt >= GEMINI_ATTEMPTS - 1) {
+        tried.push(`${m} ${res.status}`);
+        break; // next model
+      }
       await new Promise((r) => setTimeout(r, backoffMs(attempt, res.headers.get("retry-after"))));
       res = await post(m);
     }
   }
-  throw new Error(last);
+  // Name every model tried, so a log shows which one ran out and which is gone.
+  throw new Error(`${last} [tried: ${tried.join(", ")}]`);
 }
 
 const geminiProvider: LlmProvider = {
