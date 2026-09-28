@@ -75,7 +75,9 @@ jobs:
           [ -f corpus/scripture/chunks-report.md ] && git add corpus/scripture/chunks-report.md
           if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
           git commit -m "chore(corpus): update scripture manifest [fetch-scripture]"
-          git push
+          # The ingest workflow pushes progress to the same branch; rebase and retry.
+          for i in 1 2 3 4; do git pull --rebase -q && git push && exit 0; sleep $((i * 5)); done
+          exit 1
       - name: Fail if fetch or chunking failed
         if: steps.fetch.outcome == 'failure' || steps.dry.outcome == 'failure'
         run: |
