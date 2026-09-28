@@ -46,7 +46,7 @@ const SYNONYMS: Record<string, { en: string[]; am?: string[] }> = {
   envy: { en: ["envy", "envious", "jealous", "compare myself"], am: ["ቅናት", "ቀና"] },
   pride: { en: ["pride", "proud", "arrogan", "ego", "vain", "better than others", "look down on", "ambition", "ambitious"], am: ["ትዕቢት", "ኩራት", "ትምክህት"] },
   idolatry: { en: ["idol", "worship other", "witchcraft", "occult", "sorcer", "witch doctor", "fortune tell", "black magic", "cast a spell"], am: ["ጣዖት", "ጥንቆላ", "አስማት", "ጠንቋይ"] },
-  doubt: { en: ["doubt", "don't believe", "do not believe", "lost my faith", "losing my faith", "is god real", "god exist"], am: ["ጥርጣሬ", "ተጠራጠር", "እምነቴን"] },
+  doubt: { en: ["doubt", "don't believe", "do not believe", "lost my faith", "losing my faith", "is god real", "god exist"], am: ["ጥርጣሬ", "ተጠራጠር", "ጠራጠ", "እምነቴን"] },
   despair: { en: ["despair", "hopeless", "no hope", "give up", "giving up", "too far gone", "can't go on", "worthless", "exhausted"], am: ["ተስፋ መቁረጥ", "ተስፋ ቆረጥ", "ተስፋ የለኝ"] },
   fear: { en: ["afraid", "fear", "scared", "anxious", "anxiety", "coward"], am: ["ፍርሃት", "ፈራ", "ጭንቀት"] },
   cowardice: { en: ["coward", "didn't stand up", "stayed silent", "too scared to"], am: ["ፈሪ"] },
