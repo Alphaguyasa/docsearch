@@ -4,10 +4,19 @@ Someone writes what they are struggling with. The app answers with the true,
 cited story of a holy person who fell the same way and was restored — from
 Scripture (World English Bible with deuterocanon) and the Church Fathers
 (Augustine's *Confessions*, the *Lausiac History*, Budge's *Paradise of the
-Holy Fathers* and the Ethiopian Synaxarium), plus Thomas à Kempis's *Imitation
-of Christ* (Catholic) and Bunyan's *Grace Abounding* (Protestant). Those two
-texts number their own paragraphs, so their refs cite them: "Grace Abounding
-§45–47", "The Imitation of Christ, Book I, Chapter XIII §2–4".
+Holy Fathers* and the Ethiopian Synaxarium), plus the Book of Enoch (Charles,
+1917; in the Ethiopian Orthodox canon), five Fathers from Schaff's NPNF via CCEL
+(Ephrem's three homilies, Aphrahat's Demonstrations, Cyril of Jerusalem's
+Lecture II *On Repentance*, Chrysostom's letters to Theodore, Athanasius's
+*Life of Antony*), Thomas à Kempis's *Imitation of Christ* (Catholic) and
+Bunyan's *Grace Abounding* (Protestant). Texts that number their own
+paragraphs or verses are cited by them: "Grace Abounding §45–47", "Book of
+Enoch, Chapter XCVIII §1–3".
+
+Not yet in: Jubilees (Charles 1917 scan interleaves footnotes with the verses)
+and the Kebra Nagast (Budge 1922 scan loses a third of its chapter headings);
+both need hand-cleaned text first. Modern Amharic, Ge'ez, Coptic and Armenian
+church books are under copyright.
 
 ## Request path (`POST /api/search`)
 

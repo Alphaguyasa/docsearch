@@ -47,7 +47,102 @@ interface TextRule {
 const FOOTNOTE = /^[\^*†‡§]\s?|^\d{1,2}\s+(Lit\.|Cf\.|See|Or|i\.e\.|Reading|Read)\b/;
 const INDEX_LINE = /\d+\s*,\s*\d+/;
 
+/** CCEL plain text (Schaff's Fathers): rules, separators and "[614] Luke ii. 29." footnotes. */
+const CCEL: CleanOptions = {
+  dropLines: [/^[_-]{10,}$/],
+  dropParagraphs: /^\[\d+\]\s/,
+  // Footnote calls, without leaving a space before punctuation ("wealth [12] ," -> "wealth,").
+  strip: /\s?\[\d+\]\s*(?=[,.;:?!])|\s?\[\d+\]/g,
+};
+
 export const TEXT_RULES: Record<string, TextRule> = {
+  enoch: {
+    refPrefix: "Book of Enoch",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^CHAPTER I\.$/,
+      replace: [
+        // The OCR reads "I" and "]" as "|": "from them | heard", "[of their ungodliness|".
+        [/(^|[ \t])\|(?=\s)/gm, "$1I"],
+        [/\|/g, "]"],
+        // Numerals the OCR got wrong in a way the sequence can't settle
+        // (Charles prints 92, 91, 93 in that order).
+        [/^CHAPTER LXIil\.[ \t]*$/m, "CHAPTER LXII."],
+        [/^CHAPTER XCIIl\.[ \t]*$/m, "CHAPTER XCIII."],
+        [/(^CHAPTER LXXVII\.\s*$[\s\S]*?^)CHAPTER LXXVII\./m, "$1CHAPTER LXXVIII."],
+        // The heading of chapter CII is lost in the scan.
+        [/^(1\. In those days when He hath brought a grievous fire upon you)/m, "CHAPTER CII.\n\n$1"],
+      ],
+      dropLines: [/^www\.globalgrey/, /^The Book of Enoch By R\. ?H\. Charles/, /^THE BOOK OF ENOCH$/, /^[IVXLC]+-[IVXLC]+\b/, /^[IVXLC][IVXLCxil]+\.\s/, /^Chapter [IVXLCl]+\.$/, /^ee$/],
+      // Charles's brackets mark his emendations; readers only need the words.
+      strip: /\[|\]/g,
+    },
+    defaultHeading: "Chapter I",
+    sections: { sectionStart: /^CHAPTER [IVXLCxil ]+\.?$/, name: "chapterNumeral" },
+    paragraphNumbers: true,
+  },
+  ephrem: {
+    refPrefix: "Ephrem the Syrian",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Three Homilies\.$/,
+      endAt: /^Aphrahat\.$/,
+      dropLines: [...CCEL.dropLines!, /^Three Homilies\.$/],
+    },
+    defaultHeading: "Three Homilies",
+    sections: { sectionStart: /^On (Our Lord|Admonition and Repentance|the Sinful Woman)\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+  },
+  aphrahat: {
+    refPrefix: "Aphrahat",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Letter of an Inquirer\.$/,
+      endAt: /^Indexes$/,
+      dropLines: [...CCEL.dropLines!, /^The "Demonstrations" of Aphrahat\.$/],
+    },
+    defaultHeading: "Letter of an Inquirer",
+    sections: { sectionStart: /^(Letter of an Inquirer\.|Demonstration [IVXL]+\.--.+)$/, name: "contextLine" },
+    paragraphNumbers: true,
+  },
+  cyril_repentance: {
+    refPrefix: "Cyril of Jerusalem",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Lecture II\.$/,
+      endAt: /^Lecture III\.$/,
+      dropLines: [...CCEL.dropLines!, /^On Repentance and Remission of Sins/],
+    },
+    defaultHeading: "Lecture II",
+    sections: { sectionStart: /^Lecture II\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+    renameHeadings: { "Lecture II": "Catechetical Lecture II, On Repentance" },
+  },
+  chrysostom_theodore: {
+    refPrefix: "John Chrysostom",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^an exhortation to theodore after his fall\.$/,
+      endAt: /^St\. Chrysostom:$/,
+      dropLines: [...CCEL.dropLines!, /^an exhortation to theodore after his fall\.$/],
+    },
+    defaultHeading: "Letter I",
+    sections: { sectionStart: /^Letter (I|II)\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+    renameHeadings: { "Letter I": "Letter to Theodore after his Fall", "Letter II": "Second Letter to Theodore" },
+  },
+  antony: {
+    refPrefix: "Athanasius, Life of Antony",
+    traditions: ALL,
+    // The dedicatory preface is skipped: the numbered Life starts at §1.
+    clean: { ...CCEL, startAt: /^1\. Antony you must know/, endAt: /^Introduction to Ad Episcopos/ },
+    defaultHeading: "",
+    paragraphNumbers: true,
+  },
   imitation: {
     refPrefix: "The Imitation of Christ",
     traditions: ["catholic", "protestant"],

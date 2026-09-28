@@ -100,6 +100,10 @@ export interface CleanOptions {
   inline?: RegExp[];
   /** Characters to delete outright, e.g. the underscores Gutenberg uses for italics. */
   strip?: RegExp;
+  /** OCR repairs applied to the raw text first (use the m flag for ^ / $), e.g. "|" read for "I". */
+  replace?: [RegExp, string][];
+  /** A paragraph whose first line matches this is dropped whole, e.g. footnotes "[614] Luke ii. 29." */
+  dropParagraphs?: RegExp;
 }
 
 /**
@@ -108,7 +112,7 @@ export interface CleanOptions {
  * Blank lines are kept as paragraph separators.
  */
 export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
-  let lines = sanitizeText(raw).replace(/\r\n?/g, "\n").replace(/\f/g, "\n\n").split("\n");
+  let lines = (opts.replace ?? []).reduce((acc, [re, to]) => acc.replace(re, to), sanitizeText(raw)).replace(/\r\n?/g, "\n").replace(/\f/g, "\n\n").split("\n");
   if (opts.startAt) {
     const i = lines.findIndex((l) => opts.startAt!.test(l.trim()));
     if (i > 0) lines = lines.slice(i);
@@ -118,7 +122,14 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
     if (j > 0) lines = lines.slice(0, j);
   }
   const out: string[] = [];
-  for (const rawLine of lines) {
+  let skipping = false;
+  for (let k = 0; k < lines.length; k++) {
+    const rawLine = lines[k];
+    if (opts.dropParagraphs) {
+      if (rawLine.trim() === "") skipping = false;
+      else if (!skipping && (k === 0 || lines[k - 1].trim() === "") && opts.dropParagraphs.test(rawLine.trim())) skipping = true;
+      if (skipping) continue;
+    }
     const line = stripInline(opts.strip ? rawLine.replace(opts.strip, "") : rawLine, opts.inline ?? []);
     if (line === "") {
       out.push("");
@@ -210,11 +221,16 @@ export function chunkSections(
     let firstPara = 1;
     const head = s.heading ? `${meta.refPrefix}, ${titleCase(s.heading)}` : meta.refPrefix;
     const numbered = meta.paragraphNumbers && units.some((u) => PARA_NO.test(u));
+    // A long paragraph spread over several chunks: "§4", "§4 (part 2)", …
+    const seen = new Map<string, number>();
     const emit = () => {
       if (!buf.length) return;
-      const ref = numbered
+      let ref = numbered
         ? `${head} §${firstPara}${para > firstPara ? `–${para}` : ""}`
         : `${head}${part > 1 ? ` (part ${part})` : ""}`;
+      const n = (seen.get(ref) ?? 0) + 1;
+      seen.set(ref, n);
+      if (n > 1) ref = `${ref} (part ${n})`;
       const body = buf.join("\n\n");
       const content = `${ref}\n\n${body}`;
       chunks.push({
@@ -278,9 +294,46 @@ export interface SectionRule {
   /** A line that opens a new section (e.g. a chapter line or the daily invocation). Dropped. */
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
-  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine";
+  name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral";
   /** Map the runningContext capture to a canonical label (OCR-proof). */
   contextLabel?: (capture: string) => string;
+}
+
+function roman(n: number): string {
+  const table: [number, string][] = [[100, "C"], [90, "XC"], [50, "L"], [40, "XL"], [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+  let out = "";
+  for (const [v, s] of table) while (n >= v) (out += s), (n -= v);
+  return out;
+}
+
+function fromRoman(s: string): number | null {
+  const v: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100 };
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    const a = v[s[i]];
+    const b = v[s[i + 1]] ?? 0;
+    n += a < b ? -a : a;
+  }
+  return n > 0 && roman(n) === s ? n : null; // canonical numerals only
+}
+
+/**
+ * Read an OCR'd chapter numeral: stray lowercase x / i / l may each be a real
+ * X / I or a smudge. Prefer the reading that follows the previous chapter;
+ * prefer the reading that follows the previous chapter, else the first
+ * canonical one (texts may reorder chapters). Truly ambiguous lines are fixed
+ * per source with CleanOptions.replace.
+ */
+export function ocrNumeral(raw: string, prev: number): number {
+  const t = raw.replace(/[\s.]/g, "");
+  const readings: number[] = [];
+  for (let mask = 0; mask < 8; mask++) {
+    const keep = { x: !(mask & 1), i: !(mask & 2), l: !(mask & 4) };
+    const s = t.replace(/[xil]/g, (c) => (keep[c as "x" | "i" | "l"] ? (c === "x" ? "X" : "I") : ""));
+    const n = fromRoman(s);
+    if (n) readings.push(n);
+  }
+  return readings.find((n) => n === prev + 1) ?? readings[0] ?? prev + 1;
 }
 
 function firstWords(text: string, n = 8): string {
@@ -340,9 +393,14 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       if (rule.name === "contextFirstWords") {
         open(context || defaultHeading);
         pendingName = true;
+      } else if (rule.name === "chapterNumeral") {
+        // OCR mangles the numerals ("CHAPTER XxiIll." for XXIII): read them with repairs.
+        counter = ocrNumeral(line.replace(/^\S+\s+/, ""), counter);
+        open(`Chapter ${roman(counter)}`);
       } else if (rule.name === "contextLine") {
-        // "Book I" + "CHAPTER III" -> "Book I, Chapter III".
-        open(context ? `${context}, ${titleCase(line)}` : titleCase(line));
+        // "Book I" + "CHAPTER III" -> "Book I, Chapter III"; "Demonstration VII.--Of Penitents." -> "Demonstration VII — Of Penitents".
+        const title = titleCase(line.replace(/\.--/, " — ").replace(/\.$/, ""));
+        open(context ? `${context}, ${title}` : title);
       } else if (rule.name === "contextCounter") {
         counter++;
         open(`${context || defaultHeading}, entry ${counter}`);
