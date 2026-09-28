@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-28T11:54:12.791Z
+Generated 2026-09-28T13:06:37.605Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -134,6 +134,49 @@ also I was deeply convinced all the time this trouble lay upon me.  The
 first was, for that I did not, when I was delivered from the temptation
 that went before, still pray to God to to keep me from the temptations
 that were to come; for though, as I can say in truth, my soul was much in
+```
+
+## pilgrims_progress — The Pilgrim's Progress, Part One (John Bunyan, 1678)
+
+#### `pg131.txt` — 331509 bytes
+5492 non-empty lines. First 25:
+```
+The Project Gutenberg eBook of The Pilgrim's Progress from this world to that which is to come
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever. You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online
+at www.gutenberg.org. If you are not located in the United States,
+you will have to check the laws of the country where you are located
+before using this eBook.
+Title: The Pilgrim's Progress from this world to that which is to come
+Author: John Bunyan
+Release date: May 1, 1994 [eBook #131]
+Most recently updated: October 29, 2024
+Language: English
+Other information and formats: www.gutenberg.org/ebooks/131
+Credits: SeeWei Toh and Alan R. Light. HTML version by Al Haines
+*** START OF THE PROJECT GUTENBERG EBOOK THE PILGRIM'S PROGRESS FROM THIS WORLD TO THAT WHICH IS TO COME ***
+Notes:
+1. Legends: = Sidenotes [Bible reference] = Bible references
+2. Sections are numbered for future reference. These sections
+have been chosen arbitrarily, i.e., {1}, {2}
+3. This is 'Part 1', but is a complete work in itself. Bunyan
+wrote a sequel ('Part 2') some years after the first part, hence
+the 'Parts'.
+THE PILGRIM'S PROGRESS
+From This World To That Which Is To Come
+```
+Sample from the middle:
+```
+EVAN. Then said Evangelist, How hath it fared with you, my friends,
+since the time of our last parting? What have you met with, and
+how have you behaved yourselves?
+{211} Then Christian and Faithful told him of all things that had
+happened to them in the way; and how, and with what difficulty,
+they had arrived at that place.
+{212} EVAN. Right glad am I, said Evangelist, not that you have
+met with trials, but that you have been victors; and for that you
 ```
 
 ## enoch — The Book of Enoch (tr. R. H. Charles, 1917)
@@ -352,6 +395,50 @@ could ever be fitted.  One is the key of the Creator, that which has
 opened it, yea, is to open it at His Coming.
 10.  Who is he that is able to join the bones, save that Power which
 created them?  What is it that shall reunite the shreds of the body,
+```
+
+## isaac — Mystic Treatises by Isaac of Nineveh (tr. A. J. Wensinck, 1923)
+- pinned: isaac_of_nineveh_mystical_treatises
+
+#### `isaac_of_nineveh_mystical_treatises_djvu.txt` (archive id `isaac_of_nineveh_mystical_treatises`) — 955999 bytes
+17458 non-empty lines. First 25:
+```
+MYSTIC TREATISES BY
+ISAAC OF NINEVEH
+TRANSLATED FROM BEDJAN’S SYRIAC TEXT
+WITH AN INTRODUCTION AND REGISTERS
+BY
+A. J. WENSINCK
+VERHANDELINGEN DER. KONINKLIJKE AKADEMIE
+VAN WETENSCHAPPEN TE AMSTERDAM
+AFDEELING LETTERKUNDE
+NIEUWE REEKS
+DEEL XXIII N®. 1
+UITGAVE DER
+KONINKLIJKE AKADEMIE. VAN WETENSCHAPPEN
+AMSTERDAM. 1933
+ny
+SIX TREATISES ON THE BEHAVIOUR OF
+EXCELLENCE !)
+The fear of God is the foundation of excellence ; for excellence
+is said to be the offspring of faith. It is sown in a man’s heart,
+when he allows his mind to confine the wandering impulses to
+continual meditation on the order of things to come, away
+from the distractions of the world. As to the foundation of
+excellence, the first among its peculiar elements is the concen-
+tration of the self, by freeing it from practical things, upon
+the enlightened word of the straight and holy ways, the word
+```
+Sample from the middle:
+```
+by the sight of them the whole world needs, is estimated by
+God higher than their usefulness to mankind in its entirety,
+how much more will this be the case with him that is not able
+to guard even his own person properly.
+We know another of the saints whose natural brother was
+ill. He lived as a recluse in a different cell. During the whole
+period of his brother’s sickness he restrained his mercy, so that
+he did not go out to visit him. When the sick man was on
 ```
 
 ## cyril_repentance — Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)

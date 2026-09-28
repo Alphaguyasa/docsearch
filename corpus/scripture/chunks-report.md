@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-28T11:55:34.613Z
+Generated 2026-09-28T13:07:20.858Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -13,15 +13,17 @@ Generated 2026-09-28T11:55:34.613Z
 | ephrem | 1 | 76 | 36000 | 474 | 613 |
 | grace_abounding | 1 | 150 | 76581 | 511 | 624 |
 | imitation | 1 | 201 | 85196 | 424 | 614 |
+| isaac | 1 | 432 | 226724 | 525 | 633 |
 | jubilees | 1 | 169 | 72266 | 428 | 612 |
 | kebra_nagast | 1 | 252 | 109086 | 433 | 617 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
+| pilgrims_progress | 1 | 141 | 73884 | 524 | 606 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 7661 chunks, 3246767 tokens ≈ 5.4 h of embedding at 10000 TPM.
+**Total:** 8234 chunks, 3547375 tokens ≈ 5.9 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -392,6 +394,37 @@ The Voice of the Beloved
 As I of my own will offered myself unto God the Father on the Cross for thy sins with outstretched hands and naked body, so that nothing remained in Me that did not become altogether a sacrifice for the Divine propitiation; so also oughtest thou every day to offer thyself willingly unto Me for a pure and holy oblation with all thy strength and affections, even to the utmost powers of thine heart. What more do I require of thee than thou study to resign thyself altogether unto Me? Whatsoever thou givest besides thyself, I nothing care for, for I 
 ```
 
+**Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence** (554 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence
+
+The fear of God is the foundation of excellence ; for excellence is said to be the offspring of faith. It is sown in a man’s heart, when he allows his mind to confine the wandering impulses to continual meditation on the order of things to come, away from the distractions of the world. As to the foundation of excellence, the first among its peculiar elements is the concentration of the self, by freeing it from practical things, upon the enlightened word of the straight and holy ways, the word that by the inspired Psalmist is called the teacher.
+
+There is scarcely to be found a man who is able to bear honours, or poss
+```
+
+**Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… (part 15)** (519 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… (part 15)
+
+Show thy foe thy training by enduring small things; then he will not demand great things from thee.
+
+Constantly thou shalt have to keep the laws of these small things, thereby throwing before his feet a bait, namely, in the
+
+struggle concerning them. So he will not have rest from them, so as to have occasion to set up dangerous snares for thee in secret.
+
+How is it possible that he should persuade a man, who is not to be persuaded to go five steps outside the door of his hut, to leave the desert or to approach unto the town? And he that can not be induced to look through h
+```
+
+**Isaac of Nineveh, Treatises LXXV–LXXVI: On Hidden States And The Powers And Influences Which Are In Them (part 4)** (86 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Isaac of Nineveh, Treatises LXXV–LXXVI: On Hidden States And The Powers And Influences Which Are In Them (part 4)
+
+QO thou whose town is vanquished by inward affections, put
+
+on the armour of mourning and persecute them and save thy soul from their hands. For always invincible is this weapon and that of confidence, and tried by the true ones.
+```
+
 **Book of Jubilees, Prologue** (115 tokens, ethiopian_orthodox)
 ```
 Book of Jubilees, Prologue
@@ -534,6 +567,29 @@ And I know that “ when the judge cometh here he will kill me without asking �
 And he answered and said unto the woman and her husband, “ Because I see that ye preserve the “purity of your bodies for Christ’s sake, and that ye have “chosen to remain in great tribulation and not to destroy “ your chastity, God hath put it into my heart to do unto you an “ a6l of grace which ye deserve, and perhaps
 ```
 
+**The Pilgrim's Progress, p. 10–11** (606 tokens, protestant)
+```
+The Pilgrim's Progress, p. 10–11
+
+As I walked through the wilderness of this world, I lighted on a certain place where was a Den, and I laid me down in that place to sleep: and, as I slept, I dreamed a dream. I dreamed, and behold, I saw a man clothed with rags, standing in a certain place, with his face from his own house, a book in his hand, and a great burden upon his back. [Isa. 64:6; Luke 14:33; Ps. 38:4; Hab. 2:2; Acts 16:30,31] I looked, and saw him open the book, and read therein; and, as he read, he wept, and trembled; and, not being able longer to contain, he brake out with a lamentable cry, saying, "What shall I do?" [Acts 2:37]
+
+In this plight, therefore, he went home and refrain
+```
+
+**The Pilgrim's Progress, p. 213–216** (509 tokens, protestant)
+```
+The Pilgrim's Progress, p. 213–216
+
+EVAN. My sons, you have heard, in the words of the truth of the gospel, that you must, through many tribulations, enter into the kingdom of heaven. And, again, that in every city bonds and afflictions abide in you; and therefore you cannot expect that you should go long on your pilgrimage without them, in some sort or other. You have found something of the truth of these testimonies upon you already, and more will immediately follow; for now, as you see, you are almost out of this wilderness, and therefore you will soon come into a town that you will by and by see before you; and in that town you will be hardly beset with enemies, who will strain hard but 
+```
+
+**The Pilgrim's Progress, p. 366–368** (595 tokens, protestant)
+```
+The Pilgrim's Progress, p. 366–368
+
+CHR. Give me leave to put in a word. You ought not so slightly to speak of this matter; for this I will boldly affirm, even as my good companion hath done, that no man can know Jesus Christ but by the revelation of the Father; [Matt. 11:27] yea, and faith too, by which the soul layeth hold upon Christ, if it be right, must be wrought by the exceeding greatness of his mighty power; the working of which faith, I perceive, poor Ignorance, thou art ignorant of. [1 Cor. 12:3, Eph. 1:18,19] Be awakened, then, see thine own wretchedness, and fly to the Lord Jesus; and by his righteousness, which is the righteousness of God, for he himself is God, thou shalt be de
+```
+
 **Ethiopian Synaxarium, Preface** (562 tokens, ethiopian_orthodox)
 ```
 Ethiopian Synaxarium, Preface
@@ -612,6 +668,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 **imitation** — 201 sections: The Imitation of Christ, Book I, Chapter I §1–5 · The Imitation of Christ, Book I, Chapter II §1–4 · The Imitation of Christ, Book I, Chapter III §1–3 · The Imitation of Christ, Book I, Chapter III §4–6 · The Imitation of Christ, Book I, Chapter IV §1–2 · The Imitation of Christ, Book I, Chapter V §1–2 · The Imitation of Christ, Book I, Chapter VI §1–2 · The Imitation of Christ, Book I, Chapter VII §1–3 · The Imitation of Christ, Book I, Chapter VIII §1–2 · The Imitation of Christ, Book I, Chapter IX §1–3 · The Imitation of Christ, Book I, Chapter X §1–2 · The Imitation of Christ, Book I, Chapter XI §1–4 · The Imitation of Christ, Book I, Chapter XI §5–6 · The Imitation of Christ, Book I, Chapter XII §1–2 · The Imitation of Christ, Book I, Chapter XIII §1–4 · The Imitation of Christ, Book I, Chapter XIII §5–7 · The Imitation of Christ, Book I, Chapter XIII §8 · The Imitation of Christ, Book I, Chapter XIV §1–3 · The Imitation of Christ, Book I, Chapter XV §1–3 · The Imitation of Christ, Book I, Chapter XVI §1–4 · The Imitation of Christ, Book I, Chapter XVII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §4–6 · The Imitation of Christ, Book I, Chapter XIX §1–3 · The Imitation of Christ, Book I, Chapter XIX §4–6 · The Imitation of Christ, Book I, Chapter XIX §7 · The Imitation of Christ, Book I, Chapter XX §1–4 · The Imitation of Christ, Book I, Chapter XX §5–7 · The Imitation of Christ, Book I, Chapter XX §8 · The Imitation of Christ, Book I, Chapter XXI §1–3 · The Imitation of Christ, Book I, Chapter XXI §4–6 · The Imitation of Christ, Book I, Chapter XXII §1–3 · The Imitation of Christ, Book I, Chapter XXII §4–6 · The Imitation of Christ, Book I, Chapter XXII §7 · The Imitation of Christ, Book I, Chapter XXIII §1–3 · The Imitation of Christ, Book I, Chapter XXIII §4–7 · The Imitation of Christ, Book I, Chapter XXIII §8–9 · The Imitation of Christ, Book I, Chapter XXIV §1–3 · The Imitation of Christ, Book I, Chapter XXIV §4–5 · The Imitation of Christ, Book I, Chapter XXIV §6–7
 
+**isaac** — 54 sections: Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence · Isaac of Nineveh, Treatise IV: · Isaac of Nineveh, Treatise V: · Isaac of Nineveh, Treatise VI: · Isaac of Nineveh, Treatises VII–VIII: On Other Subjects, Chapter By Chapter, In Short Sections. On The Character… · Isaac of Nineveh, Treatises IX–X: On Sins [Committed] Intentionally And Witt Evil Will And On Those… · Isaac of Nineveh, Treatise XI: Whereby The Beauty Of Solitary Life Is To Be Preserved And How It Can Be A… · Isaac of Nineveh, Treatises XII–XIV: That It Is Not Beautilful For The Servant Of God Who Has Renunciated The… · Isaac of Nineveh, Treatises XV–XVII: Cinctly And Without Prolixity. And On Thi Question How And At What Time Its… · Isaac of Nineveh, Treatise XVIII: Things Which I Have Heard From Old Mien Ani) Stories Of Holy People… · Isaac of Nineveh, Treatise XIX: On The Revelations And Powers Which Happen To The Saints In Images · Isaac of Nineveh, Treatise XX: On Various Intelligible Forces Of Thi Mind In Connection With Thie Action Of… · Isaac of Nineveh, Treatise XXI: On That Which Happens During Prayer [Unto Those Who Live] In Solitude · Isaac of Nineveh, Treatise XXII: On Various [Experiences] During Prayer And On The Limits Of The Power Of… · Isaac of Nineveh, Treatise XXIII: On The Speech Of True Knowledge · Isaac of Nineveh, Treatises XXIV–XXV: On The Things A Brother Is Provided With In His Cell · Isaac of Nineveh, Treatises XXVI–XXVII: Against Those Who Say: If God Is Good Wherefore Has He Made These Things? · Isaac of Nineveh, Treatises XXVIII–XXIX: A Symbolical Demonstration Concerning The Theory Of Sabbath And Sunday · Isaac of Nineveh, Treatise XXX: On The Power And The Evil Action Of Sin And Concerning Those In Whom It… · Isaac of Nineveh, Treatise XXXI: The Struggle Or Rather The Danger Of Falling That Excellent Works Incur · Isaac of Nineveh, Treatises XXXII–XXXIII: On Thi Action Of Divine Love · Isaac of Nineveh, Treatise XXXIV: On The Natural Children Of Virtues And The Like · Isaac of Nineveh, Treatise XXXV: A Treatise In Questions And Answers Concerning Constant Behaviour And… · Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… · Isaac of Nineveh, Treatise XL: Exposition Concerning The Degrees Of The Path, Namely Concerning The Power… · Isaac of Nineveh, Treatise XLI: A Letter Which He Wrote To One Of The Brethren Who Loved Solitude… · Isaac of Nineveh, Treatises XLII–XLIII: The Answer He Sent His Natural And Spirl Tual Brother Who Had Tried To… · Isaac of Nineveh, Treatise XLIV: Concerning How Many Degrees Knowledge Has And Concerning The Degrees Of… · Isaac of Nineveh, Treatise XLV: Profitable Advice · Isaac of Nineveh, Treatises XLVI–XLVIII: Other Considerations · Isaac of Nineveh, Treatises XLIX–L: On The Gloomy Darkness Which During Solitude Befalls Those Who Walk In The… · Isaac of Nineveh, Treatises LI–LIII: On The Three Degrees Of Knowledge And The Discrimination Between Their… · Isaac of Nineveh, Treatise LIV: Other Explanations Concerning Maggenanutha ') · Isaac of Nineveh, Treatise LV: How The Hidden Alertness Witein The Soul Is To Be Preserved How Sleepiness… · Isaac of Nineveh, Treatise LVI: Beautiful Considerations ') Concerning The Life Of Man · Isaac of Nineveh, Treatise LVII: How Patience For The Sake Of The Love Of God Acquires Help From God · Isaac of Nineveh, Treatise LVIII: Aon On Those Who Live In The Neighbourhood Ol God And Pass All Their Days… · Isaac of Nineveh, Treatise LIX: A Profitable Discourse · Isaac of Nineveh, Treatise LX: That Without Necessity We Should Not Desire Nor Ask That Any Sign Should… · Isaac of Nineveh, Treatise LXI: For Which Causes God Admits Temptations To His Friends
+
 **jubilees** — 45 sections: Book of Jubilees, Prologue · Book of Jubilees, Chapter I · Book of Jubilees, Chapter II · Book of Jubilees, Chapter III · Book of Jubilees, Chapter IV · Book of Jubilees, Chapter V · Book of Jubilees, Chapters VI–VII · Book of Jubilees, Chapter VIII · Book of Jubilees, Chapter IX · Book of Jubilees, Chapters X–XI · Book of Jubilees, Chapter XII · Book of Jubilees, Chapter XIII · Book of Jubilees, Chapter XIV · Book of Jubilees, Chapter XV · Book of Jubilees, Chapter XVI · Book of Jubilees, Chapter XVII · Book of Jubilees, Chapter XVIII · Book of Jubilees, Chapter XIX · Book of Jubilees, Chapters XX–XXI · Book of Jubilees, Chapter XXII · Book of Jubilees, Chapter XXIII · Book of Jubilees, Chapter XXIV · Book of Jubilees, Chapter XXV · Book of Jubilees, Chapter XXVI · Book of Jubilees, Chapter XXVII · Book of Jubilees, Chapter XXVIII · Book of Jubilees, Chapter XXIX · Book of Jubilees, Chapter XXX · Book of Jubilees, Chapter XXXI · Book of Jubilees, Chapter XXXII · Book of Jubilees, Chapter XXXIII · Book of Jubilees, Chapters XXXIV–XXXVI · Book of Jubilees, Chapter XXXVII · Book of Jubilees, Chapter XXXVIII · Book of Jubilees, Chapter XXXIX · Book of Jubilees, Chapters XL–XLI · Book of Jubilees, Chapter XLII · Book of Jubilees, Chapter XLIII · Book of Jubilees, Chapter XLIV · Book of Jubilees, Chapter XLV
 
 **kebra_nagast** — 114 sections: Kebra Nagast, The Glory of Kings · Kebra Nagast, Chapter 1: Concerning The Glory Of Kings · Kebra Nagast, Chapter 2: Concerning The Greatness Of Kings · Kebra Nagast, Chapter 3: Concerning The Kingdom Of Adam · Kebra Nagast, Chapter 4: Concerning Envy · Kebra Nagast, Chapter 5: Concerning The Kingdom Of Seth · Kebra Nagast, Chapter 6: Concerning The Sin Of Cain · Kebra Nagast, Chapter 7: Concerning Noah · Kebra Nagast, Chapter 8: Concerning The Flood · Kebra Nagast, Chapter 9: Concerning The Covenant Of Noah · Kebra Nagast, Chapter 10: Concerning Zion · Kebra Nagast, Chapter 11: The Unanimous Declaration Of The Three Hundred And Eighteen Orthodox Fathers · Kebra Nagast, Chapter 12: Concerning Canaan L · Kebra Nagast, Chapter 13: Concerning Abraham · Kebra Nagast, Chapter 14: Concerning The Covenant Of Abraham · Kebra Nagast, Chapter 15: Concerning Isaac And Jacob · Kebra Nagast, Chapter 16: Concerning Robel (Reuben) · Kebra Nagast, Chapters 17–18: Concerning The Glory Of Zion · Kebra Nagast, Chapter 19: How This Book Came To Be Found · Kebra Nagast, Chapter 20: Concerning The Division Of The Earth · Kebra Nagast, Chapter 21: Concerning The Queen Of The South · Kebra Nagast, Chapter 22: Concerning Tamrin, The Merchant · Kebra Nagast, Chapter 23: How The Merchant Returned To Ethiopia · Kebra Nagast, Chapter 24: How The Queen Made Ready To Set Out On Her Journey · Kebra Nagast, Chapter 25: How The Queen Came To Solomon The King · Kebra Nagast, Chapter 26: How The King Held Converse With The Queen · Kebra Nagast, Chapter 27: Concerning The Labourer · Kebra Nagast, Chapter 28: How Solomon Gave Commandments To The Queen · Kebra Nagast, Chapter 29: Concerning The Three Hundred And Eighteen [Patriarchs] · Kebra Nagast, Chapter 30: Concerning How King Solomon Swore To The Queen · Kebra Nagast, Chapter 31: Concerning The Sign Which Solomon Gave The Queen · Kebra Nagast, Chapter 32: How The Queen Brought Forth And Came To Her Own Country · Kebra Nagast, Chapter 33: How The King Of Ethiopia Travelled · Kebra Nagast, Chapter 34: How The Young Man Arrived In His Mother's Country · Kebra Nagast, Chapter 35: How King Solomon Sent To His Son The Commander Of His Army · Kebra Nagast, Chapter 36: How King Solomon Held Intercourse With His · Kebra Nagast, Chapter 37: How Solomon Asked His Son Questions · Kebra Nagast, Chapter 38: How The King Planned To Send Away His Son With The Children Of The Nobles · Kebra Nagast, Chapter 39: How They Made The Son Of Solomon King · Kebra Nagast, Chapter 40: How Zadok The Priest Gave Commands To David The King
@@ -619,6 +677,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **lausiac** — 50 sections: Lausiac History, Prologue · Lausiac History, LXX. A Reader Unjustly Accused · Lausiac History, Introduction · Lausiac History, Dorotheus · Lausiac History, Didymus · Lausiac History, Alexandra · Lausiac History, The Rich Virgin · Lausiac History, The Monks Of Nitria · Lausiac History, Amoun Of Nitria · Lausiac History, Pambo · Lausiac History, Ammonius · Lausiac History, Apollonius · Lausiac History, Macarius The Younger · Lausiac History, Nathanael · Lausiac History, Macarius Of Egypt · Lausiac History, Macarius Of Alexandria · Lausiac History, Moses The Robber · Lausiac History, Eulogius And The Cripple · Lausiac History, Paul The Simple · Lausiac History, Pachon · Lausiac History, Stephen · Lausiac History, Valens · Lausiac History, Heron · Lausiac History, Ptolemy · Lausiac History, Elias · Lausiac History, Pachomius And The Tabennesiots · Lausiac History, The Tabennesiot Nuns · Lausiac History, The Nun Who Feigned Madness · Lausiac History, John Of Lycopolis · Lausiac History, Posidonius · Lausiac History, Sarapion The Sindonite · Lausiac History, Evagrius · Lausiac History, Ephraim · Lausiac History, Holy Women · Lausiac History, Julian · Lausiac History, Adolius · Lausiac History, Philoromus · Lausiac History, Melania The Elder · Lausiac History, Chronius And Paphnutius · Lausiac History, Elpidius
 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
+
+**pilgrims_progress** — 140 sections: The Pilgrim's Progress, p. 10–11 · The Pilgrim's Progress, p. 12–18 · The Pilgrim's Progress, p. 18–22 · The Pilgrim's Progress, p. 22–27 · The Pilgrim's Progress, p. 27–30 · The Pilgrim's Progress, p. 30–33 · The Pilgrim's Progress, p. 34–36 · The Pilgrim's Progress, p. 37–39 · The Pilgrim's Progress, p. 40–42 · The Pilgrim's Progress, p. 43–46 · The Pilgrim's Progress, p. 47–50 · The Pilgrim's Progress, p. 51–53 · The Pilgrim's Progress, p. 54–56 · The Pilgrim's Progress, p. 57–59 · The Pilgrim's Progress, p. 59–62 · The Pilgrim's Progress, p. 63–65 · The Pilgrim's Progress, p. 65–70 · The Pilgrim's Progress, p. 71–72 · The Pilgrim's Progress, p. 73–75 · The Pilgrim's Progress, p. 75–78 · The Pilgrim's Progress, p. 78–79 · The Pilgrim's Progress, p. 80–82 · The Pilgrim's Progress, p. 83–85 · The Pilgrim's Progress, p. 85–88 · The Pilgrim's Progress, p. 89–90 · The Pilgrim's Progress, p. 90–93 · The Pilgrim's Progress, p. 94–95 · The Pilgrim's Progress, p. 96–99 · The Pilgrim's Progress, p. 99–101 · The Pilgrim's Progress, p. 102–104 · The Pilgrim's Progress, p. 105–106 · The Pilgrim's Progress, p. 107 · The Pilgrim's Progress, p. 108–109 · The Pilgrim's Progress, p. 110–112 · The Pilgrim's Progress, p. 113–115 · The Pilgrim's Progress, p. 116–120 · The Pilgrim's Progress, p. 120–122 · The Pilgrim's Progress, p. 123–125 · The Pilgrim's Progress, p. 125–128 · The Pilgrim's Progress, p. 129–132
 
 **synaxarium** — 92 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, “COMMEMORATION OF fyAst}) I ’ADYAM SAGAD King of…” · Ethiopian Synaxarium, Maskaram · Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” · Ethiopian Synaxarium, Maskaram — “CURUS having ended his good fight and pleased…” · Ethiopian Synaxarium, Maskaram — “LIDES) came once again before the governor, and…” · Ethiopian Synaxarium, Maskaram — “TOBIT rubbed his eyes and there removed itself…” · Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Maskaram — “ATHANASIUS archbishop, for the holiness of his life…” · Ethiopian Synaxarium, Maskaram — “BELINA, and Abba sALAMA the lamp of the…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONE GOD |…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONESGoOD…” · Ethiopian Synaxarium, Maskaram — “SON AND THE HOLY GHOST, ONE GOD 4…” · Ethiopian Synaxarium, Maskaram — “THE SECOND MONTH—TEKEMT…” · Ethiopian Synaxarium, Teqemt — “SEVERUS secretly, she besought the holy man to…” · Ethiopian Synaxarium, Teqemt · Ethiopian Synaxarium, Teqemt — “TBA THE ETHIOPIC SYNAXARIUM…” · Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST. ONE GOD…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY, GHOST, ONE GOD…” · Ethiopian Synaxarium, Teqemt — “NE aia tS a sana eas Macapee ates…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ..ONE GOD…” · Ethiopian Synaxarium, Teqemt — “BESRA of the West, of the country of…” · Ethiopian Synaxarium, Teqemt — “SECOMD MOXTE—TEZEMT (ocr. Sov. 6) Ig7…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ONE GOD . On…” · Ethiopian Synaxarium, Teqemt — “AND THB’ HOLY GHOST, ONE, GOD…” · Ethiopian Synaxarium, Hedar · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONE:GOD…” · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONEVGO@D…” · Ethiopian Synaxarium, Hedar — “AND: THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Hedar — “WALATTA PETROS the Ethiopian woman. ] |…” · Ethiopian Synaxarium, Hedar — “PHERON, who hath corrupted thy daughter’s heart.” And…” · Ethiopian Synaxarium, Hedar — “NASEL, in the country of Ethiopia. Salutation to…” · Ethiopian Synaxarium, Hedar — “NAS was dying he commanded the bishops and…” · Ethiopian Synaxarium, Hedar — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…”
 
@@ -720,6 +780,136 @@ And according to his good pleasure hath it been in regard to their life.
 And the strong who possess the land because of the works of their hands;
 For on the day of their anguish and affliction they shall not (be able to) save themselves.
 9. And | will give them over into the hands of Mine elect:
+```
+
+### isaac: frequent short lines
+```
+389	#
+30	|
+16	n #,#.
+12	A TREATISE IN QUESTIONS AND ANSWERS ETC. #
+9	n #,#
+8	wn
+8	=
+7	~
+7	to
+7	» #,#.
+7	” #,#.
+6	# SIX TREATISES ON THE BEHAVIOUR OF EXCELLENCE
+6	nN
+6	# A TREATISE IN QUESTIONS AND ANSWERS ETC.
+6	#, #.
+5	SIX TREATISES ON THE BEHAVIOUR OF EXCELLENCE #
+5	wo
+5	” #, #
+4	we
+4	-
+4	_
+4	#) Matthew #, #
+4	o
+4	# A TREATISE IN QUESTIONS AND ANSWERS ETC,
+4	>
+4	GOOD ADVICE GIVING INSTRUCTIONS CONCERNING ETC, #
+4	GENERAL REGISTER
+4	#, #, #, #, #, #, #, #,
+4	n #, #
+4	” #,#
+```
+### isaac: context around "Moses" (line 199)
+```
+Solution from matter precedes the bonds in God , And
+though, as if by Providence of Grace, in some people the latter
+precede the former, so that love covers love, in the usual order
+of Providence the common sequence is otherwise. So thou hast
+to keep the common order. If Grace in thee comes first, it is
+for its own sake. If it does not, then, along the way that every
+man goes by tradition, ascend the spiritual tower.
+Everything which is mentally performed and the command-
+ment of which is fulfilled thus also, is entirely invisible to the
+eyes of the flesh; whereas every thing which is performed in
+practice, is wholly of a composite nature. For it is only one
+commandment that necessitates these two, viz. theory and per-—
+formance. Because corporeity and non-corporeity and the adap-
+tation of the two belong to all. Therefore the enlightened
+intellect — as has been ordered formerly by the blessed
+Moses — understands in a twofold way the commandment
+[lying at the bottom of theory and practice}: the simple as
+well as the complex is understood.
+Works performed carefully by the pure, do not remove the
+impression of the recollection of previous reprehensible things ;
+but they abolish in the mind the painful nature of recollection,
+so that what has passed through the mind often enough, now
+becomes something excellent.
+The longing of the soul for the acquiring of excellence
+vanquishes the desire of its partner *) for visible things.
+1) Cf. beneath p. 40 and Basilius: Aoudquxze def trav Jerudy ths wpormxtelzs roo Biou tiv
+BAydivdig rH ed dxoroudioa: wésAcvrz (Antonius et Maximus, p, 22). And Philo I 38039:
+Secu pudv cig mpérepoy egtiyyero %& mepiipay xi rot Svyrot Biou weval srovdai, wavTx AvTxg.. +
+peg ryy Too Syevsrey Teyndayy xx} Zoidyscv béxs évescy$éux:, — Plotinus, Enweales IV, 8,
+§ 1 points to the Platonic origin of the comparison, and uses it hinself § 4, speaking of
+the soul: exiarpupeicx 32 mpac vénsi Avertal re ix ray Derpedy, xxl duzBalvery ....
+2) the body
+6 SIX TREATISES ON THE BEHAVIOUR OF ENCELLENCE
+All things have their mean. Lacking that, even those things
+the use of which is apt to help, may turn aside and become
+harmful without meeting any obstacle.
+If thou wishest to have mental communion with God, by
+acquiring the impression of that delight that is not subject to
+the senses, then cling to mercy. For the holy beauty is formed
+by that element within thee, which resembles mercy '). And
+```
+### isaac: 50 raw lines at 40%
+```
+common character.
+But our discourse is for solitaries. A witness to this is one
+of the saints who has announced that there came a voice unto
+him saying: Enough of consolation from and intercourse with
+men! Another witness!) to this is he who led a solitary life
+in reclusion, and often tasted from consolations granted by
+grace, and divine care often became visible to him in manifest
+apperception; but when he came near the inhabited world and.
+sought these things as usual, he did not find them. He be-
+sought God that the truth concerning this matter might become
+known to him, saying: Perhaps, my Lord, grace has been
+withdrawn from me on account of my episcopal rank? It was
+said to him: No. But then, there was the desert, there were
+no men, but God provided for thee. Now, there is the inha-
+bited world and men provide for thee. — So we say that it
+is impossible for a man to share in visible as well as in spi-
+ritual consolation.
+The disciple. Are vision and revelation one, or are they
+different in fact as they are different in names?
+The teacher. There is a difference between vision and
+revelation. The name of revelation covers the two, because it
+denotes the revealing of a thing that hitherto was hidden and
+now becomes manifest in any way. But not all that is revelation
+is at the same time vision. But what is vision is also called
+revelation, because it is a hidden thing which is revealed. But
+not all that comes to be revealed and known, is vision.
+Revelation is usually connected with what is intelligible and
+tasted with the intellect. Vision, however, always happens in
+similitudes; as those things which were ministered unto the
+ancients, be it in the depth of sleep, or in the state of waking ;
+sometimes clearly, at other times dimly, while he to whom the
+1) Sce Introduction
+250
+251
+168 A TREATISE IN QUESTIONS AND ANSWERS ETC.
+vision was given often did not know whether he saw awake
+or in sleep. Even after he had regained consciousness, he did
+not know whether the thing had in reality happened to him,
+or as in a dream. Sometimes a voice of help was heard;
+sometimes a symbolical representation was seen; sometimes
+there was a clear apparition, face to face, and sight and speech,
+questions and intercourse; and those holy hosts appeared to
+those who were worthy. It is clear that in the desert and the
+wilderness and in lonely places and in places of retreat from
+the world, such things happen; where man decidedly needs
+them, because he has no help from any side.
+Revelation of those things which are apperceived intellec-
+tually, is received through purity. And the latter only belongs
+to the initiated and perfect.
+The disciple. When any one has reached purity of heart,
 ```
 
 ### jubilees: frequent short lines

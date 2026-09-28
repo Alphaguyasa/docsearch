@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T11:54:12.791Z",
+  "generatedAt": "2026-09-28T13:06:37.605Z",
   "entries": [
     {
       "id": "antony",
@@ -148,6 +148,23 @@
       ]
     },
     {
+      "id": "isaac",
+      "title": "Mystic Treatises by Isaac of Nineveh (tr. A. J. Wensinck, 1923)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published Amsterdam 1923; Wensinck d. 1939)",
+      "retrievedAt": "2026-09-28T13:06:37.605Z",
+      "files": [
+        {
+          "name": "isaac_of_nineveh_mystical_treatises_djvu.txt",
+          "url": "https://archive.org/download/isaac_of_nineveh_mystical_treatises/isaac_of_nineveh_mystical_treatises_djvu.txt",
+          "sha256": "ad1a518b8a5256b713127823c4e92f18b4f4240f437c5bcab7746ef107eb9088",
+          "bytes": 955999,
+          "archiveId": "isaac_of_nineveh_mystical_treatises"
+        }
+      ]
+    },
+    {
       "id": "jubilees",
       "title": "The Book of Jubilees (tr. R. H. Charles, 1917)",
       "kind": "tradition",
@@ -219,6 +236,22 @@
           "sha256": "0390ab503364de72f8720ee838bef42edb98dbd86a13c04c66ac16f97dadf659",
           "bytes": 1138769,
           "archiveId": "paradiseorgarden02anan"
+        }
+      ]
+    },
+    {
+      "id": "pilgrims_progress",
+      "title": "The Pilgrim's Progress, Part One (John Bunyan, 1678)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Project Gutenberg #131; Bunyan d. 1688)",
+      "retrievedAt": "2026-09-28T13:05:52.074Z",
+      "files": [
+        {
+          "name": "pg131.txt",
+          "url": "https://www.gutenberg.org/cache/epub/131/pg131.txt",
+          "sha256": "13188e0d8cdc003befb5f70a41234c7b619c142cbbe4871564fd06406bda94bb",
+          "bytes": 331509
         }
       ]
     },
