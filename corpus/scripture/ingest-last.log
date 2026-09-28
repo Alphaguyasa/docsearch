@@ -1,2 +1,8 @@
-outcome=skipped at 2026-09-28T14:04:36Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36432892055
-(no ingest.log)
+outcome=success at 2026-09-28T14:06:56Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36433244150
+
+> docsearch@0.1.0 scripture:ingest
+> tsx scripts/ingest-scripture.ts --max-minutes 320
+
+built 7742 chunks across 91 documents
+done 7742, to embed 0, stale 0
+finished: 7742/7742
