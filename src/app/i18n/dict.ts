@@ -291,7 +291,7 @@ const en = {
     notice: "Not Alone is not a counselling or emergency service. If you are in danger, reach someone now.",
     needHelp: "Need help now?",
     sources:
-      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Book of Enoch, the Kebra Nagast, St. Ephrem, Aphrahat, St. Cyril of Jerusalem, St. John Chrysostom, the Life of Antony, The Imitation of Christ and Bunyan’s Grace Abounding.",
+      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, St. Ephrem, Aphrahat, St. Cyril of Jerusalem, St. John Chrysostom, the Life of Antony, The Imitation of Christ and Bunyan’s Grace Abounding.",
     care: "Made with care for anyone carrying something alone.",
     nav: "Footer",
   },
@@ -587,7 +587,7 @@ const am: Dict = {
     notice: "Not Alone የምክር ወይም የአደጋ ጊዜ አገልግሎት አይደለም። አደጋ ላይ ከሆኑ አሁኑኑ ሰው ያግኙ።",
     needHelp: "እርዳታ ይፈልጋሉ?",
     sources:
-      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ ክብረ ነገሥት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅ፣ የቅዱስ እንጦንስ ሕይወት፣ «ክርስቶስን መምሰል» እና የበንያን «የበዛ ጸጋ»።",
+      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅ፣ የቅዱስ እንጦንስ ሕይወት፣ «ክርስቶስን መምሰል» እና የበንያን «የበዛ ጸጋ»።",
     care: "ብቻውን ሸክም ለተሸከመ ሁሉ በፍቅር የተሠራ።",
     nav: "የግርጌ ማውጫ",
   },
@@ -655,6 +655,7 @@ const am: Dict = {
     basils_young_man: "ስንክሳሩ ስሙን አይጠቅስም፤ ይህን የታላቁ ቅዱስ ባስልዮስ ተአምር አድርጎ ያስታውሰዋል (መስከረም)።",
     cyprian:
       "ይህ የአንጾኪያው ቆጵርያኖስ ነው እንጂ የካርታጎው ጳጳስ ቆጵርያኖስ አይደለም። ታሪኩ ከስንክሳር (መስከረም) ይነበባል፤ በካቶሊክና በኦርቶዶክስ አብያተ ክርስቲያናትም ይከበራል።",
+    solomon: "ውድቀቱ በመጽሐፍ ቅዱስ (1ኛ ነገሥት 11) ተጽፏል። እግዚአብሔር እንደማረው የሚነግረው የኢትዮጵያ ትውፊት፣ ክብረ ነገሥት (ምዕራፍ 65) ነው።",
     manasseh: "የምናሴ ጸሎት በኦርቶዶክስና በኢትዮጵያ ኦርቶዶክስ ተዋሕዶ ቤተ ክርስቲያን መጽሐፍ ቅዱስ ውስጥ ይገኛል።",
   },
 };
@@ -707,6 +708,11 @@ export const FIGURES_AM: Record<string, { name: string; summary: string }> = {
     name: "ካህኑ ዘካርያስ",
     summary:
       "አረጋዊ ካህን ነበር፤ መልአኩ ገብርኤል ልጅ እንደሚወለድለት ሲነግረው «ይህን በምን አውቃለሁ?» ብሎ ተጠራጠረ፣ ዲዳም ሆነ፤ ልጁ በተወለደ ጊዜ አፉ ተከፈተ፣ እግዚአብሔርንም ባረከ።",
+  },
+  solomon: {
+    name: "ንጉሥ ሰሎሞን",
+    summary:
+      "ከነገሥታት ሁሉ ጠቢብ ነበር፤ ብዙ ሚስቶቹ ግን ልቡን ወደ ሌሎች አማልክት መለሱት። በኢትዮጵያ ቤተ ክርስቲያን የሚነበበው ክብረ ነገሥት እግዚአብሔር እንደማረው፣ ስሙም በሕይወት መጽሐፍ እንደተጻፈ ይናገራል።",
   },
   joseph_of_arimathea: {
     name: "የአርማትያሱ ዮሴፍ",

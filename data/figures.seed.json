@@ -1383,6 +1383,33 @@
           "sourceId": "web"
         }
       ]
+    },
+    {
+      "id": "solomon",
+      "name": "King Solomon",
+      "kind": "tradition",
+      "sins": [
+        "idolatry",
+        "lust"
+      ],
+      "summary": "The wisest of kings, whose many wives turned his heart after other gods. The Kebra Nagast, read in the Ethiopian Church, says: “God hath had mercy upon him,” and his name is written in the Book of Life.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "1 Kings 11:1-10",
+          "sourceId": "web"
+        },
+        {
+          "role": "restoration",
+          "ref": "Kebra Nagast, Chapter 65",
+          "sourceId": "kebra_nagast",
+          "match": "God hath had mercy upon him"
+        }
+      ],
+      "note": "His fall is Scripture (1 Kings 11); his restoration is Ethiopian tradition (Kebra Nagast, chapter 65), so he is shown to Ethiopian Orthodox readers."
     }
   ]
 }

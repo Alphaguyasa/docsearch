@@ -66,6 +66,20 @@
    "note": "Ethiopia's national epic, read in the Ethiopian Orthodox Church. Chapters found by numbered caps headings checked against the sequence; lost headings become ranges (Chapters 17-18)."
   },
   {
+   "id": "jubilees",
+   "title": "The Book of Jubilees (tr. R. H. Charles, 1917)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(book of jubilees) AND creator:(charles)",
+   "titleHint": "book of jubilees",
+   "archiveIds": [
+    "bookofjubileesor01char"
+   ],
+   "license": "Public domain (published 1917; Charles d. 1931)",
+   "status": "verified",
+   "note": "Canonical in the Ethiopian Orthodox Bible. Chapters open with a roman numeral checked against the sequence; lost ones become ranges. Verse numbers are inline, so refs are by chapter."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

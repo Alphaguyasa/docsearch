@@ -186,6 +186,14 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 48 L32 58" />
     </>
   ),
+  // The crown of the wise king.
+  solomon: (
+    <>
+      <path d="M12 44 L16 22 L25 34 L32 16 L39 34 L48 22 L52 44 Z" />
+      <path d="M12 50 L52 50" />
+      <circle cx="32" cy="12" r="2.5" />
+    </>
+  ),
   // The rock-hewn tomb, and the stone.
   joseph_of_arimathea: (
     <>

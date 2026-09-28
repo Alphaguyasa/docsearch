@@ -104,6 +104,21 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "The Glory of Kings",
     sections: { sectionStart: /^([0-9iIl]{1,3})\s?[.,:-]\s?(.{4,})$/, name: "numberedChapter" },
   },
+  jubilees: {
+    refPrefix: "Book of Jubilees",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^Prologue$/,
+      endAt: /^INDEX$/,
+      dropLines: [/THE BOOK OF JUBILEES/, /^\([ivxl]+\.\s*\d/],
+      // Page-foot notes: "1 The effect of a solar year…", "• For 33-34 cf. 1 Enoch…", "' A lunar year…".
+      dropParagraphs: /^[1-9*•'’■>§†]{1,2}\s+\S/,
+      // Note calls: "world,3", "feasts.1", "soon.*", "days l of", "of 2 their".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9*•§](?=\s|$)|(?<=\s)[1-9l*•§](?=\s)/g,
+    },
+    defaultHeading: "Prologue",
+    sections: { sectionStart: /^([IVXLl]+)\.[1-9*]?\s+(?=[A-Z])/, name: "romanChapterStart" },
+  },
   ephrem: {
     refPrefix: "Ephrem the Syrian",
     traditions: ALL,

@@ -214,3 +214,20 @@ test("Kebra Nagast: numbered caps headings checked against the sequence, lost on
   ]);
   assert.doesNotMatch(s.map((x) => x.paragraphs.join(" ")).join(" "), /Kings xviii/);
 });
+
+test("Jubilees: a roman numeral opens a chapter and its first verse; notes and note calls go", () => {
+  const rule = TEXT_RULES.jubilees;
+  const raw = [
+    "Prologue", "", "This is the history of the division of the days l of the law,3 as the Lord spake.", "",
+    "I. And it came to pass in the first year of the exodus, in the third month,6 on the sixteenth day.", "",
+    "1 The effect of a solar year reckoned at 364 days.", "", "36 THE BOOK OF JUBILEES [chap. I", "",
+    "III. And on the six days of the second week we brought.", "", "II. And for Tubal there came forth the fifth portion.", "", "INDEX",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), ["Prologue", "Chapters I–II", "Chapter III"]);
+  const all = s.flatMap((x) => x.paragraphs).join(" ");
+  assert.match(all, /days of the law, as the Lord/);
+  assert.match(all, /^.*And it came to pass in the first year of the exodus, in the third month, on the sixteenth/);
+  assert.doesNotMatch(all, /solar year|BOOK OF JUBILEES/);
+  assert.match(all, /II\. And for Tubal/); // out of sequence: a verse, not a chapter
+});
