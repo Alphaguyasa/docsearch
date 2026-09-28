@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-28T09:51:44.418Z
+Generated 2026-09-28T10:44:42.171Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -134,6 +134,265 @@ also I was deeply convinced all the time this trouble lay upon me.  The
 first was, for that I did not, when I was delivered from the temptation
 that went before, still pray to God to to keep me from the temptations
 that were to come; for though, as I can say in truth, my soul was much in
+```
+
+## enoch — The Book of Enoch (tr. R. H. Charles, 1917)
+- pinned: book-of-enoch_1917
+
+#### `BookOfEnoch_1917_djvu.txt` (archive id `book-of-enoch_1917`) — 262450 bytes
+3765 non-empty lines. First 25:
+```
+THE BOOK OF
+ENOCH
+TRANSLATED BY
+R. H. CHARLES
+DLITT, DD.
+WITH AN INTRODUCTION BY
+W.O.E OESTERLEY, DD.
+London Society for Promoting Christian Knowledge
+ORIGINALLY PUBLISHED IN 1917
+The Book of Enoch By R.H. Charles.
+This web edition created and published by Global Grey 2013.
+GLOBAL GREY
+NOTHING BUT E-BOOKS
+TABLE OF CONTENTS
+EDITORS' PREFACE
+INTRODUCTION
+ABBREVIATIONS, BRACKETS, AND SYMBOLS SPECIALLY USED IN
+THE TRANSLATION OF ENOCH
+THE BOOK OF ENOCH
+THE PARABLES
+THE BOOK OF THE COURSES OF THE HEAVENLY LUMINARIES
+THE DREAM-VISIONS
+THE CONCLUDING SECTION OF THE BOOK
+FRAGMENT OF THE BOOK OF NOAH
+AN APPENDIX TO THE BOOK OF ENOCH
+```
+Sample from the middle:
+```
+And in the balance shall their deeds be weighed
+9. And when he shall lift up his countenance
+To judge their secret ways according to the word of the name of the Lord of Spirits,
+And their path according to the way of the righteous judgement of the Lord of Spirits,
+Then shall they all with one voice speak and bless,
+And glorify and extol and sanctify the name of the Lord of Spirits.
+10. And He will summon all the host of the heavens, and all the holy ones above, and the
+host of God, the Cherubic, Seraphin and Ophannin, and all the angels of power, and all the
+```
+
+## ephrem — Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)
+
+#### `npnf213.txt` — 1921581 bytes
+28506 non-empty lines. First 25:
+```
+__________________________________________________________________
+Title: NPNF-213. Gregory the Great (II), Ephraim Syrus, Aphrahat
+Creator(s):
+Schaff, Philip (1819-1893) (Editor)
+Rights: Public Domain
+CCEL Subjects: All; Proofed; Early Church
+LC Call no: BR60
+LC Subjects:
+Christianity
+Early Christian Literature. Fathers of the Church, etc.
+__________________________________________________________________
+A SELECT LIBRARY
+OF THE
+NICENE AND
+POST-NICENE FATHERS
+OF
+THE CHRISTIAN CHURCH.
+SECOND SERIES
+VOLUME XIII
+Gregory the Great (II), Ephraim Syrus, Aphrahat
+T&T CLARK
+EDINBURGH
+__________________________________________________
+WM. B. EERDMANS PUBLISHING COMPANY
+GRAND RAPIDS, MICHIGAN
+```
+Sample from the middle:
+```
+9.  If a man reads in the Prophets, he hears there of righteous wars.
+But if a man meditate in the story of Jesus, he learns of grace and
+tender mercy.  And if a man think of Jesus, that He is a strange God it
+is a reproach against me.  No other strange key into the gate of Sheol
+could ever be fitted.  One is the key of the Creator, that which has
+opened it, yea, is to open it at His Coming.
+10.  Who is he that is able to join the bones, save that Power which
+created them?  What is it that shall reunite the shreds of the body,
+```
+
+## aphrahat — Aphrahat, Select Demonstrations (tr. J. Gwynn, NPNF II/13)
+
+#### `npnf213.txt` — 1921581 bytes
+28506 non-empty lines. First 25:
+```
+__________________________________________________________________
+Title: NPNF-213. Gregory the Great (II), Ephraim Syrus, Aphrahat
+Creator(s):
+Schaff, Philip (1819-1893) (Editor)
+Rights: Public Domain
+CCEL Subjects: All; Proofed; Early Church
+LC Call no: BR60
+LC Subjects:
+Christianity
+Early Christian Literature. Fathers of the Church, etc.
+__________________________________________________________________
+A SELECT LIBRARY
+OF THE
+NICENE AND
+POST-NICENE FATHERS
+OF
+THE CHRISTIAN CHURCH.
+SECOND SERIES
+VOLUME XIII
+Gregory the Great (II), Ephraim Syrus, Aphrahat
+T&T CLARK
+EDINBURGH
+__________________________________________________
+WM. B. EERDMANS PUBLISHING COMPANY
+GRAND RAPIDS, MICHIGAN
+```
+Sample from the middle:
+```
+9.  If a man reads in the Prophets, he hears there of righteous wars.
+But if a man meditate in the story of Jesus, he learns of grace and
+tender mercy.  And if a man think of Jesus, that He is a strange God it
+is a reproach against me.  No other strange key into the gate of Sheol
+could ever be fitted.  One is the key of the Creator, that which has
+opened it, yea, is to open it at His Coming.
+10.  Who is he that is able to join the bones, save that Power which
+created them?  What is it that shall reunite the shreds of the body,
+```
+
+## cyril_repentance — Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)
+
+#### `npnf207.txt` — 3388014 bytes
+50042 non-empty lines. First 25:
+```
+__________________________________________________________________
+Title: NPNF2-07. Cyril of Jerusalem, Gregory Nazianzen
+Creator(s):
+Schaff, Philip (1819-1893) (Editor)
+Print Basis: New York: Christian Literature Publishing Co., 1893
+Rights: Public Domain
+CCEL Subjects: All; Proofed; Early Church;
+LC Call no: BR60
+LC Subjects:
+Christianity
+Early Christian Literature. Fathers of the Church, etc.
+__________________________________________________________________
+A SELECT LIBRARY
+OF THE
+NICENE AND
+POST-NICENE FATHERS
+OF
+THE CHRISTIAN CHURCH.
+SECOND SERIES
+TRANSLATED INTO ENGLISH WITH PROLEGOMENA AND EXPLANATORY NOTES.
+VOLUMES I-VII.
+UNDER THE EDITORIAL SUPERVISION OF
+PHILIP SCHAFF, D.D., LL.D.,
+PROFESSOR OF CHURCH HISTORY IN THE UNION THEOLOGICAL SEMINARY, NEW
+YORK.
+```
+Sample from the middle:
+```
+[3233] To the Sanctuary, i.e., To the Priesthood.
+[3234] Ps. xxiii. 5.  Rod and Staff, i.e., Punishment and support.
+[3235] Ps. ci. 6.
+[3236] Job i. 21.
+[3237] Numb. xii. 3.
+[3238] Ps. cxxxii. 1 (LXX.).
+[3239] 1 Sam. ix. 9.
+[3240] Numb. xxxv. 7.
+```
+
+## chrysostom_theodore — John Chrysostom, Letters to Theodore after his Fall (NPNF I/9)
+
+#### `npnf109.txt` — 2752950 bytes
+39821 non-empty lines. First 25:
+```
+__________________________________________________________________
+Title: NPNF1-09. St. Chrysostom: On the Priesthood; Ascetic Treatises;
+Select Homilies and Letters; Homilies on the Statutes
+Creator(s):
+Schaff, Philip (1819-1893) (Editor)
+Print Basis: New York: Christian Literature Publishing Co., 1886
+Rights: Public Domain
+CCEL Subjects: All; Proofed; Early Church;
+LC Call no: BR60
+LC Subjects:
+Christianity
+Early Christian Literature. Fathers of the Church, etc.
+__________________________________________________________________
+A SELECT LIBRARY
+OF THE
+NICENE AND
+POST-NICENE FATHERS
+OF
+THE CHRISTIAN CHURCH.
+EDITED BY
+PHILIP SCHAFF, D.D., LL.D.,
+PROFESSOR OF CHURCH HISTORY IN THE UNION THEOLOGICAL SEMINARY, NEW
+YORK.
+IN CONNECTION WITH A NUMBER OF PATRISTIC SCHOLARS OF EUROPE AND
+AMERICA.
+```
+Sample from the middle:
+```
+[975] Pascha is either Passover or Easter. St. Thos. Aquinas, in the
+Hymn Lauda Sion, appropriates it to the Christian Festival, calling the
+Jewish Phase vetus.
+[976] i. e., the actual days of them on the Jewish computation. This
+appears the true answer to the difficulty. The Jews kept the Passover
+this year earlier than the Christians: viz. on the 14th day of the
+moon, or April 18. See l'Art de Verifier les Dates on the year. Thus
+the supposed difficulty becomes a confirmation of the date otherwise
+```
+
+## antony — Athanasius, Life of Antony (tr. H. Ellershaw, NPNF II/4)
+
+#### `npnf204.txt` — 4570263 bytes
+67735 non-empty lines. First 25:
+```
+__________________________________________________________________
+Title: NPNF2-04. Athanasius: Select Works and Letters
+Creator(s): Athanasius
+Schaff, Philip (1819-1893) (Editor)
+Print Basis: New York: Christian Literature Publishing Co., 1892
+Rights: Public Domain
+CCEL Subjects: All; Proofed; Early Church;
+LC Call no: BR60
+LC Subjects:
+Christianity
+Early Christian Literature. Fathers of the Church, etc.
+__________________________________________________________________
+A SELECT LIBRARY
+OF THE
+NICENE AND
+POST-NICENE FATHERS
+OF
+THE CHRISTIAN CHURCH.
+SECOND SERIES
+TRANSLATED INTO ENGLISH WITH PROLEGOMENA AND EXPLANATORY NOTES.
+VOLUMES I-VII.
+UNDER THE EDITORIAL SUPERVISION OF
+PHILIP SCHAFF, D.D., LL.D.,
+PROFESSOR OF CHURCH HISTORY IN THE UNION THEOLOGICAL SEMINARY, NEW
+YORK.
+```
+Sample from the middle:
+```
+had been a philosophical distinction, Timæus says eikon esti chronos to
+agennato chrono, hon aiona potagoreuomes. vid. also Philon. Quod Deus
+Immut. 6. Euseb. Laud. C. 1 prope fin., p. 501. Naz. Or. 38. 8.
+[1903] John xiv. 6; x. 14; viii. 12; xiii. 13
+[1904] Gen. ii. 5.
+[1905] Deut. xxxii. 8.
+[1906] John xiv. 28, 29.
+[1907] Prov. viii. 23.
 ```
 
 ## synaxarium — The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)

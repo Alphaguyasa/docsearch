@@ -1,10 +1,16 @@
 # Scripture chunk report
 
-Generated 2026-09-28T09:52:42.357Z
+Generated 2026-09-28T10:45:46.966Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
+| antony | 1 | 68 | 32193 | 473 | 608 |
+| aphrahat | 1 | 134 | 65929 | 492 | 622 |
+| chrysostom_theodore | 1 | 60 | 33209 | 553 | 617 |
 | confessions | 1 | 347 | 153365 | 442 | 611 |
+| cyril_repentance | 1 | 13 | 5703 | 439 | 611 |
+| enoch | 1 | 148 | 51208 | 346 | 611 |
+| ephrem | 1 | 76 | 36000 | 474 | 613 |
 | grace_abounding | 1 | 150 | 76581 | 511 | 624 |
 | imitation | 1 | 201 | 85196 | 424 | 614 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
@@ -13,7 +19,7 @@ Generated 2026-09-28T09:52:42.357Z
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 6741 chunks, 2841173 tokens ≈ 4.7 h of embedding at 10000 TPM.
+**Total:** 7240 chunks, 3065415 tokens ≈ 5.1 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -124,6 +130,98 @@ Generated 2026-09-28T09:52:42.357Z
 
 ## Samples
 
+**Athanasius, Life of Antony §1–2** (592 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Athanasius, Life of Antony §1–2
+
+1. Antony you must know was by descent an Egyptian: his parents were of good family and possessed considerable wealth, and as they were Christians he also was reared in the same Faith. In infancy he was brought up with his parents, knowing nought else but them and his home. But when he was grown and arrived at boyhood, and was advancing in years, he could not endure to learn letters, not caring to associate with other boys; but all his desire was, as it is written of Jacob, to live a plain man at home. With his parents he used to attend the Lord's House, and neither as a child was he idle nor when older did he despise them; but was both obedient to his father
+```
+
+**Athanasius, Life of Antony §45** (404 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Athanasius, Life of Antony §45
+
+45. Antony, however, according to his custom, returned alone to his own cell, increased his discipline, and sighed daily as he thought of the mansions in Heaven, having his desire fixed on them, and pondering over the shortness of man's life. And he used to eat and sleep, and go about all other bodily necessities with shame when he thought of the spiritual faculties of the soul. So often, when about to eat with any other hermits, recollecting the spiritual food, he begged to be excused, and departed far off from them, deeming it a matter for shame if he should be seen eating by others. He used, however, when by himself, to eat through bodily necessity, but oft
+```
+
+**Athanasius, Life of Antony §86** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Athanasius, Life of Antony §86
+
+86. And a certain general, Balacius by name, persecuted us Christians bitterly on account of his regard for the Arians--that name of ill-omen. And as his ruthlessness was so great that he beat virgins, and stripped and scourged monks, Antony at this time wrote a letter as follows, and sent it to him. I see wrath coming upon thee, wherefore cease to persecute the Christians, lest haply wrath catch hold of thee, for even now it is on the point of coming upon thee.' But Balacius laughed and threw the letter on the ground, and spit on it, and insulted the bearers, bidding them tell this to Antony: Since thou takest thought for the monks, soon I will come after the
+```
+
+**Aphrahat, Letter of an Inquirer §1–2** (443 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Aphrahat, Letter of an Inquirer §1–2
+
+1. Beloved, I send thee inquiries and questions, for I am compelled to seek further instruction of thee on many points. Do not thou refuse to hear me. My spirit urges me to warn thee about many topics that thou mayest unfold for me the spiritual perceptions of thy mind, and mayest show me of all that thou hast apprehended from the holy books, that so my deficiency may be supplied by thee and my hunger satisfied by thy doctrine, and that thou mayest assuage my thirst from the fountain of thine instruction. Yet though many things are set in my thought to ask thee, they all are notwithstanding reserved with me, that when I come to thee, thou mayest instruct
+```
+
+**Aphrahat, Demonstration VIII — Of the Resurrection of the Dead §10–11** (550 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Aphrahat, Demonstration VIII — Of the Resurrection of the Dead §10–11
+
+10. And Moses again proclaimed clearly the Resurrection of the dead, for he said as from the mouth of his God:--It is I that cause to die and it is I that make alive. Again also Hannah said thus in her prayer:--The Lord causeth to die and quickeneth; He bringeth down to Sheol and bringeth up (therefrom). The Prophet Isaiah also said thus:--Thy dead shall live, O Lord, and their bodies shall rise, and they that sleep in the dust shall awake and praise thee. David also proclaimed, saying:--For lo! for the dead Thou workest wonderful things, and the mighty ones shall rise and make confession unto Thee, and those that are in 
+```
+
+**Aphrahat, Demonstration XXII — Of Death and the Latter Times §6–8** (490 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Aphrahat, Demonstration XXII — Of Death and the Latter Times §6–8
+
+Death leads away to himself them that are honoured with pomps, and they come into contempt when they descend to him, to the realm of darkness, where there is no light.
+
+He is not ashamed before Kings (that are) crowned with the diadem.
+
+He is not abashed before the lofty and the fierce ones who lay waste the lands.
+
+Death respects not the persons of the honourable, nor does he receive a bribe from the rich.
+
+Death despises not the poor, nor does his soul scorn him that has nothing.
+
+Death honours not them that live in magnificence, nor with him are the good distinguished from the bad.
+
+He takes no account of the aged, rather 
+```
+
+**John Chrysostom, Letter to Theodore after his Fall §1** (597 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+John Chrysostom, Letter to Theodore after his Fall §1
+
+"Oh! that my head were water, and mine eyes a fountain of tears!" it is seasonable for me to utter these words now, yea much more than for the prophet in his time.
+
+For although I am not about to mourn over many cities, or whole nations, yet shall I mourn over a soul which is of equal value with many such nations, yea even more precious.
+
+For if one man who does the will of God is better than ten thousand transgressors, then thou wast formerly better than ten thousand Jews.
+
+Wherefore no one would now blame me if I were to compose more lamentations than those which are contained in the prophet, and to utter complaints yet more vehement.
+
+```
+
+**John Chrysostom, Letter to Theodore after his Fall §8 (part 18)** (509 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+John Chrysostom, Letter to Theodore after his Fall §8 (part 18)
+
+Hear at least how the beauty of these struck the man greatly beloved; for wishing to set forth their beauty and being unable to find a body of the same character, he had recourse to metallic substances, and he was not satisfied even with these, but took the brilliancy of lightning for his illustration.
+
+Now if those powers, even when they did not disclose their essential nature pure and bare, but only in a very dim and shadowy way, nevertheless shone so brightly, what must naturally be their appearance, when set free from every veil?
+
+Now we ought to form some such image of the beauty of the soul.
+
+"For they shall be," we read 
+```
+
+**John Chrysostom, Second Letter to Theodore §3 (part 2)** (469 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+John Chrysostom, Second Letter to Theodore §3 (part 2)
+
+And why dost thou marvel if marriage is judged as if it were adultery, when God is disregarded?
+
+Slaughter has brought about righteousness, and mercy has been a cause of condemnation more than slaughter; because the latter has been according to the mind of God but the former has been forbidden.
+
+It was reckoned to Phinees for righteousness that he pierced to death the woman who committed fornication, together with the fornicator; but Samuel, that saint of God although he wept and mourned and entreated for whole nights, could not rescue Saul from the condemnation which God issued against him, because he saved, contrary to the design of G
+```
+
 **Confessions, Book I** (327 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
 ```
 Confessions, Book I
@@ -143,6 +241,91 @@ Moreover, it had at first troubled me that in this very summer my lungs began to
 Confessions, Book XIII (part 4)
 
 But what was the cause, O true-speaking Light?--unto Thee lift I up my heart, let it not teach me vanities, dispel its darkness; and tell me, I beseech Thee, by our mother charity, tell me the reason, I beseech Thee, why after the mention of heaven, and of the earth invisible and without form, and darkness upon the deep, Thy Scripture should then at length mention Thy Spirit? Was it because it was meet that the knowledge of Him should be conveyed, as being "borne above"; and this could not be said, unless that were first mentioned, over which Thy Spirit may be understood to have been borne. For neither was He borne above the Father, nor the Son, nor could He 
+```
+
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2** (611 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2
+
+The righteousness of the righteous shall be upon him, and the wickedness of the wicked shall be upon him. But if the wicked will turn from all his sins, &c.
+
+1. A fearful thing is sin, and the sorest disease of the soul is transgression, secretly cutting its sinews, and becoming also the cause of eternal fire; an evil of a man's own choosing, an offspring of the will. For that we sin of our own free will the Prophet says plainly in a certain place: Yet I planted thee a fruitful vine, wholly true: how art thou turned to bitterness, (and become) the strange vine ? The planting was good, the fruit coming from the will is evil; and
+```
+
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10** (374 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10
+
+10. Nay more, if a whole people sin, this surpasses not the loving-kindness of God. The people made a calf, yet God ceased not from His loving-kindness. Men denied God, but God denied not Himself . These be thy gods, O Israel, they said: yet again, as He was wont, the God of Israel became their Saviour. And not only the people sinned, but also Aaron the High Priest. For it is Moses that says: And the anger of the Lord came upon Aaron: and I prayed for him, saith he, and God forgave him. What then, did Moses praying for a High Priest that sinned prevail with God, and shall not Jesus, His Only-begotten, prevail with God when He pr
+```
+
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17** (489 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17
+
+16. But if thou disbelieve, consider what befel Ananias and his companions. What streams did they pour out? How many vessels of water could quench the flame that rose up forty-nine cubits high? Nay, but where the flame mounted up a little too high, faith was there poured out as a river, and there spake they the spell against all ills: Righteous art Thou, O Lord, in all the things that Thou hast done to us: for we have sinned, and transgressed Thy law. And their repentance quelled the flames. If thou believest not that repentance is able to quench the fire of hell, learn it from what happened in regard to Ananias. But some kee
+```
+
+**Book of Enoch, Chapter I §1–9** (455 tokens, ethiopian_orthodox)
+```
+Book of Enoch, Chapter I §1–9
+
+1. The words of the blessing of Enoch, wherewith he blessed the elect and righteous, who will be living in the day of tribulation, when all the wicked and godless are to be removed.
+
+2. And he took up his parable and said--Enoch a righteous man, whose eyes were opened by God, saw the vision of the Holy One in the heavens, which the angels showed me, and from them I heard everything, and from them I understood as I saw, but not for this generation, but for a remote one which is for to come.
+
+3. Concerning the elect I said, and took up my parable concerning them: The Holy Great One will come forth from His dwelling,
+
+4. And the eternal God will tread upon the ear
+```
+
+**Book of Enoch, Chapter LXVII §1–8** (407 tokens, ethiopian_orthodox)
+```
+Book of Enoch, Chapter LXVII §1–8
+
+1. And in those days the word of God came unto me, and He said unto me: 'Noah, thy lot has come up before Me, a lot without blame, a lot of love and uprightness. 2. And now the angels are making a wooden (building), and when they have completed that task I will place My hand upon it and preserve it, and there shall come forth from it the seed of life, and a change shall set in so that the earth will not remain without inhabitant. 3. And I will make fast thy seed before me for ever and ever, and I will spread abroad those who dwell with thee: it shall not be unfruitful on the face of the earth, but it shall be blessed and multiply on the earth in the name of
+```
+
+**Book of Enoch, Chapter XCIX §1–13** (588 tokens, ethiopian_orthodox)
+```
+Book of Enoch, Chapter XCIX §1–13
+
+1. Woe to you who work godlessness, And glory in lying and extol them: Ye shall perish, and no happy life shall be yours.
+
+2. Woe to them who pervert the words of uprightness,
+
+And transgress the eternal law,
+
+And transform themselves into what they were not into sinners: They shall be trodden under foot upon the earth.
+
+3. In those days make ready, ye righteous, to raise your prayers as a memorial, And place them as a testimony before the angels, That they may place the sin of the sinners for a memorial before the Most High.
+
+4. In those days the nations shall be stirred up, And the families of the nations shall arise on the day of destruction.
+
+5. And in 
+```
+
+**Ephrem the Syrian, On Our Lord §1** (570 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Ephrem the Syrian, On Our Lord §1
+
+1. Grace has drawn nigh to mouths, once blasphemous, and has made them harps; sounding praise.
+
+Therefore let all mouths render praise to Him Who has removed from them blasphemous speech. Glory to Thee Who didst depart from one dwelling to take up thy abode in another! that He might come and make us a dwelling-place for His Sender, the only-begotten departed from [being] with Deity and took up His abode in the Virgin; that by a common manner of birth, though only-begotten, He might become the brother of many. And He departed from Sheol and took up His abode in the Kingdom; that He might seek out a path from Sheol which oppresses all, to the Kingdom which re
+```
+
+**Ephrem the Syrian, On Our Lord §42 (part 2)** (597 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Ephrem the Syrian, On Our Lord §42 (part 2)
+
+Now observe this son of Israel, how he was like Israel in stubbornness. For heathenism was bound up in the mind of the People; therefore Moses was taken away from them, that the wickedness that was within them might become manifest. But that they might not be put to shame, and that it might not be known how they were seeking idols, they first sought for Moses, and then for idols. As for this Moses, we know not what has become of him. And if God, Who cannot die, brought thee out of Egypt, why dost thou seek for a man, who at some time must die? Yet they did not desire Moses, that he should become a god to them; because Moses could hear and see and 
+```
+
+**Ephrem the Syrian, On the Sinful Woman §5** (241 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Ephrem the Syrian, On the Sinful Woman §5
+
+5. These things spake the perfumer, in wisdom, to the harlot. The sinful woman answered and said to him, to the perfumer after his discourse, "Hinder me not, O man, and stop me not by thy questioning. I have asked of thee ointment, not freely, but I will pay thee its value not grudgingly. Take thee the gold, as much as thou demandest, and give me the precious ointment; take thee that which endures not and give me that which endures; and I will go to Him who endures, and will buy that which endures. And as to that thou saidst, about a merchant; a Man has met me today Who bears riches in abundance. He has robbed me and I have robbed Him; He has robbed
 ```
 
 **Grace Abounding, A Preface** (516 tokens, protestant)
@@ -353,7 +536,19 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 ## Tradition section headings (first 40 per source)
 
+**antony** — 65 sections: Athanasius, Life of Antony §1–2 · Athanasius, Life of Antony §3 · Athanasius, Life of Antony §4 · Athanasius, Life of Antony §5 · Athanasius, Life of Antony §6 · Athanasius, Life of Antony §8 · Athanasius, Life of Antony §9 · Athanasius, Life of Antony §10–11 · Athanasius, Life of Antony §12 · Athanasius, Life of Antony §13 · Athanasius, Life of Antony §14–15 · Athanasius, Life of Antony §16 · Athanasius, Life of Antony §17 · Athanasius, Life of Antony §18–19 · Athanasius, Life of Antony §20 · Athanasius, Life of Antony §21–22 · Athanasius, Life of Antony §23 · Athanasius, Life of Antony §25–26 · Athanasius, Life of Antony §27 · Athanasius, Life of Antony §29–30 · Athanasius, Life of Antony §31 · Athanasius, Life of Antony §32 · Athanasius, Life of Antony §33–34 · Athanasius, Life of Antony §35 · Athanasius, Life of Antony §36–37 · Athanasius, Life of Antony §38 · Athanasius, Life of Antony §39 · Athanasius, Life of Antony §40 · Athanasius, Life of Antony §41 · Athanasius, Life of Antony §42 · Athanasius, Life of Antony §43–44 · Athanasius, Life of Antony §45 · Athanasius, Life of Antony §46 · Athanasius, Life of Antony §47–48 · Athanasius, Life of Antony §49 · Athanasius, Life of Antony §50 · Athanasius, Life of Antony §51–52 · Athanasius, Life of Antony §53–54 · Athanasius, Life of Antony §54 · Athanasius, Life of Antony §54–57
+
+**aphrahat** — 106 sections: Aphrahat, Letter of an Inquirer §1–2 · Aphrahat, Demonstration I — Of Faith §1–2 · Aphrahat, Demonstration I — Of Faith §3 · Aphrahat, Demonstration I — Of Faith §4 · Aphrahat, Demonstration I — Of Faith §5 · Aphrahat, Demonstration I — Of Faith §6 · Aphrahat, Demonstration I — Of Faith §7–9 · Aphrahat, Demonstration I — Of Faith §10 · Aphrahat, Demonstration I — Of Faith §11 · Aphrahat, Demonstration I — Of Faith §11–14 · Aphrahat, Demonstration I — Of Faith §15 · Aphrahat, Demonstration I — Of Faith §16 · Aphrahat, Demonstration I — Of Faith §17 · Aphrahat, Demonstration I — Of Faith §18–19 · Aphrahat, Demonstration I — Of Faith §20 · Aphrahat, Demonstration V — Of Wars §1–2 · Aphrahat, Demonstration V — Of Wars §3 · Aphrahat, Demonstration V — Of Wars §5 · Aphrahat, Demonstration V — Of Wars §6 · Aphrahat, Demonstration V — Of Wars §7 · Aphrahat, Demonstration V — Of Wars §8 · Aphrahat, Demonstration V — Of Wars §10–11 · Aphrahat, Demonstration V — Of Wars §12–13 · Aphrahat, Demonstration V — Of Wars §14–15 · Aphrahat, Demonstration V — Of Wars §16 · Aphrahat, Demonstration V — Of Wars §17–19 · Aphrahat, Demonstration V — Of Wars §19 · Aphrahat, Demonstration V — Of Wars §21 · Aphrahat, Demonstration V — Of Wars §23 · Aphrahat, Demonstration V — Of Wars §24 · Aphrahat, Demonstration V — Of Wars §25 · Aphrahat, Demonstration VI — Of Monks §1 · Aphrahat, Demonstration VI — Of Monks §2 · Aphrahat, Demonstration VI — Of Monks §3 · Aphrahat, Demonstration VI — Of Monks §4 · Aphrahat, Demonstration VI — Of Monks §5 · Aphrahat, Demonstration VI — Of Monks §7 · Aphrahat, Demonstration VI — Of Monks §9 · Aphrahat, Demonstration VI — Of Monks §11 · Aphrahat, Demonstration VI — Of Monks §12
+
+**chrysostom_theodore** — 8 sections: John Chrysostom, Letter to Theodore after his Fall §1 · John Chrysostom, Letter to Theodore after his Fall §2 · John Chrysostom, Letter to Theodore after his Fall §2–8 · John Chrysostom, Letter to Theodore after his Fall §8 · John Chrysostom, Letter to Theodore after his Fall §15 · John Chrysostom, Second Letter to Theodore §1 · John Chrysostom, Second Letter to Theodore §2 · John Chrysostom, Second Letter to Theodore §3
+
 **confessions** — 13 sections: Confessions, Book I · Confessions, Book II · Confessions, Book III · Confessions, Book IV · Confessions, Book V · Confessions, Book VI · Confessions, Book VII · Confessions, Book VIII · Confessions, Book IX · Confessions, Book X · Confessions, Book XI · Confessions, Book XII · Confessions, Book XIII
+
+**cyril_repentance** — 13 sections: Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §3 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §4 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §5–6 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §7–8 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §9 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §11 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §12–13 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §14 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §15 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17 · Cyril of Jerusalem, Catechetical Lecture II, On Repentance §18–20
+
+**enoch** — 138 sections: Book of Enoch, Chapter I §1–9 · Book of Enoch, Chapter II §1–3 · Book of Enoch, Chapter III · Book of Enoch, Chapter IV · Book of Enoch, Chapter V §1–5 · Book of Enoch, Chapter VI §1 · Book of Enoch, Chapter VII §1 · Book of Enoch, Chapter VIII §1 · Book of Enoch, Chapter IX §1 · Book of Enoch, Chapter X §1 · Book of Enoch, Chapter XI §1 · Book of Enoch, Chapter XII §1–3 · Book of Enoch, Chapter XIII §1 · Book of Enoch, Chapter XIV §1 · Book of Enoch, Chapter XV §1 · Book of Enoch, Chapter XVI §1 · Book of Enoch, Chapter XVII §1 · Book of Enoch, Chapter XVIII §1 · Book of Enoch, Chapter XIX §1 · Book of Enoch, Chapter XX §1 · Book of Enoch, Chapter XXI §1 · Book of Enoch, Chapter XXII §1–9 · Book of Enoch, Chapter XXII §9 · Book of Enoch, Chapter XXIII §1 · Book of Enoch, Chapter XXIV §1 · Book of Enoch, Chapter XXV §1 · Book of Enoch, Chapter XXVI §1 · Book of Enoch, Chapter XXVII §1–4 · Book of Enoch, Chapter XXVIII §1 · Book of Enoch, Chapter XXIX §1 · Book of Enoch, Chapter XXX · Book of Enoch, Chapter XXXI §1 · Book of Enoch, Chapter XXXII §1–4 · Book of Enoch, Chapter XXXIII §1 · Book of Enoch, Chapter XXXIV §1 · Book of Enoch, Chapter XXXV §1 · Book of Enoch, Chapter XXXVI §1 · Book of Enoch, Chapter XXXVII §1 · Book of Enoch, Chapter XXXVIII §1–6 · Book of Enoch, Chapter XXXIX §1–8
+
+**ephrem** — 63 sections: Ephrem the Syrian, On Our Lord §1 · Ephrem the Syrian, On Our Lord §2 · Ephrem the Syrian, On Our Lord §2–5 · Ephrem the Syrian, On Our Lord §5 · Ephrem the Syrian, On Our Lord §5–7 · Ephrem the Syrian, On Our Lord §8–9 · Ephrem the Syrian, On Our Lord §10 · Ephrem the Syrian, On Our Lord §11 · Ephrem the Syrian, On Our Lord §12 · Ephrem the Syrian, On Our Lord §13 · Ephrem the Syrian, On Our Lord §14–15 · Ephrem the Syrian, On Our Lord §16 · Ephrem the Syrian, On Our Lord §17 · Ephrem the Syrian, On Our Lord §18–19 · Ephrem the Syrian, On Our Lord §20 · Ephrem the Syrian, On Our Lord §21 · Ephrem the Syrian, On Our Lord §21–22 · Ephrem the Syrian, On Our Lord §23–24 · Ephrem the Syrian, On Our Lord §25 · Ephrem the Syrian, On Our Lord §26 · Ephrem the Syrian, On Our Lord §27 · Ephrem the Syrian, On Our Lord §28 · Ephrem the Syrian, On Our Lord §30 · Ephrem the Syrian, On Our Lord §31 · Ephrem the Syrian, On Our Lord §33 · Ephrem the Syrian, On Our Lord §34 · Ephrem the Syrian, On Our Lord §35 · Ephrem the Syrian, On Our Lord §36 · Ephrem the Syrian, On Our Lord §37–38 · Ephrem the Syrian, On Our Lord §39 · Ephrem the Syrian, On Our Lord §40 · Ephrem the Syrian, On Our Lord §42 · Ephrem the Syrian, On Our Lord §44 · Ephrem the Syrian, On Our Lord §45 · Ephrem the Syrian, On Our Lord §46 · Ephrem the Syrian, On Our Lord §47 · Ephrem the Syrian, On Our Lord §49–50 · Ephrem the Syrian, On Our Lord §51 · Ephrem the Syrian, On Our Lord §52 · Ephrem the Syrian, On Our Lord §53–54
 
 **grace_abounding** — 110 sections: Grace Abounding, A Preface · Grace Abounding §1–4 · Grace Abounding §5–9 · Grace Abounding §10–14 · Grace Abounding §15–17 · Grace Abounding §18–21 · Grace Abounding §22–24 · Grace Abounding §25–28 · Grace Abounding §29–32 · Grace Abounding §33–36 · Grace Abounding §37–39 · Grace Abounding §40–43 · Grace Abounding §44 · Grace Abounding §45–47 · Grace Abounding §48–50 · Grace Abounding §51–53 · Grace Abounding §54–57 · Grace Abounding §58–62 · Grace Abounding §63–66 · Grace Abounding §67–70 · Grace Abounding §71–72 · Grace Abounding §73–76 · Grace Abounding §77–79 · Grace Abounding §80–83 · Grace Abounding §84–85 · Grace Abounding §86–88 · Grace Abounding §89–91 · Grace Abounding §92–94 · Grace Abounding §95–98 · Grace Abounding §99–102 · Grace Abounding §103–105 · Grace Abounding §106–109 · Grace Abounding §110–112 · Grace Abounding §113–116 · Grace Abounding §117–119 · Grace Abounding §120–121 · Grace Abounding §121–124 · Grace Abounding §125–128 · Grace Abounding §129–131 · Grace Abounding §132–136
 
@@ -404,6 +599,66 @@ Preface: 41 · ?: 20 · Maskaram: 115 · Teqemt: 103 · Hedar: 129 · Takhsas: 1
 - synaxarium: Ethiopian Synaxarium, Sane (part 3)
 
 ## OCR tuning aids
+
+### enoch: frequent short lines
+```
+103	The Book of Enoch By R.H. Charles
+103	www.globalgrey.co.uk
+5	G®
+```
+### enoch: 50 raw lines at 40%
+```
+And the blood of the righteous from the earth before the Lord of Spirits.
+2. In those days the holy ones who dwell above in the heavens
+Shall unite with one voice
+And supplicate and pray [and praise,
+And give thanks and bless the name of the Lord of Spirits]
+On behalf of the blood of the righteous which has been shed,
+And that the prayer of the righteous may not be in vain before the Lord of Spirits,
+That judgement may be done unto them,
+And that they may not have to suffer for ever.
+3. In those days | saw the Head of Days when He seated himself upon the throne of His
+glory,
+And the books of the living were opened before Him:
+And all His host which is in heaven above and His counselors stood before Him,
+4 And the hearts of the holy were filled with joy;
+Because the number of the righteous had been offered,
+www.globalgrey.co.uk
+The Book of Enoch By R.H. Charles
+And the prayer of the righteous had been heard,
+And the blood of the righteous been required before the Lord of Spirits.
+XLVIII. The Fount of Righteousness; the Son of Man--the Stay of the Righteous: Judgement of
+the Kings and the Mighty.
+CHAPTER XLVIII.
+1. And in that place | saw the fountain of righteousness
+Which was inexhaustible:
+And around it were many fountains of wisdom;
+And all the thirsty drank of them,
+And were filled with wisdom,
+And their dwellings were with the righteous and holy and elect.
+2. And at that hour that Son of Man was named In the presence of the Lord of Spirits,
+And his name before the Head of Days.
+3. Yea, before the sun and the signs were created,
+Before the stars of the heaven were made,
+His name was named before the Lord of Spirits.
+4. He shall be a staff to the righteous whereon to stay themselves and not fall,
+And he shall be the light of the Gentiles,
+And the hope of those who are troubled of heart.
+5. All who dwell on earth shall fall down and worship before him,
+And will praise and bless and celebrate with song the Lord of Spirits.
+6. And for this reason hath he been chosen and hidden before Him,
+Before the creation of the world and for evermore.
+7. And the wisdom of the Lord of Spirits hath revealed him to the holy and righteous;
+For he hath preserved the lot of the righteous,
+Because they have hated and despised this world of unrighteousness,
+And have hated all its works and ways in the name of the Lord of Spirits:
+For in his name they are saved,
+And according to his good pleasure hath it been in regard to their life.
+8. In these days downcast in countenance shall the kings of the earth have become,
+And the strong who possess the land because of the works of their hands;
+For on the day of their anguish and affliction they shall not (be able to) save themselves.
+9. And | will give them over into the hands of Mine elect:
+```
 
 ### lausiac: frequent short lines
 ```

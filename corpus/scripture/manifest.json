@@ -1,7 +1,55 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T09:51:44.418Z",
+  "generatedAt": "2026-09-28T10:44:42.171Z",
   "entries": [
+    {
+      "id": "antony",
+      "title": "Athanasius, Life of Antony (tr. H. Ellershaw, NPNF II/4)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:42.171Z",
+      "files": [
+        {
+          "name": "npnf204.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf204/cache/npnf204.txt",
+          "sha256": "d2f362ce989db6955bb7d900c619543c581beceaca52acd8359510551c85f124",
+          "bytes": 4570263
+        }
+      ]
+    },
+    {
+      "id": "aphrahat",
+      "title": "Aphrahat, Select Demonstrations (tr. J. Gwynn, NPNF II/13)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.199Z",
+      "files": [
+        {
+          "name": "npnf213.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+          "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
+          "bytes": 1921581
+        }
+      ]
+    },
+    {
+      "id": "chrysostom_theodore",
+      "title": "John Chrysostom, Letters to Theodore after his Fall (NPNF I/9)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:41.447Z",
+      "files": [
+        {
+          "name": "npnf109.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf109/cache/npnf109.txt",
+          "sha256": "d6a51d22d996e02c47b88462f7222737b26d2363212f24e34834cfc6b580da57",
+          "bytes": 2752950
+        }
+      ]
+    },
     {
       "id": "confessions",
       "title": "The Confessions of Saint Augustine (tr. E. B. Pusey)",
@@ -15,6 +63,55 @@
           "url": "https://www.gutenberg.org/cache/epub/3296/pg3296.txt",
           "sha256": "ef3fa6267968c875def9091a1882d14b525a85bbf6996a3e2f130a775b2e22d2",
           "bytes": 632170
+        }
+      ]
+    },
+    {
+      "id": "cyril_repentance",
+      "title": "Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.852Z",
+      "files": [
+        {
+          "name": "npnf207.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf207/cache/npnf207.txt",
+          "sha256": "56d84cfa94dee313af0139e2d7f3d4b5f7fffca40ce0f34794b5f56264964dfd",
+          "bytes": 3388014
+        }
+      ]
+    },
+    {
+      "id": "enoch",
+      "title": "The Book of Enoch (tr. R. H. Charles, 1917)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1917; Charles d. 1931)",
+      "retrievedAt": "2026-09-28T10:44:39.448Z",
+      "files": [
+        {
+          "name": "BookOfEnoch_1917_djvu.txt",
+          "url": "https://archive.org/download/book-of-enoch_1917/BookOfEnoch_1917_djvu.txt",
+          "sha256": "ab4ce3809175c8aaf50eb8b7fad5de744f1a27f0ce6a8e4095560438132f10c7",
+          "bytes": 262450,
+          "archiveId": "book-of-enoch_1917"
+        }
+      ]
+    },
+    {
+      "id": "ephrem",
+      "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.097Z",
+      "files": [
+        {
+          "name": "npnf213.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+          "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
+          "bytes": 1921581
         }
       ]
     },
