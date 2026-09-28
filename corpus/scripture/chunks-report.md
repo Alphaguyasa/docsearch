@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-27T19:29:16.850Z
+Generated 2026-09-28T09:17:19.096Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -115,6 +115,10 @@ Generated 2026-09-27T19:29:16.850Z
 - ✅ robber_captain / restoration: `Ethiopian Synaxarium, Takhsas` → 1 chunk(s) (Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” (part 3))
 - ✅ envious_elder / restoration: `Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…”` → 1 chunk(s) (Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…” (part 29))
 - ✅ gelasius_cook / restoration: `Ethiopian Synaxarium, Yakatit` → 1 chunk(s) (Ethiopian Synaxarium, Yakatit (part 3))
+- ✅ zechariah / fall: `Luke 1:18-20` → 1 chunk(s) (Luke 1:18-28)
+- ✅ zechariah / restoration: `Luke 1:63-64` → 1 chunk(s) (Luke 1:63-76)
+- ✅ joseph_of_arimathea / fall: `John 19:38` → 1 chunk(s) (John 19:31-42)
+- ✅ joseph_of_arimathea / restoration: `Mark 15:43` → 1 chunk(s) (Mark 15:35-47)
 
 ## Samples
 
