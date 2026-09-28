@@ -4,7 +4,10 @@ Someone writes what they are struggling with. The app answers with the true,
 cited story of a holy person who fell the same way and was restored — from
 Scripture (World English Bible with deuterocanon) and the Church Fathers
 (Augustine's *Confessions*, the *Lausiac History*, Budge's *Paradise of the
-Holy Fathers* and the Ethiopian Synaxarium).
+Holy Fathers* and the Ethiopian Synaxarium), plus Thomas à Kempis's *Imitation
+of Christ* (Catholic) and Bunyan's *Grace Abounding* (Protestant). Those two
+texts number their own paragraphs, so their refs cite them: "Grace Abounding
+§45–47", "The Imitation of Christ, Book I, Chapter XIII §2–4".
 
 ## Request path (`POST /api/search`)
 

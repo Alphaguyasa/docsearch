@@ -37,6 +37,10 @@ interface TextRule {
   defaultHeading: string;
   /** OCR sources: rule-driven sections instead of generic heading detection. */
   sections?: SectionRule;
+  /** The text numbers its own paragraphs: refs become "§12–15" (see chunkSections). */
+  paragraphNumbers?: boolean;
+  /** Rename detected headings (exact match); "" leaves just the work's name in the ref. */
+  renameHeadings?: Record<string, string>;
 }
 
 /** Footnotes and index lines common to the OCR scans. */
@@ -44,6 +48,46 @@ const FOOTNOTE = /^[\^*†‡§]\s?|^\d{1,2}\s+(Lit\.|Cf\.|See|Or|i\.e\.|Reading
 const INDEX_LINE = /\d+\s*,\s*\d+/;
 
 export const TEXT_RULES: Record<string, TextRule> = {
+  imitation: {
+    refPrefix: "The Imitation of Christ",
+    traditions: ["catholic", "protestant"],
+    clean: {
+      startAt: /^THE FIRST BOOK$/,
+      endAt: /^\*\*\* ?END OF (THE|THIS) PROJECT GUTENBERG/i,
+      // Book subtitles ("ADMONITIONS PROFITABLE FOR THE SPIRITUAL LIFE") and footnote lines ("(1) John viii. 12.").
+      dropLines: [/^(?!CHAPTER |THE \w+ BOOK$)[A-Z][A-Z ,]+$/, /^\(\d+\)\s/],
+      // Footnote calls sit on the word: "darkness,(1)".
+      inline: [/(?<=\S)\(\d+\)/g],
+    },
+    defaultHeading: "Book I",
+    sections: {
+      runningContext: /^THE (FIRST|SECOND|THIRD|FOURTH) BOOK$/,
+      contextLabel: (n: string) => `Book ${{ FIRST: "I", SECOND: "II", THIRD: "III", FOURTH: "IV" }[n] ?? n}`,
+      sectionStart: /^CHAPTER [IVXLC]+$/,
+      name: "contextLine",
+    },
+    paragraphNumbers: true,
+  },
+  grace_abounding: {
+    refPrefix: "Grace Abounding",
+    traditions: ["protestant"],
+    clean: {
+      startAt: /^A PREFACE$/,
+      endAt: /^FOOTNOTES$/,
+      dropLines: [
+        /^\[Picture:/,
+        /^JOHN BUNYAN\.$/,
+        // Sub-titles under the preface and the main title.
+        /^(OR, BRIEF ACCOUNT|THEREOF, AND DEDICATED|TO FAITH, BY HIS MINISTRY|A BRIEF RELATION OF THE EXCEEDING|SERVANT, JOHN BUNYAN)/,
+      ],
+      // Page-note markers ("{7}", "{187a}"); underscores mark italics.
+      inline: [/\{\d+[a-z]?\}/g],
+      strip: /_/g,
+    },
+    defaultHeading: "A Preface",
+    paragraphNumbers: true,
+    renameHeadings: { "GRACE ABOUNDING TO THE CHIEF OF SINNERS": "" },
+  },
   confessions: {
     refPrefix: "Confessions",
     traditions: ALL,
@@ -147,14 +191,15 @@ export function buildSource(rawDir: string, manifest: Manifest, sourceId: string
   const lines = entry.files.flatMap((f) =>
     cleanText(readFileSync(join(rawDir, sourceId, f.name), "utf8"), rule.clean),
   );
-  const sections = rule.sections
-    ? sectionize(lines, rule.sections, rule.defaultHeading)
-    : toSections(lines, rule.defaultHeading);
+  const sections = (
+    rule.sections ? sectionize(lines, rule.sections, rule.defaultHeading) : toSections(lines, rule.defaultHeading)
+  ).map((s) => (rule.renameHeadings && s.heading in rule.renameHeadings ? { ...s, heading: rule.renameHeadings[s.heading] } : s));
   const chunks = chunkSections(sections, {
     sourceId,
     title: entry.title,
     refPrefix: rule.refPrefix,
     traditions: rule.traditions,
+    paragraphNumbers: rule.paragraphNumbers,
   });
   return { chunks, skippedBooks: [] };
 }
