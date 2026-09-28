@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-28T11:23:27.592Z
+Generated 2026-09-28T11:55:34.613Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -13,6 +13,7 @@ Generated 2026-09-28T11:23:27.592Z
 | ephrem | 1 | 76 | 36000 | 474 | 613 |
 | grace_abounding | 1 | 150 | 76581 | 511 | 624 |
 | imitation | 1 | 201 | 85196 | 424 | 614 |
+| jubilees | 1 | 169 | 72266 | 428 | 612 |
 | kebra_nagast | 1 | 252 | 109086 | 433 | 617 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
@@ -20,7 +21,7 @@ Generated 2026-09-28T11:23:27.592Z
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 7492 chunks, 3174501 tokens ≈ 5.3 h of embedding at 10000 TPM.
+**Total:** 7661 chunks, 3246767 tokens ≈ 5.4 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -128,6 +129,8 @@ Generated 2026-09-28T11:23:27.592Z
 - ✅ zechariah / restoration: `Luke 1:63-64` → 1 chunk(s) (Luke 1:63-76)
 - ✅ joseph_of_arimathea / fall: `John 19:38` → 1 chunk(s) (John 19:31-42)
 - ✅ joseph_of_arimathea / restoration: `Mark 15:43` → 1 chunk(s) (Mark 15:35-47)
+- ✅ solomon / fall: `1 Kings 11:1-10` → 1 chunk(s) (1 Kings 10:23-11:10)
+- ✅ solomon / restoration: `Kebra Nagast, Chapter 65` → 1 chunk(s) (Kebra Nagast, Chapter 65: Concerning The Sin Of Solomon)
 
 ## Samples
 
@@ -389,6 +392,31 @@ The Voice of the Beloved
 As I of my own will offered myself unto God the Father on the Cross for thy sins with outstretched hands and naked body, so that nothing remained in Me that did not become altogether a sacrifice for the Divine propitiation; so also oughtest thou every day to offer thyself willingly unto Me for a pure and holy oblation with all thy strength and affections, even to the utmost powers of thine heart. What more do I require of thee than thou study to resign thyself altogether unto Me? Whatsoever thou givest besides thyself, I nothing care for, for I 
 ```
 
+**Book of Jubilees, Prologue** (115 tokens, ethiopian_orthodox)
+```
+Book of Jubilees, Prologue
+
+This is the history of the division of the days of the law and of the testimony, of the events of the years, of their (year) weeks, of their jubilees throughout all the years of the world, as the Lord spake to Moses on Mount Sinai when he went up to receive the tables of the law and of the commandment, according to the voice of God as He said unto him, " Go up to the top of the Mount."
+
+God's Revelation tc Moses on Mount Sinai
+```
+
+**Book of Jubilees, Chapter XXIII (part 4)** (594 tokens, ethiopian_orthodox)
+```
+Book of Jubilees, Chapter XXIII (part 4)
+
+18. Behold the earth will be destroyed on account of all their works, and there will be no seed of the vine, and no oil; for their works are altogether faith^ss, (and they will all perish together, beasts and cattle arid birds, and all the fish of the sea, on account 01 the children of men. 19. And they will strive one with another, the young with the old, and the old with the young, the poor with the rich, and the lowly with the great, and the beggar with the prince, on account of the law and the covenant; for they have forgotten commandment, and covenant, and feasts, and months, and Sabbaths, and jubilees, and all judgments. 20. And they will stand
+```
+
+**Book of Jubilees, Chapter XLIV (part 3)** (203 tokens, ethiopian_orthodox)
+```
+Book of Jubilees, Chapter XLIV (part 3)
+
+30. And these are the names of the sons of Naphtali : Jahziel, and Guni, and Jezer, and Shallum, and 'Iv. 31. And 'Iv, who was born after the years of famine, died in Egypt. 32. And all the souls of Rachel were twenty-six. 33. And all the souls of Jacob which went into Egypt were seventy souls. These are his children and his children's children, in all seventy; but five died in Egypt before Joseph, and had no children. 34. And in (he land of Canaan two sons of Judah died, Er and Onan, and they had no children, and the children of Israel buried those who perished, and they were reckoned among the seventy Gentile nations.
+
+Joseph receives Jacob. The Lan
+```
+
 **Kebra Nagast, The Glory of Kings** (99 tokens, ethiopian_orthodox)
 ```
 Kebra Nagast, The Glory of Kings
@@ -584,6 +612,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 **imitation** — 201 sections: The Imitation of Christ, Book I, Chapter I §1–5 · The Imitation of Christ, Book I, Chapter II §1–4 · The Imitation of Christ, Book I, Chapter III §1–3 · The Imitation of Christ, Book I, Chapter III §4–6 · The Imitation of Christ, Book I, Chapter IV §1–2 · The Imitation of Christ, Book I, Chapter V §1–2 · The Imitation of Christ, Book I, Chapter VI §1–2 · The Imitation of Christ, Book I, Chapter VII §1–3 · The Imitation of Christ, Book I, Chapter VIII §1–2 · The Imitation of Christ, Book I, Chapter IX §1–3 · The Imitation of Christ, Book I, Chapter X §1–2 · The Imitation of Christ, Book I, Chapter XI §1–4 · The Imitation of Christ, Book I, Chapter XI §5–6 · The Imitation of Christ, Book I, Chapter XII §1–2 · The Imitation of Christ, Book I, Chapter XIII §1–4 · The Imitation of Christ, Book I, Chapter XIII §5–7 · The Imitation of Christ, Book I, Chapter XIII §8 · The Imitation of Christ, Book I, Chapter XIV §1–3 · The Imitation of Christ, Book I, Chapter XV §1–3 · The Imitation of Christ, Book I, Chapter XVI §1–4 · The Imitation of Christ, Book I, Chapter XVII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §4–6 · The Imitation of Christ, Book I, Chapter XIX §1–3 · The Imitation of Christ, Book I, Chapter XIX §4–6 · The Imitation of Christ, Book I, Chapter XIX §7 · The Imitation of Christ, Book I, Chapter XX §1–4 · The Imitation of Christ, Book I, Chapter XX §5–7 · The Imitation of Christ, Book I, Chapter XX §8 · The Imitation of Christ, Book I, Chapter XXI §1–3 · The Imitation of Christ, Book I, Chapter XXI §4–6 · The Imitation of Christ, Book I, Chapter XXII §1–3 · The Imitation of Christ, Book I, Chapter XXII §4–6 · The Imitation of Christ, Book I, Chapter XXII §7 · The Imitation of Christ, Book I, Chapter XXIII §1–3 · The Imitation of Christ, Book I, Chapter XXIII §4–7 · The Imitation of Christ, Book I, Chapter XXIII §8–9 · The Imitation of Christ, Book I, Chapter XXIV §1–3 · The Imitation of Christ, Book I, Chapter XXIV §4–5 · The Imitation of Christ, Book I, Chapter XXIV §6–7
 
+**jubilees** — 45 sections: Book of Jubilees, Prologue · Book of Jubilees, Chapter I · Book of Jubilees, Chapter II · Book of Jubilees, Chapter III · Book of Jubilees, Chapter IV · Book of Jubilees, Chapter V · Book of Jubilees, Chapters VI–VII · Book of Jubilees, Chapter VIII · Book of Jubilees, Chapter IX · Book of Jubilees, Chapters X–XI · Book of Jubilees, Chapter XII · Book of Jubilees, Chapter XIII · Book of Jubilees, Chapter XIV · Book of Jubilees, Chapter XV · Book of Jubilees, Chapter XVI · Book of Jubilees, Chapter XVII · Book of Jubilees, Chapter XVIII · Book of Jubilees, Chapter XIX · Book of Jubilees, Chapters XX–XXI · Book of Jubilees, Chapter XXII · Book of Jubilees, Chapter XXIII · Book of Jubilees, Chapter XXIV · Book of Jubilees, Chapter XXV · Book of Jubilees, Chapter XXVI · Book of Jubilees, Chapter XXVII · Book of Jubilees, Chapter XXVIII · Book of Jubilees, Chapter XXIX · Book of Jubilees, Chapter XXX · Book of Jubilees, Chapter XXXI · Book of Jubilees, Chapter XXXII · Book of Jubilees, Chapter XXXIII · Book of Jubilees, Chapters XXXIV–XXXVI · Book of Jubilees, Chapter XXXVII · Book of Jubilees, Chapter XXXVIII · Book of Jubilees, Chapter XXXIX · Book of Jubilees, Chapters XL–XLI · Book of Jubilees, Chapter XLII · Book of Jubilees, Chapter XLIII · Book of Jubilees, Chapter XLIV · Book of Jubilees, Chapter XLV
+
 **kebra_nagast** — 114 sections: Kebra Nagast, The Glory of Kings · Kebra Nagast, Chapter 1: Concerning The Glory Of Kings · Kebra Nagast, Chapter 2: Concerning The Greatness Of Kings · Kebra Nagast, Chapter 3: Concerning The Kingdom Of Adam · Kebra Nagast, Chapter 4: Concerning Envy · Kebra Nagast, Chapter 5: Concerning The Kingdom Of Seth · Kebra Nagast, Chapter 6: Concerning The Sin Of Cain · Kebra Nagast, Chapter 7: Concerning Noah · Kebra Nagast, Chapter 8: Concerning The Flood · Kebra Nagast, Chapter 9: Concerning The Covenant Of Noah · Kebra Nagast, Chapter 10: Concerning Zion · Kebra Nagast, Chapter 11: The Unanimous Declaration Of The Three Hundred And Eighteen Orthodox Fathers · Kebra Nagast, Chapter 12: Concerning Canaan L · Kebra Nagast, Chapter 13: Concerning Abraham · Kebra Nagast, Chapter 14: Concerning The Covenant Of Abraham · Kebra Nagast, Chapter 15: Concerning Isaac And Jacob · Kebra Nagast, Chapter 16: Concerning Robel (Reuben) · Kebra Nagast, Chapters 17–18: Concerning The Glory Of Zion · Kebra Nagast, Chapter 19: How This Book Came To Be Found · Kebra Nagast, Chapter 20: Concerning The Division Of The Earth · Kebra Nagast, Chapter 21: Concerning The Queen Of The South · Kebra Nagast, Chapter 22: Concerning Tamrin, The Merchant · Kebra Nagast, Chapter 23: How The Merchant Returned To Ethiopia · Kebra Nagast, Chapter 24: How The Queen Made Ready To Set Out On Her Journey · Kebra Nagast, Chapter 25: How The Queen Came To Solomon The King · Kebra Nagast, Chapter 26: How The King Held Converse With The Queen · Kebra Nagast, Chapter 27: Concerning The Labourer · Kebra Nagast, Chapter 28: How Solomon Gave Commandments To The Queen · Kebra Nagast, Chapter 29: Concerning The Three Hundred And Eighteen [Patriarchs] · Kebra Nagast, Chapter 30: Concerning How King Solomon Swore To The Queen · Kebra Nagast, Chapter 31: Concerning The Sign Which Solomon Gave The Queen · Kebra Nagast, Chapter 32: How The Queen Brought Forth And Came To Her Own Country · Kebra Nagast, Chapter 33: How The King Of Ethiopia Travelled · Kebra Nagast, Chapter 34: How The Young Man Arrived In His Mother's Country · Kebra Nagast, Chapter 35: How King Solomon Sent To His Son The Commander Of His Army · Kebra Nagast, Chapter 36: How King Solomon Held Intercourse With His · Kebra Nagast, Chapter 37: How Solomon Asked His Son Questions · Kebra Nagast, Chapter 38: How The King Planned To Send Away His Son With The Children Of The Nobles · Kebra Nagast, Chapter 39: How They Made The Son Of Solomon King · Kebra Nagast, Chapter 40: How Zadok The Priest Gave Commands To David The King
 
 **lausiac** — 50 sections: Lausiac History, Prologue · Lausiac History, LXX. A Reader Unjustly Accused · Lausiac History, Introduction · Lausiac History, Dorotheus · Lausiac History, Didymus · Lausiac History, Alexandra · Lausiac History, The Rich Virgin · Lausiac History, The Monks Of Nitria · Lausiac History, Amoun Of Nitria · Lausiac History, Pambo · Lausiac History, Ammonius · Lausiac History, Apollonius · Lausiac History, Macarius The Younger · Lausiac History, Nathanael · Lausiac History, Macarius Of Egypt · Lausiac History, Macarius Of Alexandria · Lausiac History, Moses The Robber · Lausiac History, Eulogius And The Cripple · Lausiac History, Paul The Simple · Lausiac History, Pachon · Lausiac History, Stephen · Lausiac History, Valens · Lausiac History, Heron · Lausiac History, Ptolemy · Lausiac History, Elias · Lausiac History, Pachomius And The Tabennesiots · Lausiac History, The Tabennesiot Nuns · Lausiac History, The Nun Who Feigned Madness · Lausiac History, John Of Lycopolis · Lausiac History, Posidonius · Lausiac History, Sarapion The Sindonite · Lausiac History, Evagrius · Lausiac History, Ephraim · Lausiac History, Holy Women · Lausiac History, Julian · Lausiac History, Adolius · Lausiac History, Philoromus · Lausiac History, Melania The Elder · Lausiac History, Chronius And Paphnutius · Lausiac History, Elpidius
@@ -690,6 +720,111 @@ And according to his good pleasure hath it been in regard to their life.
 And the strong who possess the land because of the works of their hands;
 For on the day of their anguish and affliction they shall not (be able to) save themselves.
 9. And | will give them over into the hands of Mine elect:
+```
+
+### jubilees: frequent short lines
+```
+41	#
+10	INDEX
+9	#-#
+4	note
+4	xxxiv. #
+```
+### jubilees: context around "Moses" (line 78)
+```
+cheap and handy form. In one or two cases texts
+have been included of books which are available
+in the official Apocrypha; but in every such case
+reasons exist for putting forth these texts in a new
+translation, with an Introduction, in this series.
+We desire to express our thanks to Canon Charles
+and Messrs. A. and C. Black, for their permission to
+reprint here the translation of The Hook of Jubilees,
+published in 1902.
+W. 0. E. Oesterley.
+G. II Box.
+INTRODUCTION
+Short Account of the Book
+The Book of Jubilees, or, as it is sometimes called,
+" the little Genesis," purports to be a revelation
+given by God to Moses through the medium of an
+angel (" the Angel of the Presence," i. 27), and con-
+taining a history, divided up into jubilee-periods of
+forty-nine years, from the creation to the coming of
+Moses. Though the actual narrative of events is
+only carried down to the birth and early career of
+Moses, its author envisages the events of a later time,
+and in particular certain events of special interest
+at the time when he wrote, which was probably in the
+latter years of the second century B.C., perhaps in the
+reign_ of the Maccabean prince John Hyrcanus.
+Though "distinguished from the Pentateuch proper
+(" the first Law," vi. 22), it presupposes and supple-
+ments the latter. The actual narrative embraces
+material contained in the whole of Genesis and part
+of Exodus. But the legal regulations given pre-
+suppose other parts of the Pentateuch, especially
+the so-called " Priest's Code " (P), and certain details
+in the narrative are probably intended to apply to
+events that occurred in the author's own time (the
+latter years of the second century B.C.). The author
+himself seems to have contemplated the speedy
+inauguration of the Messianic Age, and in this respect
+his point of view is similar to that of the Apocalyptic
+writers. But his work, though it contains one or two
+```
+### jubilees: 50 raw lines at 40%
+```
+the month,8 Abram celebrated the feast of the first-
+fruitS* ot trie grain harvest. 2. And he offered new
+offerings on the altar, the first-fruits of the produce,
+unto the Lord, an heifer and a goat and a sheep on
+the altar as a burnt sacrifice unto the Lord ; their
+fruit-offerings and their drink-offerings he offered
+upon the altar with frankincense.4 3. And the Lord
+appeared to Abram, and said unto him : " I am God
+Almighty ; approve thyself before Me and be thou
+perfect. 4. And I will make My covenant between
+1 Read " third." ■ i. e. the 15th of Sivan.
+* i. e. the Feast of Weeks. The Pharisees celebrated this
+feast not on Sivan 15th, but on Sivan 6th. See further
+Introduction.
+4 Cf. xiv. 9. The offerings prescribed for this festival in
+Lev. xxiii. 1&-20 are different.
+chap, xv] THE BOOK OF JUBILEES 99
+Me and thee, and I will multiply thee exceedingly." l
+5.' And Abram fell on his face, and God talked with
+him, and said :
+6. " Behold My ordinance is with thee,
+And thou wilt be the father of many nations.
+7. Neither will thy name any more be called Abram,
+But thy name from henceforth, even for ever,
+shall be Abraham.
+For the father of many nations have I made thee.
+8. And I shall make thee very great,
+And I shall make thee into nations,
+And kings will come forth from thee.
+9. And I shall establish My covenant between Me and
+thee, and thy seed after thee, throughout their
+generations, for an eternal covenant, so that I may
+be a God unto thee, and to thy seed after thee. 10.
+(And I shall give to thee and to thy seed after thee) 8
+the land where thou hast been a sojourner, the land
+of Canaan, that thou mayst possess it for ever, and I
+shall be their God." II.1 And the Lord said unto
+Abraham : " And as for thee, do thou keep My
+Covenant, thou and thy seed after thee ; and circum-
+cise ye every male among you, and circumcise your
+foresKins, and it will be a token of an eternal covenant
+between Me and you. 12. And the child on the
+eighth day 6 ye will circumcise, every male throughout
+your generations, him that is born in the house, or
+whom ye have bought with money from any stranger,
+whom ye have acquired who is not of thy seed. 13.
+He that is born in thy house will surely be circum-
+cised, and those whom thou hast bought with money
+will be circumcised, and My covenant will be in your
+1 For 3-4 cf. Gen. xvii. i f.
 ```
 
 ### kebra_nagast: frequent short lines

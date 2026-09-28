@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T11:21:21.093Z",
+  "generatedAt": "2026-09-28T11:54:12.791Z",
   "entries": [
     {
       "id": "antony",
@@ -144,6 +144,23 @@
           "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
           "sha256": "7631799607b0ede62f1bd7ed2a8eb62d89524451a3c41e9ad2b5cbf4c2aa5383",
           "bytes": 374954
+        }
+      ]
+    },
+    {
+      "id": "jubilees",
+      "title": "The Book of Jubilees (tr. R. H. Charles, 1917)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1917; Charles d. 1931)",
+      "retrievedAt": "2026-09-28T11:54:12.791Z",
+      "files": [
+        {
+          "name": "bookofjubileesor01char_djvu.txt",
+          "url": "https://archive.org/download/bookofjubileesor01char/bookofjubileesor01char_djvu.txt",
+          "sha256": "2832a6254614cb59fcec82d1b52f8d2258063af0eb089580d41c91eeacc7d10d",
+          "bytes": 526384,
+          "archiveId": "bookofjubileesor01char"
         }
       ]
     },

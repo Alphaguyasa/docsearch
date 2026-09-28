@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-28T11:21:21.093Z
+Generated 2026-09-28T11:54:12.791Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -222,6 +222,50 @@ question  him,  even  before  he  had  presented  his  gift
 and  embassy,  and  said  unto  him,  "  Hast  thou  seen
 men  of  Ethiopia  fleeing  by  this  road  ?  "  And  the
 ambassador  of  Pharaoh  answered  and  said  unto  the
+```
+
+## jubilees — The Book of Jubilees (tr. R. H. Charles, 1917)
+- pinned: bookofjubileesor01char
+
+#### `bookofjubileesor01char_djvu.txt` (archive id `bookofjubileesor01char`) — 526384 bytes
+9603 non-empty lines. First 25:
+```
+PROPERTY  OF:
+DAVID  0.  McKAY  LIBRARY
+BYU-IDAHO
+REXBURG  ID  83460-0405
+DAVID  O.  MCKAY  LIBRARY
+31404  007861492
+DATE  DUE
+\V>IAM  1  S  2006
+1&
+-
+-
+OCT  2  4  2009
+2010
+FZDt3"
+Demco
+TRANSLATIONS   OF   EARLY    DOCUMENTS
+SERIES   I
+PALESTINIAN    JEWISH    TEXTS
+(PRE-RABB1NIC)
+THE    BOOK   OF   JUBILEES
+OR
+THE    LITTLE   GENESIS
+Digitized  by  the  Internet  Archive
+in  2013
+http://archive.org/details/bookofjubileesor01char
+```
+Sample from the middle:
+```
+26.  And  he  went  out  from  him  rejoicing.
+Isaac,  Ishmael  and  Jacob  join  in  Festival  with
+Abraham  for  the  Last  Time.  Abraham's
+Prayer  (xxii.  1-9).
+XXII.  And  it  came  to  pass  in  the  fhrstf  2  week
+in  the  fforty-fourthf  3  jubilee,  in  the  jsecondf  year,
+that  is,  the  year  in  which  Abraham  died,  that  Isaac
+and  Ishmael  came  from  the  Well  of  the  Oath  to
 ```
 
 ## ephrem — Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)
