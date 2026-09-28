@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { ensureDailyStory } from "@/lib/channel";
 import { FIGURES } from "@/lib/scripture/figures";
+import { AMHARIC_BIBLE_NOTICE, amharicPassage } from "@/lib/scripture/amharic";
 import { figureStory, type StoryPart } from "@/lib/scripture/retrieve-struggle";
 import { SITE_URL } from "@/lib/telegram";
 
@@ -167,21 +168,45 @@ export default async function PersonPage({ params }: Params) {
                 {(i === 0 || parts![i - 1].role !== part.role) && (
                   <h2 className="font-display text-3xl font-semibold sm:text-4xl">{heading[part.role]}</h2>
                 )}
-                <ol className="mt-6 space-y-8">
-                  {part.passages.map((p) => (
-                    <li key={p.id} className="border-l-2 border-gold/60 pl-5">
-                      <cite className="text-sm font-medium not-italic text-gold">{p.ref}</cite>
-                      <blockquote
-                        lang="en"
-                        className="mt-2 whitespace-pre-wrap font-serif text-[18px] leading-8 text-foreground/90"
-                      >
-                        {p.content}
-                      </blockquote>
-                    </li>
-                  ))}
-                </ol>
+                {(() => {
+                  // Amharic readers get the 1962 Amharic Bible's words first, the English below.
+                  const am = lang === "am" ? amharicPassage(part.ref) : null;
+                  const english = (
+                    <ol className="mt-6 space-y-8">
+                      {part.passages.map((p) => (
+                        <li key={p.id} className="border-l-2 border-gold/60 pl-5">
+                          <cite className="text-sm font-medium not-italic text-gold">{p.ref}</cite>
+                          <blockquote
+                            lang="en"
+                            className="mt-2 whitespace-pre-wrap font-serif text-[18px] leading-8 text-foreground/90"
+                          >
+                            {p.content}
+                          </blockquote>
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                  if (!am) return english;
+                  return (
+                    <>
+                      <div className="mt-6 border-l-2 border-gold/60 pl-5">
+                        <cite className="text-sm font-medium not-italic text-gold">{am.ref}</cite>
+                        <blockquote lang="am" className="mt-2 font-serif text-[19px] leading-9 text-foreground/90">
+                          {am.text}
+                        </blockquote>
+                      </div>
+                      <details className="mt-4 text-muted">
+                        <summary className="cursor-pointer text-sm underline underline-offset-4">{tp.inEnglish}</summary>
+                        {english}
+                      </details>
+                    </>
+                  );
+                })()}
               </section>
             ))}
+            {lang === "am" && parts.some((part) => amharicPassage(part.ref)) && (
+              <p className="mt-10 text-xs text-muted">{AMHARIC_BIBLE_NOTICE}</p>
+            )}
           </>
         ) : (
           <div>

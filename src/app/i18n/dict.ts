@@ -179,6 +179,7 @@ const en = {
         manasseh: "King Manasseh’s prayer of repentance",
       },
       note: "World English Bible.",
+      noteAm: "1962 Amharic Bible.",
     },
     feedback: {
       question: "Did this story help you?",
@@ -219,6 +220,7 @@ const en = {
   },
   person: {
     back: "All people",
+    inEnglish: "Read it in English (World English Bible)",
     readStory: "Read their story",
     fall: "The fall",
     rise: "The restoration",
@@ -473,6 +475,7 @@ const am: Dict = {
         manasseh: "የንጉሥ ምናሴ የንስሐ ጸሎት",
       },
       note: "ከዓለም እንግሊዝኛ መጽሐፍ ቅዱስ (WEB) የተወሰደ። በአማርኛ መጽሐፍ ቅዱስዎ ከላይ ባለው ቦታ ያንብቡት።",
+      noteAm: "ከ1962ቱ የአማርኛ መጽሐፍ ቅዱስ።",
     },
     feedback: {
       question: "ይህ ታሪክ ረድቶዎታል?",
@@ -513,6 +516,7 @@ const am: Dict = {
   },
   person: {
     back: "ሁሉም ሰዎች",
+    inEnglish: "በእንግሊዝኛ ያንብቡት (World English Bible)",
     readStory: "ታሪካቸውን ያንብቡ",
     fall: "ውድቀቱ",
     rise: "መታደሱ",

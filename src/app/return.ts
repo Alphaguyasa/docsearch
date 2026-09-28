@@ -12,6 +12,8 @@ export interface ReturnStep {
   /** Where to find it in an Amharic (Ethiopian) Bible; Psalms are numbered one lower there. */
   refAm: string;
   quote: string;
+  /** The same words in the 1962 Amharic Bible (checked by a test); none for the Synaxarium. */
+  quoteAm?: string;
   en: { title: string; body: string };
   am: { title: string; body: string };
 }
@@ -41,6 +43,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     ref: "Malachi 3:7",
     refAm: "ሚልክያስ 3፥7",
     quote: "Return to me, and I will return to you",
+    quoteAm: "ወደ እኔ ተመለሱ፥ እኔም ወደ እናንተ እመለሳለሁ",
     en: {
       title: "He is the one calling you back",
       body: "Coming back does not start with you being good enough. God asks you to return, and promises to meet you.",
@@ -56,6 +59,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     refAm: "መዝሙረ ዳዊት 31 (32)፥5",
     quote:
       "I acknowledged my sin to you. I didn’t hide my iniquity. I said, I will confess my transgressions to Yahweh, and you forgave the iniquity of my sin.",
+    quoteAm: "ኃጢአቴን ለአንተ አስታወቅሁ፥ በደሌንም አልሸፈንሁም፤ ለእግዚአብሔር መተላለፌን እነግራለሁ አልሁ፤ አንተም የልቤን ኃጢአት ተውህልኝ።",
     en: {
       title: "Tell God the truth",
       body: "Say plainly what you did, without hiding or excusing it. David did, and was forgiven.",
@@ -71,6 +75,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     refAm: "ሉቃስ 15፥18፣ 20",
     quote:
       "I will get up and go to my father … But while he was still far off, his father saw him and was moved with compassion, and ran, fell on his neck, and kissed him.",
+    quoteAm: "ተነሥቼም ወደ አባቴ እሄዳለሁ … እርሱም ገና ሩቅ ሳለ አባቱ አየውና አዘነለት፥ ሮጦም አንገቱን አቀፈውና ሳመው።",
     en: {
       title: "Get up and go",
       body: "The son did not wait until he felt worthy. He started walking — and his father ran to him.",
@@ -85,6 +90,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     ref: "James 5:16",
     refAm: "ያዕቆብ 5፥16",
     quote: "Confess your sins to one another and pray for one another, that you may be healed.",
+    quoteAm: "እርስ በርሳችሁ በኃጢአታችሁ ተናዘዙ። ትፈወሱም ዘንድ እያንዳንዱ ስለ ሌላው ይጸልይ፤",
     en: {
       title: "Confess it to a person",
       body: "Healing comes when it is said out loud to someone who will pray for you. In the Orthodox Church this is your father of confession. If you don’t have one, go to your parish church and ask a priest.",
@@ -100,6 +106,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     refAm: "1ኛ ዮሐንስ 1፥9",
     quote:
       "If we confess our sins, he is faithful and righteous to forgive us the sins and to cleanse us from all unrighteousness.",
+    quoteAm: "በኃጢአታችን ብንናዘዝ ኃጢአታችንን ይቅር ሊለን ከዓመፃም ሁሉ ሊያነጻን የታመነና ጻድቅ ነው።",
     en: {
       title: "Believe you are forgiven",
       body: "Forgiveness does not depend on how you feel afterwards. It rests on God being faithful. Shame does not get the last word.",
@@ -129,6 +136,7 @@ export const RETURN_STEPS: ReturnStep[] = [
     ref: "Isaiah 1:18",
     refAm: "ኢሳይያስ 1፥18",
     quote: "Though your sins are as scarlet, they shall be as white as snow.",
+    quoteAm: "ኃጢአታችሁ እንደ አለላ ብትሆን እንደ አመዳይ ትነጻለች፤",
     en: {
       title: "Start again, clean",
       body: "What you did is not who you are anymore. If you fall again, come back again.",

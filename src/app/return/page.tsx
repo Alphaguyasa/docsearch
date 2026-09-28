@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AMHARIC_BIBLE_NOTICE } from "@/lib/scripture/amharic-notice";
+
 import { ClosingCta } from "../components/HomeSections";
 import { ArrowRight } from "../components/Icons";
 import { PrayerCard } from "../components/PrayerCard";
@@ -41,17 +43,21 @@ export default async function ReturnPage() {
                 <h2 className="font-display text-2xl font-semibold sm:text-3xl">{s[lang].title}</h2>
                 <p className="mt-3 leading-7">{s[lang].body}</p>
                 <blockquote className="mt-4 border-l-2 border-gold/60 pl-5">
-                  <p lang="en" className="font-serif text-[18px] italic leading-8 text-foreground/90">
-                    “{s.quote}”
+                  <p
+                    lang={lang === "am" && s.quoteAm ? "am" : "en"}
+                    className={`font-serif text-[18px] leading-8 text-foreground/90 ${lang === "am" && s.quoteAm ? "" : "italic"}`}
+                  >
+                    “{lang === "am" && s.quoteAm ? s.quoteAm : s.quote}”
                   </p>
                   <cite className="mt-2 block text-sm font-medium not-italic text-gold">
-                    {lang !== "am" ? s.ref : s.ref.startsWith("Ethiopian Synaxarium") ? s.refAm : `${s.refAm} · ${p.readIn}`}
+                    {lang !== "am" ? s.ref : s.quoteAm || s.ref.startsWith("Ethiopian Synaxarium") ? s.refAm : `${s.refAm} · ${p.readIn}`}
                   </cite>
                 </blockquote>
               </div>
             </li>
           ))}
         </ol>
+        {lang === "am" && <p className="mt-10 text-xs text-muted">{AMHARIC_BIBLE_NOTICE}</p>}
         <PrayerCard tags={[]} showReturn={false} />
         <Link
           href="/people"
