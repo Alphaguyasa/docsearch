@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-28T10:45:46.966Z
+Generated 2026-09-28T11:23:27.592Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -13,13 +13,14 @@ Generated 2026-09-28T10:45:46.966Z
 | ephrem | 1 | 76 | 36000 | 474 | 613 |
 | grace_abounding | 1 | 150 | 76581 | 511 | 624 |
 | imitation | 1 | 201 | 85196 | 424 | 614 |
+| kebra_nagast | 1 | 252 | 109086 | 433 | 617 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 7240 chunks, 3065415 tokens ≈ 5.1 h of embedding at 10000 TPM.
+**Total:** 7492 chunks, 3174501 tokens ≈ 5.3 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -388,6 +389,35 @@ The Voice of the Beloved
 As I of my own will offered myself unto God the Father on the Cross for thy sins with outstretched hands and naked body, so that nothing remained in Me that did not become altogether a sacrifice for the Divine propitiation; so also oughtest thou every day to offer thyself willingly unto Me for a pure and holy oblation with all thy strength and affections, even to the utmost powers of thine heart. What more do I require of thee than thou study to resign thyself altogether unto Me? Whatsoever thou givest besides thyself, I nothing care for, for I 
 ```
 
+**Kebra Nagast, The Glory of Kings** (99 tokens, ethiopian_orthodox)
+```
+Kebra Nagast, The Glory of Kings
+
+IN PRAISING GOD THE FATHER, THE SUSTAINER OF THE UNIVERSE, AND HIS SON JESUS CHRIST, THROUGH WHOM EVERYTHING CAME INTO BEING, AND WITHOUT WHOM NOTHING CAME INTO BEING, AND THE HOLY TRIUNE SPIRIT, THE PARACLETE, WHO GOETH FORTH FROM THE FATHER, AND DERIVETH FROM THE SON, WE BELIEVE IN AND ADORE THE TRINITY, ONE GOD, THE FATHER, AND THE SON, AND THE HOLY SPIRIT.
+```
+
+**Kebra Nagast, Chapter 67: Concerning The Lamentation Of Solomon (part 3)** (443 tokens, ethiopian_orthodox)
+```
+Kebra Nagast, Chapter 67: Concerning The Lamentation Of Solomon (part 3)
+
+" And as for thee, Joseph, the son of Jacob, shall be a symbol of thee. For his brethren sold him into the land of Egypt from Syria, the country of Laba (Laban), and on his going down into the land of Egypt there arose a famine in Syria and in all the world. And through his going down he called his kinsfolk and delivered them from famine and gave them a habitation in the land of Egypt, the name whereof is Geshen (Goshen). For he himself was King under Pharaoh, King of Egypt. Similarly the Saviour Who shall come from thy seed shall set thee free by His coming, and shall bring thee out of Sheol, where until the Saviour c
+```
+
+**Kebra Nagast, Chapter 106: A Prophecy Concerning The Coming Of Christ (part 3)** (602 tokens, ethiopian_orthodox)
+```
+Kebra Nagast, Chapter 106: A Prophecy Concerning The Coming Of Christ (part 3)
+
+Thus his father David prophesied and said, " He shall come down like the dew upon wool, and like the drop which droppeth upon the earth, and righteousness shall spring into being in his days." 6
+
+Thus Solomon his son prophesied and said, " A Saviour shall be born out of Zion, and He shall remove sin from Jacob." 7
+
+Thus Hosea the Prophet prophesied and said, " I will come to thee, O Zion, and I will walk about in thee, Jerusalem, saith God, the Holy One of Israel." 8
+
+Thus Micah the Prophet prophesied and said, " The Word of God shall appear in Jerusalem, and the Law shall go forth from Zion." 9
+
+Thus Hosea thePr
+```
+
 **Lausiac History, Prologue** (105 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
 ```
 Lausiac History, Prologue
@@ -554,6 +584,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 **imitation** — 201 sections: The Imitation of Christ, Book I, Chapter I §1–5 · The Imitation of Christ, Book I, Chapter II §1–4 · The Imitation of Christ, Book I, Chapter III §1–3 · The Imitation of Christ, Book I, Chapter III §4–6 · The Imitation of Christ, Book I, Chapter IV §1–2 · The Imitation of Christ, Book I, Chapter V §1–2 · The Imitation of Christ, Book I, Chapter VI §1–2 · The Imitation of Christ, Book I, Chapter VII §1–3 · The Imitation of Christ, Book I, Chapter VIII §1–2 · The Imitation of Christ, Book I, Chapter IX §1–3 · The Imitation of Christ, Book I, Chapter X §1–2 · The Imitation of Christ, Book I, Chapter XI §1–4 · The Imitation of Christ, Book I, Chapter XI §5–6 · The Imitation of Christ, Book I, Chapter XII §1–2 · The Imitation of Christ, Book I, Chapter XIII §1–4 · The Imitation of Christ, Book I, Chapter XIII §5–7 · The Imitation of Christ, Book I, Chapter XIII §8 · The Imitation of Christ, Book I, Chapter XIV §1–3 · The Imitation of Christ, Book I, Chapter XV §1–3 · The Imitation of Christ, Book I, Chapter XVI §1–4 · The Imitation of Christ, Book I, Chapter XVII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §4–6 · The Imitation of Christ, Book I, Chapter XIX §1–3 · The Imitation of Christ, Book I, Chapter XIX §4–6 · The Imitation of Christ, Book I, Chapter XIX §7 · The Imitation of Christ, Book I, Chapter XX §1–4 · The Imitation of Christ, Book I, Chapter XX §5–7 · The Imitation of Christ, Book I, Chapter XX §8 · The Imitation of Christ, Book I, Chapter XXI §1–3 · The Imitation of Christ, Book I, Chapter XXI §4–6 · The Imitation of Christ, Book I, Chapter XXII §1–3 · The Imitation of Christ, Book I, Chapter XXII §4–6 · The Imitation of Christ, Book I, Chapter XXII §7 · The Imitation of Christ, Book I, Chapter XXIII §1–3 · The Imitation of Christ, Book I, Chapter XXIII §4–7 · The Imitation of Christ, Book I, Chapter XXIII §8–9 · The Imitation of Christ, Book I, Chapter XXIV §1–3 · The Imitation of Christ, Book I, Chapter XXIV §4–5 · The Imitation of Christ, Book I, Chapter XXIV §6–7
 
+**kebra_nagast** — 114 sections: Kebra Nagast, The Glory of Kings · Kebra Nagast, Chapter 1: Concerning The Glory Of Kings · Kebra Nagast, Chapter 2: Concerning The Greatness Of Kings · Kebra Nagast, Chapter 3: Concerning The Kingdom Of Adam · Kebra Nagast, Chapter 4: Concerning Envy · Kebra Nagast, Chapter 5: Concerning The Kingdom Of Seth · Kebra Nagast, Chapter 6: Concerning The Sin Of Cain · Kebra Nagast, Chapter 7: Concerning Noah · Kebra Nagast, Chapter 8: Concerning The Flood · Kebra Nagast, Chapter 9: Concerning The Covenant Of Noah · Kebra Nagast, Chapter 10: Concerning Zion · Kebra Nagast, Chapter 11: The Unanimous Declaration Of The Three Hundred And Eighteen Orthodox Fathers · Kebra Nagast, Chapter 12: Concerning Canaan L · Kebra Nagast, Chapter 13: Concerning Abraham · Kebra Nagast, Chapter 14: Concerning The Covenant Of Abraham · Kebra Nagast, Chapter 15: Concerning Isaac And Jacob · Kebra Nagast, Chapter 16: Concerning Robel (Reuben) · Kebra Nagast, Chapters 17–18: Concerning The Glory Of Zion · Kebra Nagast, Chapter 19: How This Book Came To Be Found · Kebra Nagast, Chapter 20: Concerning The Division Of The Earth · Kebra Nagast, Chapter 21: Concerning The Queen Of The South · Kebra Nagast, Chapter 22: Concerning Tamrin, The Merchant · Kebra Nagast, Chapter 23: How The Merchant Returned To Ethiopia · Kebra Nagast, Chapter 24: How The Queen Made Ready To Set Out On Her Journey · Kebra Nagast, Chapter 25: How The Queen Came To Solomon The King · Kebra Nagast, Chapter 26: How The King Held Converse With The Queen · Kebra Nagast, Chapter 27: Concerning The Labourer · Kebra Nagast, Chapter 28: How Solomon Gave Commandments To The Queen · Kebra Nagast, Chapter 29: Concerning The Three Hundred And Eighteen [Patriarchs] · Kebra Nagast, Chapter 30: Concerning How King Solomon Swore To The Queen · Kebra Nagast, Chapter 31: Concerning The Sign Which Solomon Gave The Queen · Kebra Nagast, Chapter 32: How The Queen Brought Forth And Came To Her Own Country · Kebra Nagast, Chapter 33: How The King Of Ethiopia Travelled · Kebra Nagast, Chapter 34: How The Young Man Arrived In His Mother's Country · Kebra Nagast, Chapter 35: How King Solomon Sent To His Son The Commander Of His Army · Kebra Nagast, Chapter 36: How King Solomon Held Intercourse With His · Kebra Nagast, Chapter 37: How Solomon Asked His Son Questions · Kebra Nagast, Chapter 38: How The King Planned To Send Away His Son With The Children Of The Nobles · Kebra Nagast, Chapter 39: How They Made The Son Of Solomon King · Kebra Nagast, Chapter 40: How Zadok The Priest Gave Commands To David The King
+
 **lausiac** — 50 sections: Lausiac History, Prologue · Lausiac History, LXX. A Reader Unjustly Accused · Lausiac History, Introduction · Lausiac History, Dorotheus · Lausiac History, Didymus · Lausiac History, Alexandra · Lausiac History, The Rich Virgin · Lausiac History, The Monks Of Nitria · Lausiac History, Amoun Of Nitria · Lausiac History, Pambo · Lausiac History, Ammonius · Lausiac History, Apollonius · Lausiac History, Macarius The Younger · Lausiac History, Nathanael · Lausiac History, Macarius Of Egypt · Lausiac History, Macarius Of Alexandria · Lausiac History, Moses The Robber · Lausiac History, Eulogius And The Cripple · Lausiac History, Paul The Simple · Lausiac History, Pachon · Lausiac History, Stephen · Lausiac History, Valens · Lausiac History, Heron · Lausiac History, Ptolemy · Lausiac History, Elias · Lausiac History, Pachomius And The Tabennesiots · Lausiac History, The Tabennesiot Nuns · Lausiac History, The Nun Who Feigned Madness · Lausiac History, John Of Lycopolis · Lausiac History, Posidonius · Lausiac History, Sarapion The Sindonite · Lausiac History, Evagrius · Lausiac History, Ephraim · Lausiac History, Holy Women · Lausiac History, Julian · Lausiac History, Adolius · Lausiac History, Philoromus · Lausiac History, Melania The Elder · Lausiac History, Chronius And Paphnutius · Lausiac History, Elpidius
 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
@@ -658,6 +690,115 @@ And according to his good pleasure hath it been in regard to their life.
 And the strong who possess the land because of the works of their hands;
 For on the day of their anguish and affliction they shall not (be able to) save themselves.
 9. And | will give them over into the hands of Mine elect:
+```
+
+### kebra_nagast: frequent short lines
+```
+206	#
+110	The Queen of Sheba and her Son Menyelek
+66	Introduction
+8	Preface
+8	Index
+4	PLATE
+4	# #
+4	A Prophecy concerning the Coming of Christ
+4	#, #
+```
+### kebra_nagast: context around "Moses" (line 10043)
+```
+for it shall be a perfect miracle for the children of thy
+people, a vindication for the wicked, and a sign of life
+for all those who believe. If thou didst write [thy
+name] now with them, they would say unto thee, c This
+hath been a worker of miracles from of old by the word
+of God ' ; let them say this when I have shown them a
+miracle by it (i.e. the rod). But for the house of thy
+father write upon the rod of Aaron."2
+1 Compare Exodus xvii, 4 ; Numbers xvi, 41.
+8 Numbers xvii, 8.
+176
+PL Alt 'XXIV
+From Brit. Mas. MS. Orient. .Vo. 481, fol. 1050
+The soldiers binding Christ
+Concerning the Rods of Moses and Aaron
+98. CONCERNING THE ROD OF MOSES AND THE ROD OF
+AARON
+And Moses spake these words unto them, and they
+brought a rod into each of the houses of their fathers
+which they had chosen for purity, and there were twelve
+rods. And Moses wrote upon their rods the names of
+their fathers : on the rod of Aaron was written the
+name of Levi, and on the rod of Karmin was written
+the name of Judah, and on the rod of Adonyas was
+written the name of Reuben, and on the rod of every
+man of all the houses of Israel was written in like manner
+the name of his father. And God said unto Moses,
+" Carry [the rods] to Zion, to the Tent of Witness, and
+shut them up therein until the morning, and [then] take
+them out before the men and give unto each of them his
+rod, according to the houses of their fathers whose names
+are written on the rods, and the man on whose rod a
+mark shall be found is he whom I have chosen to be
+priest to Me." And Moses told the people these words,
+and they did according as God had commanded them.
+And then, when the morning had come, Moses took
+the rods, and a)l the elders of Israel and Aaron came.
+And Moses came before them, and he lifted up the rods
+and brought them before all the people, and the rod
+of Aaron was found with the fruit and flower of an
+```
+### kebra_nagast: 50 raw lines at 40%
+```
+hand, until at length He shall destroy thee, because
+thou hast not hearkened to His word. And the heavens
+which are above thee shall become brass, and the earth
+which is beneath thee shall become iron ; and God shall
+make the rain [which should fall upon] thy land to be
+darkness only, and dust shall descend from heaven upon
+54
+How Zadok gave commands to King David
+thee until it shall cover thee up and destroy thee. And
+thou shalt be smitten in battle before thine enemies.
+Thou shalt go forth to attack them by one road, and by
+seven ways shalt thou take to flight before their faces,
+and thou shalt be routed ; and thy dead body shall be-
+come food for the fowl of the heavens, and there shall
+be none to bury thee. And God shall punish thee with
+sores (or, leprosy), and with the wasting disease, and
+with the fever that destroyeth, and with the punish-
+ments (i.e., plagues) of Egypt, and with blindness and
+terror of heart ; and thou shalt grope about by day like
+a blind man in the darkness, and thou shalt find none to
+help thee in [thy] trouble. Thou shalt marry a wife,
+and another man shall carry her away from thee by force.
+Thou shalt build a house, and shalt not dwell therein.
+And thou shalt plant a vineyard and shalt not harvest
+the grapes thereof. Men shall slay thy fat oxen before
+thine eyes, and thou shalt not eat of their flesh. Men
+shall snatch away thine ass, and shall not bring him back
+to thee. Thy sheep shall run to the slaves and to thine
+enemy, and thou shalt find none to help thee. And thy
+sons and thy daughters shall follow other people, and
+thou shalt see with thine own eyes how they are smitten,
+and shalt be able to do nothing. An enemy whom thou
+knowest not shall devour the food of thy land and thy
+labour, and thou shalt not be able to prevent him ;
+and thou shalt become a man of suffering and calamity.
+When the day dawneth thou shalt say, * Would that the
+evening had come ! ' and when the evening cometh thou
+shalt say, ' Would that the morning had come ! ' through
+the greatness of thy fear. — [All these things shall come
+upon thee] if thou wilt not hearken to the word of the
+Lord. But if thou wilt truly hearken unto the word of
+the Lord — hear thou — the goodness of God shall find
+thee, and thou shalt rule the countries of the enemy,
+and thou shalt inherit everlasting glory from the Lord
+God of Israel, Who ruleth everything. For He hon-
+SS
+The Queen of Sheba and her Son Menyelek
+oureth him that honoureth Him, and He lovethhim
+that loveth Him, for He is the Lord of death and of life,
+and He directeth and ruleth all the world with His
 ```
 
 ### lausiac: frequent short lines

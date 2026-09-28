@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T10:44:42.171Z",
+  "generatedAt": "2026-09-28T11:21:21.093Z",
   "entries": [
     {
       "id": "antony",
@@ -144,6 +144,23 @@
           "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
           "sha256": "7631799607b0ede62f1bd7ed2a8eb62d89524451a3c41e9ad2b5cbf4c2aa5383",
           "bytes": 374954
+        }
+      ]
+    },
+    {
+      "id": "kebra_nagast",
+      "title": "The Kebra Nagast: The Queen of Sheba and her only son Menyelek (tr. E. A. Wallis Budge, 1922)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1922; Budge d. 1934)",
+      "retrievedAt": "2026-09-28T11:21:21.093Z",
+      "files": [
+        {
+          "name": "queenofshebahero00budgrich_djvu.txt",
+          "url": "https://archive.org/download/queenofshebahero00budgrich/queenofshebahero00budgrich_djvu.txt",
+          "sha256": "d1ca59fc8fe535cf86d96cf04d042d859035c44d5652c5d6edf977ca5c1974e3",
+          "bytes": 731205,
+          "archiveId": "queenofshebahero00budgrich"
         }
       ]
     },
