@@ -39,6 +39,8 @@ interface TextRule {
   sections?: SectionRule;
   /** The text numbers its own paragraphs: refs become "§12–15" (see chunkSections). */
   paragraphNumbers?: boolean;
+  /** The text carries its edition's page marks ("{10}"): refs become "p. 10–12". */
+  pageMarks?: boolean;
   /** Rename detected headings (exact match); "" leaves just the work's name in the ref. */
   renameHeadings?: Record<string, string>;
 }
@@ -221,6 +223,19 @@ export const TEXT_RULES: Record<string, TextRule> = {
     paragraphNumbers: true,
     renameHeadings: { "GRACE ABOUNDING TO THE CHIEF OF SINNERS": "" },
   },
+  pilgrims_progress: {
+    refPrefix: "The Pilgrim's Progress",
+    traditions: ["protestant"],
+    clean: {
+      startAt: /^In the Similitude of a Dream$/,
+      endAt: /^\*\*\* ?END OF (THE|THIS) PROJECT GUTENBERG/i,
+      dropLines: [/^In the Similitude of a Dream$/],
+    },
+    defaultHeading: "",
+    // One continuous dream: no headings (an all-caps quotation is not one).
+    sections: {},
+    pageMarks: true,
+  },
   confessions: {
     refPrefix: "Confessions",
     traditions: ALL,
@@ -333,6 +348,7 @@ export function buildSource(rawDir: string, manifest: Manifest, sourceId: string
     refPrefix: rule.refPrefix,
     traditions: rule.traditions,
     paragraphNumbers: rule.paragraphNumbers,
+    pageMarks: rule.pageMarks,
   });
   return { chunks, skippedBooks: [] };
 }
