@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-25T18:49:44.804Z
+Generated 2026-09-28T09:51:44.418Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -48,6 +48,92 @@ present desires, begging his advice what of Thy Scriptures I had best
 read, to become readier and fitter for receiving so great grace. He
 recommended Isaiah the Prophet: I believe, because he above the rest
 is a more clear foreshower of the Gospel and of the calling of the
+```
+
+## imitation — The Imitation of Christ (Thomas à Kempis, tr. William Benham)
+
+#### `pg1653.txt` — 374954 bytes
+5786 non-empty lines. First 25:
+```
+The Project Gutenberg eBook of The Imitation of Christ
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever. You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online
+at www.gutenberg.org. If you are not located in the United States,
+you will have to check the laws of the country where you are located
+before using this eBook.
+Title: The Imitation of Christ
+Author: à Kempis Thomas
+Translator: William Benham
+Release date: February 1, 1999 [eBook #1653]
+Most recently updated: May 5, 2023
+Language: English
+Other information and formats: www.gutenberg.org/ebooks/1653
+*** START OF THE PROJECT GUTENBERG EBOOK THE IMITATION OF CHRIST ***
+The Imitation of Christ
+by Thomas à Kempis
+Translated by Rev. William Benham
+Contents
+INTRODUCTORY NOTE
+THE IMITATION OF CHRIST
+THE FIRST BOOK ADMONITIONS PROFITABLE FOR THE SPIRITUAL LIFE
+CHAPTER I Of the imitation of Christ, and of contempt of the world and all its vanities
+CHAPTER II Of thinking humbly of oneself
+```
+Sample from the middle:
+```
+9. Oh send forth Thy light and Thy truth,(4) that they may shine upon
+the earth; for I am but earth without form and void until Thou give me
+light. Pour forth Thy grace from above; water my heart with the dew of
+heaven; give the waters of devotion to water the face of the earth, and
+cause it to bring forth good and perfect fruit. Lift up my mind which
+is oppressed with the weight of sins, and raise my whole desire to
+heavenly things; that having tasted the sweetness of the happiness
+which is from above, it may take no pleasure in thinking of things of
+```
+
+## grace_abounding — Grace Abounding to the Chief of Sinners (John Bunyan, 1666)
+
+#### `pg654.txt` — 336361 bytes
+4962 non-empty lines. First 25:
+```
+The Project Gutenberg eBook of Grace Abounding to the Chief of Sinners
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever. You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online
+at www.gutenberg.org. If you are not located in the United States,
+you will have to check the laws of the country where you are located
+before using this eBook.
+Title: Grace Abounding to the Chief of Sinners
+Author: John Bunyan
+Illustrator: Harold Copping
+Release date: September 1, 1996 [eBook #654]
+Most recently updated: December 13, 2014
+Language: English
+Other information and formats: www.gutenberg.org/ebooks/654
+Credits: Transcribed from the 1905 The Religious Tract Society edition by David Price
+*** START OF THE PROJECT GUTENBERG EBOOK GRACE ABOUNDING TO THE CHIEF OF SINNERS ***
+Transcribed from the 1905 The Religious Tract Society edition by David
+Price, email ccx074@pglaf.org
+[Picture: Book cover]
+GRACE ABOUNDING TO THE CHIEF OF SINNERS
+IN A FAITHFUL ACCOUNT OF
+THE LIFE AND DEATH OF JOHN BUNYAN
+OR
+A BRIEF RELATION OF THE EXCEEDING
+```
+Sample from the middle:
+```
+any farther, give you in a word or two, what, as I conceive, was the
+cause of this temptation; and also after that, what advantage, at the
+last, it became unto my soul.
+237.  For the causes, I conceived they were principally two: of which two
+also I was deeply convinced all the time this trouble lay upon me.  The
+first was, for that I did not, when I was delivered from the temptation
+that went before, still pray to God to to keep me from the temptations
+that were to come; for though, as I can say in truth, my soul was much in
 ```
 
 ## synaxarium — The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)

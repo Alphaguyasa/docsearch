@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T18:49:44.804Z",
+  "generatedAt": "2026-09-28T09:51:44.418Z",
   "entries": [
     {
       "id": "confessions",
@@ -15,6 +15,38 @@
           "url": "https://www.gutenberg.org/cache/epub/3296/pg3296.txt",
           "sha256": "ef3fa6267968c875def9091a1882d14b525a85bbf6996a3e2f130a775b2e22d2",
           "bytes": 632170
+        }
+      ]
+    },
+    {
+      "id": "grace_abounding",
+      "title": "Grace Abounding to the Chief of Sinners (John Bunyan, 1666)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Project Gutenberg #654; Bunyan d. 1688, 1905 RTS text)",
+      "retrievedAt": "2026-09-28T09:51:44.418Z",
+      "files": [
+        {
+          "name": "pg654.txt",
+          "url": "https://www.gutenberg.org/cache/epub/654/pg654.txt",
+          "sha256": "d8a435e82bc4b95b81a19cf3adb412c920098099f16fe920b6fa646d012d1dbb",
+          "bytes": 336361
+        }
+      ]
+    },
+    {
+      "id": "imitation",
+      "title": "The Imitation of Christ (Thomas à Kempis, tr. William Benham)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Project Gutenberg #1653; Benham d. 1910)",
+      "retrievedAt": "2026-09-28T09:51:44.340Z",
+      "files": [
+        {
+          "name": "pg1653.txt",
+          "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
+          "sha256": "7631799607b0ede62f1bd7ed2a8eb62d89524451a3c41e9ad2b5cbf4c2aa5383",
+          "bytes": 374954
         }
       ]
     },
