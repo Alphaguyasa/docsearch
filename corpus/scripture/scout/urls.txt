@@ -1,0 +1,3 @@
+pp https://www.gutenberg.org/cache/epub/131/pg131.txt
+q-isaac https://archive.org/advancedsearch.php?q=title%3A%28mystic+treatises%29+AND+%28creator%3A%28wensinck%29+OR+creator%3A%28isaac%29%29&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&rows=20&output=json
+q-ladder https://archive.org/advancedsearch.php?q=title%3A%28holy+ladder%29+OR+title%3A%28ladder+of+divine+ascent%29&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&fl%5B%5D=creator&rows=30&output=json
