@@ -1438,6 +1438,42 @@
         }
       ],
       "note": "Read from the Miracles of Mary (Ta'amra Maryam, Budge 1900, chapter XXIX). The text does not give his name; in Ethiopia he is called Bela'e Seb."
+    },
+    {
+      "id": "matalome",
+      "name": "King Matalome",
+      "kind": "tradition",
+      "sins": [
+        "lust",
+        "violence",
+        "murder",
+        "idolatry"
+      ],
+      "summary": "A pagan king of Damot who carried off women by force, killed the Christians, and had Takla Haymanot thrown down a precipice. At last he said, “My appearance is abominable, and my name is worse,” asked to be baptized, and was given the saint’s own name, Feshha Seyon.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Life of Takla Haymanot, Chapter XI",
+          "sourceId": "takla_haymanot",
+          "match": "He was unclean in all his ways"
+        },
+        {
+          "role": "restoration",
+          "ref": "Life of Takla Haymanot, Chapter LVI",
+          "sourceId": "takla_haymanot",
+          "match": "My appearance is abominable"
+        },
+        {
+          "role": "restoration",
+          "ref": "Life of Takla Haymanot, Chapter LIX",
+          "sourceId": "takla_haymanot",
+          "match": "Rise up and baptize me in the Name of thy God"
+        }
+      ],
+      "note": "Read from the Life of Takla Haymanot (Gadla Takla Haymanot, Budge 1906, chapters XI, LVI and LIX). In Ethiopian tradition he is King Motalomi of Damot."
     }
   ]
 }
