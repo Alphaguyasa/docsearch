@@ -37,6 +37,8 @@ const READER_NOTES: Record<string, string> = {
     "Cyprian of Antioch, not Cyprian the bishop of Carthage. His story is read from the Ethiopian Synaxarium (Maskaram); he is also honoured by Catholics and the Orthodox.",
   cannibal_of_kemer:
     "Read from the Miracles of Mary (Ta'amra Maryam, chapter XXIX), as read in the Ethiopian Church. The text does not give his name; in Ethiopia he is remembered as Bela'e Seb.",
+  matalome:
+    "Read from the Life of Takla Haymanot (Gadla Takla Haymanot, chapters XI, LVI and LIX), as read in the Ethiopian Church. Tradition remembers him as King Motalomi of Damot.",
   solomon:
     "His fall is told in Scripture (1 Kings 11). That God had mercy on him is Ethiopian tradition, from the Kebra Nagast (chapter 65), so he is shown to Ethiopian Orthodox readers.",
   manasseh: "The Prayer of Manasseh is Scripture in the Orthodox and Ethiopian Orthodox Churches.",
