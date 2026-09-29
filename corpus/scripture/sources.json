@@ -76,6 +76,20 @@
    "note": "Translated from the Ethiopic (Gadla Adam). Four books of chapters; OCR numerals read against the sequence."
   },
   {
+   "id": "miracles_of_mary",
+   "title": "The Miracles of the Blessed Virgin Mary (tr. E. A. Wallis Budge, 1900, from the Lady Meux Ethiopic manuscripts)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(miracles of the blessed virgin mary) AND creator:(budge)",
+   "titleHint": "miracles blessed virgin mary",
+   "archiveIds": [
+    "gri_33125008690600"
+   ],
+   "license": "Public domain (published 1900; Budge d. 1934)",
+   "status": "verified",
+   "note": "Ta'amra Maryam. Only the translated miracles are kept (not the salutations, the Life of Hanna, the magical prayers or the Ethiopic text). The 1933 '110 Miracles' is avoided: possibly still in US copyright."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

@@ -231,3 +231,25 @@ test("Adam and Eve: chapters numbered within each book, OCR numerals and note ca
   assert.match(all, /" O God, look upon this Thy servant thus fallen, and raise him/);
   assert.doesNotMatch(all, /doxology|THE BOOK OF ADAM/);
 });
+
+test("Miracles of Mary: chapter titles stop at the full stop; plates, captions and Ethiopic lines go", () => {
+  const rule = TEXT_RULES.miracles_of_mary;
+  const raw = [
+    "THE COVENANT OF CHRIST WITH THE BLESSED VIRGIN MARY.", "", "One day our Lord Jesus Christ said unto MARY, speak.", "",
+    "CHAPTER II.", "", "THE VIRGIN AND THE CANNIBAL OF THE CITY OF KEMER.", "", "[A fol. 634. 1; B fol. 30a. 1] A MIRACLE OF OUR HOLY LADY.", "",
+    "Now there was a certain man in the city of Kemer, and his sin was very great,", "and he lived upon human flesh.", "",
+    "PLATE LXXXIX.", "", "ተ፡ልብ፡ሰለጥአኝን", "", "The cannibal gives a drink of water from an earthenware bott", "",
+    "and the souls are outw", "", "THE CANNIBAL GIVES A LEPROUS BEGGAR A DRINK IN MARY'S NAME. 84.", "",
+    "And the little drop of water outweighed the eight and seventy souls.", "",
+    "SALUTATIONS TO THE MEMBERS OF THE BODY OF THE BLESSED",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), [
+    "Chapter I: The Covenant Of Christ With The Blessed Virgin Mary",
+    "Chapter II: The Virgin And The Cannibal Of The City Of Kemer",
+  ]);
+  const text = s[1].paragraphs.join(" ");
+  assert.match(text, /^A MIRACLE OF OUR HOLY LADY\./);
+  assert.match(text, /little drop of water outweighed/);
+  assert.doesNotMatch(text, /earthenware|outw$|PLATE|fol\.|84\.|[\u1200-\u137F]/);
+});

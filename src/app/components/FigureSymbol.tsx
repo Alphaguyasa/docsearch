@@ -186,6 +186,14 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M32 48 L32 58" />
     </>
   ),
+  // The cup of water given in Mary's name.
+  cannibal_of_kemer: (
+    <>
+      <path d="M20 22 L44 22 L40 50 C39 54 36 56 32 56 C28 56 25 54 24 50 Z" />
+      <path d="M22 30 L42 30" />
+      <path d="M32 6 C28 12 28 15 32 17 C36 15 36 12 32 6 Z" />
+    </>
+  ),
   // The crown of the wise king.
   solomon: (
     <>
