@@ -215,3 +215,19 @@ test("Isaac of Nineveh: a lone OCR numeral opens a treatise, its capital title i
   ]);
   assert.doesNotMatch(s.map((x) => x.paragraphs.join(" ")).join(" "), /ETC/);
 });
+
+test("Adam and Eve: chapters numbered within each book, OCR numerals and note calls repaired", () => {
+  const rule = TEXT_RULES.adam_and_eve;
+  const raw = [
+    "BOOK I.", "", "CHAPTER I.", "", "On the third day,f God planted1 the garden in the east.", "",
+    "* The Ethiopic translator adds here a doxology.", "", "2 THE BOOK OF ADAM AND EVE. [BOOK", "",
+    "CHAPTER IT.", "", "\"  0  God, look upon this Thy servant thus fallen,  f  and raise him.", "",
+    "BOOK II.", "", "CHAPTER I.", "", "After the death of Adam, Seth wept.", "", "INDEX.",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), ["Book I, Chapter I", "Book I, Chapter II", "Book II, Chapter I"]);
+  const all = s.flatMap((x) => x.paragraphs).join(" ");
+  assert.match(all, /On the third day, God planted the garden/);
+  assert.match(all, /" O God, look upon this Thy servant thus fallen, and raise him/);
+  assert.doesNotMatch(all, /doxology|THE BOOK OF ADAM/);
+});

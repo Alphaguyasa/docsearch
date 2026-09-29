@@ -100,6 +100,16 @@ export const LIBRARY: LibraryGroup[] = [
         onlyFor: ETH,
       },
       {
+        sourceIds: ["adam_and_eve"],
+        title: { en: "The Book of Adam and Eve (the Conflict of Adam and Eve with Satan)", am: "ገድለ አዳም" },
+        by: { en: "tr. S. C. Malan, 1882, from the Ethiopic", am: "በS. C. Malan ከግዕዝ የተተረጎመ፣ 1882" },
+        note: {
+          en: "Adam and Eve after the fall: their tears in the Cave of Treasures, their prayers, and God’s promise to save them.",
+          am: "አዳምና ሔዋን ከውድቀት በኋላ፦ በመዝገብ ዋሻ ያፈሰሱት እንባ፣ ጸሎታቸውና እግዚአብሔር ሊያድናቸው የሰጠው ተስፋ።",
+        },
+        onlyFor: ETH,
+      },
+      {
         sourceIds: ["kebra_nagast"],
         title: { en: "The Kebra Nagast, the Glory of Kings", am: "ክብረ ነገሥት" },
         by: { en: "tr. E. A. Wallis Budge, 1922", am: "በE. A. Wallis Budge የተተረጎመ፣ 1922" },
