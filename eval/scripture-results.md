@@ -1,6 +1,6 @@
 # Scripture eval
 
-Run 2026-09-29T07:54:47.020Z
+Run 2026-09-29T08:40:32.149Z
 
 **All gates passed.**
 
@@ -15,7 +15,7 @@ Run 2026-09-29T07:54:47.020Z
 |---|---|---|---|---|---|---|
 | s01 | dev | ✅ | ✅ @3 | adultery, shame (synonyms) | woman_caught_in_adultery, david, rahab | I cheated on my wife and I can't forgive myself |
 | s02 | dev | ✅ | ✅ @1 | adultery, sexual_sin (synonyms) | david, woman_caught_in_adultery, rahab | I slept with a married woman |
-| s03 | dev | ✅ | ✅ @5 | deceit, cowardice (llm) | aaron, peter, david | I covered up something terrible I did and someone got hurt b |
+| s03 | dev | ✅ | ✅ @1 | deceit, shame (llm) | david, abraham, jacob | I covered up something terrible I did and someone got hurt b |
 | s04 | dev | ✅ | ✅ @1 | deceit, denial (synonyms) | peter, basils_young_man, abba_moses_hermit | I pretended I didn't know Jesus when my friends laughed at m |
 | s05 | dev | ✅ | ✅ @1 | denial (synonyms) | peter, basils_young_man, abba_moses_hermit | I denied my faith at work to fit in |
 | s06 | dev | ✅ | ✅ @2 | persecution (synonyms) | paul | I used to mock and persecute Christians |
@@ -50,9 +50,9 @@ Run 2026-09-29T07:54:47.020Z
 | s35 | dev | ✅ | ✅ @3 | deceit (synonyms) | david, abraham, jacob | I lied on my resume |
 | h01 | holdout | ✅ | ✅ @1 | adultery (synonyms) | david, woman_caught_in_adultery | I had an affair with my coworker's wife |
 | h02 | holdout | ✅ | ✅ @1 | denial (synonyms) | peter, basils_young_man, abba_moses_hermit | I said I didn't know him when it mattered most |
-| h03 | holdout | ✅ | ✅ @1 | persecution, violence, anger (llm) | paul, moses, gelasius_cook | I hated Christians and tried to destroy the church |
+| h03 | holdout | ✅ | ✅ @1 | persecution, anger, violence (llm) | paul, moses, gelasius_cook | I hated Christians and tried to destroy the church |
 | h04 | holdout | ✅ | ✅ @5 | deceit (llm) | david, abraham, jacob | I tricked my own father |
-| h05 | holdout | ✅ | ✅ @1 | quitting, fear, disobedience (llm) | jonah, samson, john_mark | I ran from what God told me to do |
+| h05 | holdout | ✅ | ✅ @1 | disobedience, quitting, fear (llm) | jonah, samson, john_mark | I ran from what God told me to do |
 | h06 | holdout | ✅ | ✅ @2 | exploitation (synonyms) | matthew, zacchaeus | I overcharged poor customers for years |
 | h07 | holdout | ✅ | ✅ @1 | doubt (llm) | thomas, job, zechariah | I can't believe without seeing proof |
 | h08 | holdout | ✅ | ✅ @1 | quitting, abandonment (synonyms) | john_mark, mary_niece_of_abraham | I abandoned my team halfway through |
@@ -90,83 +90,93 @@ Run 2026-09-29T07:54:47.020Z
 
 ### ✅ s01: I cheated on my wife and I can't forgive myself
 
-citations: 10
+citations: 5
 
-> In 2 Samuel 11:1-27, King David stayed at Jerusalem while his servants went to war [3][4]. He saw Bathsheba bathing, took her, lay with her, and later had her husband Uriah killed in the forefront of the battle [3][4]. Church tradition records in the Confessions, Book II (part 4) that Augustine committed fornication, walked in blindness, and took pleasure in the deed and the praise [7]. Church tradition records in the Confessions, Book II (part 10) that Augustine was cured by the Physician, and his sins were melted away by grace and mercy [9]. Note that John 7:53–8:11 is absent from the earliest manuscripts [1][2].
+> Note: The passage regarding the woman caught in adultery (John 7:53–8:11) is not contained in the earliest manuscripts [1][2].
 > 
-> You are not the only one to struggle with these heavy burdens, and these people were not beyond reach [7][9]. Please bring this to God in prayer and to confession or a trusted priest, pastor or mature believer in your own church.
+> In 2 Samuel, King David stayed at Jerusalem while his servants went to war, saw Bathsheba the wife of Uriah the Hittite bathing, and took her and lay with her [3][4]. When she became pregnant, David tried to cover it up, and failing to have Uriah go home, wrote a letter to Joab commanding him to place Uriah in the forefront of the hottest battle so that he would die [4]. 
+> 
+> You are not the only one who has fallen into such deep struggles, and these people were not beyond reach. 
+> 
+> Please bring this to God in prayer, and take it to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s02: I slept with a married woman
 
-citations: 4
+citations: 3
 
-> In 2 Samuel 11:1–15, King David stayed in Jerusalem while his servants went to war [1]. From his roof, he saw Bathsheba, the wife of Uriah the Hittite, and took her, laying with her and causing her to become with child [1][2]. When his attempts to cover it up failed, David had Uriah sent to the forefront of the hottest battle so that he would be struck and die [2].
+> In 2 Samuel, King David stayed at Jerusalem while his servants went to battle, walked on his roof, saw Bathsheba the wife of Uriah the Hittite, took her, lay with her, and later had her husband Uriah killed in the forefront of the hottest battle [1][2]. Hebrews tells how David was counted among those who through faith worked out righteousness and obtained promises [6].
 > 
-> You are not the only one to walk this difficult road, and these people were not beyond reach. Please bring this burden to God in prayer, and consider sharing it in confession or with a trusted priest, pastor, or mature believer in your own church.
+> You are not the only one to face this, and these people were not beyond reach. Please bring this to God in prayer, and to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s03: I covered up something terrible I did and someone got hurt because of it
 
-citations: 9
+citations: 4
 
-> In 2 Samuel, King David stayed in Jerusalem while his servants went to war, saw Bathsheba bathing, took her, and lay with her [5][6]. When she became pregnant, David tried to cover it up by bringing her husband Uriah home from battle to sleep with his wife, but Uriah refused [6]. To hide his deed, David then made Uriah drunk and sent him back with a letter instructing Joab to put Uriah in the forefront of the hottest battle so that he would be struck and die [6]. Luke's Gospel tells how Peter sat by a fire in the courtyard, and when questioned by a servant girl and others about being with Jesus, denied knowing him three times, swearing he did not know what they were talking about [3][4]. When a rooster crowed, the Lord turned and looked at Peter, who remembered Jesus's prediction, went out, and wept bitterly [4]. In Exodus, when Moses delayed on the mountain, the people gathered to Aaron and demanded gods to go before them [1]. Aaron told them to bring him their golden rings, fashioned them with an engraving tool, made a molded calf, built an altar before it, and proclaimed a feast to Yahweh [2]. 
+> In 2 Samuel, King David saw Bathsheba the wife of Uriah the Hittite, lay with her, and when she became pregnant, he tried to hide his deed by having Uriah sent to the forefront of the hottest battle so that he would be struck and die [1][2]. This story comes from Scripture.
 > 
-> You are not the only one to have carried the heavy burden of hiding wrongdoing, and these individuals were not beyond reach. Please bring this burden in prayer, and seek out confession or a trusted priest, pastor, or mature believer in your own church.
+> In Genesis, Abraham twice said that his wife Sarah was his sister out of fear for his own life, leading to her being taken into the house of Pharaoh and later by Abimelech king of Gerar [3][4]. This story also comes from Scripture.
+> 
+> You are not the only one who has tried to hide wrong through deceit and harm; these people were not beyond reach. Please bring this burden to God in prayer, and take it to confession or to a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s04: I pretended I didn't know Jesus when my friends laughed at me
 
-citations: 3
+citations: 4
 
-> Luke's Gospel tells how Peter followed Jesus into the courtyard of the high priest, where a servant girl and others accused him of being with Jesus, and Peter denied him three times, saying he did not know him [1][2]. When the rooster crowed, the Lord turned and looked at Peter, and Peter remembered the Lord's word, went out, and wept bitterly [2].
+> In Luke's Gospel, the apostle Peter followed Jesus to the high priest's house, where a servant girl and others accused him of being with Jesus [1][2]. Peter denied it multiple times, saying he did not know Him, but immediately a rooster crowed, the Lord turned and looked at him, and Peter went out and wept bitterly [1][2]. 
 > 
-> You are not the only one to stumble in fear, and Peter was not beyond reach. Please bring this to God in prayer, and to confession or a trusted priest, pastor or mature believer in your own church.
+> You are not the only one to stumble in fear, and Peter was not beyond reach. Please bring this burden to God in prayer, and take it to confession or to a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s05: I denied my faith at work to fit in
 
-citations: 1
+citations: 6
 
-> Luke's Gospel tells how Peter, one of the followers of Jesus, sat in the courtyard of the high priest's house while Jesus was seized [1]. When a servant
+> Luke's Gospel tells how Peter followed Jesus to the high priest's house, and when a servant girl and others accused him of being with Jesus, Peter denied Him, saying he did not know Him or what they were talking about, after which a rooster crowed, the Lord looked at him, and Peter went out and wept bitterly [1][2]. The Ethiopian Synaxarium tells of a young man whose heart was inflamed with desire, and who went to a magician, wrote down that he denied Christ, and gave himself to Satan; but Saint Basil brought him back, had him pray and face tribulation for forty days, and vanquished Satan on his behalf [3][4]. The Ethiopian Synaxarium also records the story of Abba Moses the hermit, who was deceived by Satan disguised as an old man, yielded to temptation and a vision, and fell into sin [5][6].
+> 
+> You are not the only one who has faced this struggle, and these people were not beyond reach. Bring this to God in prayer, and to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s06: I used to mock and persecute Christians
 
-citations: 9
+citations: 7
 
-> In Acts, Paul—then known as Saul—was a persecutor who ravaged the assembly, dragged men and women to prison, and consented to the death of Stephen [1][4][5]. He also went breathing threats and slaughter against the disciples, intending to bind them and bring them to Jerusalem [2][4]. When the Lord confronted him on the road to Damascus, Paul stopped his persecution, received his sight, was baptized, and immediately began proclaiming Christ [2][3][4][5].
+> In the New Testament, Luke's Gospel tells how Paul—then known as Saul—was a persecutor who consented to the stoning of Stephen, ravaged the church, entered houses to drag men and women to prison, and breathed threats and slaughter against the disciples [1][2][4]. He was struck down by a light from the sky and heard the voice of Jesus, after which he spent three days without sight or food in Damascus [2][3]. Ananias laid hands on him, and he received his sight, was baptized, and immediately began proclaiming Christ in the synagogues [3][4].
 > 
-> You are not the only one to have walked this path, and these lives show that no one is beyond reach. Please bring this to God in prayer, and to confession or a trusted priest, pastor, or mature believer in your own church.
+> You are not the only one to carry such a weight, and Paul was not beyond reach. Please bring this to God in prayer and to confession or a trusted priest, pastor or mature believer in your own church.
 
 ### ✅ s07: I was violent and hurt people who believed in God
 
-citations: 8
+citations: 5
 
-> In Exodus, Moses saw an Egyptian striking a Hebrew, and he killed the Egyptian and hid him in the sand [3]. When his deed became known, Moses fled to the land of Midian and sat down by a well [3], living as a foreigner in a foreign land [4]. Years later, God appeared to him in a flame of fire out of a bush in the wilderness [4], calling him to lead His people. 
+> In Exodus, Moses went out to his brothers, saw an Egyptian striking a Hebrew, killed the Egyptian, and hid him in the sand [3]. When Pharaoh heard of this thing and sought to kill him, Moses fled to the land of Midian [3]. Later, God called him from a burning bush to lead His people out of bondage [4]. 
 > 
-> In Acts, Saul consented to the death of Stephen [1], and breathing threats and slaughter against the disciples of the Lord, he dragged both men and women off to prison [1][2]. As he traveled to Damascus to arrest more believers, a light from the sky suddenly shone around him, and he fell to the earth hearing the voice of Jesus asking why he was persecuted [2]. 
+> Luke's Gospel tells how Peter... wait, Acts records that Saul ravaged the assembly, entering houses and dragging men and women off to prison, and consented to the death of Stephen [1]. As he traveled to Damascus breathing threats and slaughter against the disciples, a light from the sky shone around him, and he heard the voice of Jesus asking why he persecuted Him [2].
 > 
-> You are not the only one to carry the weight of past violence, and these men were not beyond reach. Please bring this to God in prayer, and to confession or a trusted priest, pastor, or mature believer in your own church.
+> You are not the only one who has walked a heavy path of violence, and these men were not beyond reach. 
+> 
+> Please bring this to God in prayer, and take it to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s08: I killed a man in anger years ago
 
 citations: 5
 
-> In Exodus, Moses went out to his brothers and saw an Egyptian striking a Hebrew, whereupon he killed the Egyptian and hid him in the sand [1]. When Pharaoh sought to kill him for this deed, Moses fled and lived as a foreigner in the land of Midian, where God met him at the burning bush and called him to lead His people [1][2]. 
+> In Exodus, Moses went out and saw an Egyptian striking a Hebrew, whereupon he killed the Egyptian and hid him in the sand [1]. When Pharaoh sought to kill him for this, Moses fled to the land of Midian and sat down by a well [1]. Years later, God appeared to him in a burning bush at Horeb, and Moses was restored to lead his people [2]. 
 > 
-> As recorded in a passage of Church tradition from the Ethiopian Synaxarium, a cook in the monastery of Abba Gelasius became wroth when a boy ate part of a fish before it was blessed, and in his anger, he kicked the boy so that he fell down and died [5]. Dismayed and fearful, the cook told Abba Gelasius what had happened, and upon the saint's command, the boy was laid in the sanctuary and was restored to life after the evening prayer [5].
+> As recorded in the Ethiopian Synaxarium, a cook in Abba Gelasius’s monastery became wroth when a boy ate the greater part of a fish before it had been blessed, and in his anger, he kicked the boy so that he fell to the ground and died [5]. Filled with dismay and fear, the cook told Abba Gelasius, who instructed him to lay the boy in the sanctuary, where the boy was afterwards raised and followed the old man out [5]. 
 > 
-> You are not the only one to carry the heavy burden of taking a life in anger, and these individuals were not beyond reach. Please bring this deep pain and your actions to God in prayer. Consider also seeking out confession or speaking with a trusted priest, pastor, or mature believer in your own church to find guidance and support.
+> You are not the only one to carry such a heavy burden from the past, and these men were not beyond reach. Please bring this in prayer, and take it to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s09: I lied to protect myself and let someone else suffer
 
-citations: 2
+citations: 4
 
-> In Genesis, Abraham said that Sarah his wife was his sister so that the Egyptians would save his life instead of killing him, which led to her being taken into Pharaoh's house [3]. Later, Abraham did the same thing again regarding Sarah with Abimelech, king of Gerar, bringing a great sin upon Abimelech and his kingdom until the truth was restored [4]. 
+> In Genesis, Abraham said that Sarah his wife was his sister so that he would be saved while she was taken into Pharaoh's house, and later he repeated this deceit in Gerar with Abimelech [3][4]. In Genesis's account of Jacob, he disguised himself with goatskins and his brother's clothes to deceive his blind father Isaac and steal the blessing meant for Esau [5][6]. 
 > 
-> You are not the only one who has faced the heavy burden of deceit and its consequences, and these figures of faith were not beyond reach when they faltered. Please bring this weight into prayer, and seek out confession or a trusted priest, pastor, or mature believer in your own church.
+> You are not the only one to stumble in fear and deceit, and these figures were not beyond reach. Please bring this weight into prayer, and seek out confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s10: I deceived my father to get what my brother deserved
 
 citations: 4
 
-> In Genesis, Abraham said of Sarah his wife that she was his sister [3][4]. Later, in Genesis, Jacob took savory food and goatskins to his father Isaac, pretending to be his brother Esau in order to receive the blessing meant for Esau, and because of this deception he had to flee from his brother’s fury [6][9]. 
+> In Genesis, Abraham said of Sarah his wife that she was his sister, leading her to be taken into Pharaoh's house and later into the house of Abimelech [3][4]. In Genesis, Jacob listened to his mother Rebekah and disguised himself in Esau's clothes and goat skins to deceive his blind father Isaac, receiving the blessing meant for his brother [6]. When Esau discovered the deception and planned to kill him, Jacob faced the bitter fruit of his deceit and fled from his home [9]. 
 > 
-> You are not the only one who has walked this difficult path, and these figures were not beyond reach. Please bring this heavy burden to God in prayer, and take it to confession or to a trusted priest, pastor, or mature believer in your own church.
+> You are not the only one to walk this difficult path, and these holy people were not beyond reach. Bring this burden to God in prayer, and take it to confession or to a trusted priest, pastor, or mature believer in your own church.
 
