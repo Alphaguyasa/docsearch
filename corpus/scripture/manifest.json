@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T08:24:36.067Z",
+  "generatedAt": "2026-09-29T13:32:49.552Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -262,6 +262,23 @@
           "sha256": "055b3864da774d67d9e3ef9398aeed5248261837af585410dcc2c8c622f8238a",
           "bytes": 2706604,
           "archiveId": "bookofsaintsofet00yait"
+        }
+      ]
+    },
+    {
+      "id": "takla_haymanot",
+      "title": "The Life of Takla Haymanot (tr. E. A. Wallis Budge, 1906, from the Dabra Libanos manuscript)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1906; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T13:32:49.552Z",
+      "files": [
+        {
+          "name": "lifeoftaklahymnt00budg_djvu.txt",
+          "url": "https://archive.org/download/lifeoftaklahymnt00budg/lifeoftaklahymnt00budg_djvu.txt",
+          "sha256": "53b6c412d4d8fc543198e4655daa0e642c412c11c285c6caaf789f2bbb51185a",
+          "bytes": 747796,
+          "archiveId": "lifeoftaklahymnt00budg"
         }
       ]
     },

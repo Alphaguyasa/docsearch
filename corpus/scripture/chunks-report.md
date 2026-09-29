@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-29T09:01:02.619Z
+Generated 2026-09-29T13:33:36.961Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -19,10 +19,11 @@ Generated 2026-09-29T09:01:02.619Z
 | miracles_of_mary | 1 | 126 | 60268 | 478 | 635 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
+| takla_haymanot | 1 | 249 | 111120 | 446 | 629 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 8126 chunks, 3483474 tokens ≈ 5.8 h of embedding at 10000 TPM.
+**Total:** 8375 chunks, 3594594 tokens ≈ 6.0 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -643,6 +644,27 @@ Ethiopian Synaxarium, Hamle (part 8)
 T26a^l very severely. And he also sent him to the city of GAMNii^i, where they beat him with bars of wood and broke hit back- and when he was tired of torturing him he sent him fo the city of Alexandria. And when the saint came to the Hill orBARM6DA, our Lord Jesus Christ, our Redeemer, appeared io him, and comforted him, and told him that he should ihWs fight there, and He promised him that He would erant to every man any request which he should make m his fame And when the governor was tired of torturing him he commanded the soldiers to cut off his head with the sword, and thus the saint finished his martyrdom, and received the crown thereof in the kin
 ```
 
+**Life of Takla Haymanot, The Scribe’s Preface** (271 tokens, ethiopian_orthodox)
+```
+Life of Takla Haymanot, The Scribe’s Preface
+
+In the Name of God, Who is Three in His inseparability, (see Plate i) and is One in His attribute of indivisibility, Whose Godhead is hidden and cannot be searched out by the mind, Whose power is holy and cannot be removed from Him, Whose kingdom existeth by itself and can never be replaced by another, and to Whom alone are meet worship and prostration, we will write [the history of] the CONTENDINGS AND WORKS of our father, the holy and blessed man, Takla the Father, and Takla the Son, and Takla the Holy Spirit, that is to say of Abba Takla Haymanot, the bearer of the Name of the Trinity, which shall be read on the twenty-fourth day of the month 
+```
+
+**Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed…** (421 tokens, ethiopian_orthodox)
+```
+Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed…
+
+Then our father the holy man Takla HAymAnot said unto him, “Make haste and perform that to which we have already consented,” and the king said, “I will.” And Matalome commanded [his servants] to sharpen the spear which had turned and pierced his hand the day before, and our father the holy man TaklA HAymAnot said unto him, “Put that one aside, and let them bring another, so that the sorcerers “may not be able to make an excuse and say that one hath worked upon “it with magic;” and he commanded them to bring another. Then the king said unto the sorcerers, “Speak now, and choose 
+```
+
+**Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of… (part 2)** (550 tokens, ethiopian_orthodox)
+```
+Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of… (part 2)
+
+wished to eat up the green plants and herbs; now at that time the mountain land was waste and uncultivated ground. And the disciples told our father the holy man Takla Haymanot that the wild animals were laying waste their fields, and he said unto them, “Let them alone, “for it is we who have invaded their habitation, and not they who have in- “vaded ours; therefore let us not treat them harshly, for. they are flesh and “blood even f||^we are;” so the disciples held their peace, and the wild animals prevailed over them, and caused them great tribulation, and overran their
+```
+
 **Genesis 1:1-13** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
 ```
 Genesis 1:1-13
@@ -695,6 +717,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
 
 **synaxarium** — 92 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, “COMMEMORATION OF fyAst}) I ’ADYAM SAGAD King of…” · Ethiopian Synaxarium, Maskaram · Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” · Ethiopian Synaxarium, Maskaram — “CURUS having ended his good fight and pleased…” · Ethiopian Synaxarium, Maskaram — “LIDES) came once again before the governor, and…” · Ethiopian Synaxarium, Maskaram — “TOBIT rubbed his eyes and there removed itself…” · Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Maskaram — “ATHANASIUS archbishop, for the holiness of his life…” · Ethiopian Synaxarium, Maskaram — “BELINA, and Abba sALAMA the lamp of the…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONE GOD |…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONESGoOD…” · Ethiopian Synaxarium, Maskaram — “SON AND THE HOLY GHOST, ONE GOD 4…” · Ethiopian Synaxarium, Maskaram — “THE SECOND MONTH—TEKEMT…” · Ethiopian Synaxarium, Teqemt — “SEVERUS secretly, she besought the holy man to…” · Ethiopian Synaxarium, Teqemt · Ethiopian Synaxarium, Teqemt — “TBA THE ETHIOPIC SYNAXARIUM…” · Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST. ONE GOD…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY, GHOST, ONE GOD…” · Ethiopian Synaxarium, Teqemt — “NE aia tS a sana eas Macapee ates…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ..ONE GOD…” · Ethiopian Synaxarium, Teqemt — “BESRA of the West, of the country of…” · Ethiopian Synaxarium, Teqemt — “SECOMD MOXTE—TEZEMT (ocr. Sov. 6) Ig7…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ONE GOD . On…” · Ethiopian Synaxarium, Teqemt — “AND THB’ HOLY GHOST, ONE, GOD…” · Ethiopian Synaxarium, Hedar · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONE:GOD…” · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONEVGO@D…” · Ethiopian Synaxarium, Hedar — “AND: THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Hedar — “WALATTA PETROS the Ethiopian woman. ] |…” · Ethiopian Synaxarium, Hedar — “PHERON, who hath corrupted thy daughter’s heart.” And…” · Ethiopian Synaxarium, Hedar — “NASEL, in the country of Ethiopia. Salutation to…” · Ethiopian Synaxarium, Hedar — “NAS was dying he commanded the bishops and…” · Ethiopian Synaxarium, Hedar — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…”
+
+**takla_haymanot** — 114 sections: Life of Takla Haymanot, The Scribe’s Preface · Life of Takla Haymanot, Chapters I–II: The Genealogy Of Takla Haymanot · Life of Takla Haymanot, Chapter III: How King Solomon Sent His Son ’ebna Hakim To Ethiopia And How He Sent With… · Life of Takla Haymanot, Chapter IV: The History Of Abba Salama, And How Pere Menatos (Frumentius) Was Appointed… · Life of Takla Haymanot, Chapter V: How Abba Salama Went To The Country Of Ethiopia · Life of Takla Haymanot, Chapter VI: The History Of The Generations Of The Kings Of Ethiopia · Life of Takla Haymanot, Chapter VII: The History Of The Birth Of Takla Haymanot · Life of Takla Haymanot, Chapter VIII: How Saga Za’ab Took To Wife Sara A Noble Lady Of The Country Of Zorare · Life of Takla Haymanot, Chapter IX: How ’egzi’e Haraya Prayed To God For A Son · Life of Takla Haymanot, Chapter X: How Saga Za’ab Gave One Half Of All His Goods To The Church And Divided The… · Life of Takla Haymanot, Chapter XI: How The City Of Zorare Was Besieged By The Wicked King Matalome And How Saga… · Life of Takla Haymanot, Chapter XII: How Saga Za’ab Was Miraculously Preserved By Saint Michael In The Water, And… · Life of Takla Haymanot, Chapter XIII: How The Blessed Woman ’egzi’e Haraya Was Carried Off Into Captivity, How… · Life of Takla Haymanot, Chapter XIV: How The Lady ’egzi’e Haraya Prayed To God In Great Grief Of Spirit, And How… · Life of Takla Haymanot, Chapter XV: How The Lady ’egzl’e Haraya Arrayed Herself In Fine Apparel How She Was… · Life of Takla Haymanot, Chapter XVI: How Matalome Ordered Evert One In His Dominions To Make Ready To Celebrate… · Life of Takla Haymanot, Chapter XVII: How Saga Za’ab Met His Wife ’egzi’e Haraya But Did Not Recognize Her, And… · Life of Takla Haymanot, Chapter XVIII: How Saga Za’ab And His Wife Each Saw A Vision On The Night Of The Day… · Life of Takla Haymanot, Chapter XIX: How The Child Of Promise Was Born Nine Months And Five Days After He Was… · Life of Takla Haymanot, Chapter XX: How The Holy Spirit Descended Upon The Child Three Days After He Was Born… · Life of Takla Haymanot, Chapter XXI: How The Child Was Baptized And Was Called Feshha §eyon And How Saint Michael… · Life of Takla Haymanot, Chapter XXII: How The Child Worked Miracles When He Was Fifteen Months Old And How He… · Life of Takla Haymanot, Chapter XXIII: How The Child Worked Another Miracle And Turned Water Into Wine, And How… · Life of Takla Haymanot, Chapter XXIV: How Feshha Seyon Learned The Books Of The Old And New Testaments, And To… · Life of Takla Haymanot, Chapter XXV: How By The Command Of Saint Michael The Youth Feshha Seyon Was Taken By His… · Life of Takla Haymanot, Chapter XXVI: How Feshha Seyon And His Father Were Entreated Evilly By A Certain Man On… · Life of Takla Haymanot, Chapter XXVII: How Feshha Seyon And His Companions Arrived At A Place Wherein There Was… · Life of Takla Haymanot, Chapter XXVIII: How The Blessed Youth Feshha Seyon Refused To Marry The Bride Whom His… · Life of Takla Haymanot, Chapter XXIX: How Saint Michael Appeared To The Holy Youth Feshha Seyon Whilst He Was… · Life of Takla Haymanot, Chapter XXX: How Takla Haymanot Distributed All His Goods And Possessions Among The Poor… · Life of Takla Haymanot, Chapter XXXI: How Abba Gerlos Appointed Takla Haymanot Chief Priest Of Shoa, And How He… · Life of Takla Haymanot, Chapter XXXII: How Saint Michael Appeared Unto The Mother Of Takla Haymanot And Told Her… · Life of Takla Haymanot, Chapter XXXIII: How Our Lord Appeared In Person To Takla Haymanot And How He Appointed… · Life of Takla Haymanot, Chapter XXXIV: How Takla Haymanot Forsook His House, Leaving The Doors Wide Open, And Set… · Life of Takla Haymanot, Chapter XXXV: The Generations Of The Kings From Whom The Government Was Wrested, And How… · Life of Takla Haymanot, Chapter XXXVI: How Takla Haymanot Heard That The Men Of Katata Were Magicians And… · Life of Takla Haymanot, Chapter XXXVII: How Takla Haymanot Was Taken. By The Men Of Katata To See The Tree And… · Life of Takla Haymanot, Chapter XXXVIII: How Takla Haymanot Raised The Dead, And How When They Had Believed In… · Life of Takla Haymanot, Chapter XXXIX: How Takla Haymanot Baptized Six Hundred Thousand Of The People Of Katata… · Life of Takla Haymanot, Chapter XL: How Takla Haymanot Went With A Body Of Men And Cut The Tree Down, How The…
 
 ## Synaxarium chunks per month
 
@@ -1772,5 +1796,121 @@ carrv it up to heaven. And when Abba macarius arrived at
 their cell he found dumatheus dead, and he took him and
 buried him with his brother maximus, in the same grave.
 The death of maximus took place on the fourteenth day of
+```
+
+### takla_haymanot: frequent short lines
+```
+36	#
+20	THE LIFE OF TAKLA HAYMANOT (Folio #a).
+20	INTRODUCTION.
+9	HAYMANOT
+8	CONTENTS.
+8	.
+8	TAKLA HAYMANOT
+7	'
+7	THE LIFE OF TAKLA HAYMANOT (Folio #).
+7	THE LIFE OF TAKLA HAYMAnOT (Folio #a).
+6	# Generations
+6	HAYMANOT.
+5	PLATE
+4	Cainan
+4	■
+4	THE LIFE OF TAKLA HAYMAN#T (Folio #a).
+```
+### takla_haymanot: context around "Moses" (line 83)
+```
+a wish to reproduce an illustrated Ethiopic manuscript of a character which
+would be of -special interest to His Highness, and after due consideration
+decided to issue an edition of the Life and Miracles of Takla HAymAnot,
+and to dedicate it to him. As is well known, the Life of this saint exists
+in two Versions, viz., the Version of WaldebbA, and that of Dabra
+LibAnos; the former was published by Signor Conti Rossini Carlo in
+1896, but of the latter no printed edition of the text or translation existed.
+For printing the Life of Takla HAymAnot there were many good reasons,
+not the least being the fact that his name has always been held in the
+greatest reverence by the Ethiopians, and that for many centuries he has
+been regarded by them as the highest type of the Christian ascetic which
+their country has produced. A tradition, which if not the oldest never¬
+theless possesses very considerable antiquity, declares that his family sprang
+from priests of the Levites who ministered in the Tabernacle in the wilder¬
+ness, and that its members shared in the inheritance which was set apart
+for the Levites under Joshua, the successor of Moses the Great. The
+same tradition goes on to show that his ancestors played prominent parts
+in establishing in Ethiopia, first, the Religion of the Hebrews, and 'secondly,
+the Faith of Christ. Takla HA ymAnot was himself the founder, or at all
+events one of the first great teachers, of Christian asceticism in that country,
+and he is worthy to be classed with Anthony the Great, and Macarius,
+and PACHOMIUS of Egypt. His paternal and maternal ancestors; were
+people of wealth and high social position, and his father ministered in the
+church of his city : ZoRARE, and contributed to it considerable material
+support. His Christian education as a boy began betimes, and it was
+continued with such success that Cyril, Bishop of AmharA, appointed
+him a deacon of the Church at the age of fifteen; after the death of his
+parents he resolved to devote himself to the ascetic life, and in the approved
+fashion relieved himself of all his earthly possessions by giving them to
+the poor. During the fifty years of his life which he spent in travelling
+from place to place, and in living with various communities of ascetics, he
+gained great knowledge of the conditions under which the people of the
+country lived, and he became able to fathom such religious instincts as they
+possessed. The traditions contained in the narrative of his Life which
+describe the primitive religion of Ethiopia are of great interest, and they
+show that the people were extremely ignorant and fanatical, that they
+worshipped snakes, trees, stones, &c., that they were wholly given up to
+sorcery, and witchcraft, and that they practised magic in the forms in
+which it is found among the most savage races in North-East Africa.
+Gabra MAskal’s Life of Takla Haymanot proves that, although num¬
+```
+### takla_haymanot: 50 raw lines at 40%
+```
+the tree], and they went on their way to make adoration to their god in
+the tree. Now when our father the holy man Takla Haymanot saw
+the abominable thing which they were going to do, he stood up before
+God his Lord, and turning his face to the east he prayed, saying, (Fol.
+54 b. 1) “See, O God, the cunning and craft of SATAN, who worketh such
+“deceit against Thy creation! Why dost Thou permit the Adversary to
+“deal so evilly with Thy handiwork? And now, I beseech Thee, O Lord,
+“to inflict an injury upon this proud one by the hand of myself, Thy ser¬
+vant, and send Thou Michael, the angel of Thy counsel, to help me,
+“even as Thou didst promise to me, and permit Thou not this SATAN
+“to depart from this tree until his shame be made to appear before
+“all the people (Fol. 54^. 2) dwelling [here], whom he leadeth to de¬
+struction. And as for the tree, let it come hither unto me, having been
+“plucked up by the roots thereof, according to the word which saith, ‘If
+“‘there be in you faith as large as a mustard seed, and ye say unto this
+“ ‘sycamore tree, Remove thyself from thy roots, and plant thyself in the
+‘“sea, it shall be even as ye say.’1 O my Lord Jesus Christ, Thou art
+“my Faith, and Thou art my work, let be made manifest the strength of
+“my faith this day by Thy power, and let the might of my work be shewn
+ew
+■ St. Matthe
+'
+THE LIFE OF TAKLA HAYMAN6T (Folio 5 6b).
+PLATE XXXII.
+f-.z.n.'i&iih.-fi
+6 limits
+VD>*A'-XYrn-.©
+fc*A.«H XA.tA.-f*.-
+’in-Xfctii®li7tX/,
+7 C VHti <n>-^-uD
+7s©^#»ix ^s/n*
+VnXriD-i'i IUf».V
+ZflU’l'l'-'IILV.
+*f-H-T**.ftfc',lY.vf*
+<niftA-.htfo*«hV.flL
+av'-Tn-to-nW* 1«fr*.fc-.*liA»V£
+•t'Ai»nA--£770-i **7 dun*}
+0Zn.fr.£lL.ho»
+*.h*.*y*»X«fi* ft-x.
+A.lfcm^fcAi.
+Y--aifcn.A-.i-*.
+fcA#ii?i<n>-X7-f*;
+•VmUD->t'-WA”*n
+^fcA*.n^fcA*.h
+'fllA-sffl un-A
+AifOsojoc*-, A
+command of Takla Haymandt the tree in which the devil dwells •
+(See chapter XXXVI I).
+FOLLOWS
+“forth (Fol. 54 £ 3) in Thy work this day before all those who are gathered
 ```
 
