@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-29T13:33:36.961Z
+Generated 2026-09-29T17:03:03.174Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -135,6 +135,9 @@ Generated 2026-09-29T13:33:36.961Z
 - ✅ solomon / restoration: `Kebra Nagast, Chapter 65` → 1 chunk(s) (Kebra Nagast, Chapter 65: Concerning The Sin Of Solomon)
 - ✅ cannibal_of_kemer / fall: `Miracles of the Blessed Virgin Mary, Chapter XXIX` → 1 chunk(s) (Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer)
 - ✅ cannibal_of_kemer / restoration: `Miracles of the Blessed Virgin Mary, Chapter XXIX` → 1 chunk(s) (Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer (part 2))
+- ✅ matalome / fall: `Life of Takla Haymanot, Chapter XI` → 1 chunk(s) (Life of Takla Haymanot, Chapter XI: How The City Of Zorare Was Besieged By The Wicked King Matalome And How Saga…)
+- ✅ matalome / restoration: `Life of Takla Haymanot, Chapter LVI` → 1 chunk(s) (Life of Takla Haymanot, Chapter LVI: How Matalome Entreated The Saint To Give Him His Name, And How At Takla…)
+- ✅ matalome / restoration: `Life of Takla Haymanot, Chapter LIX` → 1 chunk(s) (Life of Takla Haymanot, Chapter LIX: How Takla Haymanot Baptized More Than One Hundred Thousand People, And How…)
 
 ## Samples
 
