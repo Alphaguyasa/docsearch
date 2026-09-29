@@ -279,3 +279,23 @@ test("Takla Haymanot: plates, running headers and page-foot notes go; split titl
   assert.match(all, /Then the holy man Gabra Wahad came unto the king\. And it came to pass/);
   assert.doesNotMatch(all, /CONTENTS|Fol\.|Page I|Ethiopic tradition|HISTORY OF ABBA|PLATE|WiUltl|captivity|See chapter/);
 });
+
+test("Philoxenus: discourse headings by page mark; footnotes, running headers and broken lines are mended", () => {
+  const rule = TEXT_RULES.philoxenus;
+  const raw = [
+    "INTRODUCTION", "", "NOW    THE    FIRST    DISCOURSE    IS     BY    THE", "GRACE    OF    OUR    LORD    THE    PROLOGUE", "TO   ALL  THIS  VOLUME.", "",
+    "Our  Lord  and  our  Redeemer  Jesus  Christ  invited  us.", "", "*  Compare  2  Corinthians  iii.  18.", "",
+    "Here  endeth  the  First  Discourse  which  is  the", "Prologue  of  the  volume.", "", "Galatians  ii.  20.", "",
+    "[P.  26]  THE  SECOND  DISCOURSE: ", "", "WHICH    TEACHETH  WHICH  IS   THE  FIRST  COMMANDMENT   THAT", "", "OF  CHRIST   SHOUI-D  LAY   HOLD   UPON. ", "",
+    "This  is  the  vineyard  for  which  the  master", "", "of  the  house  hired  labourers,  and  every  one  whom  he", "",
+    "\"saw  standing  outside  he  accounted  idle.\"", "", "44", "", "THE  SECOND  DISCOURSE.", "", "a the second discourse.", "",
+    "r^     r^^  T I  n.iQ     r^ixaJ^.i     rf^ix^.T*.!    KllLr^", "", "Faith  [p.  36]  is  the  foundation.",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), ["Discourse I: The Prologue", "Discourse II: On Faith"]);
+  assert.deepEqual(s[0].paragraphs, ["Our Lord and our Redeemer Jesus Christ invited us."]);
+  assert.deepEqual(s[1].paragraphs, [
+    "This is the vineyard for which the master of the house hired labourers, and every one whom he \"saw standing outside he accounted idle.\"",
+    "Faith is the foundation.",
+  ]);
+});

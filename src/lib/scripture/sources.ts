@@ -186,6 +186,8 @@ export const TEXT_RULES: Record<string, TextRule> = {
       ],
       dropPlates: /^PLATE\b|\(Folio \d+/i,
       keepCapsAfter: /^CHAPTER\b/,
+      joinBrokenLines: true,
+      dropGarbage: true,
       dropLines: [
         /^\[THE +SCRIBE’S +PREFACE\.\]$/,
         /[({[]\s*See\s+cha/i, // what is left of a plate caption
@@ -201,6 +203,57 @@ export const TEXT_RULES: Record<string, TextRule> = {
     },
     defaultHeading: "The Scribe’s Preface",
     sections: { sectionStart: /^CHAPTER ([IVXLCYxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
+  },
+  philoxenus: {
+    refPrefix: "Philoxenus of Mabbogh",
+    traditions: ALL,
+    clean: {
+      // Volume II, the English translation, from the Prologue to the printer's mark.
+      startAt: /^NOW\s+THE\s+FIRST\s+DISCOURSE\s+IS\s+BY\s+THE/,
+      endAt: /^PRINTED\s+BY\s+W\.\s+DRUGULIN/,
+      replace: [
+        // Each discourse opens "[P. 26] THE SECOND DISCOURSE: WHICH TEACHETH…" over many
+        // lines of capitals; the scan's page marks tell the headings apart.
+        ...(
+          [
+            ["26", "II", "On Faith"],
+            ["52", "III", "On Faith"],
+            ["74", "IV", "On Faith and Simplicity"],
+            ["I20", "V", "On Simplicity"],
+            ["159", "VI", "On the Fear of God"],
+            ["191", "VII", "On the Fear of God"],
+            ["222", "VIII", "On Poverty"],
+            ["257", "IX", "On Poverty"],
+            ["353", "X", "On the Lust of the Belly"],
+            ["420", "XI", "On Abstinence"],
+            ["494", "XII", "On Fornication"],
+            ["551", "XIII", "On Fornication"],
+          ] as const
+        ).map(([page, n, title]): [RegExp, string] => [
+          new RegExp(`^\\[[Pp][-.,]?\\s*${page}[\\]I]?\\s+THE\\s+\\w+\\s+DISCOURSE[\\s\\S]*?\\.[ \\t]*$`, "m"),
+          `DISCOURSE ${n}.\n\n${title.toUpperCase()}.`,
+        ]),
+        [/^WHICH\s+Is\^ON\s+SIMPLICITY\.\s*$/m, ""],
+      ],
+      keepCapsAfter: /^DISCOURSE [IVX]+\.$/,
+      joinBrokenLines: true,
+      dropGarbage: true,
+      dropLines: [
+        /^NOW\s+THE\s+FIRST\s+DISCOURSE/,
+        /^GRACE\s+OF\s+OUR\s+LORD\s+THE\s+PROLOGUE/,
+        /^TO\s+ALL\s+THIS\s+VOLUME\.$/,
+        /^\S{0,4}\s*the\s+\w+\s+discourse\.?$/i, // running header in small letters
+        /^[A-Za-z]{1,2}-?$/, // a stray letter from the page edge
+        /^[IVXL]{1,5}\.$/,
+      ],
+      // Page-foot notes ("^ Hebrews ii. 17.", "' A reads…", "St. Matthew ix. 17.") and the "Here endeth…" colophons.
+      dropParagraphs: /^([\^'’*•]|\d\s)|^Here\s+endeth|^\W{0,2}\s*(J\s+)?(St\.\s+)?([1-3I]\s+)?[A-Z][a-z]+\.?\s+[ivxlcIVXL]+[.,%](\s*[\dil]|\s*$)/,
+      inline: [/\[p\.?\s*[0-9Il]{1,3}\]/gi],
+      // Note calls: "saying,' that", "doers.' For".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9'*^](?=\s|$)/g,
+    },
+    defaultHeading: "Discourse I: The Prologue",
+    sections: { sectionStart: /^DISCOURSE ([IVX]+)\.$/, name: "loneNumeral", label: "Discourse", titleEndsWithPeriod: true },
   },
   jubilees: {
     refPrefix: "Book of Jubilees",
