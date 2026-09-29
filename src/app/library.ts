@@ -160,6 +160,15 @@ export const LIBRARY: LibraryGroup[] = [
         note: { en: "The Persian Sage, one of the oldest Syriac Fathers.", am: "«የፋርሱ ጠቢብ»፣ ከሶርያ አባቶች ቀደምት አንዱ።" },
       },
       {
+        sourceIds: ["philoxenus"],
+        title: { en: "Philoxenus of Mabbogh, The Discourses", am: "ፊሎክሴኖስ ዘመንበግ፣ ድርሳናት" },
+        by: { en: "tr. E. A. Wallis Budge, 1894", am: "በE. A. Wallis Budge የተተረጎመ፣ 1894" },
+        note: {
+          en: "Thirteen discourses on the Christian life by a father of the Syriac Orthodox Church: on faith, the fear of God, and the fight against gluttony and fornication.",
+          am: "የሶርያ ኦርቶዶክስ ቤተ ክርስቲያን አባት ስለ ክርስቲያናዊ ሕይወት ያስተማራቸው ዐሥራ ሦስት ድርሳናት፦ ስለ እምነት፣ ስለ እግዚአብሔር ፍርሃት፣ ከሆዳምነትና ከዝሙት ጋር ስለሚደረግ ተጋድሎ።",
+        },
+      },
+      {
         sourceIds: ["isaac"],
         title: { en: "St. Isaac the Syrian, Mystic Treatises", am: "ቅዱስ ይስሐቅ ሶርያዊ፣ ድርሳናት" },
         by: { en: "tr. A. J. Wensinck, 1923", am: "በA. J. Wensinck የተተረጎመ፣ 1923" },

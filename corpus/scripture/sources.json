@@ -137,6 +137,20 @@
    "note": "St. Isaac the Syrian, read across the Syriac, Ethiopian, Coptic and Eastern Orthodox churches. Treatise numerals are OCR-mangled; read against the sequence, missing ones become ranges."
   },
   {
+   "id": "philoxenus",
+   "title": "The Discourses of Philoxenus, Bishop of Mabbogh (tr. E. A. Wallis Budge, 1894), vol. II",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(discourses of philoxenus) AND creator:(budge)",
+   "titleHint": "discourses philoxenus",
+   "archiveIds": [
+    "discoursesofphil02philuoft"
+   ],
+   "license": "Public domain (published 1894; Budge d. 1934)",
+   "status": "verified",
+   "note": "Volume II, the English translation of the thirteen discourses on the Christian life; the introduction and the Syriac scriptural collations are dropped. Philoxenus is a father of the Syriac Orthodox Church."
+  },
+  {
    "id": "cyril_repentance",
    "title": "Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)",
    "kind": "tradition",

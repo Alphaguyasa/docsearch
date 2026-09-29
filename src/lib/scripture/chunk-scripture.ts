@@ -124,6 +124,20 @@ export interface CleanOptions {
    * of the title under one (up to two paragraphs of capitals).
    */
   keepCapsAfter?: RegExp;
+  /**
+   * Scans set with a blank line under every line of a page: remove a blank
+   * line where the sentence runs on ("…and every one whom he" / "saw standing…").
+   */
+  joinBrokenLines?: boolean;
+  /** Drop lines that are mostly not words: OCR'd Ethiopic or Syriac lettering on plates. */
+  dropGarbage?: boolean;
+}
+
+/** Share of a line's tokens that look like words ("him,", "“Blessed", "Za’ab"). */
+function wordShare(line: string): number {
+  const tokens = line.trim().split(/\s+/);
+  const words = tokens.filter((t) => /^[“"‘'(\[]*([A-Za-z][a-z’'-]*|[A-Z][A-Z’'-]*)[.,;:!?”"’')\]]*$/.test(t)).length;
+  return words / tokens.length;
 }
 
 /** A full line of running prose, as a plate's end marker. */
@@ -178,6 +192,7 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
     if (/^\d+$/.test(line)) continue; // bare page numbers
     if (opts.dropLines?.some((re) => re.test(line))) continue;
     if (line.length < 40 && letterRatio(line) < 0.6) continue; // OCR debris
+    if (opts.dropGarbage && wordShare(line) < 0.5) continue;
     out.push(line);
   }
   if (opts.keepCapsAfter) {
@@ -202,6 +217,11 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
         ? l.length < 100 && !/[.!?”"'’;:,)\]]$/.test(l)
         : l.length < 60 && !/[.!?”"’]$/.test(l); // a caption's broken-off tail: "and the souls are outw"
       if (caption) out[i] = "";
+    }
+  }
+  if (opts.joinBrokenLines) {
+    for (let i = out.length - 2; i > 0; i--) {
+      if (out[i] === "" && /[a-z,;-]$/.test(out[i - 1]) && /^["“]?[a-z]/.test(out[i + 1])) out.splice(i, 1);
     }
   }
   // Rejoin hyphenated words: "pro-" + "cess" -> "process".
