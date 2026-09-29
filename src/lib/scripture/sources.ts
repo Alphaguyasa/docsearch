@@ -131,6 +131,34 @@ export const TEXT_RULES: Record<string, TextRule> = {
       name: "chapterNumeral",
     },
   },
+  miracles_of_mary: {
+    refPrefix: "Miracles of the Blessed Virgin Mary",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The translated miracles only: not the salutations, the Life of Hanna,
+      // the "magical prayers" or the Ethiopic text printed after them.
+      startAt: /^THE COVENANT OF CHRIST WITH THE BLESSED VIRGIN MARY\.$/,
+      endAt: /^SALUTATIONS TO THE MEMBERS OF THE BODY/,
+      replace: [
+        // Chapter XXXI is printed "XXX" a second time.
+        [/(^CHAPTER XXX\.[ \t]*$[\s\S]*?^)CHAPTER XXX\./m, "$1CHAPTER XXXI."],
+        [/^CHAPTER IL\.?[ \t]*$/m, "CHAPTER II."],
+      ],
+      dropLines: [
+        /[\u1200-\u137F]/, // Ethiopic lines of the plates
+        /MIRACLES OF THE BLESSED VIRGIN/,
+        /^PLATE\b/i,
+        /^[A-Z][A-Z ,'’()-]+\.\s*\d+\.?$/, // running header with page number
+        /^[IVXL]{1,4}\.\s+[A-Z][a-z]/, // plate captions: "I. The cannibal of Kemer…"
+        /^\(See page/,
+        /^THE COVENANT OF CHRIST WITH THE BLESSED VIRGIN MARY\.$/,
+      ],
+      inline: [/\[[AB] fol\.[^\]]*\]/g, /\[B\. fol\.[^\]]*\]/g],
+      dropCaptions: true,
+    },
+    defaultHeading: "Chapter I: The Covenant Of Christ With The Blessed Virgin Mary",
+    sections: { sectionStart: /^CHAPTER ([IVXLCxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
+  },
   jubilees: {
     refPrefix: "Book of Jubilees",
     traditions: ["ethiopian_orthodox"],

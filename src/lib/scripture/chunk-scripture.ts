@@ -102,6 +102,14 @@ export interface CleanOptions {
   strip?: RegExp;
   /** OCR repairs applied to the raw text first (use the m flag for ^ / $), e.g. "|" read for "I". */
   replace?: [RegExp, string][];
+  /**
+   * Drop picture captions: a mixed-case line standing alone between blank
+   * lines with no closing punctuation — under 100 characters when it starts
+   * with a capital ("The cannibal gives a drink of water to a leprous b"),
+   * under 60 for a broken-off tail ("and the souls are outw"). Headings are all
+   * capitals and prose paragraphs run over several lines, so both stay.
+   */
+  dropCaptions?: boolean;
   /** A paragraph whose first line matches this is dropped whole, e.g. footnotes "[614] Luke ii. 29." */
   dropParagraphs?: RegExp;
 }
@@ -139,6 +147,17 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
     if (opts.dropLines?.some((re) => re.test(line))) continue;
     if (line.length < 40 && letterRatio(line) < 0.6) continue; // OCR debris
     out.push(line);
+  }
+  if (opts.dropCaptions) {
+    const blank = (i: number) => i < 0 || i >= out.length || out[i] === "";
+    for (let i = 0; i < out.length; i++) {
+      const l = out[i];
+      if (!l || !blank(i - 1) || !blank(i + 1) || !/[a-z]/.test(l)) continue; // headings are all capitals
+      const caption = /^[A-Z]/.test(l)
+        ? l.length < 100 && !/[.!?”"'’;:,)\]]$/.test(l)
+        : l.length < 60 && !/[.!?”"’]$/.test(l); // a caption's broken-off tail: "and the souls are outw"
+      if (caption) out[i] = "";
+    }
   }
   // Rejoin hyphenated words: "pro-" + "cess" -> "process".
   for (let i = 0; i < out.length - 1; i++) {
@@ -297,6 +316,8 @@ export interface SectionRule {
   name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral" | "numberedChapter" | "romanChapterStart" | "loneNumeral";
   /** Section label for "loneNumeral" ("Treatise"); default "Chapter". */
   label?: string;
+  /** "loneNumeral": a title ends at its first line ending in a full stop (the next caps line is text). */
+  titleEndsWithPeriod?: boolean;
   /** Map the runningContext capture to a canonical label (OCR-proof). */
   contextLabel?: (capture: string) => string;
 }
@@ -414,6 +435,10 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
         cur.heading = /[A-Za-z]-$/.test(cur.heading)
           ? cur.heading.slice(0, -1) + more.charAt(0).toLowerCase() + more.slice(1)
           : `${cur.heading} ${more}`;
+        if (rule.titleEndsWithPeriod && /\.\s*$/.test(line)) {
+          cur.heading = shortTitle(cur.heading);
+          titling = false;
+        }
         continue;
       }
       if (titling) cur.heading = shortTitle(cur.heading);

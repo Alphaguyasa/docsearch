@@ -110,6 +110,16 @@ export const LIBRARY: LibraryGroup[] = [
         onlyFor: ETH,
       },
       {
+        sourceIds: ["miracles_of_mary"],
+        title: { en: "The Miracles of the Blessed Virgin Mary", am: "ተአምረ ማርያም" },
+        by: { en: "tr. E. A. Wallis Budge, 1900, from the Ethiopic", am: "በE. A. Wallis Budge ከግዕዝ የተተረጎመ፣ 1900" },
+        note: {
+          en: "Read in the Ethiopian Church: the Virgin’s mercy to sinners — among them the cannibal of Kemer, saved by a cup of water given in her name.",
+          am: "በኢትዮጵያ ቤተ ክርስቲያን የሚነበብ፤ የድንግል ማርያም ምሕረት ለኃጢአተኞች — ከእነርሱም በስሟ ጥቂት ውኃ በማጠጣቱ የዳነው በላዔ ሰብእ።",
+        },
+        onlyFor: ETH,
+      },
+      {
         sourceIds: ["kebra_nagast"],
         title: { en: "The Kebra Nagast, the Glory of Kings", am: "ክብረ ነገሥት" },
         by: { en: "tr. E. A. Wallis Budge, 1922", am: "በE. A. Wallis Budge የተተረጎመ፣ 1922" },
