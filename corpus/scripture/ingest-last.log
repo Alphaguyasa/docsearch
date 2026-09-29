@@ -1,16 +1,8 @@
-outcome=success at 2026-09-29T08:40:03Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36542675321
+outcome=success at 2026-09-29T08:40:50Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36544175817
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
 built 8126 chunks across 93 documents
-done 8000, to embed 126, stale 0
-  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2835 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2494 tokens
-  8064/8126 embedded (4.3 min)
-  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2656 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 5 chunk(s) / 2987 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 5 chunk(s) / 2673 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2627 tokens
-  8126/8126 embedded (11.0 min)
+done 8126, to embed 0, stale 0
 finished: 8126/8126
