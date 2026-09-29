@@ -159,6 +159,49 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "Chapter I: The Covenant Of Christ With The Blessed Virgin Mary",
     sections: { sectionStart: /^CHAPTER ([IVXLCxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
   },
+  takla_haymanot: {
+    refPrefix: "Life of Takla Haymanot",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The Life (Budge's volume I), from the scribe's preface to the blessings at its end.
+      startAt: /^\[THE +SCRIBE’S +PREFACE\.\]$/,
+      replace: [
+        [/^CHAPTER +VIIA\.? *$/m, "CHAPTER VII."],
+        [/^CHAPTERIX *$/m, "CHAPTER IX."],
+        [/^CHAPTER +LIU\.? *$/m, "CHAPTER LIII."],
+        [/^HOWMATAEOME/m, "HOW MATALOME"],
+        [/^HOWTAKLA/m, "HOW TAKLA"],
+        [/^: +HOW/m, "HOW"],
+        [/¬[ \t]*\n\s*/g, ""], // "for¬" / "gotten"
+        [/\$aga/g, "Saga"],
+        // Title lines the OCR read in small letters.
+        ...[
+          "HOW gabra wahad persuaded matalome to put the healing power",
+          "HOW matalome had the priests from shawa and takla haymanot",
+          "takla haymanot drives an evil spirit out of a man, and his",
+          "spiritual work is so successful and so great that it becomes",
+          "proverbial IN",
+          "HOW takla haymanot went up the MOUNTAIN of dada and slew",
+        ].map((l): [RegExp, string] => [new RegExp(`^${l.split(" ").join(" +")}`, "m"), l.toUpperCase()]),
+      ],
+      dropPlates: /^PLATE\b|\(Folio \d+/i,
+      keepCapsAfter: /^CHAPTER\b/,
+      dropLines: [
+        /^\[THE +SCRIBE’S +PREFACE\.\]$/,
+        /[({[]\s*See\s+cha/i, // what is left of a plate caption
+        /\bflic\b/, // the black-letter "Here beginneth…" lines
+        /^[IVXL]{1,4}\.\s*[—-]/, // plate captions: "I.— Christ appears to…"
+      ],
+      // Page-foot notes: "1 Ethiopic tradition asserts…", "See Genesis Chapter V."
+      // The scan sets the note number as a stray mark: "■ He reigned…", "s The name…", "' 12 He founded…".
+      dropParagraphs: /^(([1-9*'’■•?>|]|\d{1,2}|s(?=\s+[A-Z]))\s+(?!\(Fol)\S|See\s+[A-Z][a-z]+\s+(Chapter|chap))/,
+      inline: [/\(Fol(io)?\.?\s*[^)]{0,14}\)/gi, /\[Page [^\]]{0,6}\]/gi, /\(see Plate[^)]{0,10}\)/gi],
+      // Note calls: "Adam1 begat".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9*](?=\s|$)/g,
+    },
+    defaultHeading: "The Scribe’s Preface",
+    sections: { sectionStart: /^CHAPTER ([IVXLCYxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
+  },
   jubilees: {
     refPrefix: "Book of Jubilees",
     traditions: ["ethiopian_orthodox"],

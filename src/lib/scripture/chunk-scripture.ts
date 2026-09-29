@@ -112,6 +112,24 @@ export interface CleanOptions {
   dropCaptions?: boolean;
   /** A paragraph whose first line matches this is dropped whole, e.g. footnotes "[614] Luke ii. 29." */
   dropParagraphs?: RegExp;
+  /**
+   * A line matching this opens a picture plate (OCR'd Ethiopic lettering and
+   * a caption): drop it and what follows up to the next two lines of prose or
+   * a CHAPTER heading, looking no further than 80 lines.
+   */
+  dropPlates?: RegExp;
+  /**
+   * Drop paragraphs set wholly in capitals (running headers, margin notes)
+   * unless the paragraph starts with a match (a chapter heading) or is part
+   * of the title under one (up to two paragraphs of capitals).
+   */
+  keepCapsAfter?: RegExp;
+}
+
+/** A full line of running prose, as a plate's end marker. */
+function proseLine(line: string): boolean {
+  const t = line.trim();
+  return t.length >= 50 && t.length <= 90 && /[a-z]{3}/.test(t) && letterRatio(t) >= 0.85;
 }
 
 /**
@@ -128,6 +146,20 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
   if (opts.endAt) {
     const j = lines.findIndex((l, idx) => idx > 0 && opts.endAt!.test(l.trim()));
     if (j > 0) lines = lines.slice(0, j);
+  }
+  if (opts.dropPlates) {
+    const kept: string[] = [];
+    for (let k = 0; k < lines.length; k++) {
+      if (!opts.dropPlates.test(lines[k].trim())) {
+        kept.push(lines[k]);
+        continue;
+      }
+      let end = k + 1;
+      while (end < Math.min(lines.length, k + 80) && !/^CHAPTER\b/.test(lines[end].trim()) && !(proseLine(lines[end]) && proseLine(lines[end + 1] ?? ""))) end++;
+      if (end < k + 80) k = end - 1;
+      kept.push("");
+    }
+    lines = kept;
   }
   const out: string[] = [];
   let skipping = false;
@@ -147,6 +179,19 @@ export function cleanText(raw: string, opts: CleanOptions = {}): string[] {
     if (opts.dropLines?.some((re) => re.test(line))) continue;
     if (line.length < 40 && letterRatio(line) < 0.6) continue; // OCR debris
     out.push(line);
+  }
+  if (opts.keepCapsAfter) {
+    let titleBlocks = 0; // a title may be split over two paragraphs
+    for (let i = 0; i < out.length; i++) {
+      if (out[i] === "" || (i > 0 && out[i - 1] !== "")) continue;
+      let j = i;
+      while (j < out.length && out[j] !== "") j++;
+      const caps = out.slice(i, j).every(isCaps);
+      if (opts.keepCapsAfter.test(out[i])) titleBlocks = 3;
+      else if (caps && titleBlocks === 0) out.fill("", i, j);
+      titleBlocks = caps && titleBlocks > 0 ? titleBlocks - 1 : 0;
+      i = j - 1;
+    }
   }
   if (opts.dropCaptions) {
     const blank = (i: number) => i < 0 || i >= out.length || out[i] === "";

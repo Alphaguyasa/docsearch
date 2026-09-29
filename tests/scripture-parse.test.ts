@@ -253,3 +253,29 @@ test("Miracles of Mary: chapter titles stop at the full stop; plates, captions a
   assert.match(text, /little drop of water outweighed/);
   assert.doesNotMatch(text, /earthenware|outw$|PLATE|fol\.|84\.|[\u1200-\u137F]/);
 });
+
+test("Takla Haymanot: plates, running headers and page-foot notes go; split titles stay", () => {
+  const rule = TEXT_RULES.takla_haymanot;
+  const prose = "And it came to pass that the holy man went forth unto the city";
+  const raw = [
+    "CONTENTS", "", "[THE  SCRIBE’S  PREFACE.]", "", "[Page I.] In the Name of God, Who is Three (Fol. 9 a. 2) in His inseparability.", "",
+    "CHAPTER  I.", "", "THE  GENEALOGY  OF  TAKLA  HAYMANOT.", "", "Adam1 begat Set (Seth). And Seth begat Henos (Enos).", "",
+    "1 Ethiopic tradition asserts that Christ was born in this reign.", "", "HISTORY  OF  ABBA", "",
+    "CHAPTER  II.", "", "HOW  gabra  wahad  persuaded  matalome  to  put  the  healing  power", "",
+    "OF  TAKLA  HAYMANOT  TO  THE  TEST.", "", "(Fol. 84 b. 1) Then the holy man Gabra Wahad came unto the king.", "",
+    "THE LIFE OF TAKLA HAYMAN6T (Folio 23a).", "", "PLATE X.", "", "A'l /D'I'-flA-A*", "", "WiUltl", "",
+    "’Egzi’e Haraya being carried off into captivity by the troops of Matalome.", "{See chapter XIII).", "",
+    `${prose} of Zorare, and he`, `${prose} of Damot, and he prayed.`,
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), [
+    "The Scribe’s Preface",
+    "Chapter I: The Genealogy Of Takla Haymanot",
+    "Chapter II: How Gabra Wahad Persuaded Matalome To Put The Healing Power Of Takla Haymanot…",
+  ]);
+  assert.match(cleanText("CHAPTER  VIIA. \nCHAPTER  LIU. ", rule.clean).join("|"), /CHAPTER VII\.\|CHAPTER LIII\./);
+  const all = s.flatMap((x) => x.paragraphs).join(" ");
+  assert.match(all, /Adam begat Set/);
+  assert.match(all, /Then the holy man Gabra Wahad came unto the king\. And it came to pass/);
+  assert.doesNotMatch(all, /CONTENTS|Fol\.|Page I|Ethiopic tradition|HISTORY OF ABBA|PLATE|WiUltl|captivity|See chapter/);
+});

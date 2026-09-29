@@ -90,6 +90,20 @@
    "note": "Ta'amra Maryam. Only the translated miracles are kept (not the salutations, the Life of Hanna, the magical prayers or the Ethiopic text). The 1933 '110 Miracles' is avoided: possibly still in US copyright."
   },
   {
+   "id": "takla_haymanot",
+   "title": "The Life of Takla Haymanot (tr. E. A. Wallis Budge, 1906, from the Dabra Libanos manuscript)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(life of takla haymanot) AND creator:(budge)",
+   "titleHint": "life takla haymanot",
+   "archiveIds": [
+    "lifeoftaklahymnt00budg"
+   ],
+   "license": "Public domain (published 1906; Budge d. 1934)",
+   "status": "verified",
+   "note": "Gadla Takla Haymanot, volume I: the Life in its 116 chapters. The plates, their captions and the page-foot notes are dropped."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

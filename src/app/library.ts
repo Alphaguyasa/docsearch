@@ -120,6 +120,16 @@ export const LIBRARY: LibraryGroup[] = [
         onlyFor: ETH,
       },
       {
+        sourceIds: ["takla_haymanot"],
+        title: { en: "The Life of Takla Haymanot", am: "ገድለ ተክለ ሃይማኖት" },
+        by: { en: "tr. E. A. Wallis Budge, 1906, from the Ethiopic", am: "በE. A. Wallis Budge ከግዕዝ የተተረጎመ፣ 1906" },
+        note: {
+          en: "The life of Ethiopia’s great saint, founder of Debre Libanos: his prayer, his fasting and the people he turned back to God.",
+          am: "የደብረ ሊባኖስ መሥራች የታላቁ የኢትዮጵያ ቅዱስ ሕይወት፦ ጸሎቱ፣ ጾሙና ወደ እግዚአብሔር የመለሳቸው ሰዎች።",
+        },
+        onlyFor: ETH,
+      },
+      {
         sourceIds: ["kebra_nagast"],
         title: { en: "The Kebra Nagast, the Glory of Kings", am: "ክብረ ነገሥት" },
         by: { en: "tr. E. A. Wallis Budge, 1922", am: "በE. A. Wallis Budge የተተረጎመ፣ 1922" },
