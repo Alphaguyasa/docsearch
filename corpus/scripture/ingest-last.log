@@ -1,41 +1,8 @@
-outcome=success at 2026-09-29T18:20:19Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36604162036
+outcome=success at 2026-09-29T18:21:13Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36611344586
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
 built 8944 chunks across 95 documents
-done 8275, to embed 669, stale 0
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2760 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2924 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2625 tokens
-  8339/8944 embedded (5.1 min)
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2606 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2999 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2735 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2693 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2998 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2990 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2830 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2682 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2717 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2949 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2657 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 3 chunk(s) / 1269 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2692 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2676 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2609 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2659 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2662 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2890 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2786 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2865 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2708 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2827 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2968 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2879 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2782 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2824 tokens
-  [embed] 429 (attempt 1/6) — waiting 20s, 7 chunk(s) / 2437 tokens
-  [embed] 429 (attempt 1/6) — waiting 21s, 6 chunk(s) / 2638 tokens
-  8944/8944 embedded (57.6 min)
+done 8944, to embed 0, stale 0
 finished: 8944/8944
