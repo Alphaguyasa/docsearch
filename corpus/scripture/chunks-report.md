@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-29T17:03:03.174Z
+Generated 2026-09-29T17:19:30.310Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -18,12 +18,13 @@ Generated 2026-09-29T17:03:03.174Z
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
 | miracles_of_mary | 1 | 126 | 60268 | 478 | 635 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
+| philoxenus | 1 | 567 | 252940 | 446 | 616 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
-| takla_haymanot | 1 | 249 | 111120 | 446 | 629 |
+| takla_haymanot | 1 | 251 | 111134 | 443 | 629 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 8375 chunks, 3594594 tokens ≈ 6.0 h of embedding at 10000 TPM.
+**Total:** 8944 chunks, 3847548 tokens ≈ 6.4 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -610,6 +611,29 @@ And I know that “ when the judge cometh here he will kill me without asking �
 And he answered and said unto the woman and her husband, “ Because I see that ye preserve the “purity of your bodies for Christ’s sake, and that ye have “chosen to remain in great tribulation and not to destroy “ your chastity, God hath put it into my heart to do unto you an “ a6l of grace which ye deserve, and perhaps
 ```
 
+**Philoxenus of Mabbogh, Discourse I: The Prologue** (529 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Philoxenus of Mabbogh, Discourse I: The Prologue
+
+Our Lord and our Redeemer Jesus Christ in His living Gospel invited us to draw nigh in wisdom to the work of keeping His commandments, and to lay within ourselves the foundation of His discipline rightly, in order that the edifice of our life and character might mount up straightly. For he who knoweth not how to begin wisely the building of this tower which goeth up to heaven is not able to complete [it] or to bring it to the finish which is of wisdom. For knowledge and wisdom should order, and arrange, and work the beginning and end and founding [of the edifice],
+
+and whosoever beginneth thus is called a wise man by the word of our Redeemer,
+```
+
+**Philoxenus of Mabbogh, Discourse IX: On Poverty (part 50)** (421 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Philoxenus of Mabbogh, Discourse IX: On Poverty (part 50)
+
+become disciples] because of their lust for mammon, and they have drawn nigh unto this life which demandeth poverty, in order that that which they have not been able to acquire from the world, they may go forth and acquire outside the world. And by the hand of that one feeble disciple, [concerning whom] it is written in the Gospel of our Redeemer, Jesus hath rebuked this wicked thought in all [His] foot-soldiers. "And one ''came and drew nigh and said unto Him, Master, I ''will follow Thee whithersoever thou goest. Jesus saith "unto him. The foxes have holes, and the birds of "heaven have nests, but the Son of man hath not "where to 
+```
+
+**Philoxenus of Mabbogh, Discourse XIII: On Fornication (part 13)** (456 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+```
+Philoxenus of Mabbogh, Discourse XIII: On Fornication (part 13)
+
+If the pain of lust causeth thee to suffer pain, learn the cause thereof, and cut it off; why shouldst thou be afflicted through thy ignorance with a sickness the cure of which is easy? for I am not acquainted with any other passion the cure of which is so easy. Food doth not make thee to sin when it is taken to sustain thy life, but it is sin when it bringeth thee unto lust. So long as thou eatest unto thyself there is no sin in thy meat, but if thou eatest unto lust, thy food is of sin. Whence then canst thou know when thou eatest unto sin, and when unto thyself? Now, so long as lust is set in motion in the members of thy bod
+```
+
 **Ethiopian Synaxarium, Preface** (562 tokens, ethiopian_orthodox)
 ```
 Ethiopian Synaxarium, Preface
@@ -654,18 +678,20 @@ Life of Takla Haymanot, The Scribe’s Preface
 In the Name of God, Who is Three in His inseparability, (see Plate i) and is One in His attribute of indivisibility, Whose Godhead is hidden and cannot be searched out by the mind, Whose power is holy and cannot be removed from Him, Whose kingdom existeth by itself and can never be replaced by another, and to Whom alone are meet worship and prostration, we will write [the history of] the CONTENDINGS AND WORKS of our father, the holy and blessed man, Takla the Father, and Takla the Son, and Takla the Holy Spirit, that is to say of Abba Takla Haymanot, the bearer of the Name of the Trinity, which shall be read on the twenty-fourth day of the month 
 ```
 
-**Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed…** (421 tokens, ethiopian_orthodox)
+**Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed… (part 2)** (445 tokens, ethiopian_orthodox)
 ```
-Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed…
+Life of Takla Haymanot, Chapter LV: How Matalome Slew Three Of The Magicians With His Spear, And How He Appointed… (part 2)
 
-Then our father the holy man Takla HAymAnot said unto him, “Make haste and perform that to which we have already consented,” and the king said, “I will.” And Matalome commanded [his servants] to sharpen the spear which had turned and pierced his hand the day before, and our father the holy man TaklA HAymAnot said unto him, “Put that one aside, and let them bring another, so that the sorcerers “may not be able to make an excuse and say that one hath worked upon “it with magic;” and he commanded them to bring another. Then the king said unto the sorcerers, “Speak now, and choose 
+“sorcerers, and do thou put them to the test by this man; if they “overcome him then he shall die, and if the sorcerers be overcome then “they shall die.” So the king gathered together all the magicians that were left, and he was wroth with them, and said unto them, “Go ye, and agree among yourselves about a time within a period of forty “days, and take counsel together by what means ye may be able to overcome this man, and then come and ye shall be put to the test.” And the magicians said unto the king with trembling, “Give orders that all the “men in the hosts of the
 ```
 
-**Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of… (part 2)** (550 tokens, ethiopian_orthodox)
+**Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of…** (144 tokens, ethiopian_orthodox)
 ```
-Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of… (part 2)
+Life of Takla Haymanot, Chapter CIV: How The Monks Of Takla Haymanot Cultivated The Ground And Raised Crops Of…
 
-wished to eat up the green plants and herbs; now at that time the mountain land was waste and uncultivated ground. And the disciples told our father the holy man Takla Haymanot that the wild animals were laying waste their fields, and he said unto them, “Let them alone, “for it is we who have invaded their habitation, and not they who have in- “vaded ours; therefore let us not treat them harshly, for. they are flesh and “blood even f||^we are;” so the disciples held their peace, and the wild animals prevailed over them, and caused them great tribulation, and overran their
+And at that time the disciples of the holy man began to labour with their hands and to cultivate a small plot of ground, and they sowed therein large beans, and garden herbs, that is to say, leeks and onions, which were to serve for their daily food. And the wild animals in the district began to vex them greatly, that is to say the fats, and the mice, and similar creatures, and many other kinds of beasts, for they
+
+ps in the fie □bbing a woi vild creature:
 ```
 
 **Genesis 1:1-13** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
@@ -718,6 +744,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **miracles_of_mary** — 41 sections: Miracles of the Blessed Virgin Mary, Chapter I: The Covenant Of Christ With The Blessed Virgin Mary · Miracles of the Blessed Virgin Mary, Chapter II: The Jew Of The City Of Akhmim · Miracles of the Blessed Virgin Mary, Chapter III: The Virgin Mary And The Scribe Damianus · Miracles of the Blessed Virgin Mary, Chapter IV: The Virgin Mary And Bishop Abbas Of Rome · Miracles of the Blessed Virgin Mary, Chapter VI: The Virgin Mary And The Monk Isaac · Miracles of the Blessed Virgin Mary, Chapter VII: The Virgin Mary And The Child Mary · Miracles of the Blessed Virgin Mary, Chapter VIII: The Virgin Mary And The Painter · Miracles of the Blessed Virgin Mary, Chapter IX: The Virgin Mary And The Sick Man · Miracles of the Blessed Virgin Mary, Chapter X: The Virgin Mary And The Youth Zacharias · Miracles of the Blessed Virgin Mary, Chapter XI: The Virgin Mary And The Women Juliana And Barbara · Miracles of the Blessed Virgin Mary, Chapter XII: The Virgin Mary And The Three Arabs · Miracles of the Blessed Virgin Mary, Chapter XIII: The Virgin Mary And The Monastery Of Akona · Miracles of the Blessed Virgin Mary, Chapter XIV: The Virgin Mary And The Egyptian Priest John · Miracles of the Blessed Virgin Mary, Chapter XV: The Virgin Mary And The Greek Who Had A Dart In His Eye · Miracles of the Blessed Virgin Mary, Chapter XVI: The Virgin Mary And The Blind Girl Of Dalga · Miracles of the Blessed Virgin Mary, Chapter XVII: The Virgin Mary And The Three Poor Sisters · Miracles of the Blessed Virgin Mary, Chapter XVIII: The Virgin Mary And The Two Brothers Who Were Scribes · Miracles of the Blessed Virgin Mary, Chapter XIX: The Virgin Mary And The Prisoner · Miracles of the Blessed Virgin Mary, Chapter XX: The Virgin Mary And The Old Man Katir · Miracles of the Blessed Virgin Mary, Chapter XXI: The Virgin Mary And The Brethren Tag And Nazib Of Dalga · Miracles of the Blessed Virgin Mary, Chapter XXII: The Virgin Mary And The Lame Man · Miracles of the Blessed Virgin Mary, Chapter XXIII: The Virgin Mary And Bishop Mercurius · Miracles of the Blessed Virgin Mary, Chapter XXIV: The Virgin Mary And The Woman With A Broken Foot · Miracles of the Blessed Virgin Mary, Chapter XXV: The Virgin Mary And Sophia The Abbess Of Mount Carmel · Miracles of the Blessed Virgin Mary, Chapter XXVI: The Virgin Mary And The Man Barok · Miracles of the Blessed Virgin Mary, Chapter XXVII: The Virgin Mary And Anastasius The Roman · Miracles of the Blessed Virgin Mary, Chapter XXVIII: The Virgin Mary And The Monk Of The Monastery Of Abba Samuel Of Kalman · Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer · Miracles of the Blessed Virgin Mary, Chapter XXX: The Virgin Mary And The Widow’s Son Who Became A Thief · Miracles of the Blessed Virgin Mary, Chapter XXXI: The Virgin Mary And The Lady Euphemia · Miracles of the Blessed Virgin Mary, Chapter XXXII: The Virgin Mary And The Woman Who Was About To Bring Forth · Miracles of the Blessed Virgin Mary, Chapter XXXIII: The Virgin Mary And The Thirsty Dog · Miracles of the Blessed Virgin Mary, Chapters XXXIV–XXXV: The Virgin Mary And The Khalifa Of Athribis · Miracles of the Blessed Virgin Mary, Chapter XXXVI: The Virgin Mary And The Potter · Miracles of the Blessed Virgin Mary, Chapter XXXVII: The Virgin Mary And The Man Who Was Washing His Garments · Miracles of the Blessed Virgin Mary, Chapter XXXVIII: The Virgin Mary And Timothy The Monk · Miracles of the Blessed Virgin Mary, Chapter XXXIX: The Virgin Mary And Nicodemus The Horseman · Miracles of the Blessed Virgin Mary, Chapters XL–XLI: The Virgin Mary And The Roman Prefect · Miracles of the Blessed Virgin Mary, Chapter XLII: The Virgin Mary And The Fountain Of Water · Miracles of the Blessed Virgin Mary, Chapter XLIII: The Virgin Mary And John Kama
 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
+
+**philoxenus** — 13 sections: Philoxenus of Mabbogh, Discourse I: The Prologue · Philoxenus of Mabbogh, Discourse II: On Faith · Philoxenus of Mabbogh, Discourse III: On Faith · Philoxenus of Mabbogh, Discourse IV: On Faith And Simplicity · Philoxenus of Mabbogh, Discourse V: On Simplicity · Philoxenus of Mabbogh, Discourse VI: On The Fear Of God · Philoxenus of Mabbogh, Discourse VII: On The Fear Of God · Philoxenus of Mabbogh, Discourse VIII: On Poverty · Philoxenus of Mabbogh, Discourse IX: On Poverty · Philoxenus of Mabbogh, Discourse X: On The Lust Of The Belly · Philoxenus of Mabbogh, Discourse XI: On Abstinence · Philoxenus of Mabbogh, Discourse XII: On Fornication · Philoxenus of Mabbogh, Discourse XIII: On Fornication
 
 **synaxarium** — 92 sections: Ethiopian Synaxarium, Preface · Ethiopian Synaxarium, “COMMEMORATION OF fyAst}) I ’ADYAM SAGAD King of…” · Ethiopian Synaxarium, Maskaram · Ethiopian Synaxarium, Maskaram — “TENSEL YAKOTON, and many martyrs in Persia. May…” · Ethiopian Synaxarium, Maskaram — “CURUS having ended his good fight and pleased…” · Ethiopian Synaxarium, Maskaram — “LIDES) came once again before the governor, and…” · Ethiopian Synaxarium, Maskaram — “TOBIT rubbed his eyes and there removed itself…” · Ethiopian Synaxarium, Maskaram — “SON AND. THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Maskaram — “ATHANASIUS archbishop, for the holiness of his life…” · Ethiopian Synaxarium, Maskaram — “BELINA, and Abba sALAMA the lamp of the…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONE GOD |…” · Ethiopian Synaxarium, Maskaram — “AND THE HOLY GHOST, ONESGoOD…” · Ethiopian Synaxarium, Maskaram — “SON AND THE HOLY GHOST, ONE GOD 4…” · Ethiopian Synaxarium, Maskaram — “THE SECOND MONTH—TEKEMT…” · Ethiopian Synaxarium, Teqemt — “SEVERUS secretly, she besought the holy man to…” · Ethiopian Synaxarium, Teqemt · Ethiopian Synaxarium, Teqemt — “TBA THE ETHIOPIC SYNAXARIUM…” · Ethiopian Synaxarium, Teqemt — “MOSES knew these servants, but they did not…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST. ONE GOD…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY, GHOST, ONE GOD…” · Ethiopian Synaxarium, Teqemt — “NE aia tS a sana eas Macapee ates…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ..ONE GOD…” · Ethiopian Synaxarium, Teqemt — “BESRA of the West, of the country of…” · Ethiopian Synaxarium, Teqemt — “SECOMD MOXTE—TEZEMT (ocr. Sov. 6) Ig7…” · Ethiopian Synaxarium, Teqemt — “AND THE HOLY GHOST, ONE GOD . On…” · Ethiopian Synaxarium, Teqemt — “AND THB’ HOLY GHOST, ONE, GOD…” · Ethiopian Synaxarium, Hedar · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONE:GOD…” · Ethiopian Synaxarium, Hedar — “AND THE HOLY GHOST, ONEVGO@D…” · Ethiopian Synaxarium, Hedar — “AND: THE HOLY GHOST, ONE GOD…” · Ethiopian Synaxarium, Hedar — “WALATTA PETROS the Ethiopian woman. ] |…” · Ethiopian Synaxarium, Hedar — “PHERON, who hath corrupted thy daughter’s heart.” And…” · Ethiopian Synaxarium, Hedar — “NASEL, in the country of Ethiopia. Salutation to…” · Ethiopian Synaxarium, Hedar — “NAS was dying he commanded the bishops and…” · Ethiopian Synaxarium, Hedar — “CAMBRIDGE: PRINTED BY W. LEWIS, M.A., AT THE…” · Ethiopian Synaxarium, Takhsas · Ethiopian Synaxarium, Takhsas — “PHILIP. There was an emperor in the city…” · Ethiopian Synaxarium, Takhsas — “DIYONTERES (DIONTYRAS)…” · Ethiopian Synaxarium, Takhsas — “SAMUEL became zealous, with a great zeal of…” · Ethiopian Synaxarium, Takhsas — “MATTHEW said unto him, "Draw nigh unto me…”
 
@@ -1669,6 +1697,136 @@ prayer, now as he spake he wept, and groaned from the bottom
 of his heart, and sighed in grief of heart, “O my Lord, I have
 “vexed Thee, have pity upon me, and forgive me so that I may
 “enjoy a little rest.” Then a voice came to him, which said,
+```
+
+### philoxenus: frequent short lines
+```
+745	#
+104	#*
+68	. #
+47	#,#
+39	#. .
+36	ON POVERTY. #
+35	—
+34	# THE THIRTEENTH DISCOURSE.
+31	Page
+31	# THE NINTH DISCOURSE.
+30	ON FORNICATION. #
+28	#. . .
+27	I
+27	#, #
+27	# THE TENTH DISCOURSE.
+26	ON FAITH. #
+26	# THE ELEVENTH DISCOURSE.
+23	ON ABSTINENCE. #
+22	#. #.
+22	„ #.
+21	ON POVERTY.
+20	ON THE LUST OF THE BELLY. #
+20	ON FORNICATION.
+19	# THE TWELFTH DISCOURSE.
+17	Add.
+17	. #*
+16	Century
+14	# See Wright, Cat. Syr. MSS., p. #. col. i.
+14	Vol. I.
+14	Vol. II.
+```
+### philoxenus: context around "Moses" (line 677)
+```
+the star among the Jacobites of the Xllth century S
+^ See infra, p. xliv.
+" Add. 14,681, fol. 116^; Add. 12,178, fol. 165^; Add. 14,
+629, foil. 17^, \^a; Add. 12,144, fol' 125^; Add. 14,529, fol.
+i6«; Add. 12,155, fol- 41^; Add. 12,155, foil. ^Za, 120b, i6id,
+262a; Add. 14,532, fol. Sa, 53^7, 178^; Add. 14,533, fol. 70^,
+gza, i68a, 184^; and Add, 12,154, fol- 49^-
+3 Bishop of Mar'ash and Mabbogh, and afterwards of Amid;
+he died in 117 1. 4 See Wright, Sjr. Lit., p. 851.
+XXX INTRODUCTION.
+and who was himself a famous writer, says in the title
+to one of his commentaries that he gives in his work
+the opinions of the "true and orthodox doctors and
+"holy fathers like Severus the Great, and Hippolytus
+"of Rome, and Epiphanius of Cyprus, and Philoxenus
+"of Mabbogh, and Melitus, and Evagrius, and Moses
+"bar-Kepha, and Jacob of Edessa, and John of Con-
+"stantinople, and John of Dara, and Mar Ephraim"'.
+But the final seal of approval is set upon the works
+of Philoxenus by Abul-Faraj Gregory, better known
+as Bar-Hebraeus, "one of the most learned and versatile
+"men that Syria ever produced" ^ who thus speaks:
+"And Peter [the Fuller] appointed Saint Philoxenus to
+"Mabbogh, a most eloquent man, and a marvellous
+"teacher, who mightily routed those who maintained
+"two natures [in Christ]; and he set forth healthy
+"doctrines concerning the holy path of the monastic
+"life. And he composed some discourses on the holy
+"festivals, and works of admonition of all kinds" ^. The
+same writer mentions the Mabbogh translation of the
+Bible, which Philoxenus finished in 508, and the re-
+^ rKlaL.m r^^coar^o : r^bjoOZ. i^idxo r^iatt. KliaL»
+: QocL^Ax^o : ..^0=1.^.1 qpoiaoqaq \ \i<\o : c^otj^od.!
+voa£i2>^ >i:aio :yi^^^r^See Brit. Mus. MS. Rich, No. 7183,
+fol. I. ' Wright, Syr. Lit., p. 853.
+3 .\aa:53a\ ooaifia^ali^ rdz^.txA Aj'\txiT< ooai^ oqao
+O^ ^rc^^OiAjj.i r^cnaSJD^ rtliaLisaa kIAjsj rt'va^
+r^iore' A>^ rei:i>ail\jj rdiaXcx* ,CU)0 .KlliA ,^1^.1 rdn^s^
+Qoii^A^.i r<h\c^h\\^ rdL.To Bar-Hebraeus, Chron. Eccles.,
+i. col. 183 (ed. Abbeloos).
+```
+### philoxenus: 50 raw lines at 40%
+```
+of theft, it is an advocate of adultery, for fornication
+it maketh an excuse, hypocrisy is to it a garment of
+which to be proud, by it ambushes are fabricated, it
+is ready to bear false witness, and of the empty prating
+of lying it is the mother. And to speak finally, crafti-
+ness hath made itself an advocate of all wickednesses,
+that it may pronounce right that which concerns them :
+some of them it covereth up, for some of them it maketh
+excuse, of some of them it prateth that they exist not,
+and it multiplieth words intended to convince, and
+feigneth excuses, to some wickednesses it giveth other
+* I Corinthians ix. 22.
+J 22 THE FIFTH DISCOURSE.
+aspects, and sayeth that they did not take place for
+this reason, and that they were not wrought with this
+design. Unto it is gathered together all lying speech,
+it cleaveth to judges when they wish to steal, of it
+governors make use when they wish to take bribes,
+and it cleaveth to those who work wickedness when
+they are judged. The woman who wisheth to trangress
+the path of law against her husband taketh it into her
+company, and then she goeth forth to the error of
+depravity ; when it hath been learned by children they begin
+to lie to their masters. The advocates who plead before
+judges compose their speeches of its riches, and their
+perverse things are forged in its furnace. It spreadeth
+the nets of iniquity, and layeth out the toils upon the
+paths of the wayfarers, it hideth the snares of deceit,
+it diggeth the pits of destruction, it is a follower that
+hath been paid and that demandeth a second time. Until
+lying draweth nigh to it, [p. 128] it knoweth not how
+to make excuse for itself; lying is ready to utter false-
+hood, and how it is do so craftiness teacheth. Falsehood
+maketh ill will ready, but of how it is to be wrought
+in deed craftiness is the counsellor. [Falsehood] begin-
+neth to walk in lying, in the path which is contrary
+to the truth, and it crieth to craftiness, "Come in my
+"train", and then it goeth forth. Craftiness is the
+teacher of all wickednesses, and it is the ready advocate
+of all abominable things; it hath respect unto every
+person, and it speaketh right of every thing, and maketh
+excuse therefor. And it seemeth as if this had been
+said by craftiness to wickedness, "O thou wickedness,
+"do evil as long as thou wishest, and let all thy members
+"enjoy the pleasures of lust. Let the body of thy senses
+"be delicately nurtured on the things which it loveth.
+ON SIMPLICITY. 123
+"let all thy fruits collect in them their natural taste, and
+"let them grow large and become ripe. So long as thou
+"lustest enjoy thyself and spare not, live delicately and
 ```
 
 ### synaxarium: frequent short lines

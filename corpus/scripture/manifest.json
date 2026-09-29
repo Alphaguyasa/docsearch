@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T13:32:49.552Z",
+  "generatedAt": "2026-09-29T17:19:02.634Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -238,6 +238,23 @@
           "sha256": "0390ab503364de72f8720ee838bef42edb98dbd86a13c04c66ac16f97dadf659",
           "bytes": 1138769,
           "archiveId": "paradiseorgarden02anan"
+        }
+      ]
+    },
+    {
+      "id": "philoxenus",
+      "title": "The Discourses of Philoxenus, Bishop of Mabbogh (tr. E. A. Wallis Budge, 1894), vol. II",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1894; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T17:19:02.634Z",
+      "files": [
+        {
+          "name": "discoursesofphil02philuoft_djvu.txt",
+          "url": "https://archive.org/download/discoursesofphil02philuoft/discoursesofphil02philuoft_djvu.txt",
+          "sha256": "452606cb1e60627366fac038b9e0eee039b5df49635ae41f20f794bea1ba7af1",
+          "bytes": 1513843,
+          "archiveId": "discoursesofphil02philuoft"
         }
       ]
     },

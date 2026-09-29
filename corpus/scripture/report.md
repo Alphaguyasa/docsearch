@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-29T13:32:49.552Z
+Generated 2026-09-29T17:19:02.634Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -442,6 +442,50 @@ We know another of the saints whose natural brother was
 ill. He lived as a recluse in a different cell. During the whole
 period of his brother’s sickness he restrained his mercy, so that
 he did not go out to visit him. When the sick man was on
+```
+
+## philoxenus — The Discourses of Philoxenus, Bishop of Mabbogh (tr. E. A. Wallis Budge, 1894), vol. II
+- pinned: discoursesofphil02philuoft
+
+#### `discoursesofphil02philuoft_djvu.txt` (archive id `discoursesofphil02philuoft`) — 1513843 bytes
+26704 non-empty lines. First 25:
+```
+Digitized  by  the  Internet  Archive
+in  2007  with  funding  from
+IVIicrosoft  Corporation
+http://www.archive.org/details/discoursesofphil02philuoft
+THE
+DISCOURSES  OF  PHILOXENUS
+BISHOP  OF  MABBOGH,  A.D.  485-519.
+J
+THE
+DISCOURSES  OF  PHILOXENUS
+BISHOP  OF  MABB6GH,  A.  D.  485-519.
+EDITED
+FROM  SYRIAC  MANUSCRIPTS  OF  THE  SIXTH  AND  SEVENTH
+CENTURIES  IN  THE  BRITISH  MUSEUM,
+WITH  AN  ENGLISH  TRANSLATION
+BY
+E.  A.  WALLIS  BUDGE,  Litt.  D.,  F.  S.  A.,
+FORMERLY  SCHOLAR  OF  CHRIST'S  COLLEGE,  CAMBRIDGE,  AND  TYRWHITT  SCHOLAR,
+KEEPER  OF  THE  EGYPTIAN  AND   ASSYRIAN
+ANTIQUITIES,  BRITISH  MUSEUM.
+PUBLISHED  UNDER  THE  DIRECTION  OF  THE  ROYAL  SOCIETY
+OF  LITERATURE  OF  THE  UNITED  KINGDOM.
+VOL.  n.
+INTRODUCTION,  TRANSLATION,  etc.
+0^
+```
+Sample from the middle:
+```
+his  eyes.  And  again  he  saith,  "Blessed  is  every  one
+"that  feareth  the  Lord,  and  who  walketh  in  His  ways"^
+and  here  again  the  prophet  David  sheweth  that  a  man
+walketh  in  the  way  of  the  commandments  through  the
+fear  of  God.  And  in  another  place  he  saith  concerning
+him  that  feareth  the  Lord,  "He  taketh  heed  to  the
+"commandments  which  are  given  by  the  Lord".'^  And
+again  this  Prophet  counselleth  every  man  to  draw  nigh
 ```
 
 ## cyril_repentance — Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)
