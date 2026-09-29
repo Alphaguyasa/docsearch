@@ -1410,6 +1410,34 @@
         }
       ],
       "note": "His fall is Scripture (1 Kings 11); his restoration is Ethiopian tradition (Kebra Nagast, chapter 65), so he is shown to Ethiopian Orthodox readers."
+    },
+    {
+      "id": "cannibal_of_kemer",
+      "name": "The Cannibal of Kemer",
+      "kind": "tradition",
+      "sins": [
+        "murder",
+        "violence"
+      ],
+      "summary": "A man of Kemer who devoured seventy-eight people, his own wife and children among them. Once he gave a leprous beggar a little water “for Mary’s sake”; when he died, that drop of water outweighed the seventy-eight souls.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Miracles of the Blessed Virgin Mary, Chapter XXIX",
+          "sourceId": "miracles_of_mary",
+          "match": "devoured eight and seventy people"
+        },
+        {
+          "role": "restoration",
+          "ref": "Miracles of the Blessed Virgin Mary, Chapter XXIX",
+          "sourceId": "miracles_of_mary",
+          "match": "the little drop of water outweighed"
+        }
+      ],
+      "note": "Read from the Miracles of Mary (Ta'amra Maryam, Budge 1900, chapter XXIX). The text does not give his name; in Ethiopia he is called Bela'e Seb."
     }
   ]
 }
