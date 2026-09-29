@@ -1,0 +1,5 @@
+q-mary 200 915
+q-takla 200 1927
+q-adam 200 1381
+q-isaiah 200 848
+q-philox 200 2399
