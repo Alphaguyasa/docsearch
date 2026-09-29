@@ -1,5 +1,5 @@
-q-mary https://archive.org/advancedsearch.php?q=title%3A%28miracles%20of%20our%20lady%20mary%29%20AND%20creator%3A%28budge%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
-q-takla https://archive.org/advancedsearch.php?q=title%3A%28takla%20haymanot%29%20AND%20creator%3A%28budge%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
-q-adam https://archive.org/advancedsearch.php?q=title%3A%28book%20of%20adam%20and%20eve%29%20AND%20creator%3A%28malan%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
-q-isaiah https://archive.org/advancedsearch.php?q=title%3A%28ascension%20of%20isaiah%29%20AND%20creator%3A%28charles%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
-q-philox https://archive.org/advancedsearch.php?q=title%3A%28discourses%20of%20philoxenus%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
+q-mary1900 https://archive.org/advancedsearch.php?q=title%3A%28miracles%20of%20the%20blessed%20virgin%20mary%29%20AND%20creator%3A%28budge%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
+m-bookofadamandeve00malauoft https://archive.org/metadata/bookofadamandeve00malauoft/files
+m-cu31924014590529 https://archive.org/metadata/cu31924014590529/files
+m-discoursesofphil02philuoft https://archive.org/metadata/discoursesofphil02philuoft/files
+m-lifeoftaklahymnt00budg https://archive.org/metadata/lifeoftaklahymnt00budg/files
