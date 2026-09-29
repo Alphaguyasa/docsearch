@@ -43,7 +43,7 @@ const en = {
     },
     hints: {
       all: "The books the six Oriental Orthodox churches share",
-      ethiopian_orthodox: "Adds the Synaxarium, Enoch, Jubilees and the Kebra Nagast",
+      ethiopian_orthodox: "Adds the Synaxarium, Enoch, Jubilees, the Kebra Nagast and Adam and Eve",
       orthodox: "Includes the longer Old Testament canon",
       catholic: "Includes the deuterocanonical books",
       protestant: "The 66-book Bible",
@@ -292,7 +292,7 @@ const en = {
     notice: "Not Alone is not a counselling or emergency service. If you are in danger, reach someone now.",
     needHelp: "Need help now?",
     sources:
-      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, St. Ephrem, Aphrahat, St. Isaac the Syrian, St. Cyril of Jerusalem, St. John Chrysostom and the Life of Antony.",
+      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, the Book of Adam and Eve, St. Ephrem, Aphrahat, St. Isaac the Syrian, St. Cyril of Jerusalem, St. John Chrysostom and the Life of Antony.",
     care: "Made with care for anyone carrying something alone.",
     nav: "Footer",
   },
@@ -346,7 +346,7 @@ const am: Dict = {
     },
     hints: {
       all: "ስድስቱ ኦሪየንታል ኦርቶዶክስ አብያተ ክርስቲያናት የሚጋሯቸው መጻሕፍት",
-      ethiopian_orthodox: "ስንክሳርን፣ መጽሐፈ ሄኖክን፣ መጽሐፈ ኩፋሌንና ክብረ ነገሥትን ያክላል",
+      ethiopian_orthodox: "ስንክሳርን፣ መጽሐፈ ሄኖክን፣ መጽሐፈ ኩፋሌን፣ ክብረ ነገሥትንና ገድለ አዳምን ያክላል",
       orthodox: "ሰፊውን የብሉይ ኪዳን ቀኖና ያካትታል",
       catholic: "ዲዩትሮካኖኒካል መጻሕፍትን ያካትታል",
       protestant: "66ቱ የመጽሐፍ ቅዱስ መጻሕፍት",
@@ -589,7 +589,7 @@ const am: Dict = {
     notice: "Not Alone የምክር ወይም የአደጋ ጊዜ አገልግሎት አይደለም። አደጋ ላይ ከሆኑ አሁኑኑ ሰው ያግኙ።",
     needHelp: "እርዳታ ይፈልጋሉ?",
     sources:
-      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅና የቅዱስ እንጦንስ ሕይወት።",
+      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ገድለ አዳም፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅና የቅዱስ እንጦንስ ሕይወት።",
     care: "ብቻውን ሸክም ለተሸከመ ሁሉ በፍቅር የተሠራ።",
     nav: "የግርጌ ማውጫ",
   },

@@ -62,6 +62,20 @@
    "note": "Canonical in the Ethiopian Orthodox Bible. Chapters open with a roman numeral checked against the sequence; lost ones become ranges. Verse numbers are inline, so refs are by chapter."
   },
   {
+   "id": "adam_and_eve",
+   "title": "The Book of Adam and Eve, also called the Conflict of Adam and Eve with Satan (tr. S. C. Malan, 1882)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(book of adam and eve) AND creator:(malan)",
+   "titleHint": "book adam eve",
+   "archiveIds": [
+    "bookofadamandeve00malauoft"
+   ],
+   "license": "Public domain (published 1882; Malan d. 1894)",
+   "status": "verified",
+   "note": "Translated from the Ethiopic (Gadla Adam). Four books of chapters; OCR numerals read against the sequence."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

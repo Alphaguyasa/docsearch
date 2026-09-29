@@ -346,7 +346,8 @@ function fromRoman(s: string): number | null {
  * per source with CleanOptions.replace.
  */
 export function ocrNumeral(raw: string, prev: number): number {
-  const t = raw.replace(/[\s.]/g, "");
+  // Y and T are common misreads of V and I in these scans ("XXYI", "IT").
+  const t = raw.replace(/[\s.§]/g, "").replace(/Y/g, "V").replace(/T/g, "I");
   const readings: number[] = [];
   for (let mask = 0; mask < 8; mask++) {
     const keep = { x: !(mask & 1), i: !(mask & 2), l: !(mask & 4) };
@@ -473,7 +474,7 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
       } else if (rule.name === "chapterNumeral") {
         // OCR mangles the numerals ("CHAPTER XxiIll." for XXIII): read them with repairs.
         counter = ocrNumeral(line.replace(/^\S+\s+/, ""), counter);
-        open(`Chapter ${roman(counter)}`);
+        open(`${context ? `${context}, ` : ""}Chapter ${roman(counter)}`);
       } else if (rule.name === "contextLine") {
         // "Book I" + "CHAPTER III" -> "Book I, Chapter III"; "Demonstration VII.--Of Penitents." -> "Demonstration VII — Of Penitents".
         const title = titleCase(line.replace(/\.--/, " — ").replace(/\.$/, ""));

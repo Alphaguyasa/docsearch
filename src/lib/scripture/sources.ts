@@ -104,6 +104,33 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "The Glory of Kings",
     sections: { sectionStart: /^([0-9iIl]{1,3})\s?[.,:-]\s?(.{4,})$/, name: "numberedChapter" },
   },
+  adam_and_eve: {
+    refPrefix: "The Book of Adam and Eve",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^BOOK I\.$/,
+      endAt: /^INDEX\.?$/,
+      replace: [
+        // "CHAPTER LIIL" / "CHAPTER LXXIIL": a final I misread as L.
+        [/^(CHAPTER [IVXL ]*I)L[ \t]*$/gm, "$1I."],
+        // "0 God" is the OCR of "O God".
+        [/(^|["“\s])0\s+(?=[A-Z])/gm, "$1O "],
+      ],
+      // Page headers: "2 THE BOOK OF ADAM AND EVE. [BOOK", "i.] THE CAVE OF TREASURES. 7".
+      dropLines: [/THE BOOK OF ADAM AND EVE/, /^[ivxlI1]+\.\]\s/, /\b(CAVE|TREASURES)\b.*\d+$/],
+      // Footnotes at the page foot: "* The Ethiopic translator adds…", "f Of the week…", "1 Heb. …".
+      dropParagraphs: /^[*†‡§ft\d]{1,2}\s+\S/,
+      // Note calls: "day,f", "planted1", "heaven .4J".
+      strip: /(?<=[a-z][,.;:]?)\d{1,2}(?=[\s,.;:]|$)|(?<=[,.;:]\s*)[ft*§†](?=\s|$)|\s\.\d[A-Z]?(?=\s|$)/g,
+    },
+    defaultHeading: "Book I",
+    sections: {
+      runningContext: /^(?:\[)?BOOK (I|II|III|IV)\.?\]?$/,
+      contextLabel: (n: string) => `Book ${n}`,
+      sectionStart: /^CHAPTER [IVXLCYTxil ]+[.§ ]*$/,
+      name: "chapterNumeral",
+    },
+  },
   jubilees: {
     refPrefix: "Book of Jubilees",
     traditions: ["ethiopian_orthodox"],
