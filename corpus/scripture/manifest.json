@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T07:25:53.782Z",
+  "generatedAt": "2026-09-29T08:24:36.067Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -197,6 +197,23 @@
           "sha256": "3184e1bd836b88063cfd01a2e97152a4c0065462e0b3237ecec207119dc055b6",
           "bytes": 378755,
           "archiveId": "lausiachistoryof00palluoft"
+        }
+      ]
+    },
+    {
+      "id": "miracles_of_mary",
+      "title": "The Miracles of the Blessed Virgin Mary (tr. E. A. Wallis Budge, 1900, from the Lady Meux Ethiopic manuscripts)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1900; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T08:24:36.067Z",
+      "files": [
+        {
+          "name": "gri_33125008690600_djvu.txt",
+          "url": "https://archive.org/download/gri_33125008690600/gri_33125008690600_djvu.txt",
+          "sha256": "ce4277b2b9e77477992a74e40a5f9df764bad1b7eac7bdf8b9c33e11afa48431",
+          "bytes": 1252219,
+          "archiveId": "gri_33125008690600"
         }
       ]
     },

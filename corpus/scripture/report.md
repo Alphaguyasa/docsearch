@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-29T07:25:53.782Z
+Generated 2026-09-29T08:24:36.067Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -224,6 +224,50 @@ coffin  of  Adam,  praising  God  and  praying  until  morning.  This
 vision  happened  to  Melchizedec  in  the  fifteenth  year  of  his  age.
 Then  Shem  and  Melchizedec  put  the  coffin  upon  the  ass,
 and  went  on  their  way  ;  and  the  angel  of  God  went  with  them.
+```
+
+## miracles_of_mary — The Miracles of the Blessed Virgin Mary (tr. E. A. Wallis Budge, 1900, from the Lady Meux Ethiopic manuscripts)
+- pinned: gri_33125008690600
+
+#### `gri_33125008690600_djvu.txt` (archive id `gri_33125008690600`) — 1252219 bytes
+21063 non-empty lines. First 25:
+```
+ee O LL D DLA OO
+iis
+eee
+THE
+MIRACLES OF THE eT PS SPENT ER Cr PRR EU
+AND
+THE LIFE OF HANNA (SAINT ANNE),
+AND
+THE MAGICAL PRAYERS OF ‘AHE’EN MIKAEL.
+EN
+a ,
+Three hundred copies only, printed for private circulation,
+of which this ts No..234..
+EEE einige 5 ER ia
+PLATE 1.
+gels Mi
+USER I
+r 3 a ve ¢ y added by a possessor
+of the volume.
+[Frontis,
+LADY MEUX MANUSCRIPTS Nos. 95,
+THE
+MIRACLES or Tue BLESSED VIRGIN MARY,
+AND
+THE LIFE OF HANNA (SAINT ANNE),
+```
+Sample from the middle:
+```
+be praised in the assembly of the people < and in the gates, and the people
+shall give thanks unto Joachim her husband. She put on strength ax
+beauty, and she rejoiced during the days of her life in the end thereot,
+THE HISTORY OF HANNA, THE MOTHER OF THE BLESSED VIRGIN MARY. 163
+Her mouth did not eat the grain (. e. bread) of idleness. [fol. 154] She
+judged according to wisdom, she made manifest the Law, and she stab-
+lished rules for her tongue; and her husband Joachim praised her when
+she made a coat(?) and a cloak of byssus cloth, and purple for his
 ```
 
 ## ephrem — Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)
@@ -572,7 +616,88 @@ and  departed  from  him.  And  straightway  Saint  Abba  john
 
 ## paradise — The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)
 - pinned: paradiseorgarden01anan, paradiseorgarden02anan
-**FAILED:** fetch failed
+
+#### `paradiseorgarden01anan_djvu.txt` (archive id `paradiseorgarden01anan`) — 1406045 bytes
+20778 non-empty lines. First 25:
+```
+Division
+SectioQ
+0X2405-
+• A53
+V.|
+THE  PARADISE
+OF  THE  HOLY  FATHERS
+i VOLUME  I
+CONTAINING  THE  INTRO-
+DUCTION: THE  LIFE  OF  ST
+ANTHONY,  BY  ATHANASIUS
+ARCHBP  OF  ALEXANDRIA:
+HISTORIES  OFTHE  FATHERS
+BY  PALLADIUS  Bp  OF  HELE-
+NOPOLIS:  THERULEOF
+PACHOMIUS:  ST  JEROME’S
+HISTORY  OF  THE  FATHERS
+Digitized  by  the  Internet  Archive
+in  2017  with  funding  from
+Princeton  Theological  Seminary  Library
+https://archive.org/details/paradiseorgarden01anan
+rdaQa  h\cu
+.cr*i
+^>acu  njMirc'Ai^TS"
+w Stars'
+```
+Sample from the middle:
+```
+“ that  thou  art  still  in  the  heat  of  youth  how  canst  thou  have
+“ confidence  that  by  means  of  carefulness  [on  thy  part]  thou
+“ wilt  be  able  to  resist  the  [natural  heat  of]  the  constitution  of
+“ the  body  which  still  burneth  in  thy  memberfs]?  And  dost
+“thou  not  perceive  the  injurious  effedts  which  will  be  produced
+“ in  thee  by  [this  washing]?  Believe  me,  O my  son,  for  I am
+“this  day  a woman  sixty  years  old,  from  the  time  when  I
+“first  took  upon  myself  this  garb  water  hath  never  touched
+```
+
+#### `paradiseorgarden02anan_djvu.txt` (archive id `paradiseorgarden02anan`) — 1138769 bytes
+18020 non-empty lines. First 25:
+```
+Division
+Section
+BX244.S
+• AS3
+V.  2
+Digitized  by  the  Internet  Archive
+in  2017  with  funding  from
+Princeton  Theological  Seminary  Library
+https://archive.org/details/paradiseorgarden02anan
+THE  PARADISE
+OF  THE  HOLY  FATHERS
+VOLUME  II
+CONTAINING
+THE  COUNSELS  OF  THE
+HOLY  MEN  AND  THE
+QUESTIONS  & ANSWERS  OF
+THE  ASCETIC  BRETHREN
+GENERALLY  KNOWN  AS
+THE  SAYINGS  OF  THE
+FATHERS  OF
+EGYPT
+>18-1(1 1 RlM  a H T
+XH  - !'.  , 1 ■>  :
+il  -l/J.KY
+w'.-v
+```
+Sample from the middle:
+```
+And  he  answered  and  said  unto  the  old  man,  “It  is  sufficient
+“ for  me  to  see  thee.”
+162.  Abba  Sisoes  asked  Abba  Poemen  about  filthy  thoughts,
+and  the  old  man  said  unto  him,  “The  matter  is  like  unto  a box
+“ of  clothes:  if  a man  leaveth  the  clothes  inside  it  for  a long
+“ time  without  being  turned,  they  will  become  eaten  up  in  pro-
+“ cess  of  time  and  destroyed.  And  thus  also  is  it  with  the
+“ thoughts,  and  if  a man  doth  not  drive  them  out  from  his  body
+```
 
 ## lausiac — The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)
 - pinned: lausiachistoryof00palluoft

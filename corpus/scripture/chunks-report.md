@@ -1,9 +1,10 @@
 # Scripture chunk report
 
-Generated 2026-09-28T14:17:09.584Z
+Generated 2026-09-29T08:25:36.786Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
+| adam_and_eve | 1 | 258 | 111492 | 432 | 614 |
 | antony | 1 | 68 | 32193 | 473 | 608 |
 | aphrahat | 1 | 134 | 65929 | 492 | 622 |
 | chrysostom_theodore | 1 | 60 | 33209 | 553 | 617 |
@@ -15,12 +16,13 @@ Generated 2026-09-28T14:17:09.584Z
 | jubilees | 1 | 169 | 72266 | 428 | 612 |
 | kebra_nagast | 1 | 252 | 109086 | 433 | 617 |
 | lausiac | 1 | 161 | 71166 | 442 | 617 |
+| miracles_of_mary | 1 | 126 | 60268 | 478 | 635 |
 | paradise | 1 | 1129 | 533795 | 473 | 623 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 7742 chunks, 3311714 tokens ≈ 5.5 h of embedding at 10000 TPM.
+**Total:** 8126 chunks, 3483474 tokens ≈ 5.8 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -132,6 +134,63 @@ Generated 2026-09-28T14:17:09.584Z
 - ✅ solomon / restoration: `Kebra Nagast, Chapter 65` → 1 chunk(s) (Kebra Nagast, Chapter 65: Concerning The Sin Of Solomon)
 
 ## Samples
+
+**The Book of Adam and Eve, Book I** (473 tokens, ethiopian_orthodox)
+```
+The Book of Adam and Eve, Book I
+
+UNIVERSITY OF TORONTO
+
+Elizabeth Gilmore 1138 High Court
+
+THE CONFLICT OF ADAM AND EVE WITH SATAN,
+
+A Book of the early Eastern Church, Cranstateti from tfje <55tf)i0pic,
+
+WITH NOTES FROM THE KUFALE, TALMUD, MIDRASHIM, AND OTHER EASTERN WORKS,
+
+VICAR OF BROADWINDSOR.
+
+WILLIAMS AND NOKGATE,
+
+14, HENRIETTA STREET, COVENT GAEDEN, LONDON; AND 20, SOUTH FREDERICK STREP7T, EDINBURGH.
+
+G. NORMAN AND SON, PRINTERS, HART STREET, COVENT GARDEN,
+
+THE KEV. DR. ERNEST TRUMPP,
+
+REGIUS PROFESSOR OF ORIENTAL LANGUAGES AND LITERATURE IN THE
+
+UNIVERSITY OF MUNICH, AND ORDINARY MEMBER OF THE ROYAL
+
+BAVARIAN ACADEMY OF SCIENCES,
+
+In token of respect for his accurate and profoun
+```
+
+**The Book of Adam and Eve, Book II, Chapter XIII** (578 tokens, ethiopian_orthodox)
+```
+The Book of Adam and Eve, Book II, Chapter XIII
+
+In those days lived Lamech the blind, who was of the sons of Cain. He had a son whose name was Atun, and they two had much cattle.
+
+But Lamech was in the habit of sending them [to feed] with a young shepherd, who tended them ; and who, when coming * In Arabic, it means hot, hard, hasty. Lamech 's grandson.
+
+home in the evening wept before his grandfather, and before his father Atun and his mother Hazina, and said to them, "As for me, I cannot feed those cattle alone, lest one rob me of some of them, or kill me for the sake of them/' For among the children of Cain, there was much robbery, murder, and sin.
+
+Then Lamech pitied him, and he said, "
+```
+
+**The Book of Adam and Eve, Book IV, Chapter XV (part 19)** (562 tokens, ethiopian_orthodox)
+```
+The Book of Adam and Eve, Book IV, Chapter XV (part 19)
+
+Et sicut praedixit Michael archangelus, post sex dies venit mors Adae. Cum cognovisset Adam, quia hora venit mortis suse, dixit ad omnes filios suos, Ecce sum annorum dccccxxx, et si mortuus f uero, sepelite me contra ortum dei magnum habitationibus. Et fac-
+
+tum est eum finiaset omnes sermones illius, tradidit spiritnm. Et videt Seth manum domini extensam tenentem Adam. Et sepelierunt Adam et Abel, Michael et Urihel angeli in partibus paradisi, videntibus Seth et matre ejus et alio nemine. (Vita Adce et J5.,
+
+" Come, come," said the Deliverer to Adam ; " come, and put on thy garment of light, where the sun never sets ; wear on thy bro
+```
 
 **Athanasius, Life of Antony §1–2** (592 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
 ```
@@ -467,6 +526,47 @@ also thanks to his vainglory.^ On the other hand, his judgment was perverted owi
 [i] In this city of Antinoe there are twelve convents of women ; in one of them I met Amma ^ Talis, an old woman who had spent eighty years in asceticism, as she and the neighbours told me. With her dwelt sixty young women who loved her so greatly that no key even was fixed on the outer wall of the monastery, as in other monasteries, but they were kept in by love of her. Such a height of impassivity did the old woman reach that when I entered and sat down she came and sat by me and put her hands on my shoulders in a transpor
 ```
 
+**Miracles of the Blessed Virgin Mary, Chapter I: The Covenant Of Christ With The Blessed Virgin Mary** (619 tokens, ethiopian_orthodox)
+```
+Miracles of the Blessed Virgin Mary, Chapter I: The Covenant Of Christ With The Blessed Virgin Mary
+
+THE MIRACLES OF OUR LADY MARY, THE HOLY WOMAN, THE TWO- FOLD VIRGIN, THE GOD-BEARER; MAY HER PRAYER AND BLESSING BE WITH US FOR EVER AND EVER! AMEN.
+
+One day our Lord Jesus Christ said unto MARY, “What sorrow “can be greater than that which came upon thee for My sake?” And our Lady Mary said unto Him, “O my Lord and God, there were the “five sorrows which came upon me for Thy sake, and they had exceed- “ingly great power over me. The first of them was the sorrow which 1 “endured* when Simeon prophesied concerning Thee in the Sanctuary, “how that the Jews would slay Thee. The second sorrow “wh
+```
+
+**Miracles of the Blessed Virgin Mary, Chapter XXVIII: The Virgin Mary And The Monk Of The Monastery Of Abba Samuel Of Kalman (part 6)** (631 tokens, ethiopian_orthodox)
+```
+Miracles of the Blessed Virgin Mary, Chapter XXVIII: The Virgin Mary And The Monk Of The Monastery Of Abba Samuel Of Kalman (part 6)
+
+might prepare the way the Archbishop sent a message unto him [telling
+
+him], that he might be blessed thereby. And the Bishop obeyed the
+
+the skull cap of the monk from out of the chest [which held] the property of the church, and he obtained a blessing therefrom. Then he went to the wall which had been rent asunder, and he obtained
+
+down in adoration before the picture of our Lady Mary three times,
+
+with the oil of the lamp which was kept burning before the picture, and
+
+and found it not; and having turned back forthwith and come to the Monastery a second tim
+```
+
+**Miracles of the Blessed Virgin Mary, Chapter XXXVIII: The Virgin Mary And Timothy The Monk** (571 tokens, ethiopian_orthodox)
+```
+Miracles of the Blessed Virgin Mary, Chapter XXXVIII: The Virgin Mary And Timothy The Monk
+
+A MIRACLE OF OUR HOLY LADY, THE TWO-FOLD VIRGIN MARY, WHO GAVE
+
+BIRTH To Gop. May her prayer and her blessing be with her servant Hayla. Maryam for ever and ever! Amen. Now there was a certain monk whose name was Timothy, and he
+
+was a steward of the church, and he loved our holy Lady, the two-fold Virgin Mary, who gave birth to God. And it fell out on a day that he drank some sweet wine, and he fell asleep and was unable to rise up
+
+wine in the morning he rose up to go to the church, and as he was on
+
+his way thither there came against him a lion, which roared at the monk and wished to rend him. Then
+```
+
 **Paradise of the Holy Fathers, Introduction** (544 tokens, catholic, orthodox, ethiopian_orthodox)
 ```
 Paradise of the Holy Fathers, Introduction
@@ -564,6 +664,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 ## Tradition section headings (first 40 per source)
 
+**adam_and_eve** — 142 sections: The Book of Adam and Eve, Book I · The Book of Adam and Eve, Book I, Chapter I · The Book of Adam and Eve, Book I, Chapter II · The Book of Adam and Eve, Book I, Chapter III · The Book of Adam and Eve, Book I, Chapter IV · The Book of Adam and Eve, Book I, Chapter V · The Book of Adam and Eve, Book I, Chapter VI · The Book of Adam and Eve, Book I, Chapter VII · The Book of Adam and Eve, Book I, Chapter VIII · The Book of Adam and Eve, Book I, Chapter IX · The Book of Adam and Eve, Book I, Chapter X · The Book of Adam and Eve, Book I, Chapter XI · The Book of Adam and Eve, Book I, Chapter XII · The Book of Adam and Eve, Book I, Chapter XIII · The Book of Adam and Eve, Book I, Chapter XIV · The Book of Adam and Eve, Book I, Chapter XV · The Book of Adam and Eve, Book I, Chapter XVI · The Book of Adam and Eve, Book I, Chapter XVII · The Book of Adam and Eve, Book I, Chapter XVIII · The Book of Adam and Eve, Book I, Chapter XIX · The Book of Adam and Eve, Book I, Chapter XX · The Book of Adam and Eve, Book I, Chapter XXI · The Book of Adam and Eve, Book I, Chapter XXII · The Book of Adam and Eve, Book I, Chapter XXIII · The Book of Adam and Eve, Book I, Chapter XXIV · The Book of Adam and Eve, Book I, Chapter XXV · The Book of Adam and Eve, Book I, Chapter XXVI · The Book of Adam and Eve, Book I, Chapter XXVII · The Book of Adam and Eve, Book I, Chapter XXVIII · The Book of Adam and Eve, Book I, Chapter XXIX · The Book of Adam and Eve, Book I, Chapter XXX · The Book of Adam and Eve, Book I, Chapter XXXI · The Book of Adam and Eve, Book I, Chapter XXXII · The Book of Adam and Eve, Book I, Chapter XXXIII · The Book of Adam and Eve, Book I, Chapter XXXIV · The Book of Adam and Eve, Book I, Chapter XXXV · The Book of Adam and Eve, Book I, Chapter XXXVI · The Book of Adam and Eve, Book I, Chapter XXXVII · The Book of Adam and Eve, Book I, Chapter XXXVIII · The Book of Adam and Eve, Book I, Chapter XXXIX
+
 **antony** — 65 sections: Athanasius, Life of Antony §1–2 · Athanasius, Life of Antony §3 · Athanasius, Life of Antony §4 · Athanasius, Life of Antony §5 · Athanasius, Life of Antony §6 · Athanasius, Life of Antony §8 · Athanasius, Life of Antony §9 · Athanasius, Life of Antony §10–11 · Athanasius, Life of Antony §12 · Athanasius, Life of Antony §13 · Athanasius, Life of Antony §14–15 · Athanasius, Life of Antony §16 · Athanasius, Life of Antony §17 · Athanasius, Life of Antony §18–19 · Athanasius, Life of Antony §20 · Athanasius, Life of Antony §21–22 · Athanasius, Life of Antony §23 · Athanasius, Life of Antony §25–26 · Athanasius, Life of Antony §27 · Athanasius, Life of Antony §29–30 · Athanasius, Life of Antony §31 · Athanasius, Life of Antony §32 · Athanasius, Life of Antony §33–34 · Athanasius, Life of Antony §35 · Athanasius, Life of Antony §36–37 · Athanasius, Life of Antony §38 · Athanasius, Life of Antony §39 · Athanasius, Life of Antony §40 · Athanasius, Life of Antony §41 · Athanasius, Life of Antony §42 · Athanasius, Life of Antony §43–44 · Athanasius, Life of Antony §45 · Athanasius, Life of Antony §46 · Athanasius, Life of Antony §47–48 · Athanasius, Life of Antony §49 · Athanasius, Life of Antony §50 · Athanasius, Life of Antony §51–52 · Athanasius, Life of Antony §53–54 · Athanasius, Life of Antony §54 · Athanasius, Life of Antony §54–57
 
 **aphrahat** — 106 sections: Aphrahat, Letter of an Inquirer §1–2 · Aphrahat, Demonstration I — Of Faith §1–2 · Aphrahat, Demonstration I — Of Faith §3 · Aphrahat, Demonstration I — Of Faith §4 · Aphrahat, Demonstration I — Of Faith §5 · Aphrahat, Demonstration I — Of Faith §6 · Aphrahat, Demonstration I — Of Faith §7–9 · Aphrahat, Demonstration I — Of Faith §10 · Aphrahat, Demonstration I — Of Faith §11 · Aphrahat, Demonstration I — Of Faith §11–14 · Aphrahat, Demonstration I — Of Faith §15 · Aphrahat, Demonstration I — Of Faith §16 · Aphrahat, Demonstration I — Of Faith §17 · Aphrahat, Demonstration I — Of Faith §18–19 · Aphrahat, Demonstration I — Of Faith §20 · Aphrahat, Demonstration V — Of Wars §1–2 · Aphrahat, Demonstration V — Of Wars §3 · Aphrahat, Demonstration V — Of Wars §5 · Aphrahat, Demonstration V — Of Wars §6 · Aphrahat, Demonstration V — Of Wars §7 · Aphrahat, Demonstration V — Of Wars §8 · Aphrahat, Demonstration V — Of Wars §10–11 · Aphrahat, Demonstration V — Of Wars §12–13 · Aphrahat, Demonstration V — Of Wars §14–15 · Aphrahat, Demonstration V — Of Wars §16 · Aphrahat, Demonstration V — Of Wars §17–19 · Aphrahat, Demonstration V — Of Wars §19 · Aphrahat, Demonstration V — Of Wars §21 · Aphrahat, Demonstration V — Of Wars §23 · Aphrahat, Demonstration V — Of Wars §24 · Aphrahat, Demonstration V — Of Wars §25 · Aphrahat, Demonstration VI — Of Monks §1 · Aphrahat, Demonstration VI — Of Monks §2 · Aphrahat, Demonstration VI — Of Monks §3 · Aphrahat, Demonstration VI — Of Monks §4 · Aphrahat, Demonstration VI — Of Monks §5 · Aphrahat, Demonstration VI — Of Monks §7 · Aphrahat, Demonstration VI — Of Monks §9 · Aphrahat, Demonstration VI — Of Monks §11 · Aphrahat, Demonstration VI — Of Monks §12
@@ -585,6 +687,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **kebra_nagast** — 114 sections: Kebra Nagast, The Glory of Kings · Kebra Nagast, Chapter 1: Concerning The Glory Of Kings · Kebra Nagast, Chapter 2: Concerning The Greatness Of Kings · Kebra Nagast, Chapter 3: Concerning The Kingdom Of Adam · Kebra Nagast, Chapter 4: Concerning Envy · Kebra Nagast, Chapter 5: Concerning The Kingdom Of Seth · Kebra Nagast, Chapter 6: Concerning The Sin Of Cain · Kebra Nagast, Chapter 7: Concerning Noah · Kebra Nagast, Chapter 8: Concerning The Flood · Kebra Nagast, Chapter 9: Concerning The Covenant Of Noah · Kebra Nagast, Chapter 10: Concerning Zion · Kebra Nagast, Chapter 11: The Unanimous Declaration Of The Three Hundred And Eighteen Orthodox Fathers · Kebra Nagast, Chapter 12: Concerning Canaan L · Kebra Nagast, Chapter 13: Concerning Abraham · Kebra Nagast, Chapter 14: Concerning The Covenant Of Abraham · Kebra Nagast, Chapter 15: Concerning Isaac And Jacob · Kebra Nagast, Chapter 16: Concerning Robel (Reuben) · Kebra Nagast, Chapters 17–18: Concerning The Glory Of Zion · Kebra Nagast, Chapter 19: How This Book Came To Be Found · Kebra Nagast, Chapter 20: Concerning The Division Of The Earth · Kebra Nagast, Chapter 21: Concerning The Queen Of The South · Kebra Nagast, Chapter 22: Concerning Tamrin, The Merchant · Kebra Nagast, Chapter 23: How The Merchant Returned To Ethiopia · Kebra Nagast, Chapter 24: How The Queen Made Ready To Set Out On Her Journey · Kebra Nagast, Chapter 25: How The Queen Came To Solomon The King · Kebra Nagast, Chapter 26: How The King Held Converse With The Queen · Kebra Nagast, Chapter 27: Concerning The Labourer · Kebra Nagast, Chapter 28: How Solomon Gave Commandments To The Queen · Kebra Nagast, Chapter 29: Concerning The Three Hundred And Eighteen [Patriarchs] · Kebra Nagast, Chapter 30: Concerning How King Solomon Swore To The Queen · Kebra Nagast, Chapter 31: Concerning The Sign Which Solomon Gave The Queen · Kebra Nagast, Chapter 32: How The Queen Brought Forth And Came To Her Own Country · Kebra Nagast, Chapter 33: How The King Of Ethiopia Travelled · Kebra Nagast, Chapter 34: How The Young Man Arrived In His Mother's Country · Kebra Nagast, Chapter 35: How King Solomon Sent To His Son The Commander Of His Army · Kebra Nagast, Chapter 36: How King Solomon Held Intercourse With His · Kebra Nagast, Chapter 37: How Solomon Asked His Son Questions · Kebra Nagast, Chapter 38: How The King Planned To Send Away His Son With The Children Of The Nobles · Kebra Nagast, Chapter 39: How They Made The Son Of Solomon King · Kebra Nagast, Chapter 40: How Zadok The Priest Gave Commands To David The King
 
 **lausiac** — 50 sections: Lausiac History, Prologue · Lausiac History, LXX. A Reader Unjustly Accused · Lausiac History, Introduction · Lausiac History, Dorotheus · Lausiac History, Didymus · Lausiac History, Alexandra · Lausiac History, The Rich Virgin · Lausiac History, The Monks Of Nitria · Lausiac History, Amoun Of Nitria · Lausiac History, Pambo · Lausiac History, Ammonius · Lausiac History, Apollonius · Lausiac History, Macarius The Younger · Lausiac History, Nathanael · Lausiac History, Macarius Of Egypt · Lausiac History, Macarius Of Alexandria · Lausiac History, Moses The Robber · Lausiac History, Eulogius And The Cripple · Lausiac History, Paul The Simple · Lausiac History, Pachon · Lausiac History, Stephen · Lausiac History, Valens · Lausiac History, Heron · Lausiac History, Ptolemy · Lausiac History, Elias · Lausiac History, Pachomius And The Tabennesiots · Lausiac History, The Tabennesiot Nuns · Lausiac History, The Nun Who Feigned Madness · Lausiac History, John Of Lycopolis · Lausiac History, Posidonius · Lausiac History, Sarapion The Sindonite · Lausiac History, Evagrius · Lausiac History, Ephraim · Lausiac History, Holy Women · Lausiac History, Julian · Lausiac History, Adolius · Lausiac History, Philoromus · Lausiac History, Melania The Elder · Lausiac History, Chronius And Paphnutius · Lausiac History, Elpidius
+
+**miracles_of_mary** — 41 sections: Miracles of the Blessed Virgin Mary, Chapter I: The Covenant Of Christ With The Blessed Virgin Mary · Miracles of the Blessed Virgin Mary, Chapter II: The Jew Of The City Of Akhmim · Miracles of the Blessed Virgin Mary, Chapter III: The Virgin Mary And The Scribe Damianus · Miracles of the Blessed Virgin Mary, Chapter IV: The Virgin Mary And Bishop Abbas Of Rome · Miracles of the Blessed Virgin Mary, Chapter VI: The Virgin Mary And The Monk Isaac · Miracles of the Blessed Virgin Mary, Chapter VII: The Virgin Mary And The Child Mary · Miracles of the Blessed Virgin Mary, Chapter VIII: The Virgin Mary And The Painter · Miracles of the Blessed Virgin Mary, Chapter IX: The Virgin Mary And The Sick Man · Miracles of the Blessed Virgin Mary, Chapter X: The Virgin Mary And The Youth Zacharias · Miracles of the Blessed Virgin Mary, Chapter XI: The Virgin Mary And The Women Juliana And Barbara · Miracles of the Blessed Virgin Mary, Chapter XII: The Virgin Mary And The Three Arabs · Miracles of the Blessed Virgin Mary, Chapter XIII: The Virgin Mary And The Monastery Of Akona · Miracles of the Blessed Virgin Mary, Chapter XIV: The Virgin Mary And The Egyptian Priest John · Miracles of the Blessed Virgin Mary, Chapter XV: The Virgin Mary And The Greek Who Had A Dart In His Eye · Miracles of the Blessed Virgin Mary, Chapter XVI: The Virgin Mary And The Blind Girl Of Dalga · Miracles of the Blessed Virgin Mary, Chapter XVII: The Virgin Mary And The Three Poor Sisters · Miracles of the Blessed Virgin Mary, Chapter XVIII: The Virgin Mary And The Two Brothers Who Were Scribes · Miracles of the Blessed Virgin Mary, Chapter XIX: The Virgin Mary And The Prisoner · Miracles of the Blessed Virgin Mary, Chapter XX: The Virgin Mary And The Old Man Katir · Miracles of the Blessed Virgin Mary, Chapter XXI: The Virgin Mary And The Brethren Tag And Nazib Of Dalga · Miracles of the Blessed Virgin Mary, Chapter XXII: The Virgin Mary And The Lame Man · Miracles of the Blessed Virgin Mary, Chapter XXIII: The Virgin Mary And Bishop Mercurius · Miracles of the Blessed Virgin Mary, Chapter XXIV: The Virgin Mary And The Woman With A Broken Foot · Miracles of the Blessed Virgin Mary, Chapter XXV: The Virgin Mary And Sophia The Abbess Of Mount Carmel · Miracles of the Blessed Virgin Mary, Chapter XXVI: The Virgin Mary And The Man Barok · Miracles of the Blessed Virgin Mary, Chapter XXVII: The Virgin Mary And Anastasius The Roman · Miracles of the Blessed Virgin Mary, Chapter XXVIII: The Virgin Mary And The Monk Of The Monastery Of Abba Samuel Of Kalman · Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer · Miracles of the Blessed Virgin Mary, Chapter XXX: The Virgin Mary And The Widow’s Son Who Became A Thief · Miracles of the Blessed Virgin Mary, Chapter XXXI: The Virgin Mary And The Lady Euphemia · Miracles of the Blessed Virgin Mary, Chapter XXXII: The Virgin Mary And The Woman Who Was About To Bring Forth · Miracles of the Blessed Virgin Mary, Chapter XXXIII: The Virgin Mary And The Thirsty Dog · Miracles of the Blessed Virgin Mary, Chapters XXXIV–XXXV: The Virgin Mary And The Khalifa Of Athribis · Miracles of the Blessed Virgin Mary, Chapter XXXVI: The Virgin Mary And The Potter · Miracles of the Blessed Virgin Mary, Chapter XXXVII: The Virgin Mary And The Man Who Was Washing His Garments · Miracles of the Blessed Virgin Mary, Chapter XXXVIII: The Virgin Mary And Timothy The Monk · Miracles of the Blessed Virgin Mary, Chapter XXXIX: The Virgin Mary And Nicodemus The Horseman · Miracles of the Blessed Virgin Mary, Chapters XL–XLI: The Virgin Mary And The Roman Prefect · Miracles of the Blessed Virgin Mary, Chapter XLII: The Virgin Mary And The Fountain Of Water · Miracles of the Blessed Virgin Mary, Chapter XLIII: The Virgin Mary And John Kama
 
 **paradise** — 166 sections: Paradise of the Holy Fathers, Introduction · Paradise of the Holy Fathers, “BY the help of our Lord I will…” · Paradise of the Holy Fathers, “AND whose life was one of spiritual excellence…” · Paradise of the Holy Fathers, “THERE was a certain young virgin [called Potamiaena]…” · Paradise of the Holy Fathers, “TOGETHER with these I also saw a certain…” · Paradise of the Holy Fathers, “THERE was a certain maiden of Alexandria whose…” · Paradise of the Holy Fathers, “THERE was in Alexandria a certain virgin who…” · Paradise of the Holy Fathers, “NOW having held converse with many of the…” · Paradise of the Holy Fathers, “CONCERNING the blessed man Ammon, he used to…” · Paradise of the Holy Fathers, “NOW in Mount Nitria there was a certain…” · Paradise of the Holy Fathers, “IN this mountain there also lived the blessed…” · Paradise of the Holy Fathers, “NOW this man Ammonius and his three brothers…” · Paradise of the Holy Fathers, “AND there was also in the mountain of…” · Paradise of the Holy Fathers, “AND again another man, whose name was Apollonius…” · Paradise of the Holy Fathers, “AND there were also there two brethren, whose…” · Paradise of the Holy Fathers, “THERE was also a certain youth whose name…” · Paradise of the Holy Fathers, “ND there was also another man among the…” · Paradise of the Holy Fathers, “CONCERNING the holy and immortal fathers, that is…” · Paradise of the Holy Fathers, “AS for the other Macarius, the Alexandrian, I…” · Paradise of the Holy Fathers, “NOW there was a certain husbandman whose name…” · Paradise of the Holy Fathers, “AND there was also another man whose name…” · Paradise of the Holy Fathers, “STEPHEN was a man who was by race…” · Paradise of the Holy Fathers, “AND there was a certain man whose name…” · Paradise of the Holy Fathers, “AND there was also my neighbour, a man…” · Paradise of the Holy Fathers, “AND there was also a certain man whose…” · Paradise of the Holy Fathers, “AND moreover, I saw a certain virgin in…” · Paradise of the Holy Fathers, “AND again there was a certain virgin who…” · Paradise of the Holy Fathers, “THERE was a certain virgin who was a…” · Paradise of the Holy Fathers, “AND now I desire to narrate unto you…” · Paradise of the Holy Fathers, “THERE was a certain man whose name was…” · Paradise of the Holy Fathers, “IN the country of Thebes, and in the…” · Paradise of the Holy Fathers, “NOW therefore, O my brother, it sufficeth for…” · Paradise of the Holy Fathers, “PIAMON was a virgin who lived all her…” · Paradise of the Holy Fathers, “NOW in the city of Antinoe there were…” · Paradise of the Holy Fathers, “NOW in this nunnery there was a certain…” · Paradise of the Holy Fathers, “NOW there was another virgin there who was…” · Paradise of the Holy Fathers, “IN the ancient book which was ascribed to…” · Paradise of the Holy Fathers, “MELANIA, the holy woman who is worthy of…” · Paradise of the Holy Fathers, “NOW inasmuch as I have already promised above…” · Paradise of the Holy Fathers, “NOW the holy and chaste woman Olympias, whilst…”
 
@@ -629,6 +733,136 @@ Preface: 41 · ?: 20 · Maskaram: 115 · Teqemt: 103 · Hedar: 129 · Takhsas: 1
 - synaxarium: Ethiopian Synaxarium, Sane (part 3)
 
 ## OCR tuning aids
+
+### adam_and_eve: frequent short lines
+```
+90	# THE BOOK OF ADAM AND EVE. [BOOK
+84	#
+23	THE BOOK OF ADAM AND EVE.
+23	[BOOK
+23	NOTES.
+14	#*
+14	#—#
+8	them.
+8	# TEE BOOK OF ADAM AND EVE. [BOOK
+7	him.
+6	I.]
+6	#.)
+6	II.]
+6	III.]
+5	thee."
+5	earth.
+5	p. #.)
+4	CHAPTER I.
+4	CHAPTER III.
+4	CHAPTER IV.
+4	CHAPTER VI.
+4	CHAPTER VII.
+4	CHAPTER VIII.
+4	CHAPTER IX.
+4	CHAPTER X.
+4	CHAPTER XI.
+4	CHAPTER XII.
+4	CHAPTER XIII.
+4	And God withdrew His Word from Adam.
+4	p. #.
+```
+### adam_and_eve: context around "Moses" (line 6472)
+```
+short. For this Lot was righteous, and shared all Abraham's
+troubles with him ; and received the angels of God in Sodom
+and Gomorrah.
+Therefore did God give to Lot's children fellowship in the
+kingdom, and that was [reckoned] for righteousness unto Lot
+the righteous. For this reason also were [Lot's children]
+mentioned among the genealogies of the kingdom of Abraham
+and of Lot ; for Christ was born of their seed.
+Then, again, Obed, Ruth's son, was of Lot's seed, on his
+mother's [side] ; and Obed begat Jesse ; and Jesse begat
+David the king. And king David begat Solomon ; all these
+are of Ruth the Moabitess.
+Again, Amnan,* the daughter of [Dan], king of the Ammo
+nites, was of Lot's seed ; and Solomon the king took this
+* Naamah. 1 Kg., xiv, 21, 31.
+iv.] BIRTH OF MOSES. 187
+daughter of Dan to wife ; and had by her, Rehoboam, who
+reigned after Solomon.
+But king Solomon took to himself many wives, seven
+hundred daughters of kings, three hundred concubines, one
+thousand in number.
+But although Solomon took to himself these many wives,
+they did not bare him a single male child, but Rehoboam, of
+Amnan, the daughter of Dan, king of Ammon ; who was of
+a blessed race.
+Thus, again, God would not allow the seed of Canaanites to
+mingle with that of strange peoples, which God had made
+strangers. And this shows that Christ came of the seed of
+Abraham the blessed father, and of Lot his brother's son.
+And all the families of the children of Israel in the land of
+Egypt, were Levi, Amram, Moses, Joshua, and Caleb, son of
+Jephunneh ; all these were great chiefs over their peoples.
+CHAPTER VII.
+As to Moses, when they had thrown him into the river,
+Sephurah, the daughter of Pharaoh, took him up thence, and
+brought him up. She it is, whom the Hebrews call Mariam, the
+mother of Moses.
+And Moses abode forty years in Pharaoh's house ; and other
+forty years in the land of Midian, ere God spake to him.
+Then, again, when God spake to Moses from within the bush
+```
+### adam_and_eve: 50 raw lines at 40%
+```
+p. 15.
+134 THE BOOK OF ADAM AND EVE. [BOOK
+ments, cymbals and psalteries, and lyres and harps, and flutes ;
+and he played on them at all times and at every hour.*22
+And when he played on them, Satan came into them, so
+that from among them were heard beautiful and sweet sounds,
+that ravished the heart. f
+Then he gathered companies upon companies to play on
+them ; and when they played, it pleased well the children of
+Cain,{ who inflamed themselves with sin among themselves,
+and burnt as with fire ; while Satan inflamed their hearts one
+with another, and increased lust among them.
+Satan also taught Genun to bring strong drink out of corn ;§
+and this Genun used to bring together companies upon com
+panies in drink-houses; and brought into their hands all
+manner of fruits and flowers ; and they drank together.
+Thus did this Genun multiply sin exceedingly; he also
+acted with pride, and taught the children of Cain to commit all
+manner of the grossest wickedness, which they knew not ; and
+put them up to manifold doings which they knew not before.
+Then Satan, when he saw that they yielded to Genun and
+hearkened to him in every thing he told them, rejoiced greatly*
+increased Genun's understanding, until he took iron and with it
+made weapons of war.
+Then when they were drunk, hatred and murder increased
+among them ; one man used violence against another to teach
+him [evil], taking his children and defiling them before him.
+And when men saw they were overcome, and [saw] others
+that were not overpowered, those who were beaten came to
+Genun, took refuge with him, and he made them his con
+federates.
+Then sin increased among them greatly ; until a man married
+his own sister, or daughter, or mother, and others ; or the
+daughter of his fathers sister, so that there was no more
+* Eutych., Nazam al-j., p. 20. f Lit. hearts.
+$ Lit. it seemed well in the eyes of. § Arab. " that is now called beer."
+in.] GENUN BEGUILES THE SONS OF SETH. 135
+distinction [of relationship],* and they no longer knew what
+is iniquity ; but did wickedly, and the earth was defiled with
+sin ; and they angered God the Judge, who had created them.
+But Genun gathered together companies upon companies,
+that played on horns and on all the other instruments we have
+already mentioned, at the foot of the Holy Mountain ; and they
+did so in order that the children of Seth who were on the Holy
+Mountain should hear it.
+But when the children of Seth heard the noise, they
+wondered, and came by companies, and stood on the top of
+the mountain to look at those below; and they did thus a
+whole year.
+When, at the end of that year, Genun saw that they were
+```
 
 ### enoch: frequent short lines
 ```
@@ -1146,6 +1380,136 @@ MACARIUS OF ALEXANDRIA 85
 [25] This holy Macarius told me the following — for
 he was a priest. " I noticed at the time of distributing
 the mysteries that it was never I which gave the oblation
+```
+
+### miracles_of_mary: frequent short lines
+```
+222	|
+188	#
+122	i
+64	=
+51	a
+50	(See page #).
+40	t
+23	O
+22	n
+21	ever and ever! Amen.
+19	<
+18	>
+15	A
+14	INTRODUCTION.
+12	©
+12	ee
+11	ever! Amen.
+11	| |
+11	Amen.
+11	ll
+11	THE HISTORY OF HANNA, THE MOTHER OF THE BLESSED VIRGIN MARY.
+10	I
+10	and
+9	i |
+9	THE MIRACLES OF THE BLESSED VIRGIN MARY (B. Folio #).
+9	oO
+8	H
+8	fo)
+7	al
+7	MAGICAL PRAYERS.
+```
+### miracles_of_mary: context around "Moses" (line 1964)
+```
+orayer against the lion, panther, hyaena, and wolf, and refers to the four beasts
+which support the throne of God. The fourth contains a prayer against liars,
+slanderers, calumniators, and enemies of every kind, and those who woulc oppose
+he owner of the amulet in judgment. The fifth contains a prayer against terror
+or fright of every kind, and refers to the “seventy-seven lamps which were given
+to Enoch”; and the sixth declares that the man who wears this amulet on his
+oreast shall be delivered from the spear of any who would attack him.
+The amulet written for Sebhat Le’ab contains nine sections. In the first
+reference is made to Enoch and Elijah; in the second the three and a half years’
+amine which Elijah brought upon the earth is mentioned; and in the third Nabal,
+he fool, who opposed David, and Uzza, who dared to look into the ark, are
+alluded to. The owner of the amulet prays that as God worked for the Patriarchs,
+and delivered them, even so He will deliver him from out of his troubles. The
+fourth section is a prayer directed against wounding by “spear, sword, bow,
+naphtha, stick, or stone”. The fifth section records the magical names which God
+gave to Moses, and contains a prayer that He will cause the owner of the amulet
+o find favour in the sight of kings and governors, and that his words may be
+sweet like honey and sugar, and [savoury like] salt. The sixth section is a
+prayer directed against words of calumny, and the seventh is a prayer that the
+owner of the amulet may be delivered from Barya and Buda, the princes o
+sorcerers and of those who work magic, by the might of the piercing Word o
+God, and by the sharp sword of Michael, and by the names of Jesus Christ, the
+Son of God. The eighth section contains a remarkable list of magical names, anc
+the ninth is a concluding prayer for deliverance from the disease caused by
+worms, and a fourfold address to a being called Nazer.
+The amulet written for Shalasé Tezazd introduces us to an entirely differen
+class of magical prayers, and the text may probably be more correctly described
+fae i —
+LIV INTRODUCTION.
+as a litany. It begins by mentioning the Names of the Three Persons of the
+i i fi ja ae er AOL eA Agee aa oe
+Trinity, and then describes what follows as a prayer against the tongue of Bi
+and against the “tongues of men, both of those who are kinsfolk and those who are
+strangers”, and against fever, rheumatism, and other diseases. The addresses are
+made to Christ under the name o Tama, and a number of events in His life
+are enumerated, such as His proceeding from the Father, His existence before all
+worlds, His two-fold birth, His flight to Dabra Kuéskuam near Thebes, His cir-
+cumcision, His appearance in the Temple, His living in the house of Joseph for
+thirty years, His baptism, fasting, and temptation, His weeping at the grave of
+Lazarus, His humility, His Body and Blood, His priesthood, His buffeti scourging,
+```
+### miracles_of_mary: 50 raw lines at 40%
+```
+THE VIRGIN MARY CHIDES THE KHALIFA.
+109
+“unto me in the same manner, and spake unto me from the place where
+“our Lady Mary was, [B fo
+“ester
+“Qvhich is in the city of Athri
+“Behol
+yords, and [ will writ
+“thy Ww
+)
+“mand
+“morning had come that I
+“Lady,
+“Now 0
+“appea
+“my bec
+“tore m
+“And
+“comp
+““thee ¢
+hee
+¢
+i [A fo
+«to OV
+“<cmandl
+iy
+LO
+thee’.
+¢
+““Almigt
+“wrote
+“hand. And there came unto me a white dove, and when he hac
+from off the earth, because t
+command.
+nights, and I have to
+OV
+if I wr
+general? for the country wherein he is is afar off And she sz
+day that thou wast
+d, I have heard thy
+ed me [to do], O
+Ss
+[A fol. 894. 1 and i
+n the night of the third day
+4
+c
+ad set me upright upon
+sunder and
+lat
+assic
 ```
 
 ### paradise: frequent short lines
