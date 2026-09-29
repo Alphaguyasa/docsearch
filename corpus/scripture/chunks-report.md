@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-29T08:25:36.786Z
+Generated 2026-09-29T09:01:02.619Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -132,6 +132,8 @@ Generated 2026-09-29T08:25:36.786Z
 - ✅ joseph_of_arimathea / restoration: `Mark 15:43` → 1 chunk(s) (Mark 15:35-47)
 - ✅ solomon / fall: `1 Kings 11:1-10` → 1 chunk(s) (1 Kings 10:23-11:10)
 - ✅ solomon / restoration: `Kebra Nagast, Chapter 65` → 1 chunk(s) (Kebra Nagast, Chapter 65: Concerning The Sin Of Solomon)
+- ✅ cannibal_of_kemer / fall: `Miracles of the Blessed Virgin Mary, Chapter XXIX` → 1 chunk(s) (Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer)
+- ✅ cannibal_of_kemer / restoration: `Miracles of the Blessed Virgin Mary, Chapter XXIX` → 1 chunk(s) (Miracles of the Blessed Virgin Mary, Chapter XXIX: The Virgin And The Cannibal Of The City Of Kemer (part 2))
 
 ## Samples
 
