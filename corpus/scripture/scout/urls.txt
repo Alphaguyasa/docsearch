@@ -1,5 +1,1 @@
-adam https://archive.org/download/bookofadamandeve00malauoft/bookofadamandeve00malauoft_djvu.txt
-isaiah https://archive.org/download/cu31924014590529/cu31924014590529_djvu.txt
-philox https://archive.org/download/discoursesofphil02philuoft/discoursesofphil02philuoft_djvu.txt
-takla https://archive.org/download/lifeoftaklahymnt00budg/lifeoftaklahymnt00budg_djvu.txt
-m-mary https://archive.org/metadata/gri_33125008690600/files
+mary https://archive.org/download/gri_33125008690600/gri_33125008690600_djvu.txt
