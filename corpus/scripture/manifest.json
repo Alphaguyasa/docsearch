@@ -1,7 +1,24 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-28T13:06:37.605Z",
+  "generatedAt": "2026-09-29T07:25:53.782Z",
   "entries": [
+    {
+      "id": "adam_and_eve",
+      "title": "The Book of Adam and Eve, also called the Conflict of Adam and Eve with Satan (tr. S. C. Malan, 1882)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1882; Malan d. 1894)",
+      "retrievedAt": "2026-09-29T07:25:53.782Z",
+      "files": [
+        {
+          "name": "bookofadamandeve00malauoft_djvu.txt",
+          "url": "https://archive.org/download/bookofadamandeve00malauoft/bookofadamandeve00malauoft_djvu.txt",
+          "sha256": "b9cbebdc57f6d4d3ec9d3b4c4d36bd10634896b5603b0987cd5b540ee917fd17",
+          "bytes": 625947,
+          "archiveId": "bookofadamandeve00malauoft"
+        }
+      ]
+    },
     {
       "id": "antony",
       "title": "Athanasius, Life of Antony (tr. H. Ellershaw, NPNF II/4)",
@@ -237,13 +254,13 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-09-25T18:49:41.599Z",
+      "retrievedAt": "2026-09-29T07:25:30.467Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",
           "url": "https://ebible.org/Scriptures/eng-web_usfm.zip",
-          "sha256": "cc5d6cc5c4cef69efa1bd52aee1459211104c945bd685a5bcb247209fc30c792",
-          "bytes": 3244556
+          "sha256": "ba4e0cd941156deba01e164a5779effcf592b1053e5de26b950772b6c336073c",
+          "bytes": 3244206
         }
       ]
     }

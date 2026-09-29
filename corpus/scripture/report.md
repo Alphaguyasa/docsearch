@@ -1,10 +1,10 @@
 # Scripture fetch report
 
-Generated 2026-09-28T13:06:37.605Z
+Generated 2026-09-29T07:25:53.782Z
 
 ## web — World English Bible with Deuterocanon
 
-#### `eng-web_usfm.zip` — 3244556 bytes
+#### `eng-web_usfm.zip` — 3244206 bytes
 (zip — contents listed by the parser session)
 
 ## confessions — The Confessions of Saint Augustine (tr. E. B. Pusey)
@@ -140,7 +140,91 @@ ambassador  of  Pharaoh  answered  and  said  unto  the
 
 ## jubilees — The Book of Jubilees (tr. R. H. Charles, 1917)
 - pinned: bookofjubileesor01char
-**FAILED:** fetch failed
+
+#### `bookofjubileesor01char_djvu.txt` (archive id `bookofjubileesor01char`) — 526384 bytes
+9603 non-empty lines. First 25:
+```
+PROPERTY  OF:
+DAVID  0.  McKAY  LIBRARY
+BYU-IDAHO
+REXBURG  ID  83460-0405
+DAVID  O.  MCKAY  LIBRARY
+31404  007861492
+DATE  DUE
+\V>IAM  1  S  2006
+1&
+-
+-
+OCT  2  4  2009
+2010
+FZDt3"
+Demco
+TRANSLATIONS   OF   EARLY    DOCUMENTS
+SERIES   I
+PALESTINIAN    JEWISH    TEXTS
+(PRE-RABB1NIC)
+THE    BOOK   OF   JUBILEES
+OR
+THE    LITTLE   GENESIS
+Digitized  by  the  Internet  Archive
+in  2013
+http://archive.org/details/bookofjubileesor01char
+```
+Sample from the middle:
+```
+26.  And  he  went  out  from  him  rejoicing.
+Isaac,  Ishmael  and  Jacob  join  in  Festival  with
+Abraham  for  the  Last  Time.  Abraham's
+Prayer  (xxii.  1-9).
+XXII.  And  it  came  to  pass  in  the  fhrstf  2  week
+in  the  fforty-fourthf  3  jubilee,  in  the  jsecondf  year,
+that  is,  the  year  in  which  Abraham  died,  that  Isaac
+and  Ishmael  came  from  the  Well  of  the  Oath  to
+```
+
+## adam_and_eve — The Book of Adam and Eve, also called the Conflict of Adam and Eve with Satan (tr. S. C. Malan, 1882)
+- pinned: bookofadamandeve00malauoft
+
+#### `bookofadamandeve00malauoft_djvu.txt` (archive id `bookofadamandeve00malauoft`) — 625947 bytes
+11706 non-empty lines. First 25:
+```
+Presented  to  the
+LIBRARY  of  the
+UNIVERSITY  OF  TORONTO
+by
+J.  BARNARD  GILMORE
+^L~
+J'U-t?-  -2
+THE  BOOK  OF  ADAM  AND  EVE.
+Elizabeth    Gilmore
+1138    High    Court
+-
+THE  BOOK  OF  ADAM  AND  EVE,
+ALSO    CALLED
+THE  CONFLICT  OF  ADAM  AND  EVE
+WITH  SATAN,
+A  Book  of  the  early  Eastern  Church,
+Cranstateti  from  tfje  <55tf)i0pic,
+WITH    NOTES    FROM    THE    KUFALE,    TALMUD,    MIDRASHIM,
+AND    OTHER    EASTERN    WORKS,
+BY
+THE  EEV.  S.  C.  MALAN,  D.D.,
+VICAR    OF    BROADWINDSOR.
+WILLIAMS  AND  NOKGATE,
+14,    HENRIETTA    STREET,    COVENT    GAEDEN,    LONDON;
+AND  20,  SOUTH  FREDERICK  STREP7T,  EDINBURGH.
+```
+Sample from the middle:
+```
+But  when  Shem  saw  this  first  wonder  wrought  on  Melchize
+dec,  he  kissed  his  face,  and  rejoiced  greatly  on  his  account.
+But  as  for  Melchizedec,  he  tasted  nothing  that  night,  for  the
+joy  that  filled  his  heart ;  but  he  continued  standing  before  the
+coffin  of  Adam,  praising  God  and  praying  until  morning.  This
+vision  happened  to  Melchizedec  in  the  fifteenth  year  of  his  age.
+Then  Shem  and  Melchizedec  put  the  coffin  upon  the  ass,
+and  went  on  their  way  ;  and  the  angel  of  God  went  with  them.
+```
 
 ## ephrem — Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)
 
