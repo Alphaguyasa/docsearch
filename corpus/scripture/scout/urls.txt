@@ -1,5 +1,5 @@
-q-mary1900 https://archive.org/advancedsearch.php?q=title%3A%28miracles%20of%20the%20blessed%20virgin%20mary%29%20AND%20creator%3A%28budge%29&fl[]=identifier&fl[]=title&fl[]=year&fl[]=creator&rows=15&output=json
-m-bookofadamandeve00malauoft https://archive.org/metadata/bookofadamandeve00malauoft/files
-m-cu31924014590529 https://archive.org/metadata/cu31924014590529/files
-m-discoursesofphil02philuoft https://archive.org/metadata/discoursesofphil02philuoft/files
-m-lifeoftaklahymnt00budg https://archive.org/metadata/lifeoftaklahymnt00budg/files
+adam https://archive.org/download/bookofadamandeve00malauoft/bookofadamandeve00malauoft_djvu.txt
+isaiah https://archive.org/download/cu31924014590529/cu31924014590529_djvu.txt
+philox https://archive.org/download/discoursesofphil02philuoft/discoursesofphil02philuoft_djvu.txt
+takla https://archive.org/download/lifeoftaklahymnt00budg/lifeoftaklahymnt00budg_djvu.txt
+m-mary https://archive.org/metadata/gri_33125008690600/files
