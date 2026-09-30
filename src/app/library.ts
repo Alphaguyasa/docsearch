@@ -130,6 +130,16 @@ export const LIBRARY: LibraryGroup[] = [
         onlyFor: ETH,
       },
       {
+        sourceIds: ["baralam"],
+        title: { en: "Baralam and Yewasef", am: "ባርላምና ዮሳፍ" },
+        by: { en: "tr. E. A. Wallis Budge, 1923, from the Ethiopic", am: "በE. A. Wallis Budge ከግዕዝ የተተረጎመ፣ 1923" },
+        note: {
+          en: "A prince kept from the world, the monk who taught him with parables, and the magicians and a king who turned back to God.",
+          am: "ከዓለም ተሰውሮ ያደገ ልዑል፣ በምሳሌ ያስተማረው መነኩሴ፣ እንዲሁም ወደ እግዚአብሔር የተመለሱ ጠንቋዮችና ንጉሥ።",
+        },
+        onlyFor: ETH,
+      },
+      {
         sourceIds: ["kebra_nagast"],
         title: { en: "The Kebra Nagast, the Glory of Kings", am: "ክብረ ነገሥት" },
         by: { en: "tr. E. A. Wallis Budge, 1922", am: "በE. A. Wallis Budge የተተረጎመ፣ 1922" },

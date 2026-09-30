@@ -43,7 +43,7 @@ const en = {
     },
     hints: {
       all: "The books the six Oriental Orthodox churches share",
-      ethiopian_orthodox: "Adds the Synaxarium, Enoch, Jubilees, the Kebra Nagast, Adam and Eve, the Miracles of Mary and the Life of Takla Haymanot",
+      ethiopian_orthodox: "Adds the Synaxarium, Enoch, Jubilees, the Kebra Nagast, Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot and Baralam and Yewasef",
       orthodox: "Includes the longer Old Testament canon",
       catholic: "Includes the deuterocanonical books",
       protestant: "The 66-book Bible",
@@ -292,7 +292,7 @@ const en = {
     notice: "Not Alone is not a counselling or emergency service. If you are in danger, reach someone now.",
     needHelp: "Need help now?",
     sources:
-      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, the Book of Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot, St. Ephrem, Aphrahat, St. Isaac the Syrian, Philoxenus of Mabbogh, St. Cyril of Jerusalem, St. John Chrysostom and the Life of Antony.",
+      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, the Book of Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot, Baralam and Yewasef, St. Ephrem, Aphrahat, St. Isaac the Syrian, Philoxenus of Mabbogh, St. Cyril of Jerusalem, St. John Chrysostom and the Life of Antony.",
     care: "Made with care for anyone carrying something alone.",
     nav: "Footer",
   },
@@ -346,7 +346,7 @@ const am: Dict = {
     },
     hints: {
       all: "ስድስቱ ኦሪየንታል ኦርቶዶክስ አብያተ ክርስቲያናት የሚጋሯቸው መጻሕፍት",
-      ethiopian_orthodox: "ስንክሳርን፣ መጽሐፈ ሄኖክን፣ መጽሐፈ ኩፋሌን፣ ክብረ ነገሥትን፣ ገድለ አዳምን፣ ተአምረ ማርያምንና ገድለ ተክለ ሃይማኖትን ያክላል",
+      ethiopian_orthodox: "ስንክሳርን፣ መጽሐፈ ሄኖክን፣ መጽሐፈ ኩፋሌን፣ ክብረ ነገሥትን፣ ገድለ አዳምን፣ ተአምረ ማርያምን፣ ገድለ ተክለ ሃይማኖትንና ባርላምና ዮሳፍን ያክላል",
       orthodox: "ሰፊውን የብሉይ ኪዳን ቀኖና ያካትታል",
       catholic: "ዲዩትሮካኖኒካል መጻሕፍትን ያካትታል",
       protestant: "66ቱ የመጽሐፍ ቅዱስ መጻሕፍት",
@@ -589,7 +589,7 @@ const am: Dict = {
     notice: "Not Alone የምክር ወይም የአደጋ ጊዜ አገልግሎት አይደለም። አደጋ ላይ ከሆኑ አሁኑኑ ሰው ያግኙ።",
     needHelp: "እርዳታ ይፈልጋሉ?",
     sources:
-      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ገድለ አዳም፣ ተአምረ ማርያም፣ ገድለ ተክለ ሃይማኖት፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ፊሎክሴኖስ ዘመንበግ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅና የቅዱስ እንጦንስ ሕይወት።",
+      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ገድለ አዳም፣ ተአምረ ማርያም፣ ገድለ ተክለ ሃይማኖት፣ ባርላምና ዮሳፍ፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ፊሎክሴኖስ ዘመንበግ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅና የቅዱስ እንጦንስ ሕይወት።",
     care: "ብቻውን ሸክም ለተሸከመ ሁሉ በፍቅር የተሠራ።",
     nav: "የግርጌ ማውጫ",
   },

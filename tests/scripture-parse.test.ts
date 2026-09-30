@@ -299,3 +299,21 @@ test("Philoxenus: discourse headings by page mark; footnotes, running headers an
     "Faith is the foundation.",
   ]);
 });
+
+test("Baralam and Yewasef: bracketed headings, wrapped over lines, become section titles", () => {
+  const rule = TEXT_RULES.baralam;
+  const raw = [
+    "PREFACE", "", "[The History of Baralám and Yéwásef.]", "", "In the Name of the Father.1 Amen.", "",
+    "[How King Wadägös thanked his gods for his son and con-", "sulted the magicians as to his Suture. |", "",
+    "And the king rejoiced greatly [p. 34] over Y&wäsöf his son.", "", "! Ephesians vi. 12.", "", "[42]", "", "B. 9", "",
+    "[The parable of the Four Coffers.]", "", "And straightway the king commanded four coffers.", "", "COLOPHON", "", "Here endeth.",
+  ].join("\n");
+  const s = sectionize(cleanText(raw, rule.clean), rule.sections!, rule.defaultHeading);
+  assert.deepEqual(s.map((x) => x.heading), [
+    "The History of Baralám and Yéwásef",
+    "How King Wadágós thanked his gods for his son and consulted the magicians as to his future",
+    "The parable of the Four Coffers",
+  ]);
+  assert.deepEqual(s[0].paragraphs, ["In the Name of the Father. Amen."]);
+  assert.deepEqual(s[1].paragraphs, ["And the king rejoiced greatly over Yéwásef his son."]);
+});
