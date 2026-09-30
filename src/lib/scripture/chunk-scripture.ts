@@ -379,6 +379,8 @@ export interface SectionRule {
   sectionStart?: RegExp;
   /** How to name a section opened by `sectionStart`. */
   name?: "firstWords" | "contextCounter" | "contextFirstWords" | "contextLine" | "chapterNumeral" | "numberedChapter" | "romanChapterStart" | "loneNumeral";
+  /** "contextLine": the capture group holding the heading, when the line carries brackets or marks. */
+  titleGroup?: number;
   /** Section label for "loneNumeral" ("Treatise"); default "Chapter". */
   label?: string;
   /** "loneNumeral": a title ends at its first line ending in a full stop (the next caps line is text). */
@@ -567,7 +569,9 @@ export function sectionize(lines: string[], rule: SectionRule, defaultHeading: s
         open(`${context ? `${context}, ` : ""}Chapter ${roman(counter)}`);
       } else if (rule.name === "contextLine") {
         // "Book I" + "CHAPTER III" -> "Book I, Chapter III"; "Demonstration VII.--Of Penitents." -> "Demonstration VII — Of Penitents".
-        const title = titleCase(line.replace(/\.--/, " — ").replace(/\.$/, ""));
+        // titleGroup picks the heading out of its brackets: "[The parable of the Four Coffers.]".
+        const raw = (rule.titleGroup && line.match(rule.sectionStart)?.[rule.titleGroup]) || line;
+        const title = shortTitle(titleCase(raw.replace(/\.--/, " — ").replace(/\.$/, "").replace(/([a-z])- ([a-z])/g, "$1$2")));
         open(context ? `${context}, ${title}` : title);
       } else if (rule.name === "contextCounter") {
         counter++;

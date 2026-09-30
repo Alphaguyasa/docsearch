@@ -104,6 +104,20 @@
    "note": "Gadla Takla Haymanot, volume I: the Life in its 116 chapters. The plates, their captions and the page-foot notes are dropped."
   },
   {
+   "id": "baralam",
+   "title": "Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)",
+   "kind": "tradition",
+   "format": "archive-djvu-txt",
+   "archiveQuery": "title:(baralam yewasef)",
+   "titleHint": "baralam yewasef",
+   "archiveIds": [
+    "baralamyewasef0000sire"
+   ],
+   "license": "Public domain (published 1923, before 1929; Budge d. 1934)",
+   "status": "verified",
+   "note": "Only the translated story is kept, from its first heading to the colophon; the introduction, the Acts of Thomas appendix and the plates are dropped. Sections are Budge's bracketed headings."
+  },
+  {
    "id": "ephrem",
    "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
    "kind": "tradition",

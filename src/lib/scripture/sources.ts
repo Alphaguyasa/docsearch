@@ -255,6 +255,43 @@ export const TEXT_RULES: Record<string, TextRule> = {
     defaultHeading: "Discourse I: The Prologue",
     sections: { sectionStart: /^DISCOURSE ([IVX]+)\.$/, name: "loneNumeral", label: "Discourse", titleEndsWithPeriod: true },
   },
+  baralam: {
+    refPrefix: "Baralam and Yewasef",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The translated story, from its first heading to the colophon.
+      startAt: /^\[The History of Baral.m and Y.w.s.f\.\]$/,
+      endAt: /^COLOPHON$/,
+      replace: [
+        // Headings wrapped over two or three lines: "[How King Wadägös thanked his gods…" / "…as to his future.]".
+        [/^(\[(?:How|The|Baral|Y.w)[^\]|\n]*)\n([^\]|\n]*\n)?([^\]|\n]*[\]|)]\.?[ \t]*)$/gm, "$1 $2$3"],
+        [/^(\[(?:How|The)[^\]|\n]*) ([^\]|\n]*)\n/gm, "$1 $2 "],
+        [/^\|\s*Y.w.scf"s farewell/m, "[Yéwásef’s farewell"],
+        [/as to his Suture/, "as to his future"],
+        [/become\s+@\s+Christian/, "become a Christian"],
+        [/granted his sows request/, "granted his son’s request"],
+        // One spelling for the names the OCR reads with stray accents.
+        [/\bY(&|[eé])w[^\s,.;:’'"]{2,4}[fé]\b/g, "Yéwásef"],
+        [/\bN[äáa]k[öóo]r\b/g, "Nákór"],
+        [/\bJor(giveness|th|ms?)\b/g, "for$1"],
+        [/Baral[äa]m\b/g, "Baralám"],
+        [/\bWad[äáa]g[öóo]s\b/g, "Wadágós"],
+        [/\bZard[äáa]n\b/g, "Zardán"],
+        [/ à last blessing/, " a last blessing"],
+      ],
+      dropLines: [
+        /^B\.\s*\S{0,3}\s*\d*$/, // printer's signature marks: "B. 9"
+        /^\[?\s*[\dixvlc]{1,6}\s*[\]|)}]?$/i, // page numbers: "[42]", "[ cxxi ]"
+      ],
+      // Page-foot notes: "! Ephesians vi. 12.", "1 Psalm cxlviii. 5.", "* See the Introduction…".
+      dropParagraphs: /^([!*†?]|\d\s+[A-Z]|\d\s+(Le|I\.\s*e)\.)/,
+      inline: [/\s?\[p\.\s*\d+\]/g],
+      // Note calls: "unto him,1 and", "salvation.? And".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9!?*](?=\s|$)(?<![.?!]\?)/g,
+    },
+    defaultHeading: "The History of Baralam and Yewasef",
+    sections: { sectionStart: /^[[|]\s*((How|The|Baral|Y.w)[^\]|)]*?)\.?\s*[\]|)]\.?$/, name: "contextLine", titleGroup: 1 },
+  },
   jubilees: {
     refPrefix: "Book of Jubilees",
     traditions: ["ethiopian_orthodox"],
