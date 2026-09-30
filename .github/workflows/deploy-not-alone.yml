@@ -1,0 +1,90 @@
+name: deploy-not-alone
+
+# Deploys the scripture app to its own Vercel project ("not-alone"), separate
+# from the original DocSearch deployment. Copies runtime secrets from GitHub
+# into the Vercel project so nobody has to paste keys twice.
+#
+# Needs one secret: VERCEL_TOKEN (vercel.com -> Account Settings -> Tokens).
+# Without it the job skips cleanly.
+#
+# Runs after the scripture eval commits results, or on any change to this file.
+
+on:
+  push:
+    branches: [pivot/scripture]
+    paths:
+      - "eval/scripture-results.md"
+      - ".github/workflows/deploy-not-alone.yml"
+      - "corpus/scripture/deploy-trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-not-alone
+  cancel-in-progress: true
+
+env:
+  VERCEL_SCOPE: alphaguyasa-5358s-projects
+  VERCEL_PROJECT: not-alone
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Skip without a Vercel token
+        id: gate
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then echo "VERCEL_TOKEN not set — skipping deploy."; echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.go == 'true'
+        with:
+          node-version: 22
+      - name: Link (creates the project on first run)
+        if: steps.gate.outputs.go == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+      - name: Sync environment variables from GitHub secrets
+        if: steps.gate.outputs.go == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          V_SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
+          V_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
+          V_VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+          V_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -euo pipefail
+          put () { # name value
+            npx --yes vercel@latest env rm "$1" production --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" >/dev/null 2>&1 || true
+            printf '%s' "$2" | npx --yes vercel@latest env add "$1" production --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" >/dev/null
+            echo "set $1"
+          }
+          put SUPABASE_URL "$V_SUPABASE_URL"
+          put SUPABASE_SERVICE_ROLE_KEY "$V_SUPABASE_SERVICE_ROLE_KEY"
+          put VOYAGE_API_KEY "$V_VOYAGE_API_KEY"
+          put GEMINI_API_KEY "$V_GEMINI_API_KEY"
+          put GENERATION_PROVIDER "gemini"
+      - name: Deploy to production
+        if: steps.gate.outputs.go == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        # Vercel's build fetches the Google fonts; that download has failed
+        # transiently more than once, so try the deploy a second time.
+        run: |
+          for attempt in 1 2; do
+            if URL=$(npx --yes vercel@latest deploy --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"); then
+              break
+            fi
+            if [ "$attempt" = 2 ]; then echo "Deploy failed twice." >&2; exit 1; fi
+            echo "Deploy attempt $attempt failed; retrying in 30s."
+            sleep 30
+          done
+          echo "Deployed: $URL"
+          echo "::notice title=Not Alone deployed::$URL"

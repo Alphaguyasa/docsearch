@@ -15,6 +15,27 @@ export interface SourceChunk {
   filename: string;
   pageNumber: number | null;
   content: string;
+  /** Scripture / tradition citation (scripture app). */
+  ref?: string | null;
+  traditions?: string[];
+  kind?: "scripture" | "tradition";
+}
+
+/** A person whose story the answer is organised around. */
+export interface FigureSummary {
+  id: string;
+  name: string;
+  summary: string;
+  note?: string;
+  kind: "scripture" | "tradition";
+}
+
+/** Shown INSTEAD of sources + answer when the safety gate trips. */
+export interface CrisisPayload {
+  kind: "self_harm" | "abuse_victim" | "harm_to_others";
+  message: string;
+  steps: string[];
+  resources: { name: string; detail: string; url?: string; phone?: string }[];
 }
 
 /**
@@ -23,7 +44,8 @@ export interface SourceChunk {
  * `error` in its place if generation fails after the stream has opened.
  */
 export type SearchStreamMessage =
-  | { type: "sources"; chunks: SourceChunk[] }
+  | { type: "crisis"; crisis: CrisisPayload }
+  | { type: "sources"; chunks: SourceChunk[]; figures?: FigureSummary[]; tags?: string[] }
   | { type: "delta"; text: string }
   | { type: "done" }
   | { type: "error"; message: string };

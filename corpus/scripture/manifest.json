@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-30T16:04:02.943Z",
+  "entries": [
+    {
+      "id": "adam_and_eve",
+      "title": "The Book of Adam and Eve, also called the Conflict of Adam and Eve with Satan (tr. S. C. Malan, 1882)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1882; Malan d. 1894)",
+      "retrievedAt": "2026-09-29T07:25:53.782Z",
+      "files": [
+        {
+          "name": "bookofadamandeve00malauoft_djvu.txt",
+          "url": "https://archive.org/download/bookofadamandeve00malauoft/bookofadamandeve00malauoft_djvu.txt",
+          "sha256": "b9cbebdc57f6d4d3ec9d3b4c4d36bd10634896b5603b0987cd5b540ee917fd17",
+          "bytes": 625947,
+          "archiveId": "bookofadamandeve00malauoft"
+        }
+      ]
+    },
+    {
+      "id": "antony",
+      "title": "Athanasius, Life of Antony (tr. H. Ellershaw, NPNF II/4)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:42.171Z",
+      "files": [
+        {
+          "name": "npnf204.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf204/cache/npnf204.txt",
+          "sha256": "d2f362ce989db6955bb7d900c619543c581beceaca52acd8359510551c85f124",
+          "bytes": 4570263
+        }
+      ]
+    },
+    {
+      "id": "aphrahat",
+      "title": "Aphrahat, Select Demonstrations (tr. J. Gwynn, NPNF II/13)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.199Z",
+      "files": [
+        {
+          "name": "npnf213.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+          "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
+          "bytes": 1921581
+        }
+      ]
+    },
+    {
+      "id": "baralam",
+      "title": "Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1923, before 1929; Budge d. 1934)",
+      "retrievedAt": "2026-09-30T16:04:02.943Z",
+      "files": [
+        {
+          "name": "baralamyewasef0000sire_djvu.txt",
+          "url": "https://archive.org/download/baralamyewasef0000sire/baralamyewasef0000sire_djvu.txt",
+          "sha256": "6b04df94ca7b615f78b0166399120bd5f5aaa780b6751c110d2b3ad1de008daa",
+          "bytes": 970946,
+          "archiveId": "baralamyewasef0000sire"
+        }
+      ]
+    },
+    {
+      "id": "chrysostom_theodore",
+      "title": "John Chrysostom, Letters to Theodore after his Fall (NPNF I/9)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:41.447Z",
+      "files": [
+        {
+          "name": "npnf109.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf109/cache/npnf109.txt",
+          "sha256": "d6a51d22d996e02c47b88462f7222737b26d2363212f24e34834cfc6b580da57",
+          "bytes": 2752950
+        }
+      ]
+    },
+    {
+      "id": "confessions",
+      "title": "The Confessions of Saint Augustine (tr. E. B. Pusey)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Project Gutenberg #3296; Pusey d. 1882)",
+      "retrievedAt": "2026-09-25T18:49:42.250Z",
+      "files": [
+        {
+          "name": "pg3296.txt",
+          "url": "https://www.gutenberg.org/cache/epub/3296/pg3296.txt",
+          "sha256": "ef3fa6267968c875def9091a1882d14b525a85bbf6996a3e2f130a775b2e22d2",
+          "bytes": 632170
+        }
+      ]
+    },
+    {
+      "id": "cyril_repentance",
+      "title": "Cyril of Jerusalem, Catechetical Lecture II: On Repentance (NPNF II/7)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.852Z",
+      "files": [
+        {
+          "name": "npnf207.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf207/cache/npnf207.txt",
+          "sha256": "56d84cfa94dee313af0139e2d7f3d4b5f7fffca40ce0f34794b5f56264964dfd",
+          "bytes": 3388014
+        }
+      ]
+    },
+    {
+      "id": "enoch",
+      "title": "The Book of Enoch (tr. R. H. Charles, 1917)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1917; Charles d. 1931)",
+      "retrievedAt": "2026-09-28T10:44:39.448Z",
+      "files": [
+        {
+          "name": "BookOfEnoch_1917_djvu.txt",
+          "url": "https://archive.org/download/book-of-enoch_1917/BookOfEnoch_1917_djvu.txt",
+          "sha256": "ab4ce3809175c8aaf50eb8b7fad5de744f1a27f0ce6a8e4095560438132f10c7",
+          "bytes": 262450,
+          "archiveId": "book-of-enoch_1917"
+        }
+      ]
+    },
+    {
+      "id": "ephrem",
+      "title": "Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)",
+      "kind": "tradition",
+      "format": "gutenberg-txt",
+      "license": "Public domain (Schaff's Nicene and Post-Nicene Fathers, 1886-1900; CCEL marks it 'Rights: Public Domain')",
+      "retrievedAt": "2026-09-28T10:44:40.097Z",
+      "files": [
+        {
+          "name": "npnf213.txt",
+          "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
+          "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
+          "bytes": 1921581
+        }
+      ]
+    },
+    {
+      "id": "isaac",
+      "title": "Mystic Treatises by Isaac of Nineveh (tr. A. J. Wensinck, 1923)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published Amsterdam 1923; Wensinck d. 1939)",
+      "retrievedAt": "2026-09-28T13:06:37.605Z",
+      "files": [
+        {
+          "name": "isaac_of_nineveh_mystical_treatises_djvu.txt",
+          "url": "https://archive.org/download/isaac_of_nineveh_mystical_treatises/isaac_of_nineveh_mystical_treatises_djvu.txt",
+          "sha256": "ad1a518b8a5256b713127823c4e92f18b4f4240f437c5bcab7746ef107eb9088",
+          "bytes": 955999,
+          "archiveId": "isaac_of_nineveh_mystical_treatises"
+        }
+      ]
+    },
+    {
+      "id": "jubilees",
+      "title": "The Book of Jubilees (tr. R. H. Charles, 1917)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1917; Charles d. 1931)",
+      "retrievedAt": "2026-09-28T11:54:12.791Z",
+      "files": [
+        {
+          "name": "bookofjubileesor01char_djvu.txt",
+          "url": "https://archive.org/download/bookofjubileesor01char/bookofjubileesor01char_djvu.txt",
+          "sha256": "2832a6254614cb59fcec82d1b52f8d2258063af0eb089580d41c91eeacc7d10d",
+          "bytes": 526384,
+          "archiveId": "bookofjubileesor01char"
+        }
+      ]
+    },
+    {
+      "id": "kebra_nagast",
+      "title": "The Kebra Nagast: The Queen of Sheba and her only son Menyelek (tr. E. A. Wallis Budge, 1922)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1922; Budge d. 1934)",
+      "retrievedAt": "2026-09-28T11:21:21.093Z",
+      "files": [
+        {
+          "name": "queenofshebahero00budgrich_djvu.txt",
+          "url": "https://archive.org/download/queenofshebahero00budgrich/queenofshebahero00budgrich_djvu.txt",
+          "sha256": "d1ca59fc8fe535cf86d96cf04d042d859035c44d5652c5d6edf977ca5c1974e3",
+          "bytes": 731205,
+          "archiveId": "queenofshebahero00budgrich"
+        }
+      ]
+    },
+    {
+      "id": "lausiac",
+      "title": "The Lausiac History of Palladius (tr. W. K. Lowther Clarke, 1918)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain in the US only (published 1918). Translator d. 1968: NOT PD in life+70 countries until 2039. Serve from US hosting only.",
+      "retrievedAt": "2026-09-25T18:38:55.768Z",
+      "files": [
+        {
+          "name": "lausiachistoryof00palluoft_djvu.txt",
+          "url": "https://archive.org/download/lausiachistoryof00palluoft/lausiachistoryof00palluoft_djvu.txt",
+          "sha256": "3184e1bd836b88063cfd01a2e97152a4c0065462e0b3237ecec207119dc055b6",
+          "bytes": 378755,
+          "archiveId": "lausiachistoryof00palluoft"
+        }
+      ]
+    },
+    {
+      "id": "miracles_of_mary",
+      "title": "The Miracles of the Blessed Virgin Mary (tr. E. A. Wallis Budge, 1900, from the Lady Meux Ethiopic manuscripts)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1900; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T08:24:36.067Z",
+      "files": [
+        {
+          "name": "gri_33125008690600_djvu.txt",
+          "url": "https://archive.org/download/gri_33125008690600/gri_33125008690600_djvu.txt",
+          "sha256": "ce4277b2b9e77477992a74e40a5f9df764bad1b7eac7bdf8b9c33e11afa48431",
+          "bytes": 1252219,
+          "archiveId": "gri_33125008690600"
+        }
+      ]
+    },
+    {
+      "id": "paradise",
+      "title": "The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1907; Budge d. 1934)",
+      "retrievedAt": "2026-09-25T18:25:16.150Z",
+      "files": [
+        {
+          "name": "paradiseorgarden01anan_djvu.txt",
+          "url": "https://archive.org/download/paradiseorgarden01anan/paradiseorgarden01anan_djvu.txt",
+          "sha256": "0b52599d233b953183eb124c33da96ea98b652b38b9d68be457219d87b5c98eb",
+          "bytes": 1406045,
+          "archiveId": "paradiseorgarden01anan"
+        },
+        {
+          "name": "paradiseorgarden02anan_djvu.txt",
+          "url": "https://archive.org/download/paradiseorgarden02anan/paradiseorgarden02anan_djvu.txt",
+          "sha256": "0390ab503364de72f8720ee838bef42edb98dbd86a13c04c66ac16f97dadf659",
+          "bytes": 1138769,
+          "archiveId": "paradiseorgarden02anan"
+        }
+      ]
+    },
+    {
+      "id": "philoxenus",
+      "title": "The Discourses of Philoxenus, Bishop of Mabbogh (tr. E. A. Wallis Budge, 1894), vol. II",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1894; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T17:19:02.634Z",
+      "files": [
+        {
+          "name": "discoursesofphil02philuoft_djvu.txt",
+          "url": "https://archive.org/download/discoursesofphil02philuoft/discoursesofphil02philuoft_djvu.txt",
+          "sha256": "452606cb1e60627366fac038b9e0eee039b5df49635ae41f20f794bea1ba7af1",
+          "bytes": 1513843,
+          "archiveId": "discoursesofphil02philuoft"
+        }
+      ]
+    },
+    {
+      "id": "synaxarium",
+      "title": "The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain in the US (published 1928) and in life+70 countries (Budge d. 1934)",
+      "retrievedAt": "2026-09-25T18:49:44.804Z",
+      "files": [
+        {
+          "name": "bookofsaintsofet0001sire_djvu.txt",
+          "url": "https://archive.org/download/bookofsaintsofet0001sire/bookofsaintsofet0001sire_djvu.txt",
+          "sha256": "cec8724cad9c128cf9f956a5674b5fb79135fc9eb4672935468535328283144b",
+          "bytes": 820155,
+          "archiveId": "bookofsaintsofet0001sire"
+        },
+        {
+          "name": "bookofsaintsofet00yait_djvu.txt",
+          "url": "https://archive.org/download/bookofsaintsofet00yait/bookofsaintsofet00yait_djvu.txt",
+          "sha256": "055b3864da774d67d9e3ef9398aeed5248261837af585410dcc2c8c622f8238a",
+          "bytes": 2706604,
+          "archiveId": "bookofsaintsofet00yait"
+        }
+      ]
+    },
+    {
+      "id": "takla_haymanot",
+      "title": "The Life of Takla Haymanot (tr. E. A. Wallis Budge, 1906, from the Dabra Libanos manuscript)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1906; Budge d. 1934)",
+      "retrievedAt": "2026-09-29T13:32:49.552Z",
+      "files": [
+        {
+          "name": "lifeoftaklahymnt00budg_djvu.txt",
+          "url": "https://archive.org/download/lifeoftaklahymnt00budg/lifeoftaklahymnt00budg_djvu.txt",
+          "sha256": "53b6c412d4d8fc543198e4655daa0e642c412c11c285c6caaf789f2bbb51185a",
+          "bytes": 747796,
+          "archiveId": "lifeoftaklahymnt00budg"
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "title": "World English Bible with Deuterocanon",
+      "kind": "scripture",
+      "format": "usfm-zip",
+      "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
+      "retrievedAt": "2026-09-29T07:25:30.467Z",
+      "files": [
+        {
+          "name": "eng-web_usfm.zip",
+          "url": "https://ebible.org/Scriptures/eng-web_usfm.zip",
+          "sha256": "ba4e0cd941156deba01e164a5779effcf592b1053e5de26b950772b6c336073c",
+          "bytes": 3244206
+        }
+      ]
+    }
+  ]
+}
