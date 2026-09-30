@@ -1,6 +1,6 @@
 # Scripture fetch report
 
-Generated 2026-09-29T17:19:02.634Z
+Generated 2026-09-30T16:04:02.943Z
 
 ## web — World English Bible with Deuterocanon
 
@@ -312,6 +312,50 @@ h'll'.ID  (DOTIil.
 f-"MI  A.«PAfc,
 Aip-h-h-imfi-Th
 (DA-fl  J»
+```
+
+## baralam — Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)
+- pinned: baralamyewasef0000sire
+
+#### `baralamyewasef0000sire_djvu.txt` (archive id `baralamyewasef0000sire`) — 970946 bytes
+18846 non-empty lines. First 25:
+```
+A
+Digitized by the Internet Archive
+in 2025
+https://archive.org/details/baralamyewasef0000sire
+BARALAM Амр YEWASEF
+CAMBRIDGE UNIVERSITY PRESS
+C. F. CLAY, MANAGER
+LONDON : FETTER LANE, E.C.4
+EA
+N
+NEW YORK : THE MACMILLAN CO,
+BOMBAY
+CALCUTTA + MACMILLAN AND CO., Lrp.
+MADRAS
+TORONTO : THE MACMILLAN CO. OF
+CANADA, Lrp.
+TOKYO: MARUZEN-KABUSHIKI-KAISHA
+ALL RIGHTS RESERVED
+BARALAM ann YEWASEF
+BEING THE ETHIOPIC VERSION OF
+A CHRISTIANIZED RECENSION OF
+THE BUDDHIST LEGEND OF THE
+BUDDHA AND THE BODHISATTVA
+Tue Eruiopic TEXT EDITED FOR THE FIRST
+TIME WITH AN ENGLISH TRANSLATION AND
+```
+Sample from the middle:
+```
+sider that it was Baralám who seduced him.”
+And the king perceived that that which had been said to
+[147]
+him, and that which Nákór had advised him to do was right.
+But behold, in accepting this counsel he placed his trust in a
+hope that was vain, and he did not know that Baraläm had
+departed only a very little time ago.
+[How Näkör instructed by 'Aráshish sets out on a jowrney
 ```
 
 ## ephrem — Ephrem the Syrian, Three Homilies (tr. A. E. Johnston, NPNF II/13)

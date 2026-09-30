@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T17:19:02.634Z",
+  "generatedAt": "2026-09-30T16:04:02.943Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -48,6 +48,23 @@
           "url": "https://ccel.org/ccel/s/schaff/npnf213/cache/npnf213.txt",
           "sha256": "02dd51a2aff1cabf92e80a0ab5f8d88872f2185613c92acd9d1a90431169285f",
           "bytes": 1921581
+        }
+      ]
+    },
+    {
+      "id": "baralam",
+      "title": "Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)",
+      "kind": "tradition",
+      "format": "archive-djvu-txt",
+      "license": "Public domain (published 1923, before 1929; Budge d. 1934)",
+      "retrievedAt": "2026-09-30T16:04:02.943Z",
+      "files": [
+        {
+          "name": "baralamyewasef0000sire_djvu.txt",
+          "url": "https://archive.org/download/baralamyewasef0000sire/baralamyewasef0000sire_djvu.txt",
+          "sha256": "6b04df94ca7b615f78b0166399120bd5f5aaa780b6751c110d2b3ad1de008daa",
+          "bytes": 970946,
+          "archiveId": "baralamyewasef0000sire"
         }
       ]
     },

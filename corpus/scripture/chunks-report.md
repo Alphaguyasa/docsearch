@@ -1,12 +1,13 @@
 # Scripture chunk report
 
-Generated 2026-09-29T17:19:30.310Z
+Generated 2026-09-30T16:04:58.513Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
 | adam_and_eve | 1 | 258 | 111492 | 432 | 614 |
 | antony | 1 | 68 | 32193 | 473 | 608 |
 | aphrahat | 1 | 134 | 65929 | 492 | 622 |
+| baralam | 1 | 320 | 143977 | 450 | 629 |
 | chrysostom_theodore | 1 | 60 | 33209 | 553 | 617 |
 | confessions | 1 | 347 | 153365 | 442 | 611 |
 | cyril_repentance | 1 | 13 | 5703 | 439 | 611 |
@@ -24,7 +25,7 @@ Generated 2026-09-29T17:19:30.310Z
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 8944 chunks, 3847548 tokens ≈ 6.4 h of embedding at 10000 TPM.
+**Total:** 9264 chunks, 3991525 tokens ≈ 6.7 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -251,6 +252,29 @@ Death despises not the poor, nor does his soul scorn him that has nothing.
 Death honours not them that live in magnificence, nor with him are the good distinguished from the bad.
 
 He takes no account of the aged, rather 
+```
+
+**Baralam and Yewasef, The History of Baralám and Yéwásef** (612 tokens, ethiopian_orthodox)
+```
+Baralam and Yewasef, The History of Baralám and Yéwásef
+
+Behold now, there hath come to me a glorious story, one that is profitable both to the soul and to the body, and I will not keep silence concerning it, but will publish it abroad openly. Certain rich men of the country of India have related it unto me, and have interpreted to me the hidden things of a memorial that is true. Now the country of India is very far
+
+away from the land of Egypt!, and it is a very large country, and the population thereof is very great, and rivers and great . Streams of water go round about through it, and men travel ` thither in ships from the country of Egypt ; and the desert part of it lieth near the borde
+```
+
+**Baralam and Yewasef, How Baralám gave Yéwásef his cloak and girdle, and received a ragged cloak in exchange** (183 tokens, ethiopian_orthodox)
+```
+Baralam and Yewasef, How Baralám gave Yéwásef his cloak and girdle, and received a ragged cloak in exchange
+
+And Baralám answered, saying, “If I gave thee my cloak, which is worn out, and took from thee a new cloak this would not be right, for I should be receiving a reward for a very little toil; but that thy hope may not be cut off, undertake to give me a ragged cloak like unto that which I am going to give thee.” Then Yéwásef asked for an old and worn out hair cloak and gave it to the master, and he received from Baralám his cloak and girdle with rejoicing and gladness, and he regarded them as exceedingly precious treasures, and incomparably superior to the purple raiment and glorious app
+```
+
+**Baralam and Yewasef, How Yéwásef admonished king Baráséyás, and counselled him as to the ruling of his kingdom… (part 3)** (554 tokens, ethiopian_orthodox)
+```
+Baralam and Yewasef, How Yéwásef admonished king Baráséyás, and counselled him as to the ruling of his kingdom… (part 3)
+
+ye merciful like your Heavenly Father’ This is the commandment which those who occupy exceedingly exalted positions should seek to follow above all others. And it is especially fitting that the man who is appointed to an exalted position should be like unto Him, Who is the Giver of power, in all the fair deeds which enable him to show compassion and mercy. And especially in respect of the Law of His commandment—there is nothing like unto this to draw a man to love him (i.e. the king). It is like a gift which is given to the needy with gracious benevolence. He who minister
 ```
 
 **John Chrysostom, Letter to Theodore after his Fall §1** (597 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
@@ -723,6 +747,8 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 
 **aphrahat** — 106 sections: Aphrahat, Letter of an Inquirer §1–2 · Aphrahat, Demonstration I — Of Faith §1–2 · Aphrahat, Demonstration I — Of Faith §3 · Aphrahat, Demonstration I — Of Faith §4 · Aphrahat, Demonstration I — Of Faith §5 · Aphrahat, Demonstration I — Of Faith §6 · Aphrahat, Demonstration I — Of Faith §7–9 · Aphrahat, Demonstration I — Of Faith §10 · Aphrahat, Demonstration I — Of Faith §11 · Aphrahat, Demonstration I — Of Faith §11–14 · Aphrahat, Demonstration I — Of Faith §15 · Aphrahat, Demonstration I — Of Faith §16 · Aphrahat, Demonstration I — Of Faith §17 · Aphrahat, Demonstration I — Of Faith §18–19 · Aphrahat, Demonstration I — Of Faith §20 · Aphrahat, Demonstration V — Of Wars §1–2 · Aphrahat, Demonstration V — Of Wars §3 · Aphrahat, Demonstration V — Of Wars §5 · Aphrahat, Demonstration V — Of Wars §6 · Aphrahat, Demonstration V — Of Wars §7 · Aphrahat, Demonstration V — Of Wars §8 · Aphrahat, Demonstration V — Of Wars §10–11 · Aphrahat, Demonstration V — Of Wars §12–13 · Aphrahat, Demonstration V — Of Wars §14–15 · Aphrahat, Demonstration V — Of Wars §16 · Aphrahat, Demonstration V — Of Wars §17–19 · Aphrahat, Demonstration V — Of Wars §19 · Aphrahat, Demonstration V — Of Wars §21 · Aphrahat, Demonstration V — Of Wars §23 · Aphrahat, Demonstration V — Of Wars §24 · Aphrahat, Demonstration V — Of Wars §25 · Aphrahat, Demonstration VI — Of Monks §1 · Aphrahat, Demonstration VI — Of Monks §2 · Aphrahat, Demonstration VI — Of Monks §3 · Aphrahat, Demonstration VI — Of Monks §4 · Aphrahat, Demonstration VI — Of Monks §5 · Aphrahat, Demonstration VI — Of Monks §7 · Aphrahat, Demonstration VI — Of Monks §9 · Aphrahat, Demonstration VI — Of Monks §11 · Aphrahat, Demonstration VI — Of Monks §12
 
+**baralam** — 130 sections: Baralam and Yewasef, The History of Baralám and Yéwásef · Baralam and Yewasef, How Wadágós, King of India, led a life of luxury and wantonness, and how he yearned for a… · Baralam and Yewasef, How the Indians of all classes rejected the things of this world and embraced the… · Baralam and Yewasef, How King Wadágós issued a decree ordering the persecution and slaughter of the… · Baralam and Yewasef, How an Indian nobleman who was a great friend of King Wadágós embraced the Christian… · Baralam and Yewasef, How the desert hunters tracked the nobleman to his cell and brought him back bound to… · Baralam and Yewasef, How King Wadágós and the nobleman held converse · Baralam and Yewasef, How the nobleman discoursed to King Wadágós and described to him the vanity of the things… · Baralam and Yewasef, How the king in his wrath reviled the Indian convert and bade him flee to the desert lest… · Baralam and Yewasef, How a son was born to King Wadágós · Baralam and Yewasef, How King Wadágós thanked his gods for his son and consulted the magicians and astrologers… · Baralam and Yewasef, How King Wadágós took precautions to seclude his son and to keep him in ignorance of… · Baralam and Yewasef, How an Indian nobleman who was a Christian succoured a wounded man in the desert, and how… · Baralam and Yewasef, How King Wadágós feigned to be wishful to become a Christian and deceived his friend · Baralam and Yewasef, How the nobleman encouraged King Wadágós to become a Christian · Baralam and Yewasef, How the nobleman knowing that he had offended the king, summoned the man whom he had… · Baralam and Yewasef, How the nobleman shaved off his beard, and went to the king at daybreak dressed in… · Baralam and Yewasef, How the king met two monks in the desert and burnt them alive · Baralam and Yewasef, How Yéwásef the prince wished to be free from the restraints of his life in the palace… · Baralam and Yewasef, How the prince found out why he was kept in the palace · Baralam and Yewasef, How the prince entreated his father King Wadágós to allow him to go and see the world… · Baralam and Yewasef, How the king granted his son’s request · Baralam and Yewasef, How the prince set out from his palace with his escort, and how for the first time in his… · Baralam and Yewasef, How the prince learned that death is the natural fate of every man · Baralam and Yewasef, How the knowledge of the existence of death affected the prince and how he returned in… · Baralam and Yewasef, How Baralám became the friend of the prince's tutor and guardian, and how he revealed to… · Baralam and Yewasef, How Baralám described the pearl to the prince's tutor · Baralam and Yewasef, How the tutor introduced Baralám into the princes presence · Baralam and Yewasef, The Doctrine of Baralám · Baralam and Yewasef, The parable of the king who displeased his court by alighting from his chariot and paying… · Baralam and Yewasef, The parable of the Trumpet of Death · Baralam and Yewasef, The parable of the Four Coffers · Baralam and Yewasef, How Baralám taught the prince the knowledge of God and expounded to him the Parable of… · Baralam and Yewasef, How the prince received Baralám's doctrine, and besought him to instruct him in the other… · Baralam and Yewasef, How Baralám emphasized the importance of baptism, and how the prince entreated him to… · Baralam and Yewasef, How the prince asked Baralám to explain to him the profitable hope, and the kingdom of… · Baralam and Yewasef, How the prince asked Baralám to give him more definite proofs for his belief · Baralam and Yewasef, How Baralám adduced proofs of the Resurrection from the Old and New Testaments · Baralam and Yewasef, How the prince entreated Baralám to tell him how to escape from the punishment which is… · Baralam and Yewasef, The parable of the Hunter and the Bird
+
 **chrysostom_theodore** — 8 sections: John Chrysostom, Letter to Theodore after his Fall §1 · John Chrysostom, Letter to Theodore after his Fall §2 · John Chrysostom, Letter to Theodore after his Fall §2–8 · John Chrysostom, Letter to Theodore after his Fall §8 · John Chrysostom, Letter to Theodore after his Fall §15 · John Chrysostom, Second Letter to Theodore §1 · John Chrysostom, Second Letter to Theodore §2 · John Chrysostom, Second Letter to Theodore §3
 
 **confessions** — 13 sections: Confessions, Book I · Confessions, Book II · Confessions, Book III · Confessions, Book IV · Confessions, Book V · Confessions, Book VI · Confessions, Book VII · Confessions, Book VIII · Confessions, Book IX · Confessions, Book X · Confessions, Book XI · Confessions, Book XII · Confessions, Book XIII
@@ -919,6 +945,127 @@ wondered, and came by companies, and stood on the top of
 the mountain to look at those below; and they did thus a
 whole year.
 When, at the end of that year, Genun saw that they were
+```
+
+### baralam: frequent short lines
+```
+189	[#]
+118	[ # ]
+61	#
+20	[# ]
+16	=
+13	B. #
+13	[ #]
+10	N
+10	#—#
+10	Ф
+9	#.
+8	a
+7	A
+6	#, #
+5	|
+5	E
+4	PAGE
+4	>
+4	©
+4	SS
+4	с
+```
+### baralam: context around "Moses" (line 5548)
+```
+being from a state of non-existence. And God accepted his
+good thoughts, and his right understanding, and He revealed
+unto him that He Himself was God in His Being (or, Essence
+or, Nature). Now even the holy beings are not able to look
+upon the most high Being of God, but by the wisdom of
+His Godhead it is revealed unto them according as He
+wisheth. And He placed in his heart perfect knowledge, and
+He appointed him to be His messenger, because the faith
+that had sprung from him was good, having been tried in
+the balance, and He taught him to know God, and God was
+pleased to make for him a multitudinous seed, which could
+neither be numbered nor limited. And God called them a
+weighty (or, solid) and a peculiar nation.
+“And the Egyptian people,and Pharaoh, their mighty, power-
+ful, and oppressing king, made them their servants, but God
+brought them out from Egypt by the hands of Moses and
+Aaron, who were holy men, and whose faces were illumined
+241
+with the splendour of prophecy, with a bringing out which
+was bold and awe-inspiring, and with signs and wonders, and
+deeds which struck [the Egyptians] with amazement. And
+He drowned the Egyptians, as their wickedness merited, and
+He made the Israelites, the seed of Abraham, to pass through
+that awful sea, the waters whereof were divided and became
+a wall on the right hand and a wall on the left. And when
+Pharaoh, and his horsemen, together with the Egyptians,
+willed to follow after them, the waters flowed back over
+them, and destroyed them altogether. And this people dwelt
+in the desert, seeing signs and wonders, for forty years, and
+God fed them with heavenly bread. And He gave them the
+Law on tablets of stone which was written by His own fingers,
+and He delivered it to Moses on the top of the mountain.
+And that became a sign and a symbol unto those who wished
+to withdraw themselves from the worship of idols, and from all
+evil works, to teach them the worship of God, the Righteous
+God, Who is for ever, and to enable them to acquire ex-
+cellence in their works. And with such signs as these He
+[p. 37] brought them out, and [led them] until He brought
+them to the land of beautiful and bright things, which in days
+of old He had promised to that Patriarch Abraham to give
+```
+### baralam: 50 raw lines at 40%
+```
+and is difficult are few, and those who travel on the road
+that is broad are many?” Those who travel possessed entirely
+by the love of money and by the counsel thereof seek the
+love of desirable things and the love of vain glory which
+leadeth astray. Behold, they become aliens from God, and
+they are fettered. For the soul which is in absolute despair
+cannot do the works of excellence; behold, it is ready to
+be dragged into bestial lusts, even as David the prophet
+lamented concerning the folly (or madness) which is poured
+out on souls like these, and concerning the gloom and dark-
+ness that covereth them over. And he lamented over the
+1 Matt. vii. 13, 14.
+[97]
+crassness of their hearts and the stubbornness of their minds,
+saying, “О уе sons of the children of men, how long will ye
+make heavy your hearts? Why do ye love vanity? Why do
+ye follow falsehood!?’ Why do ye imagine that this present
+world and the pleasure thereof are a great matter? And
+why do ye esteem vain praise, which is a naked thing and
+abideth in disgrace? The work that they do because of it is
+vain, that is to say, those who travel on that road are of
+more [importance] than the things which they send before.
+And the way is superior to [all] these, because it doth not
+act deceitfully. Vain praise is a mass of dust; one might call
+it a marriage of four [wives], seeing that it changeth and
+dismisseth them, one by one, to the last of them. And it is
+dissolved like vapour which is intangible, nay, it departeth
+like the shadow.
+“And our Lord, to Whom be praise! commanded the Pro-
+phets, and the Apostles, and all the Saints to preach in the
+strongest terms, and to work to their utmost for the rousing
+up of everyone to the way of spiritual excellences, wherein
+there is no error. And because of this those who travel
+thereon are few, whilst those who choose the broad road
+which leadeth [p. 85] to destruction are many. And because
+of this it is not meet for us to belittle wisdom and the divine
+course, but we should regard them like the bright sun which
+shineth upon all, and sendeth forth its splendour, showing
+compassion, under command, to everyone and illumining all.
+And there are some who cover over their eyes, it being their
+wish not to see its light; now the darkness of the sun is
+because of their pride. And it is not meet that all .men
+should neglect and renounce the praise of its excellence be-
+cause of the folly of these others, for these others deprive
+themselves of the light which illumineth, for those are blind
+who dash themselves against a wall and who fall into many
+pits. And the shining sun is permanent in its constitution,
+and in the splendour of its beauty, and it illumineth these
+when shining with its light. And with this, a sublime simili-
+1 Psalm iv. 2.
 ```
 
 ### enoch: frequent short lines
