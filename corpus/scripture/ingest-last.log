@@ -1,8 +1,13 @@
-outcome=success at 2026-09-29T18:21:13Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36611344586
+outcome=failure at 2026-09-30T16:12:41Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36741659279
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
-built 8944 chunks across 95 documents
-done 8944, to embed 0, stale 0
-finished: 8944/8944
+built 9264 chunks across 96 documents
+done 8944, to embed 320, stale 0
+  [embed] 429 (attempt 1/6) — waiting 21s, 7 chunk(s) / 2796 tokens
+  [embed] 429 (attempt 1/6) — waiting 20s, 6 chunk(s) / 2522 tokens
+  [embed] 429 (attempt 1/6) — waiting 21s, 1 chunk(s) / 391 tokens
+Error: chunk upsert failed: canceling statement due to statement timeout
+    at main (/home/runner/work/docsearch/docsearch/scripts/ingest-scripture.ts:148:26)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
