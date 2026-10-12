@@ -51,3 +51,16 @@ test("Monthly commemorations", () => {
   assert.equal(at("2026-11-02").monthly, "giyorgis"); // Tikimt 23
   assert.equal(at("2026-10-21").monthly, undefined);
 });
+
+test("Hudade is counted 1–55 and has a reading for every day", async () => {
+  const { lentReading } = await import("../src/app/journey");
+  const { FIGURES } = await import("../src/lib/scripture/figures");
+  const { readablePeople } = await import("../src/app/people");
+  assert.equal(at("2026-02-16").lentDay, 1);
+  assert.equal(at("2026-04-11").lentDay, 55);
+  assert.equal(at("2026-04-12").lentDay, undefined);
+  assert.equal(at("2027-03-08").lentDay, 1);
+  const ids = new Set(readablePeople(FIGURES).map((f) => f.id));
+  for (let d = 1; d <= 55; d++) assert.ok(ids.has(lentReading(d, readablePeople(FIGURES))), `day ${d}`);
+  assert.equal(lentReading(1, readablePeople(FIGURES)), "prodigal_son");
+});
