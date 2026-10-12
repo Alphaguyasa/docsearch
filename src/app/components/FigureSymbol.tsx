@@ -202,6 +202,23 @@ const SYMBOLS: Record<string, React.ReactNode> = {
       <path d="M10 52 C16 48 20 56 26 52 C32 48 36 56 42 52 C48 48 52 56 56 52" />
     </>
   ),
+  // The books of magic he burned.
+  theudas: (
+    <>
+      <path d="M14 40 L32 46 L50 40 L50 52 L32 58 L14 52 Z" />
+      <path d="M32 46 L32 58" />
+      <path d="M32 36 C24 28 30 20 28 10 C36 16 42 24 36 36 Z" />
+    </>
+  ),
+  // The desert he went into to repent.
+  nakor: (
+    <>
+      <path d="M4 50 C16 40 26 44 34 48 C44 52 52 46 60 40" />
+      <path d="M4 58 L60 58" />
+      <circle cx="46" cy="18" r="7" />
+      <path d="M20 50 L20 38 M16 42 L20 38 L24 42" />
+    </>
+  ),
   // The crown of the wise king.
   solomon: (
     <>

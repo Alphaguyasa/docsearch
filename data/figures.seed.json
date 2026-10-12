@@ -1474,6 +1474,76 @@
         }
       ],
       "note": "Read from the Life of Takla Haymanot (Gadla Takla Haymanot, Budge 1906, chapters XI, LVI and LIX). In Ethiopian tradition he is King Motalomi of Damot."
+    },
+    {
+      "id": "theudas",
+      "name": "Theudas the Sorcerer",
+      "kind": "tradition",
+      "sins": [
+        "idolatry",
+        "deceit",
+        "pride"
+      ],
+      "summary": "A famous sorcerer who promised the king he could break the prince’s faith, and sent beautiful women and an evil spirit “to send upon him the fire of sexual lust.” When he was answered he asked, “Will Christ receive me if I turn to Him?”, burned his books of magic, and was baptized.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Baralam and Yewasef, How Theudas answered the king",
+          "sourceId": "baralam",
+          "match": "I will send upon him the fire of sexual lust"
+        },
+        {
+          "role": "restoration",
+          "ref": "Baralam and Yewasef, How Yéwásef preached the mercy of God to Theudas",
+          "sourceId": "baralam",
+          "match": "will Christ receive me if I turn to Him"
+        },
+        {
+          "role": "restoration",
+          "ref": "Baralam and Yewasef, How Theudas burned his books of magic",
+          "sourceId": "baralam",
+          "match": "This is the beginning of all evil, and is the storehouse"
+        }
+      ],
+      "note": "Read from Baralam and Yewasef, the Ethiopic Barlaam and Josaphat (tr. Budge 1923). In the Ethiopic text his name is Tawedas."
+    },
+    {
+      "id": "nakor",
+      "name": "Nakor the Magician",
+      "kind": "tradition",
+      "sins": [
+        "deceit",
+        "idolatry",
+        "despair"
+      ],
+      "summary": "A magician who agreed to play the monk Baralam and lose a debate on purpose, so that the prince would give up his faith. Instead he spoke the truth, and then feared that his sins were “more in number than the sand of the sea.” He went into the desert to repent and be baptized.",
+      "traditions": [
+        "ethiopian_orthodox"
+      ],
+      "passages": [
+        {
+          "role": "fall",
+          "ref": "Baralam and Yewasef, How ’Ardshis went by the king",
+          "sourceId": "baralam",
+          "match": "he was always practising magic"
+        },
+        {
+          "role": "restoration",
+          "ref": "Baralam and Yewasef, How Nákór heard Yéwásef",
+          "sourceId": "baralam",
+          "match": "which are more in number than the sand of the sea"
+        },
+        {
+          "role": "restoration",
+          "ref": "Baralam and Yewasef, How Nákór with Yéwásef",
+          "sourceId": "baralam",
+          "match": "I will make supplication for forgiveness from God"
+        }
+      ],
+      "note": "Read from Baralam and Yewasef, the Ethiopic Barlaam and Josaphat (tr. Budge 1923)."
     }
   ]
 }
