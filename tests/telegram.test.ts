@@ -167,3 +167,12 @@ test("bot deep links start the journey or the morning story in one tap", async (
   assert.equal(botLink("journey", "am"), "https://t.me/U_not_the_only_bot?start=journey_am");
   assert.match(channelCaption(FIGURES[0]), /\?start=journey"/);
 });
+
+test("captions still fit on the longest church days (a feast in a fast)", () => {
+  const siklet = new Date("2026-04-10T09:00:00Z"); // Good Friday in Hudade
+  for (const f of FIGURES) {
+    assert.ok(channelCaption(f, siklet).replace(/<[^>]+>/g, "").length <= 1024, f.id);
+    for (const lang of ["en", "am"] as const) assert.ok(todayCaption(f, lang, siklet).replace(/<[^>]+>/g, "").length <= 1024, `${f.id} ${lang}`);
+  }
+  assert.match(todayCaption(FIGURES[0], "en", siklet), /Miyazya 2, 2018 E\.C\. · Siklet, Good Friday · Hudade, the Great Lent/);
+});

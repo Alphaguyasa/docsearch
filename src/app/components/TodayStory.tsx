@@ -8,6 +8,7 @@ import { FIGURES, type Figure } from "@/lib/scripture/figures";
 
 import { artFor } from "../art";
 import { ArtImage } from "./ArtImage";
+import { ChurchToday } from "./ChurchToday";
 import { ArrowRight } from "./Icons";
 import { SymbolPlate } from "./SymbolPlate";
 import { useT } from "../i18n/client";
@@ -35,6 +36,9 @@ export function TodayStory() {
 
   return (
     <section aria-labelledby="today-heading" className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <div className="mb-8">
+        <ChurchToday />
+      </div>
       <p id="today-heading" className="font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">
         {t.today.eyebrow}
       </p>
