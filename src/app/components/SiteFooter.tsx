@@ -21,6 +21,7 @@ export async function SiteFooter() {
         { href: "/struggles", label: f.struggles },
         { href: "/return", label: f.comingBack },
         { href: "/journey", label: f.journey },
+        { href: "/journal", label: f.journal },
         { href: "/about", label: f.about },
         { href: "/library", label: f.library },
         { href: "/credits", label: f.credits },
