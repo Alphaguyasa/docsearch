@@ -48,6 +48,8 @@ export interface ChurchDay {
   feast?: FeastId;
   monthly?: MonthlyId;
   fast?: FastId;
+  /** Day 1–55 of Hudade (the Great Lent), when it is kept. */
+  lentDay?: number;
 }
 
 /** Julian Day Number of 1970-01-01. */
@@ -159,7 +161,8 @@ export function churchDayFromDay(day: number): ChurchDay {
                     ? "friday"
                     : undefined;
 
-  return { date, weekday, feast, monthly: m <= 12 ? MONTHLY[d] : undefined, fast };
+  const lentDay = fast === "hudade" ? fromEaster + 56 : undefined;
+  return { date, weekday, feast, monthly: m <= 12 ? MONTHLY[d] : undefined, fast, lentDay };
 }
 
 export function churchDay(date: Date): ChurchDay {

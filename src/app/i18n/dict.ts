@@ -100,6 +100,8 @@ const en = {
     date: (month: string, day: number, year: number) => `${month} ${day}, ${year} E.C.`,
     monthly: (name: string) => `Monthly feast of ${name}`,
     journey: "Walk the 40-day journey",
+    lentDay: (n: number) => `Day ${n} of 55`,
+    readToday: "Read today",
     feasts: {
       enkutatash: "Enkutatash, the Ethiopian New Year",
       meskel: "Meskel, the Finding of the True Cross",
@@ -477,6 +479,8 @@ const am: Dict = {
     date: (month: string, day: number, year: number) => `${month} ${day} ቀን ${year} ዓ.ም.`,
     monthly: (name: string) => `ወርኃዊ በዓል፦ ${name}`,
     journey: "የ40 ቀኑን ጉዞ ይጀምሩ",
+    lentDay: (n: number) => `ቀን ${n} ከ55`,
+    readToday: "የዛሬ ንባብ",
     feasts: {
       enkutatash: "እንቁጣጣሽ፣ ርእሰ ዓውደ ዓመት",
       meskel: "የመስቀል በዓል",

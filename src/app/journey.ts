@@ -25,3 +25,13 @@ export const JOURNEY_KEY = "not-alone:journey:v1";
 export function journeyDay(id: string): number {
   return JOURNEY.indexOf(id) + 1;
 }
+
+/**
+ * The 55 days of Hudade: the 40-day journey first, then everyone else who can
+ * be read, in seed order, starting over if the library is ever smaller.
+ */
+export function lentReading(day: number, readable: readonly { id: string }[]): string {
+  const rest = readable.map((f) => f.id).filter((id) => !JOURNEY.includes(id));
+  const list = [...JOURNEY, ...rest];
+  return list[(day - 1) % list.length];
+}
