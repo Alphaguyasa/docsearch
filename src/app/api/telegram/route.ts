@@ -11,7 +11,8 @@
 import { after } from "next/server";
 
 import resources from "../../../../data/crisis-resources.json";
-import { ensureDailyStory, sendJourneyDay, sendToday, subscribe, unsubscribe } from "@/lib/channel";
+import { DICTS } from "@/app/i18n/dict";
+import { ensureDailyStory, sendJourneyDay, sendToday, sendWalkDay, subscribe, unsubscribe } from "@/lib/channel";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
@@ -29,6 +30,9 @@ import {
   parseFeedbackData,
   storyMessages,
   tg,
+  parseWalk,
+  walkChoices,
+  walkPeople,
   webhookSecret,
   type BotLang,
 } from "@/lib/telegram";
@@ -75,12 +79,21 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   const text = (msg.text ?? "").trim();
   // Deep links (t.me/U_not_the_only_bot?start=journey_am) arrive as "/start journey_am".
   const deep = /^\/start (journey|daily)(?:_(en|am))?$/.exec(text);
-  const lang: BotLang = (deep?.[2] as BotLang | undefined) ?? detectLang(text, msg.from?.language_code);
+  const walkLang = /^\/start walk_[a-z]+_(en|am)$/.exec(text)?.[1];
+  const lang: BotLang = ((deep?.[2] ?? walkLang) as BotLang | undefined) ?? detectLang(text, msg.from?.language_code);
   const t = TEXT[lang];
   const send = (html: string) =>
     tg(token, "sendMessage", { chat_id, text: html, parse_mode: "HTML", link_preview_options: { is_disabled: true } });
 
   if (!text) return void (await send(t.textOnly));
+  const walk = parseWalk(text);
+  if (walk === null) return void (await send(walkChoices(lang)));
+  if (walk) {
+    const days = walkPeople(walk).length;
+    await subscribe(chat_id, lang, new Date(), days > 1 ? 2 : null, days > 1 ? walk : null);
+    await send(t.walkOn(DICTS[lang].groups[walk] ?? walk, days));
+    return void (await sendWalkDay(token, chat_id, lang, walk, 1));
+  }
   if (text.startsWith("/start") && !deep) return void (await send(t.welcome(msg.from?.first_name)));
   if (text.startsWith("/help")) {
     return void (await send(

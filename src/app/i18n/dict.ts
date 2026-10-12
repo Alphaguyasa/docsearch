@@ -59,6 +59,7 @@ const en = {
     read: "Read their story",
     tell: "Tell what you are carrying",
     others: "Other struggles",
+    walk: "7 days with them on Telegram",
     indexTitle: "Find the story for your struggle",
     indexIntro: "Whatever you are carrying, someone holy carried it before you. Choose what is closest.",
     count: (n: number) => `${n} ${n === 1 ? "story" : "stories"}`,
@@ -291,6 +292,7 @@ const en = {
     finished: "You finished all 40 days. Every one of them came back — so can you.",
   },
   person: {
+    alsoCarried: "Others who carried this",
     back: "All people",
     inEnglish: "Read it in English (World English Bible)",
     readStory: "Read their story",
@@ -434,6 +436,7 @@ const am: Dict = {
     read: "ታሪካቸውን ያንብቡ",
     tell: "የተሸከሙትን ይንገሩ",
     others: "ሌሎች ትግሎች",
+    walk: "ከእነርሱ ጋር 7 ቀናት በቴሌግራም",
     indexTitle: "ለትግልዎ የሚሆን ታሪክ ያግኙ",
     indexIntro: "የተሸከሙት ምንም ይሁን፣ አንድ ቅዱስ ሰው ከእርስዎ በፊት ተሸክሞታል። ለእርስዎ የሚቀርበውን ይምረጡ።",
     count: (n: number) => `${n} ታሪኮች`,
@@ -661,6 +664,7 @@ const am: Dict = {
     finished: "40ዎቹንም ቀናት ጨርሰዋል። እያንዳንዳቸው ተመልሰዋል — እርስዎም ይችላሉ።",
   },
   person: {
+    alsoCarried: "ይህን የተሸከሙ ሌሎች",
     back: "ሁሉም ሰዎች",
     inEnglish: "በእንግሊዝኛ ያንብቡት (World English Bible)",
     readStory: "ታሪካቸውን ያንብቡ",

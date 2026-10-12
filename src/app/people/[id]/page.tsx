@@ -20,7 +20,7 @@ import { ShareStory } from "../../components/ShareStory";
 import { SymbolPlate } from "../../components/SymbolPlate";
 import { figureText } from "../../i18n/dict";
 import { getDict } from "../../i18n/server";
-import { GROUPS, readablePeople, readerNote, storyRefs, tagLabel } from "../../people";
+import { GROUPS, readablePeople, readerNote, similarPeople, storyRefs, tagLabel } from "../../people";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -71,6 +71,7 @@ export default async function PersonPage({ params }: Params) {
     console.error(`person page ${f.id}:`, err);
   }
   const refs = storyRefs(f);
+  const similar = similarPeople(f, FIGURES);
   const heading = { fall: tp.fall, restoration: tp.rise, context: tp.context };
 
   const pageUrl = `${SITE_URL}/people/${f.id}?lang=${lang}`;
@@ -230,6 +231,39 @@ export default async function PersonPage({ params }: Params) {
 
         <PrayerCard tags={f.sins} figureId={f.id} />
         <JourneyMark id={f.id} />
+
+        {similar.length > 0 && (
+          <nav aria-labelledby="similar-heading" className="mt-16">
+            <h2 id="similar-heading" className="font-caps text-[12px] font-semibold tracking-[0.2em] text-gold">
+              {tp.alsoCarried}
+            </h2>
+            <ul className="mt-5 grid gap-4 sm:grid-cols-3">
+              {similar.map((x) => {
+                const xt = figureText(lang, x);
+                return (
+                  <li key={x.id}>
+                    <Link
+                      href={`/people/${x.id}`}
+                      className="lit-border group flex h-full overflow-hidden rounded-[18px] border border-border bg-card transition-colors hover:border-gold/40 sm:flex-col"
+                    >
+                      <div className="art-frame relative w-28 shrink-0 sm:w-full">
+                        {artFor(x.id) ? (
+                          <ArtImage id={x.id} sizes="(min-width: 640px) 220px, 112px" className="h-full w-full sm:aspect-[16/10]" />
+                        ) : (
+                          <SymbolPlate id={x.id} className="h-full w-full sm:aspect-[16/10]" />
+                        )}
+                      </div>
+                      <div className="flex flex-1 flex-col p-4">
+                        <p className="font-display text-xl font-semibold leading-tight">{xt.name}</p>
+                        <p className="mt-1 line-clamp-3 font-serif text-[15px] leading-6 text-muted">{xt.summary}</p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        )}
 
         <div className="mt-16 border-t border-border pt-10">
           <ShareStory url={`${SITE_URL}/people/${f.id}`} name={text.name} imageUrl={`/status/${f.id}/${lang}`} />

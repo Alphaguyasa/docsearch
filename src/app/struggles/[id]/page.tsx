@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { FIGURES } from "@/lib/scripture/figures";
-import { SITE_URL } from "@/lib/telegram";
+import { SITE_URL, botLink } from "@/lib/telegram";
 
 import { artFor } from "../../art";
 import { ArtImage } from "../../components/ArtImage";
@@ -74,20 +74,36 @@ export default async function StrugglePage({ params }: Params) {
           >
             ← {ts.nav}
           </Link>
-          <p className="mt-6 font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">{ts.eyebrow}</p>
-          <h1 className="mt-3 font-display text-[2.4rem] font-semibold leading-[1.05] sm:text-6xl">{s[lang].h1}</h1>
-          <p className="mt-5 max-w-2xl font-serif text-[19px] leading-8 text-muted">{ts.intro}</p>
+          <p className="mt-6 font-caps text-[13px] font-semibold tracking-[0.2em] text-gold">
+            {ts.eyebrow}
+          </p>
+          <h1 className="mt-3 font-display text-[2.4rem] font-semibold leading-[1.05] sm:text-6xl">
+            {s[lang].h1}
+          </h1>
+          <p className="mt-5 max-w-2xl font-serif text-[19px] leading-8 text-muted">
+            {ts.intro}
+          </p>
           <figure className="mt-8 max-w-2xl rounded-r-2xl border-l-2 border-gold/70 bg-white/[0.04] px-5 py-4">
             <figcaption className="text-sm text-muted">{ts.perhaps}</figcaption>
-            <blockquote className="mt-1 font-serif text-[20px] italic leading-8">“{s[lang].example}”</blockquote>
+            <blockquote className="mt-1 font-serif text-[20px] italic leading-8">
+              “{s[lang].example}”
+            </blockquote>
           </figure>
-          <Link
-            href="/#struggle"
-            className="group mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 py-3 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-shadow duration-300 hover:shadow-[0_0_40px_-6px_rgb(232_181_96_/_0.8)]"
-          >
-            {ts.tell}
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/#struggle"
+              className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 py-3 font-caps text-[13px] font-semibold tracking-[0.16em] text-background transition-shadow duration-300 hover:shadow-[0_0_40px_-6px_rgb(232_181_96_/_0.8)]"
+            >
+              {ts.tell}
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <a
+              href={botLink(`walk_${id}`, lang)}
+              className="inline-flex min-h-12 items-center gap-2 rounded-full border border-gold/50 px-6 py-3 font-caps text-[12px] font-semibold tracking-[0.14em] text-gold transition-colors hover:bg-gold/10"
+            >
+              {ts.walk}
+            </a>
+          </div>
         </div>
       </section>
 
@@ -113,8 +129,12 @@ export default async function StrugglePage({ params }: Params) {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col p-6">
-                    <h2 className="font-display text-2xl font-semibold leading-tight">{text.name}</h2>
-                    <p className="mt-2 flex-1 font-serif text-[17px] leading-7 text-muted">{text.summary}</p>
+                    <h2 className="font-display text-2xl font-semibold leading-tight">
+                      {text.name}
+                    </h2>
+                    <p className="mt-2 flex-1 font-serif text-[17px] leading-7 text-muted">
+                      {text.summary}
+                    </p>
                     <span className="mt-4 inline-flex items-center gap-2 font-caps text-[12px] font-semibold tracking-[0.18em] text-gold">
                       {ts.read}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -126,8 +146,14 @@ export default async function StrugglePage({ params }: Params) {
           })}
         </ul>
 
-        <nav aria-labelledby="others-heading" className="mt-16 border-t border-border pt-10">
-          <h2 id="others-heading" className="font-caps text-[12px] font-semibold tracking-[0.2em] text-gold">
+        <nav
+          aria-labelledby="others-heading"
+          className="mt-16 border-t border-border pt-10"
+        >
+          <h2
+            id="others-heading"
+            className="font-caps text-[12px] font-semibold tracking-[0.2em] text-gold"
+          >
             {ts.others}
           </h2>
           <ul className="mt-5 flex flex-wrap gap-2">
