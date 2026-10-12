@@ -74,6 +74,35 @@ export function readablePeople(all: Figure[]): Figure[] {
   return all.filter((f) => f.passages.some((p) => p.sourceId !== "pending"));
 }
 
+/**
+ * "Stories like mine": others who carried the same, for the foot of a
+ * person's page. Most shared sin tags first, then the same struggle group;
+ * a story from the other kind (Scripture or tradition) is mixed in when it
+ * fits as well. Only people shown to every reader who can see `f`, so the
+ * church choice is respected.
+ */
+export function similarPeople(f: Figure, all: Figure[], n = 3): Figure[] {
+  const groupsOf = (x: Figure) => new Set(GROUPS.filter((g) => g.tags.some((t) => x.sins.includes(t))).map((g) => g.id));
+  const mine = groupsOf(f);
+  const scored = readablePeople(all)
+    .filter((x) => x.id !== f.id && f.traditions.every((t) => x.traditions.includes(t)))
+    .map((x, order) => ({
+      x,
+      order,
+      tags: x.sins.filter((t) => f.sins.includes(t)).length,
+      groups: [...groupsOf(x)].filter((g) => mine.has(g)).length,
+    }))
+    .filter((s) => s.tags + s.groups > 0)
+    .sort((a, b) => b.tags - a.tags || b.groups - a.groups || a.order - b.order);
+  const picked = scored.slice(0, n).map((s) => s.x);
+  // Mix kinds: if all picks share one kind, swap the last for the best of the other kind.
+  if (picked.length === n && picked.every((x) => x.kind === picked[0].kind)) {
+    const other = scored.find((s) => s.x.kind !== picked[0].kind && s.tags + s.groups >= 1);
+    if (other) picked[n - 1] = other.x;
+  }
+  return picked;
+}
+
 /** Struggle groups a reader would recognise, each gathering several seed tags. */
 export const GROUPS: { id: string; label: string; tags: string[] }[] = [
   { id: "lust", label: "Lust", tags: ["lust", "sexual_sin", "adultery"] },

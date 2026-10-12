@@ -292,6 +292,7 @@ const en = {
     finished: "You finished all 40 days. Every one of them came back — so can you.",
   },
   person: {
+    alsoCarried: "Others who carried this",
     back: "All people",
     inEnglish: "Read it in English (World English Bible)",
     readStory: "Read their story",
@@ -663,6 +664,7 @@ const am: Dict = {
     finished: "40ዎቹንም ቀናት ጨርሰዋል። እያንዳንዳቸው ተመልሰዋል — እርስዎም ይችላሉ።",
   },
   person: {
+    alsoCarried: "ይህን የተሸከሙ ሌሎች",
     back: "ሁሉም ሰዎች",
     inEnglish: "በእንግሊዝኛ ያንብቡት (World English Bible)",
     readStory: "ታሪካቸውን ያንብቡ",

@@ -25,3 +25,18 @@ test("'shown to' in the library marks exactly the Ethiopian-only books", () => {
     }
   }
 });
+
+test("similarPeople: three others who share a struggle, never the person, never hidden from their readers", async () => {
+  const { FIGURES } = await import("../src/lib/scripture/figures");
+  const { similarPeople } = await import("../src/app/people");
+  for (const f of FIGURES) {
+    const s = similarPeople(f, FIGURES);
+    assert.ok(s.length <= 3, f.id);
+    for (const x of s) {
+      assert.notEqual(x.id, f.id);
+      assert.ok(f.traditions.every((t) => x.traditions.includes(t)), `${f.id} → ${x.id}`);
+    }
+  }
+  const david = FIGURES.find((f) => f.id === "david")!;
+  assert.equal(similarPeople(david, FIGURES).length, 3);
+});

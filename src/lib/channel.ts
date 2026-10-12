@@ -91,9 +91,15 @@ export async function subscribe(
   walk: string | null = null,
 ): Promise<void> {
   // Today's message is sent at once by the caller, so start counting from today.
-  const { error } = await db
-    .from("bot_subscribers")
-    .upsert({ chat_id: chatId, lang, last_day: addisDay(now), journey_day: journeyDay, walk }, { onConflict: "chat_id" });
+  const row = { chat_id: chatId, lang, last_day: addisDay(now), journey_day: journeyDay };
+  let { error } = await db.from("bot_subscribers").upsert({ ...row, walk }, { onConflict: "chat_id" });
+  // Before the bot_walk migration there is no walk column: keep /daily and
+  // /journey working, and let a walk fall back to the story of the day.
+  if (error && /walk/.test(error.message)) {
+    ({ error } = await db
+      .from("bot_subscribers")
+      .upsert({ ...row, journey_day: walk ? null : journeyDay }, { onConflict: "chat_id" }));
+  }
   if (error) throw new Error(error.message);
 }
 
