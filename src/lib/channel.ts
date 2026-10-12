@@ -29,7 +29,7 @@ export async function postDailyStory(now = new Date()): Promise<DailyResult> {
   if (error) return { ok: false, error: "could not claim the day" };
   if (!claimed) return { ok: true, posted: false, reason: "already posted today", figure: f.id };
 
-  const caption = channelCaption(f);
+  const caption = channelCaption(f, now);
   const hasArt = hasPainting(f.id);
   try {
     if (hasArt) {
@@ -105,7 +105,7 @@ export async function sendToday(
   f?: Figure,
 ): Promise<void> {
   f ??= await todaysFigure(now);
-  await sendCard(token, chatId, f, todayCaption(f, lang));
+  await sendCard(token, chatId, f, todayCaption(f, lang, now));
 }
 
 /** Day `day` of the 40-day journey in one private chat. */

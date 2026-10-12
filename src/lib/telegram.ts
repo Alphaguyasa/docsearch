@@ -11,7 +11,8 @@
 import { createHmac } from "node:crypto";
 
 import credits from "../../public/art/credits.json";
-import { figureText } from "../app/i18n/dict";
+import { DICTS, figureText } from "../app/i18n/dict";
+import { churchDay } from "./ethiopian-calendar";
 import { FIGURES, type Figure } from "./scripture/figures";
 import { foldEthiopic, matchTags } from "./scripture/struggle";
 import { personOfTheDay } from "./scripture/today";
@@ -331,11 +332,24 @@ export function fallbackMessage(
 }
 
 /** The /today caption: who, what they carried, and a link to their page (fits a photo caption). */
-export function todayCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, lang: BotLang): string {
+/** "🗓 Tikimt 4, 2019 E.C. · A Wednesday fast": the day in the Ethiopian Church, one line. */
+export function churchLine(lang: BotLang, now = new Date()): string {
+  const c = DICTS[lang].churchDay;
+  const { date, feast, monthly, fast } = churchDay(now);
+  const parts = [
+    c.date(c.months[date.month - 1], date.day, date.year),
+    feast ? c.feasts[feast] : null,
+    fast ? c.fasts[fast].name : null,
+    !feast && monthly ? c.monthly(c.saints[monthly]) : null,
+  ].filter(Boolean);
+  return `🗓 ${escapeHtml(parts.join(" · "))}`;
+}
+
+export function todayCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, lang: BotLang, now = new Date()): string {
   const t = TEXT[lang];
   const x = figureText(lang, f);
   return (
-    `<b>${escapeHtml(t.today)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
+    `${churchLine(lang, now)}\n<b>${escapeHtml(t.today)}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
     `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
   );
 }
@@ -431,9 +445,10 @@ export async function registerWebhook(token: string): Promise<void> {
 }
 
 /** The channel post: Amharic first, then English, one link (fits a photo caption). */
-export function channelCaption(f: Pick<FigureSummary, "id" | "name" | "summary">): string {
+export function channelCaption(f: Pick<FigureSummary, "id" | "name" | "summary">, now = new Date()): string {
   const am = figureText("am", f);
   return (
+    `${churchLine("am", now)}\n` +
     `<b>${escapeHtml(TEXT.am.today)} · ${escapeHtml(TEXT.en.today)}</b>\n\n` +
     `<b>${escapeHtml(am.name)}</b>\n${escapeHtml(am.summary)}\n\n` +
     `<b>${escapeHtml(f.name)}</b>\n${escapeHtml(f.summary)}\n\n` +
