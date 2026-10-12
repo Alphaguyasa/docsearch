@@ -9,7 +9,18 @@ import { db } from "./db";
 import { FIGURES, type Figure } from "./scripture/figures";
 import { addisDay, addisHour, personOfTheDay } from "./scripture/today";
 import { JOURNEY } from "../app/journey";
-import { CHANNEL, SITE_URL, TEXT, channelCaption, journeyCaption, tg, todayCaption, type BotLang } from "./telegram";
+import {
+  CHANNEL,
+  SITE_URL,
+  TEXT,
+  channelCaption,
+  journeyCaption,
+  tg,
+  todayCaption,
+  walkCaption,
+  walkPeople,
+  type BotLang,
+} from "./telegram";
 
 function hasPainting(id: string): boolean {
   return (credits as { credits: { id: string }[] }).credits.some((a) => a.id === id);
@@ -72,11 +83,17 @@ export async function ensureDailyStory(now = new Date()): Promise<void> {
  * chat. /journey: the same, but each morning brings the next of the 40 days;
  * `journeyDay` is the day tomorrow's message will carry.
  */
-export async function subscribe(chatId: number, lang: BotLang, now = new Date(), journeyDay: number | null = null): Promise<void> {
+export async function subscribe(
+  chatId: number,
+  lang: BotLang,
+  now = new Date(),
+  journeyDay: number | null = null,
+  walk: string | null = null,
+): Promise<void> {
   // Today's message is sent at once by the caller, so start counting from today.
   const { error } = await db
     .from("bot_subscribers")
-    .upsert({ chat_id: chatId, lang, last_day: addisDay(now), journey_day: journeyDay }, { onConflict: "chat_id" });
+    .upsert({ chat_id: chatId, lang, last_day: addisDay(now), journey_day: journeyDay, walk }, { onConflict: "chat_id" });
   if (error) throw new Error(error.message);
 }
 
@@ -112,6 +129,13 @@ export async function sendToday(
 export async function sendJourneyDay(token: string, chatId: number, lang: BotLang, day: number): Promise<void> {
   const f = FIGURES.find((x) => x.id === JOURNEY[day - 1]);
   if (f) await sendCard(token, chatId, f, journeyCaption(f, lang, day));
+}
+
+/** Day `day` of a 7-day walk through one struggle in one private chat. */
+export async function sendWalkDay(token: string, chatId: number, lang: BotLang, group: string, day: number): Promise<void> {
+  const people = walkPeople(group);
+  const f = people[day - 1];
+  if (f) await sendCard(token, chatId, f, walkCaption(f, lang, day, people.length, group));
 }
 
 /** A person's card: the painting with the caption, or the caption alone. */
@@ -153,10 +177,18 @@ export async function sendToSubscribers(now = new Date(), budgetMs = 40_000): Pr
   while (Date.now() - start < budgetMs) {
     const { data, error } = await db.rpc("claim_daily_subscribers", { p_day: day, p_limit: 50 });
     if (error || !data?.length) break;
-    for (const s of data as { chat_id: number; lang: BotLang; journey_day: number | null }[]) {
+    for (const s of data as { chat_id: number; lang: BotLang; journey_day: number | null; walk?: string | null }[]) {
       const lang = s.lang === "am" ? "am" : "en";
       try {
-        if (s.journey_day) {
+        if (s.walk && s.journey_day) {
+          await sendWalkDay(token, s.chat_id, lang, s.walk, s.journey_day);
+          const next = s.journey_day < walkPeople(s.walk).length ? s.journey_day + 1 : null;
+          if (!next) await tg(token, "sendMessage", { chat_id: s.chat_id, text: TEXT[lang].walkDone });
+          await db
+            .from("bot_subscribers")
+            .update({ journey_day: next, walk: next ? s.walk : null })
+            .eq("chat_id", s.chat_id);
+        } else if (s.journey_day) {
           await sendJourneyDay(token, s.chat_id, lang, s.journey_day);
           const next = s.journey_day < JOURNEY.length ? s.journey_day + 1 : null;
           if (!next) await tg(token, "sendMessage", { chat_id: s.chat_id, text: TEXT[lang].journeyDone });

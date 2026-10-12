@@ -16,6 +16,7 @@ import { churchDay } from "./ethiopian-calendar";
 import { FIGURES, type Figure } from "./scripture/figures";
 import { foldEthiopic, matchTags } from "./scripture/struggle";
 import { personOfTheDay } from "./scripture/today";
+import { STRUGGLE_IDS, peopleForStruggle } from "../app/struggles";
 import type { CrisisPayload, FigureSummary, SearchStreamMessage, SourceChunk } from "./search-stream";
 
 export type BotLang = "en" | "am";
@@ -27,7 +28,7 @@ export const MAX_MESSAGE = 3900;
 export const CHANNEL = process.env.TELEGRAM_CHANNEL || "@you_r_repenter";
 
 /** Opens the bot and starts the 40-day journey (or the morning story) in one tap. */
-export function botLink(start?: "journey" | "daily", lang?: BotLang): string {
+export function botLink(start?: "journey" | "daily" | `walk_${string}`, lang?: BotLang): string {
   return `https://t.me/U_not_the_only_bot${start ? `?start=${start}${lang ? `_${lang}` : ""}` : ""}`;
 }
 
@@ -78,6 +79,7 @@ export const TEXT = {
       "/today — the story of the day\n" +
       "/daily — get the story of the day here every morning\n" +
       "/journey — 40 days, 40 people: one each morning\n" +
+      "/walk — a 7-day walk through one struggle\n" +
       "/help — if you are in danger, people to call now\n\n" +
       "To share a story in any chat, type @U_not_the_only_bot and a word — like <i>anger</i> or <i>Peter</i>.",
     searching: "Finding someone who carried this too…",
@@ -106,6 +108,14 @@ export const TEXT = {
     journeyHeader: (n: number) => `Day ${n} of 40 · 40 days, 40 people`,
     journeyDone:
       "You finished all 40 days. Every one of them came back — so can you. The story of the day will keep coming each morning; send /stop to end it.",
+    walkPick: (groups: [string, string][]) =>
+      "🚶 <b>A 7-day walk</b>: one story a morning, all about one struggle. Tap the one you carry:\n\n" +
+      groups.map(([id, label]) => `/walk_${id} — ${escapeHtml(label)}`).join("\n"),
+    walkOn: (label: string, n: number) =>
+      `🚶 Your ${n}-day walk through <b>${escapeHtml(label)}</b> has begun: one person each morning who carried it and came back. Here is day 1.\n\nOnly your chat number, language and day are kept. Send /stop to end it.`,
+    walkHeader: (day: number, n: number, label: string) => `Day ${day} of ${n} · ${label}`,
+    walkDone:
+      "You finished your walk. Each of them carried what you carry, and came back. The story of the day will keep coming each morning; send /walk for another struggle or /stop to end it.",
   },
   am: {
     welcome: (name?: string) =>
@@ -116,6 +126,7 @@ export const TEXT = {
       "/today — የዕለቱ ታሪክ\n" +
       "/daily — የዕለቱን ታሪክ በየማለዳው እዚህ ያግኙ\n" +
       "/journey — 40 ቀናት፣ 40 ሰዎች፦ በየማለዳው አንድ\n" +
+      "/walk — ስለ አንድ ትግል የ7 ቀን ጉዞ\n" +
       "/help — አደጋ ላይ ከሆኑ የሚደውሉላቸው\n\n" +
       "በማንኛውም ውይይት ታሪክ ለማጋራት፣ @U_not_the_only_bot ብለው አንድ ቃል ይጻፉ — ለምሳሌ <i>ቁጣ</i> ወይም <i>ጴጥሮስ</i>።",
     searching: "ይህን የተሸከመ ሰው እየፈለግሁ ነው…",
@@ -143,6 +154,14 @@ export const TEXT = {
     journeyHeader: (n: number) => `ቀን ${n} ከ40 · 40 ቀናት፣ 40 ሰዎች`,
     journeyDone:
       "40ዎቹንም ቀናት ጨርሰዋል። እያንዳንዳቸው ተመልሰዋል — እርስዎም ይችላሉ። የዕለቱ ታሪክ በየማለዳው መምጣቱን ይቀጥላል፤ ለማቆም /stop ይላኩ።",
+    walkPick: (groups: [string, string][]) =>
+      "🚶 <b>የ7 ቀን ጉዞ</b>፦ ስለ አንድ ትግል በየማለዳው አንድ ታሪክ። የተሸከሙትን ይንኩ፦\n\n" +
+      groups.map(([id, label]) => `/walk_${id} — ${escapeHtml(label)}`).join("\n"),
+    walkOn: (label: string, n: number) =>
+      `🚶 ስለ <b>${escapeHtml(label)}</b> የ${n} ቀን ጉዞዎ ጀምሯል፦ ይህን ተሸክሞ የተመለሰ አንድ ሰው በየማለዳው። ቀን 1 ይኸውና።\n\nየሚቀመጠው የውይይት ቁጥርዎ፣ ቋንቋዎና ቀኑ ብቻ ነው። ለማቆም /stop ይላኩ።`,
+    walkHeader: (day: number, n: number, label: string) => `ቀን ${day} ከ${n} · ${label}`,
+    walkDone:
+      "ጉዞዎን ጨርሰዋል። እያንዳንዳቸው እርስዎ የተሸከሙትን ተሸክመው ተመልሰዋል። የዕለቱ ታሪክ በየማለዳው መምጣቱን ይቀጥላል፤ ለሌላ ትግል /walk ይላኩ፣ ለማቆም /stop ይላኩ።",
   },
 } as const;
 
@@ -249,11 +268,12 @@ export async function tg(token: string, method: string, body: Record<string, unk
 
 /** The bot's command menu, in English and Amharic. */
 export async function setCommands(token: string): Promise<void> {
-  const commands = (start: string, today: string, daily: string, journey: string, help: string) => [
+  const commands = (start: string, today: string, daily: string, journey: string, walk: string, help: string) => [
     { command: "start", description: start },
     { command: "today", description: today },
     { command: "daily", description: daily },
     { command: "journey", description: journey },
+    { command: "walk", description: walk },
     { command: "help", description: help },
   ];
   await tg(token, "setMyCommands", {
@@ -262,11 +282,12 @@ export async function setCommands(token: string): Promise<void> {
       "The story of the day",
       "Get the story of the day every morning",
       "40 days, 40 people who came back",
+      "7 days through one struggle",
       "If you are in danger — people to call now",
     ),
   });
   await tg(token, "setMyCommands", {
-    commands: commands("ጀምር", "የዕለቱ ታሪክ", "የዕለቱን ታሪክ በየማለዳው ያግኙ", "40 ቀናት፣ የተመለሱ 40 ሰዎች", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
+    commands: commands("ጀምር", "የዕለቱ ታሪክ", "የዕለቱን ታሪክ በየማለዳው ያግኙ", "40 ቀናት፣ የተመለሱ 40 ሰዎች", "ስለ አንድ ትግል 7 ቀናት", "አደጋ ላይ ከሆኑ — የሚደውሉላቸው"),
     language_code: "am",
   });
 }
@@ -386,6 +407,44 @@ export function journeyCaption(f: Pick<FigureSummary, "id" | "name" | "summary">
     `<b>${escapeHtml(t.journeyHeader(day))}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
     `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
   );
+}
+
+/** How many mornings a /walk lasts (fewer when a struggle has fewer people). */
+export const WALK_DAYS = 7;
+
+/** The people of a 7-day walk: the struggle page's order, first seven. */
+export function walkPeople(group: string): Figure[] {
+  return peopleForStruggle(group, FIGURES).slice(0, WALK_DAYS);
+}
+
+/** "/walk_lust" or "/walk lust" (or the deep link "walk_lust_am"): the struggle group, if it is one. */
+export function parseWalk(text: string): string | null | undefined {
+  const m = /^\/(?:start\s+)?walk(?:[_\s]+([a-z]+))?(?:_(?:en|am))?(?:@\w+)?\s*$/i.exec(text.trim());
+  if (!m) return undefined; // not a walk command
+  const id = m[1]?.toLowerCase();
+  return id && STRUGGLE_IDS.includes(id) ? id : null; // null: show the choices
+}
+
+/** One day of a 7-day walk in the bot. */
+export function walkCaption(
+  f: Pick<FigureSummary, "id" | "name" | "summary">,
+  lang: BotLang,
+  day: number,
+  days: number,
+  group: string,
+): string {
+  const t = TEXT[lang];
+  const x = figureText(lang, f);
+  const label = DICTS[lang].groups[group] ?? group;
+  return (
+    `<b>${escapeHtml(t.walkHeader(day, days, label))}</b>\n\n<b>${escapeHtml(x.name)}</b>\n${escapeHtml(x.summary)}\n\n` +
+    `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(t.readStory)}</a>`
+  );
+}
+
+/** The choices for /walk, in the reader's language. */
+export function walkChoices(lang: BotLang): string {
+  return TEXT[lang].walkPick(STRUGGLE_IDS.map((id) => [id, DICTS[lang].groups[id] ?? id]));
 }
 
 /** A story card for someone to send to a friend or a group. */

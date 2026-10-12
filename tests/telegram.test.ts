@@ -176,3 +176,21 @@ test("captions still fit on the longest church days (a feast in a fast)", () => 
   }
   assert.match(todayCaption(FIGURES[0], "en", siklet), /Miyazya 2, 2018 E\.C\. · Siklet, Good Friday · Hudade, the Great Lent/);
 });
+
+test("/walk: commands and deep links name a struggle group; anything else shows the choices", async () => {
+  const { parseWalk, walkPeople, walkCaption, walkChoices, WALK_DAYS } = await import("../src/lib/telegram");
+  assert.equal(parseWalk("/walk_lust"), "lust");
+  assert.equal(parseWalk("/walk anger"), "anger");
+  assert.equal(parseWalk("/start walk_despair_am"), "despair");
+  assert.equal(parseWalk("/walk_lust@U_not_the_only_bot"), "lust");
+  assert.equal(parseWalk("/walk"), null);
+  assert.equal(parseWalk("/walk_nothing"), null);
+  assert.equal(parseWalk("/walkthrough"), undefined);
+  assert.equal(parseWalk("I keep lying"), undefined);
+  const people = walkPeople("lust");
+  assert.equal(people.length, WALK_DAYS);
+  const c = walkCaption(people[0], "en", 1, people.length, "lust");
+  assert.match(c, /Day 1 of 7 · Lust/);
+  assert.match(c, new RegExp(`/people/${people[0].id}"`));
+  assert.match(walkChoices("am"), /\/walk_lust — ፍትወት/);
+});
