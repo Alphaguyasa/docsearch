@@ -7,15 +7,20 @@ name: deploy-not-alone
 # Needs one secret: VERCEL_TOKEN (vercel.com -> Account Settings -> Tokens).
 # Without it the job skips cleanly.
 #
-# Runs after the scripture eval commits results, or on any change to this file.
+# Every push to main is a release (see CLAUDE.md, deploy policy): a merged PR,
+# or the scripture eval committing results. The ingestion and fetch bots' own
+# bookkeeping commits are ignored so a long ingestion doesn't redeploy hourly.
 
 on:
   push:
-    branches: [pivot/scripture]
-    paths:
-      - "eval/scripture-results.md"
-      - ".github/workflows/deploy-not-alone.yml"
-      - "corpus/scripture/deploy-trigger"
+    branches: [main]
+    paths-ignore:
+      - "corpus/scripture/ingest-progress.json"
+      - "corpus/scripture/ingest-last.log"
+      - "corpus/scripture/manifest.json"
+      - "corpus/scripture/failed.json"
+      - "corpus/scripture/report.md"
+      - "corpus/scripture/chunks-report.md"
   workflow_dispatch:
 
 permissions:

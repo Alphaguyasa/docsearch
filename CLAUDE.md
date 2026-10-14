@@ -46,8 +46,14 @@ Deeper docs: `docs/NOT_ALONE.md` (request path, pipelines, bot, env), `docs/PIVO
   The canon map is `data/canon.json`; curated people are in `data/figures.seed.json`.
 - Data pipelines run on GitHub Actions: `fetch-scripture.yml`, `ingest-scripture.yml`
   (resumable, chains itself) and `scripture-eval.yml`. They commit their bookkeeping
-  files straight to the branch they run on. This is by design; see ROADMAP.md about
-  re-pointing them from `pivot/scripture` to `main`.
+  files (manifest, ingest progress, eval results) straight to `main`. That is the one
+  exception to "never push to main", approved by Alpha on 2026-10-14; it applies to
+  these bots only, never to code changes.
+- Every push to `main` deploys to production (`deploy-not-alone.yml`), except the bots'
+  bookkeeping files. A merge is a release. The deploy step also re-syncs the production
+  env vars from GitHub secrets (same values); do not edit that step.
+- `eval.yml` (the old paper-search harness) is manual-only: it grades the retired
+  arXiv corpus and would spend the site's Gemini quota.
 
 ## Commands
 
@@ -117,7 +123,11 @@ Carried over from the project's earlier rules, still binding:
 - At the start of every run, check Anthropic's official models documentation (https://platform.claude.com/docs/en/about-claude/models/overview) for a newer Opus or higher model. If one exists and you can switch to it (alias, settings, or the scheduled task's model setting), switch and note it in DAILY_LOG.md.
 - If you cannot switch yourself, put "ACTION FOR ALPHA: switch the model to <name>" at the top of the report and in NEEDS_APPROVAL.md.
 - Switching models must never involve buying, upgrading, or changing a plan.
-- As of 2026-10-14 the docs list Claude Fable 5.1 (`claude-fable-5-1`) above Claude Opus 5.5 (`claude-opus-5-5`).
+- **Never use Fable or any tier above Opus** (owner, 2026-10-14: there is no credit or
+  money for it). "Higher tier" in the first line therefore means Opus only. The daily
+  routine runs on the `opus` alias, which follows the newest Opus by itself. The model
+  check only confirms that alias is still in use; a new Fable or Mythos release is not a
+  reason to switch.
 
 ## NO PURCHASES POLICY
 - Never buy, subscribe to, or upgrade anything. Never enter payment details.

@@ -27,22 +27,23 @@ name: eval
 # unchanged. The full reasoning, and the numbers, are in that file. Latency is
 # still gated locally by eval/config/gate.json, where cache state is knowable.
 
+# MANUAL ONLY since main became Not Alone (2026-10-14). This harness grades
+# questions about the retired arXiv corpus, and its judged jobs spend the same
+# free-tier GEMINI_API_KEY the live site answers with. The scripture app has its
+# own eval in scripture-eval.yml; see ROADMAP.md for porting this harness to it.
+# The pull_request path filter is kept, commented, for when that happens.
 on:
-  pull_request:
-    # The paper-search harness grades questions about the original PDF corpus.
-    # Not Alone (pivot/scripture) serves a scripture corpus from the same
-    # secrets, so these questions cannot pass there; it has its own eval in
-    # scripture-eval.yml.
-    branches: [main]
-    paths:
-      - "src/lib/retrieve.ts"
-      - "src/lib/embed.ts"
-      - "src/lib/answer.ts"
-      - "src/lib/llm.ts"
-      - "src/lib/paginate.ts"
-      - "scripts/ingest.ts"
-      - "eval/**"
-      - ".github/workflows/eval.yml"
+  # pull_request:
+  #   branches: [main]
+  #   paths:
+  #   - "src/lib/retrieve.ts"
+  #   - "src/lib/embed.ts"
+  #   - "src/lib/answer.ts"
+  #   - "src/lib/llm.ts"
+  #   - "src/lib/paginate.ts"
+  #   - "scripts/ingest.ts"
+  #   - "eval/**"
+  #   - ".github/workflows/eval.yml"
   workflow_dispatch:
     inputs:
       full:

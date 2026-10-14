@@ -14,7 +14,7 @@ name: ingest-scripture
 
 on:
   push:
-    branches: [pivot/scripture]
+    branches: [main]
     paths:
       - "scripts/ingest-scripture.ts"
       - "src/lib/scripture/plan.ts"
@@ -128,14 +128,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3 4 5; do
-            git fetch -q origin pivot/scripture
-            git reset -q --hard origin/pivot/scripture
+            git fetch -q origin main
+            git reset -q --hard origin/main
             cp /tmp/progress.json $PROG
             cp /tmp/ingest-last.log corpus/scripture/ingest-last.log
             git add $PROG corpus/scripture/ingest-last.log
             if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
             git commit -q -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
-            if git push -q origin HEAD:pivot/scripture; then echo "progress pushed — next run chained"; exit 0; fi
+            if git push -q origin HEAD:main; then echo "progress pushed — next run chained"; exit 0; fi
             echo "push rejected (attempt $attempt), retrying on the new tip"
             sleep $((attempt * 5))
           done

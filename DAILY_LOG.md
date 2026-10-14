@@ -28,3 +28,17 @@
   eval.yml PR trigger. The auto-mode safety check refused edits that change how
   production deploys. Logged as NEEDS_APPROVAL #1 and ROADMAP item 6. Until then,
   merges to `main` are not deployed.
+
+**Later the same day**
+- PR #99 (setup) merged, tag v2026-10-14-2. The daily cloud routine is created:
+  `trig_01QURCD5m9PNSijkCLAqKPcU`, 06:30 Nairobi, no connectors.
+- Alpha approved the workflows on main. Deploy, fetch, ingest and scripture-eval now run
+  from `main`, and the old eval.yml is manual-only.
+- Alpha: no Fable (no credit). The routine is switched to the `opus` alias, and
+  CLAUDE.md now says never to go above Opus.
+- Routines have no "automatically approve" setting, so nothing to do there.
+- The Next.js 15.5.27 upgrade was interrupted: Claude Code killed the npm install
+  because the PC ran low on memory. Still ROADMAP item 0, first for the next run.
+
+**Next run:** ROADMAP item 0 (Next.js 15.5.27 security patch), then item 1 (make
+"Oriental Orthodox" a real tradition filter).
