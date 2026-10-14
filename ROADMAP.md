@@ -13,6 +13,14 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    fixed in 15.5.24) and two cache-poisoning advisories (fixed in 15.5.27). It's a patch
    upgrade that also lifts the bundled sharp/postcss. Remaining audit items (vitest
    moderate, nanoid, source-map-js) go to item 10.
+0b. **[P1, S] Make ingestion work without `INGEST_PAT`.** `ingest-scripture.yml` checks
+   out with `secrets.INGEST_PAT`, which GitHub now rejects ("could not read Username",
+   run 38589684822, 2026-10-14). All 9264 chunks are already embedded, so nothing is lost
+   today, but no new book can be ingested (blocks item 4). Fix without touching secrets:
+   check out with the default `GITHUB_TOKEN`, push progress with it, and chain the next
+   run with `gh workflow run ingest-scripture.yml --ref main` (GITHUB_TOKEN can dispatch
+   workflows; it can't trigger them by push). Needs `permissions: actions: write`. Also
+   make the "Record progress" step exit cleanly when checkout failed, instead of crashing.
 1. **[P0, S] Make "Oriental Orthodox" a real filter.** Today the default picker choice
    `all` sends no tradition filter, so it means "everything in the database". Once
    Western books return (item 4), they would appear under the label "Oriental Orthodox".

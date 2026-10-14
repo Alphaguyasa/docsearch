@@ -25,6 +25,12 @@ decided, move it to "Decided" with the date and the answer.
    `NEEDS REVIEW` items in `data/canon.json` and a sample of answers; rotate the Supabase
    service_role key.
 
+6. **`INGEST_PAT` secret no longer works** (GitHub rejects it). Nothing is broken today,
+   since the corpus is fully ingested, and ROADMAP item 0b removes the need for it. If
+   you'd rather keep the PAT: create a fine-grained token (free) with Contents:
+   read/write on Alphaguyasa/docsearch and paste it into the repo secret `INGEST_PAT`.
+   Runs never change secrets themselves.
+
 ## Decided
 
 - 2026-10-14: **Workflows on main approved.** Every push to `main` deploys; the fetch,
