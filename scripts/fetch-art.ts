@@ -44,7 +44,24 @@ function strip(html: string | undefined): string {
   return (html ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
-async function api(params: Record<string, string>): Promise<any> {
+/** The parts of a Commons API file page this script reads. */
+interface CommonsPage {
+  title: string;
+  imageinfo?: {
+    mime: string;
+    width: number;
+    url: string;
+    thumburl?: string;
+    descriptionurl: string;
+    extmetadata?: Record<string, { value?: string } | undefined>;
+  }[];
+}
+
+interface CommonsResponse {
+  query?: { search?: { title: string }[]; pages?: CommonsPage[] };
+}
+
+async function api(params: Record<string, string>): Promise<CommonsResponse> {
   const url = `${API}?${new URLSearchParams({ format: "json", formatversion: "2", origin: "*", ...params })}`;
   for (let attempt = 0; attempt < 4; attempt++) {
     const res = await fetch(url, { headers: { "User-Agent": UA } });
@@ -56,23 +73,23 @@ async function api(params: Record<string, string>): Promise<any> {
 
 async function search(query: string): Promise<string[]> {
   const r = await api({ action: "query", list: "search", srsearch: `${query} filetype:bitmap`, srnamespace: "6", srlimit: "12" });
-  return (r.query?.search ?? []).map((h: { title: string }) => h.title);
+  return (r.query?.search ?? []).map((h) => h.title);
 }
 
-function usable(p: any): boolean {
+function usable(p: CommonsPage): boolean {
   const ii = p.imageinfo?.[0];
   if (!ii || !/image\/(jpeg|png|tiff)/.test(ii.mime) || ii.width < 700) return false;
   return ACCEPT.test(strip(ii.extmetadata?.LicenseShortName?.value));
 }
 
 /** Why a candidate was rejected, for the report. */
-function why(p: any): string {
+function why(p: CommonsPage): string {
   const ii = p.imageinfo?.[0];
   if (!ii) return `${p.title} (no info)`;
   return `${p.title} [${ii.mime} ${ii.width}px, "${strip(ii.extmetadata?.LicenseShortName?.value)}"]`;
 }
 
-async function resolve(s: Source): Promise<{ pick?: any; rejected: string[] }> {
+async function resolve(s: Source): Promise<{ pick?: CommonsPage; rejected: string[] }> {
   if (s.file) {
     const pages = await info([s.file.startsWith("File:") ? s.file : `File:${s.file}`]);
     return { pick: pages.find(usable), rejected: pages.map(why) };
@@ -92,7 +109,7 @@ async function resolve(s: Source): Promise<{ pick?: any; rejected: string[] }> {
   return { rejected };
 }
 
-async function info(titles: string[]): Promise<any[]> {
+async function info(titles: string[]): Promise<CommonsPage[]> {
   const r = await api({
     action: "query",
     prop: "imageinfo",
@@ -100,8 +117,8 @@ async function info(titles: string[]): Promise<any[]> {
     iiprop: "url|size|mime|extmetadata",
     iiurlwidth: "1600",
   });
-  const byTitle = new Map((r.query?.pages ?? []).map((p: any) => [p.title, p]));
-  return titles.map((t) => byTitle.get(t)).filter(Boolean);
+  const byTitle = new Map((r.query?.pages ?? []).map((p) => [p.title, p]));
+  return titles.map((t) => byTitle.get(t)).filter((p): p is CommonsPage => p !== undefined);
 }
 
 async function main() {
@@ -118,7 +135,9 @@ async function main() {
         log.push(`- ${s.id}: NO MATCH — ${rejected.join("; ")}`);
         continue;
       }
-      const ii = pick.imageinfo[0];
+      // usable() only accepts a page with image info.
+      const ii = pick.imageinfo?.[0];
+      if (!ii) continue;
       const res = await fetch(ii.thumburl ?? ii.url, { headers: { "User-Agent": UA } });
       if (!res.ok) throw new Error(`download ${res.status}`);
       const buf = Buffer.from(await res.arrayBuffer());

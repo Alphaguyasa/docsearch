@@ -24,7 +24,7 @@ eval/golden/unlabelled-candidates.jsonl
 
 # Local agent/editor config
 .claude/
-CLAUDE.md
+# CLAUDE.md is committed: it is the memory of the daily autonomous run.
 .cursor/
 .idea/
 .vscode/

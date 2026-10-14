@@ -36,6 +36,7 @@ const DEFAULT_OVERLAP_RATIO = 0.15;
  * C0 control characters except tab (09), line feed (0A) and carriage return
  * (0D), which are legitimate text. PDF extraction emits the rest as noise.
  */
+// eslint-disable-next-line no-control-regex -- matching control characters is the point
 const ILLEGAL_CONTROLS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g;
 
 /**

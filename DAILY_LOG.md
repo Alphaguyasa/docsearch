@@ -15,21 +15,16 @@
   the spawn takes ~20s on a slow machine. Fixed on this branch.
 - Model check: the docs list Claude Fable 5.1 as above Opus 5.5.
 
-**Not done yet (next run starts here, on branch claude/setup)**
-1. Re-point the workflows from `pivot/scripture` to `main`: deploy-not-alone, fetch-,
-   ingest- and scripture-eval. ingest-scripture.yml lines 131-138 push to
-   pivot/scripture, and scripture-eval.yml line 74 looks up the PR by that head.
-   Until then, production deploys still come only from pivot/scripture.
-2. Add `.github/workflows/ci.yml`: npm ci, lint, `tsc --noEmit`, `npm test`,
-   `npx vitest run`, and `next build` with dummy env. There is no ESLint yet. The plan
-   is eslint@9 + eslint-config-next@15.5 via FlatCompat; how many existing issues it
-   reports has not been measured.
-3. Write CLAUDE.md with every policy from the brief, plus ROADMAP.md,
-   NEEDS_APPROVAL.md, PIVOT_PLAN.md and SOURCES.md. Add tests for the project rules.
-   Open items for NEEDS_APPROVAL: the Amharic Bible is non-commercial with permission,
-   not PD; the Lausiac History is PD in the US only; the "orthodox" tag mixes Eastern
-   and Oriental; the old paper-search eval.yml spends Gemini quota on PRs; PR #6 is stale.
-4. Top roadmap item: make "Oriental Orthodox" a real tradition filter (today the
-   default means "no filter"), then add Eastern Orthodox, Catholic and Protestant as
-   opt-in choices.
-5. Create the 06:30 Nairobi cloud scheduled task.
+**Continued after the usage limit reset (same day)**
+- PR "Setup": CLAUDE.md (committed now; it was gitignored), ROADMAP.md, NEEDS_APPROVAL.md,
+  PIVOT_PLAN.md and SOURCES.md. Also ci.yml (lint, typecheck, both test suites, build
+  with dummy env), ESLint: typescript-eslint + react-hooks, because eslint-config-next pulls in an unfixed
+  high advisory (braces). 6 `any` errors in scripts/fetch-art.ts and 7 small errors fixed,
+  11 warnings left, and tests/project-rules.test.ts (licenses, SOURCES.md coverage, frozen
+  holdouts, prompt rules, crisis help).
+- Found: `npm audit` reports critical RCE advisories in next@15.5.21 (production).
+  It is ROADMAP item 0, done next as its own PR.
+- Blocked: re-pointing the deploy/data workflows to `main`, and turning off the old
+  eval.yml PR trigger. The auto-mode safety check refused edits that change how
+  production deploys. Logged as NEEDS_APPROVAL #1 and ROADMAP item 6. Until then,
+  merges to `main` are not deployed.

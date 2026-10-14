@@ -75,7 +75,6 @@ export async function GET(
         }}
       >
         {art && (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={art}
             width={W}

@@ -72,7 +72,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ lang: s
   const code = (src: string, label: string, sub: string) => (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 480 }}>
       <div style={{ display: "flex", padding: 16, background: "#ffffff", borderRadius: 24, border: `3px solid ${GOLD}` }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} width={340} height={340} alt="" />
       </div>
       <div style={{ marginTop: 22, fontSize: 34, fontWeight: 700, textAlign: "center" }}>{label}</div>
@@ -93,7 +92,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ lang: s
           fontFamily: lang === "am" ? "Ethiopic, Serif" : "Serif, Ethiopic",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={art} width={W} height={651} style={{ objectFit: "cover" }} alt="" />
         <div style={{ display: "flex", flexDirection: "column", padding: "56px 90px 0", flexGrow: 1 }}>
           <div style={{ fontSize: lang === "am" ? 96 : 92, fontWeight: 700, lineHeight: 1.1 }}>{c.title}</div>
