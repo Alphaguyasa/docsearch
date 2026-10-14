@@ -5,15 +5,13 @@ name: fetch-scripture
 # to the branch. Raw texts are NOT committed; they are uploaded as an artifact
 # and re-fetched byte-identically by the ingestion workflow.
 #
-# Triggered by push (not only workflow_dispatch) because workflow_dispatch only
-# works for workflows present on the default branch, and this one lives on
-# pivot/scripture until the pivot merges. The commit-back touches only
+# Triggered by push to main (the trunk since PR #7). The commit-back touches only
 # manifest.json / failed.json, which are outside the path filter, so it cannot
 # re-trigger itself.
 
 on:
   push:
-    branches: [pivot/scripture]
+    branches: [main]
     paths:
       - "corpus/scripture/sources.json"
       - "scripts/fetch-scripture.ts"

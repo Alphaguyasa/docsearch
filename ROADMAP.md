@@ -39,15 +39,9 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    for some traditions but not others (e.g. the deuterocanon, Enoch), label it in the
    citation panel ("Scripture for Catholic and Orthodox; not in the Protestant canon")
    from `canon.json`, with a test.
-6. **[P1, S] Re-point the data and deploy workflows to `main`.** `fetch-scripture`,
-   `ingest-scripture`, `scripture-eval` and `deploy-not-alone` still trigger on and push
-   to `pivot/scripture`. Until this lands, merges to main are NOT deployed. This touches
-   production deploys and bot pushes to main, so it needs Alpha's OK first
-   (NEEDS_APPROVAL.md #1).
 7. **[P2, S] Port the paper-search eval gate to the scripture app.** `eval.yml` grades the
-   retired arXiv corpus and its judged job spends the site's Gemini quota. Its PR trigger
-   should be turned off (blocked with item 6: it's a workflow edit). Then make
-   `scripture-eval` the PR gate, retrieval-only in CI.
+   retired arXiv corpus, so it is now manual-only. Make `scripture-eval` a PR gate,
+   retrieval-only (no Gemini calls) in CI.
 8. **[P2, S] Fix the 11 ESLint warnings** (7 unused vars, 4 hook deps), then make
    warnings fail CI (`eslint --max-warnings 0`).
 9. **[P2, M] Grow the golden set with scripture questions** for each new tradition
@@ -55,11 +49,13 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    split only; the holdout stays frozen (hash-pinned in tests/project-rules.test.ts).
 10. **[P2, S] `npm audit` and dependency review.** Record findings; upgrade only patch and
     minor versions with clear licenses.
-11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md).
+11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
 12. **[P3, M] Slow `/status/[id]/[lang]` prerender.** Locally each image route takes over
     60s to build (16 retries in one build). Find out why (fonts fetched per route?) and
     cache them, so builds stay fast and don't time out on Vercel.
 
 ## Done
 
+- 2026-10-14: Data and deploy workflows run from `main`; old eval.yml manual-only (approved by Alpha).
+- 2026-10-14: PR #99. Setup: CI, lint, project-rule tests, memory files (tag v2026-10-14-2).
 - 2026-10-14: PR #7. main becomes Not Alone (tag v2026-10-14-1).
