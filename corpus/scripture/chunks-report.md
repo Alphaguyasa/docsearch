@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-09-30T16:04:58.513Z
+Generated 2026-10-14T15:31:31.696Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -140,6 +140,12 @@ Generated 2026-09-30T16:04:58.513Z
 - ✅ matalome / fall: `Life of Takla Haymanot, Chapter XI` → 1 chunk(s) (Life of Takla Haymanot, Chapter XI: How The City Of Zorare Was Besieged By The Wicked King Matalome And How Saga…)
 - ✅ matalome / restoration: `Life of Takla Haymanot, Chapter LVI` → 1 chunk(s) (Life of Takla Haymanot, Chapter LVI: How Matalome Entreated The Saint To Give Him His Name, And How At Takla…)
 - ✅ matalome / restoration: `Life of Takla Haymanot, Chapter LIX` → 1 chunk(s) (Life of Takla Haymanot, Chapter LIX: How Takla Haymanot Baptized More Than One Hundred Thousand People, And How…)
+- ✅ theudas / fall: `Baralam and Yewasef, How Theudas answered the king` → 1 chunk(s) (Baralam and Yewasef, How Theudas answered the king, and persuaded him that he was able to overthrow by his… (part 2))
+- ✅ theudas / restoration: `Baralam and Yewasef, How Yéwásef preached the mercy of God to Theudas` → 1 chunk(s) (Baralam and Yewasef, How Yéwásef preached the mercy of God to Theudas, and urged him to repent and be baptized…)
+- ✅ theudas / restoration: `Baralam and Yewasef, How Theudas burned his books of magic` → 1 chunk(s) (Baralam and Yewasef, How Theudas burned his books of magic, and went to the holy man who had received and…)
+- ✅ nakor / fall: `Baralam and Yewasef, How ’Ardshis went by the king` → 1 chunk(s) (Baralam and Yewasef, How ’Ardshis went by the king's command to find Nákór the magician, and how Nákór agreed…)
+- ✅ nakor / restoration: `Baralam and Yewasef, How Nákór heard Yéwásef` → 1 chunk(s) (Baralam and Yewasef, How Nákór heard Yéwásef’s words with gladness, and declared his intention to repent of…)
+- ✅ nakor / restoration: `Baralam and Yewasef, How Nákór with Yéwásef` → 1 chunk(s) (Baralam and Yewasef, How Nákór with Yéwásef"s consent left the palace that night and departed to the desert…)
 
 ## Samples
 

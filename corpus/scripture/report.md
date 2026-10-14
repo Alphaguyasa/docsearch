@@ -1,10 +1,10 @@
 # Scripture fetch report
 
-Generated 2026-10-12T13:52:51.009Z
+Generated 2026-10-14T15:29:17.549Z
 
 ## web — World English Bible with Deuterocanon
 
-#### `eng-web_usfm.zip` — 3244105 bytes
+#### `eng-web_usfm.zip` — 3244779 bytes
 (zip — contents listed by the parser session)
 
 ## confessions — The Confessions of Saint Augustine (tr. E. B. Pusey)
@@ -663,7 +663,88 @@ Immut. 6. Euseb. Laud. C. 1 prope fin., p. 501. Naz. Or. 38. 8.
 
 ## synaxarium — The Book of the Saints of the Ethiopian Church (tr. E. A. Wallis Budge, 1928)
 - pinned: bookofsaintsofet0001sire, bookofsaintsofet00yait
-**FAILED:** fetch failed
+
+#### `bookofsaintsofet0001sire_djvu.txt` (archive id `bookofsaintsofet0001sire`) — 820155 bytes
+15706 non-empty lines. First 25:
+```
+IO) UNCU ATA
+3 1223 00385 0279
+DATE DUE
+922 B859b=
+aie : i | i Os i ok ee lig Et! Aa ae cu, Arh
+hip ONT ar eae ¢ ry A
+r aan ; { Pee y Vo Caan ‘| 4
+a Ceo Gs) 14 ; Hy Bai 4 i:
+¥, Dey Oe tes seer he ; if
+"4 hat fi n ; ve {
+‘ YY 4
+iy x
+:
+iY
+¥ Uy 1
+\
+Av i
+1 U re
++.
++ : ‘4
+ee ;
+’ .
+’
+~ %
+} h
+```
+Sample from the middle:
+```
+and will not find me, and he will hear that thou hast killed me,
+and he will punish thee with very great severity, and thou wilt
+die for the sake of the Name of our Lord Jesus Christ. And now,
+FIRST MONTH—MASKARAM (SEPT. 8-OCT. 7) 99
+nake speed to finish our martyrdoms.”’ And straightway the
+governor commanded his soldiers to cut off the heads of ’ABA-
+pir and his sister, and they cut off their heads; and the saints
+fol. 296 1] received crowns of martyrdom in the kingdom of
+```
+
+#### `bookofsaintsofet00yait_djvu.txt` (archive id `bookofsaintsofet00yait`) — 2706604 bytes
+44682 non-empty lines. First 25:
+```
+MASTER
+NEGA  TIVE
+NO.  92-80518
+MICROFILMED  1992
+COLUMBIA  UNIVERSITY  LIBRARIES/NEW  YORK
+as  part  of  the
+"Foundations  of  Western  Civilization  Preservation  Project"
+Funded  by  the
+NATIONAL  ENDOWMENT  FOR  THE  HUMANITIES
+Reproductions  may  not  be  made  without  permission  from
+Columbia  University  Library
+COPYRIGHT  STATEMENT
+The  copyright  law  of  the  United  States  -  Title  17,  United
+States  Code  —  concerns  the  making  of  photocopies  or  other
+reproductions  of  copyrighted  material..
+Columbia  University  Library  reserves  the  right  to  refuse  to
+accept  a  copy  order  if,  in  its  judgement,  fiilfillment  of  the  order
+would  involve  violation  of  the  copyright  law.
+AUTHOR:
+TITLE:
+BOOK  OF  THE  SAINTS  OF
+THE  ETHIOPIAN  CHURCH
+PLACE:
+CAMBRIDGE
+DA  TE :
+```
+Sample from the middle:
+```
+of  the  Lord  appeared  unto  him,  and  shewed  him  a  crown  of
+light,  and  said  unto  him,  "Why  art  thou  sitting  down?  The
+fight  is  prepared,  and  the  crowns  are  ready  for  those  who  will
+fight  for  the  Name  of  Christ.  And  now,  rise  up  and  go  to  the
+city  of  ATRiB  (athribis),  and  fight  for  the  Name  of  our
+Lord  Jesus  Christ " ;  then  He  gave  him  [the  salutation  of  peace],
+and  departed  from  him.  And  straightway  Saint  Abba  john
+(ISAAC  ?)  rose  up,  and  embraced  his  father  and  mother,  and
+```
 
 ## paradise — The Paradise or Garden of the Holy Fathers (tr. E. A. Wallis Budge, 1907)
 - pinned: paradiseorgarden01anan, paradiseorgarden02anan
