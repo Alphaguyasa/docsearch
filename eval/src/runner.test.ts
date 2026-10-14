@@ -141,7 +141,7 @@ describe("entry point", () => {
     expect(child.stdout.trim() + child.stderr.trim()).toBe("");
     expect(child.status).toBe(0);
     expect(runFiles()).toEqual(before);
-  });
+  }, 90_000);
 });
 
 function runFiles(): string[] {

@@ -136,7 +136,7 @@ export interface CleanOptions {
 /** Share of a line's tokens that look like words ("him,", "“Blessed", "Za’ab"). */
 function wordShare(line: string): number {
   const tokens = line.trim().split(/\s+/);
-  const words = tokens.filter((t) => /^[“"‘'(\[]*([A-Za-z][a-z’'-]*|[A-Z][A-Z’'-]*)[.,;:!?”"’')\]]*$/.test(t)).length;
+  const words = tokens.filter((t) => /^[“"‘'([]*([A-Za-z][a-z’'-]*|[A-Z][A-Z’'-]*)[.,;:!?”"’')\]]*$/.test(t)).length;
   return words / tokens.length;
 }
 
@@ -405,13 +405,18 @@ function capsTitle(text: string): string {
   return text
     .toLowerCase()
     .replace(/[\s.,;:]+$/, "")
-    .replace(/(^|[\s(\[“"-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
+    .replace(/(^|[\s([“"-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
 }
 
 function roman(n: number): string {
   const table: [number, string][] = [[100, "C"], [90, "XC"], [50, "L"], [40, "XL"], [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
   let out = "";
-  for (const [v, s] of table) while (n >= v) (out += s), (n -= v);
+  for (const [v, s] of table) {
+    while (n >= v) {
+      out += s;
+      n -= v;
+    }
+  }
   return out;
 }
 
