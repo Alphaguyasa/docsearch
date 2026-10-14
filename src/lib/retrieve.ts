@@ -37,6 +37,12 @@ export interface RetrieveOptions {
    * nothing and calls Voyage directly — there is no cache in the request path.
    */
   embedder?: (text: string) => Promise<{ embedding: number[]; usage: EmbedUsage }>;
+  /**
+   * Restrict results to chunks tagged with ANY of these traditions
+   * (protestant | catholic | orthodox | ethiopian_orthodox). Omitted = no filter.
+   * Only sent to the database when set, so the pre-pivot schema keeps working.
+   */
+  filterTraditions?: string[];
 }
 
 export interface RetrievedChunk {
@@ -52,6 +58,10 @@ export interface RetrievedChunk {
   title: string; // document title
   filename: string;
   pageNumber: number | null;
+  /** Scripture/tradition citation, e.g. "2 Samuel 11:1-27". Null on the pre-pivot schema. */
+  ref: string | null;
+  /** Traditions this chunk is canonical/venerated in. Empty on the pre-pivot schema. */
+  traditions: string[];
   /** Cosine similarity (0..1) if the chunk was found by vector search, else null. */
   vectorScore: number | null;
   /** ts_rank if the chunk was found by keyword search, else null. */
@@ -99,6 +109,8 @@ interface MatchRow {
   document_id: string;
   content: string;
   page_number: number | null;
+  ref?: string | null;
+  traditions?: string[] | null;
   similarity: number;
 }
 interface KeywordRow {
@@ -106,6 +118,8 @@ interface KeywordRow {
   document_id: string;
   content: string;
   page_number: number | null;
+  ref?: string | null;
+  traditions?: string[] | null;
   rank: number;
 }
 interface DocMetaRow {
@@ -120,6 +134,8 @@ interface SearchHit {
   documentId: string;
   content: string;
   pageNumber: number | null;
+  ref: string | null;
+  traditions: string[];
   score: number;
   rank: number;
 }
@@ -143,9 +159,9 @@ export async function retrieve(
     const { embedding, usage } = await embedder(query);
     embedMs = performance.now() - started;
     embedTokens = usage.totalTokens;
-    return vectorSearch(embedding, searchTop);
+    return vectorSearch(embedding, searchTop, opts.filterTraditions);
   };
-  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query, searchTop);
+  const runKeyword = (): Promise<SearchHit[]> => keywordSearch(query, searchTop, opts.filterTraditions);
 
   let vector: SearchHit[] | null = null;
   let keyword: SearchHit[] | null = null;
@@ -183,6 +199,8 @@ export async function retrieve(
     title: meta.get(f.documentId)?.title ?? "(unknown)",
     filename: meta.get(f.documentId)?.filename ?? "(unknown)",
     pageNumber: f.pageNumber,
+    ref: f.ref,
+    traditions: f.traditions,
     vectorScore: f.vectorScore,
     keywordScore: f.keywordScore,
     fusedScore: f.fusedScore,
@@ -241,9 +259,15 @@ async function rpcWithRetry<T>(
   }
 }
 
+/** Only include the filter param when set, so older search functions still resolve. */
+function traditionArg(filter?: string[]): { filter_traditions?: string[] } {
+  return filter && filter.length > 0 ? { filter_traditions: filter } : {};
+}
+
 async function vectorSearch(
   embedding: number[],
   searchTop: number,
+  filterTraditions?: string[],
 ): Promise<SearchHit[]> {
   // The client is untyped (no generated DB types), so assert the row shape.
   const rows = await rpcWithRetry<MatchRow>("vector", async () =>
@@ -252,6 +276,7 @@ async function vectorSearch(
       // as a vector correctly. Verified against the live function.
       query_embedding: JSON.stringify(embedding),
       match_count: searchTop,
+      ...traditionArg(filterTraditions),
     }),
   );
   return rows.map((r, i) => ({
@@ -259,6 +284,8 @@ async function vectorSearch(
     documentId: r.document_id,
     content: r.content,
     pageNumber: r.page_number,
+    ref: r.ref ?? null,
+    traditions: r.traditions ?? [],
     score: r.similarity,
     rank: i + 1,
   }));
@@ -275,12 +302,14 @@ function toOrQuery(query: string): string {
 async function keywordSearch(
   query: string,
   searchTop: number,
+  filterTraditions?: string[],
 ): Promise<SearchHit[]> {
   // The client is untyped (no generated DB types), so assert the row shape.
   const rows = await rpcWithRetry<KeywordRow>("keyword", async () =>
     await db.rpc("keyword_chunks", {
       query_text: toOrQuery(query),
       match_count: searchTop,
+      ...traditionArg(filterTraditions),
     }),
   );
   return rows.map((r, i) => ({
@@ -288,6 +317,8 @@ async function keywordSearch(
     documentId: r.document_id,
     content: r.content,
     pageNumber: r.page_number,
+    ref: r.ref ?? null,
+    traditions: r.traditions ?? [],
     score: r.rank,
     rank: i + 1,
   }));
@@ -298,6 +329,8 @@ interface FusedChunk {
   documentId: string;
   content: string;
   pageNumber: number | null;
+  ref: string | null;
+  traditions: string[];
   vectorScore: number | null;
   keywordScore: number | null;
   fusedScore: number;
@@ -327,6 +360,8 @@ function fuse(
           documentId: hit.documentId,
           content: hit.content,
           pageNumber: hit.pageNumber,
+          ref: hit.ref,
+          traditions: hit.traditions,
           vectorScore: null,
           keywordScore: null,
           fusedScore: 0,

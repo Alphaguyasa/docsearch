@@ -1,25 +1,58 @@
 @import "tailwindcss";
 
+/*
+ * Not Alone — a candle in a church at night.
+ *
+ * Made for someone reading alone on a phone, often late. Warm parchment by
+ * day, warm dark by night; one lapis accent (the blue of Ethiopian icon
+ * painting) for things you can press, and candle gold for light. Stories are
+ * set in a reading serif; interface text stays sans.
+ *
+ * `.night` re-scopes the tokens to the dark palette, whatever the system
+ * theme: the hero is always night, so the candle has darkness to shine in.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --panel: #fafafa;
-  --accent: #d97706; /* amber — the single accent */
+  --background: #f5f0e7;
+  --foreground: #241e18;
+  --muted: #6c6258;
+  --border: #ddd3c4;
+  --panel: #ede5d8;
+  --card: #fbf8f2;
+  --accent: #27458f; /* lapis */
   --accent-fg: #ffffff;
+  --gold: #8c5b12; /* 5.1:1 on the background, so small gold labels stay readable */
+  --care: #8a3030; /* used only for crisis help */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #9ca3af;
-    --border: #262626;
-    --panel: #121212;
-    --accent: #f59e0b; /* slightly brighter amber for dark contrast */
-    --accent-fg: #1a1200;
+    --background: #100d0a;
+    --foreground: #ede5d7;
+    --muted: #a69885;
+    --border: #2d261e;
+    --panel: #181410;
+    --card: #15110d;
+    --accent: #a4b8f2;
+    --accent-fg: #0d1526;
+    --gold: #e2ac55;
+    --care: #eba5a5;
   }
+}
+
+.night {
+  --background: #0b0907;
+  --foreground: #f1e9dc;
+  --muted: #b3a48f;
+  --border: #3a3026;
+  --panel: #16120e;
+  --card: #120f0b;
+  --accent: #a4b8f2;
+  --accent-fg: #0d1526;
+  --gold: #e8b560;
+  --care: #eba5a5; /* as in dark mode: dark text on it stays readable */
+  background: var(--background);
+  color: var(--foreground);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -28,19 +61,678 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-panel: var(--panel);
+  --color-card: var(--card);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
+  --color-gold: var(--gold);
+  --color-care: var(--care);
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
+    Roboto, var(--eth-face), "Noto Sans Ethiopic", Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-reading), var(--eth-face), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-display-face), var(--eth-face), Georgia, serif;
+  --font-caps: var(--font-caps-face), var(--eth-face), Georgia, serif;
   --font-mono:
     ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas,
     monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Amharic on an English page (the footer's እርዳታ, the bilingual crisis lines)
+     uses the phone's own Ethiopic font, so English readers never download the
+     188 KB church Ethiopic face; Amharic pages switch it on. */
+  --eth-face: "Noto Sans Ethiopic", Kefa, Nyala, "Abyssinica SIL";
+}
+
+html[lang="am"] {
+  --eth-face: var(--font-ethiopic);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* The candle, still: the first thing everyone sees and all some phones see. */
+.candle-still {
+  background:
+    radial-gradient(ellipse 30% 26% at 50% 62%, rgb(255 170 80 / 0.22), transparent 70%),
+    radial-gradient(ellipse 70% 55% at 50% 64%, rgb(255 140 60 / 0.09), transparent 75%),
+    radial-gradient(circle at 30% 30%, rgb(255 200 140 / 0.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 42%, rgb(255 200 140 / 0.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 58% 22%, rgb(255 200 140 / 0.05) 0 1px, transparent 2px);
+}
+
+/* Symbols draw themselves in once, as a page is read. */
+@keyframes draw {
+  from {
+    stroke-dashoffset: 240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-in path,
+.draw-in ellipse,
+.draw-in circle {
+  stroke-dasharray: 240;
+  animation: draw 2.4s ease-out both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .draw-in path,
+  .draw-in ellipse,
+  .draw-in circle {
+    stroke-dasharray: none;
+  }
+}
+
+/* The hero painting before (or instead of) WebGL: the same candle pool, in CSS. */
+.painting-still {
+  object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 42% 58%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 42% 58%, #000 40%, transparent 100%);
+  filter: brightness(0.72) sepia(0.18);
+}
+@media (max-width: 899px) {
+  .painting-still {
+    filter: brightness(0.45) sepia(0.2);
+  }
+}
+
+/* ── Motion ─────────────────────────────────────────────────────────────── */
+
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+/* Scroll reveal: rise into place, one after another (--i sets the order). */
+[data-armed] [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  transition:
+    opacity 1s var(--ease-out) calc(var(--i, 0) * 90ms),
+    transform 1.1s var(--ease-out) calc(var(--i, 0) * 90ms);
+}
+[data-armed] [data-reveal].is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+/* Paintings unveil from the bottom, like a curtain lifting, and settle from a slight zoom. */
+.art-frame {
+  overflow: hidden;
+}
+.art-frame img {
+  transition:
+    clip-path 1.4s var(--ease-curtain) calc(var(--i, 0) * 90ms + 120ms),
+    transform 2.2s var(--ease-out) calc(var(--i, 0) * 90ms + 120ms),
+    filter 0.8s var(--ease-out);
+}
+[data-armed] [data-reveal] .art-frame img {
+  clip-path: inset(100% 0 0 0);
+  transform: scale(1.18);
+}
+[data-armed] [data-reveal].is-shown .art-frame img {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+/* Then, on hover, a slow drift closer — the eye leaning in. */
+@media (hover: hover) {
+  .group:hover .art-frame img,
+  [data-armed] [data-reveal].is-shown.group:hover .art-frame img {
+    transform: scale(1.07);
+    filter: brightness(1.08) saturate(1.05);
+    transition:
+      transform 2.4s var(--ease-out),
+      filter 0.8s var(--ease-out);
+  }
+}
+
+/* Tilt toward the pointer (set by <Tilt>). */
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.7s var(--ease-out);
+  will-change: transform;
+}
+.tilt:hover {
+  transition: transform 0.18s ease-out;
+}
+@media (hover: none) {
+  .tilt:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Candlelight on the card where the pointer is. */
+.candle-glare {
+  position: relative;
+  isolation: isolate;
+}
+.candle-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(255 196 120 / 0.16), transparent 42%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+.candle-glare:hover::after,
+.candle-glare:focus-visible::after {
+  opacity: 1;
+}
+
+/* A gilt hairline that lights up around the pointer. */
+.lit-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(232 181 96 / 0.95), transparent 60%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+.lit-border:hover::before,
+.lit-border:focus-visible::before {
+  opacity: 1;
+}
+
+/* Illuminated first letter of a story, as in a manuscript Gospel. */
+.illuminated::first-letter {
+  float: left;
+  margin: 0.08em 0.12em 0 0;
+  font-family: var(--font-caps);
+  font-size: 3.6em;
+  line-height: 0.82;
+  color: var(--gold);
+  text-shadow: 0 0 24px rgb(232 181 96 / 0.35);
+}
+
+/* Each page arrives softly. */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-in {
+  animation: page-in 0.6s var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt,
+  .tilt:hover {
+    transform: none !important;
+  }
+  .art-frame img {
+    clip-path: none !important;
+  }
+}
+
+/* A pinned story changing: the new words rise into place. */
+@keyframes story-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.story-in {
+  animation: story-in 0.9s var(--ease-out) both;
+}
+
+/* A sideways row that starts in line with the page's text column and runs off the right edge. */
+.gallery-track {
+  --gutter: max(1rem, calc((100vw - 72rem) / 2 + 1.5rem));
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
+}
+
+/* A bar pinned under the site bar moves up when the site bar tucks away. */
+.below-nav {
+  top: 3rem;
+  transition: top 0.5s var(--ease-out);
+}
+html[data-nav-hidden] .below-nav {
+  top: 0;
+}
+
+/* Numbers in headings (phone numbers, step numbers, counters) stand upright. */
+.font-display,
+.font-caps {
+  font-variant-numeric: lining-nums;
+}
+
+/* ── The composer ───────────────────────────────────────────────────────── */
+
+@property --rim {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes rim-turn {
+  to {
+    --rim: 360deg;
+  }
+}
+
+/* A 1.5px frame; while writing, a slow band of candle-gold travels round it. */
+.composer {
+  position: relative;
+  border-radius: 22px;
+  padding: 1.5px;
+  background: rgb(255 255 255 / 0.1);
+  box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.9);
+  transition: box-shadow 0.6s var(--ease-out), background-color 0.6s var(--ease-out);
+}
+.composer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--rim),
+    transparent 0deg,
+    rgb(232 181 96 / 0.2) 80deg,
+    #e8b560 150deg,
+    #fff1d2 180deg,
+    #e8b560 210deg,
+    rgb(232 181 96 / 0.2) 280deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+  animation: rim-turn 5s linear infinite;
+  pointer-events: none;
+}
+.composer.is-focused {
+  background: rgb(232 181 96 / 0.25);
+  box-shadow:
+    0 0 0 4px rgb(232 181 96 / 0.08),
+    0 30px 90px -24px rgb(232 181 96 / 0.4);
+}
+.composer.is-focused::before {
+  opacity: 1;
+}
+.composer-inner {
+  position: relative;
+}
+
+/* Send: quiet until there is something to send, then gilt. */
+.composer-send {
+  background: rgb(255 255 255 / 0.08);
+  color: rgb(241 233 220 / 0.45);
+  transition:
+    background-color 0.4s var(--ease-out),
+    color 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out),
+    transform 0.2s ease-out;
+}
+.composer.is-ready .composer-send,
+.composer.is-busy .composer-send {
+  background: #e8b560;
+  color: #0b0907;
+  box-shadow: 0 0 28px -6px rgb(232 181 96 / 0.8);
+}
+.composer.is-ready .composer-send:active {
+  transform: scale(0.95);
+}
+.composer-send:disabled {
+  cursor: default;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.composer-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: #e8b560;
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.composer-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer::before {
+    animation: none;
+  }
+}
+
+/* Bottom sheet (phone pickers). */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.sheet {
+  animation: sheet-up 0.45s var(--ease-out) both;
+}
+.sheet-backdrop {
+  animation: fade-in 0.3s ease-out both;
+}
+
+/* ── Votive prayer cards ────────────────────────────────────────────────── */
+
+.votive {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgb(232 181 96 / 0.14);
+  background:
+    radial-gradient(120% 70% at 20% 0%, rgb(255 190 110 / 0.12), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.75  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    linear-gradient(165deg, #231b12 0%, #16110c 100%);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 26px 50px -28px rgb(0 0 0 / 0.95);
+  transition:
+    transform 0.8s var(--ease-out),
+    box-shadow 0.6s var(--ease-out),
+    border-color 0.6s var(--ease-out);
+}
+/* Rest askew; straighten and lift under the pointer (tilt vars from <Tilt>). */
+.votive.tilt {
+  transform: perspective(1000px) rotate(var(--lean, 0deg)) rotateX(var(--rx)) rotateY(var(--ry));
+}
+.votive.tilt:hover,
+.votive.tilt:focus-visible {
+  transform: perspective(1000px) translateY(-8px) rotate(0deg) rotateX(var(--rx)) rotateY(var(--ry));
+  border-color: rgb(232 181 96 / 0.35);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.05) inset,
+    0 40px 70px -30px rgb(0 0 0 / 1),
+    0 0 50px -20px rgb(232 181 96 / 0.35);
+}
+
+.votive-candle {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 40px;
+}
+.votive-wax {
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+  width: 12px;
+  height: 20px;
+  border-radius: 2px 2px 3px 3px;
+  background: linear-gradient(90deg, #cdb894, #f5ead6 45%, #d9c6a2);
+}
+.votive-wax::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 5px;
+  width: 1.5px;
+  height: 5px;
+  background: #2a1d10;
+}
+.votive-flame {
+  position: absolute;
+  bottom: 22px;
+  left: 3px;
+  width: 12px;
+  height: 20px;
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  background: radial-gradient(circle at 50% 72%, #fffaf0 0 18%, #ffd27a 38%, #f19a35 68%, rgb(241 120 40 / 0) 100%);
+  box-shadow: 0 0 18px 7px rgb(255 185 90 / 0.4);
+  transform-origin: 50% 90%;
+  animation: flicker 2.6s ease-in-out infinite;
+  transition: filter 0.6s var(--ease-out);
+}
+@keyframes flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) rotate(-1deg);
+  }
+  20% {
+    transform: scale(0.94, 1.06) rotate(1.5deg);
+  }
+  45% {
+    transform: scale(1.04, 0.95) rotate(-2deg);
+  }
+  70% {
+    transform: scale(0.97, 1.08) rotate(1deg);
+  }
+}
+.votive:hover .votive-flame {
+  filter: brightness(1.2) saturate(1.1);
+  box-shadow: 0 0 26px 11px rgb(255 185 90 / 0.5);
+}
+
+/* Chosen: the flame flares, the card glows, then the story opens. */
+@keyframes flare {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.9, 2.3);
+  }
+  100% {
+    transform: scale(1.4, 1.6);
+  }
+}
+.votive.is-lit {
+  border-color: rgb(232 181 96 / 0.7);
+  box-shadow:
+    0 0 0 1px rgb(232 181 96 / 0.5),
+    0 0 80px -10px rgb(232 181 96 / 0.6);
+}
+.votive.is-lit .votive-flame {
+  animation: flare 0.5s var(--ease-out) forwards;
+  box-shadow: 0 0 40px 18px rgb(255 185 90 / 0.6);
+}
+
+@media (hover: none) {
+  .votive.tilt:active {
+    transform: rotate(0deg) scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .votive.tilt {
+    transform: none !important;
+  }
+  .votive-flame {
+    animation: none;
+  }
+}
+
+/* ── How it works: the miniature phone ──────────────────────────────────── */
+
+.mock-screen {
+  animation: story-in 0.7s var(--ease-out) both;
+}
+@keyframes mock-type {
+  0%,
+  8% {
+    clip-path: inset(0 100% 0 0);
+  }
+  70%,
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+/* The sentence writes itself line by line, then rests before starting over. */
+.mock-type {
+  animation: mock-type 4.2s steps(28, end) infinite;
+}
+@keyframes mock-press {
+  0%,
+  72% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(232 181 96 / 0);
+  }
+  80% {
+    transform: scale(0.86);
+  }
+  88% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgb(232 181 96 / 0);
+  }
+  84% {
+    box-shadow: 0 0 0 2px rgb(232 181 96 / 0.6);
+  }
+}
+.mock-send {
+  animation: mock-press 4.2s ease-out infinite;
+}
+@keyframes mock-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+}
+.mock-rise {
+  animation: mock-rise 0.9s var(--ease-out) both;
+}
+@keyframes mock-cite {
+  0%,
+  30% {
+    background: rgb(232 181 96 / 0.25);
+  }
+  40%,
+  100% {
+    background: #e8b560;
+  }
+}
+.mock-cite {
+  animation: mock-cite 3s ease-out infinite;
+}
+@keyframes mock-quote {
+  0%,
+  35% {
+    background: transparent;
+  }
+  45%,
+  100% {
+    background: rgb(232 181 96 / 0.12);
+  }
+}
+.mock-quote {
+  animation: mock-quote 3s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mock-type {
+    clip-path: none;
+  }
+}
+
+/* Paper: the prayer cards' grain, for any card that should feel handled. */
+.paper {
+  background:
+    radial-gradient(120% 60% at 20% 0%, rgb(255 190 110 / 0.07), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.75  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    var(--card);
+}
+
+/* A sideways chip row fades at its edges, hinting there is more to swipe. */
+@media (max-width: 1023px) {
+  .chip-row {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 32px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 32px), transparent 100%);
+  }
+}
+
+/* A call tile's phone icon breathes, drawing the eye without alarm. */
+@keyframes call-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(232 150 150 / 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 14px rgb(232 150 150 / 0);
+  }
+}
+.call-pulse {
+  animation: call-pulse 2.4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .call-pulse {
+    animation: none;
+  }
 }

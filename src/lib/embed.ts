@@ -116,7 +116,9 @@ export async function embedQuery(text: string): Promise<number[]> {
 export async function embedQueryDetailed(
   text: string,
 ): Promise<{ embedding: number[]; usage: EmbedUsage }> {
-  const { vectors, usage } = await embedBatch([text], "query");
+  // A reader is waiting: one short retry at most, then let search fall back
+  // to keywords (retrieve() treats a failed embed as a degraded vector branch).
+  const { vectors, usage } = await embedBatch([text], "query", QUERY_PATIENCE);
   return { embedding: vectors[0], usage };
 }
 
@@ -132,16 +134,21 @@ async function embed(texts: string[], inputType: InputType): Promise<number[][]>
   return out;
 }
 
+/** How long a live query may wait on Voyage: ingestion waits minutes, a reader must not. */
+const QUERY_PATIENCE = { maxRetries: 1, maxWaitMs: 5_000 };
+
 async function embedBatch(
   input: string[],
   inputType: InputType,
+  patience: { maxRetries: number; maxWaitMs: number } = { maxRetries: MAX_RETRIES, maxWaitMs: Infinity },
 ): Promise<{ vectors: number[][]; usage: EmbedUsage }> {
   const batchTokens = input.reduce((sum, text) => sum + countTokens(text), 0);
 
   for (let attempt = 0; ; attempt++) {
-    // Wait for BOTH a request slot and the token budget before every attempt,
-    // including retries — a retry is another request against the same limits.
-    await getLimiter().acquire(batchTokens);
+    // Ingestion waits for BOTH a request slot and the token budget before every
+    // attempt, including retries. A live query does not queue behind it: it
+    // tries at once and falls back to keyword search if Voyage says no.
+    if (patience.maxWaitMs === Infinity) await getLimiter().acquire(batchTokens);
 
     let res: Response;
     try {
@@ -159,8 +166,8 @@ async function embedBatch(
         }),
       });
     } catch (err) {
-      if (attempt >= MAX_RETRIES) throw err;
       const waitMs = backoffMs(attempt);
+      if (attempt >= patience.maxRetries || waitMs > patience.maxWaitMs) throw err;
       console.warn(
         `  [embed] network error (attempt ${attempt + 1}/${MAX_RETRIES + 1}) — ` +
           `retrying in ${Math.round(waitMs / 1000)}s`,
@@ -179,8 +186,11 @@ async function embedBatch(
       };
     }
 
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const honoured = res.status === 429 && Number.isFinite(retryAfter) && retryAfter > 0;
+    const waitMs = honoured ? retryAfter * 1000 : backoffMs(attempt);
     const retryable = res.status === 429 || res.status >= 500;
-    if (!retryable || attempt >= MAX_RETRIES) {
+    if (!retryable || attempt >= patience.maxRetries || waitMs > patience.maxWaitMs) {
       const body = await res.text().catch(() => "");
       throw new Error(
         `Voyage embeddings request failed: ${res.status} ${res.statusText}` +
@@ -191,10 +201,6 @@ async function embedBatch(
     // Honour Retry-After when present; otherwise exponential from 20s. A
     // shorter first backoff is pointless at 3 requests/min — the next call
     // would simply 429 again.
-    const retryAfter = Number(res.headers.get("retry-after"));
-    const honoured = res.status === 429 && Number.isFinite(retryAfter) && retryAfter > 0;
-    const waitMs = honoured ? retryAfter * 1000 : backoffMs(attempt);
-
     console.warn(
       `  [embed] ${res.status} (attempt ${attempt + 1}/${MAX_RETRIES + 1}) — ` +
         `waiting ${Math.round(waitMs / 1000)}s` +

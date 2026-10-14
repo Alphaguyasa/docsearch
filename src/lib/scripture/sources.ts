@@ -1,0 +1,504 @@
+/**
+ * Per-source parsing rules and the corpus builder: raw files -> chunks.
+ * I/O is limited to reading the raw files named in the manifest.
+ */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+import { unzipSync, strFromU8 } from "fflate";
+
+import { canonByCode, TRADITIONS, type Tradition } from "./canon";
+import {
+  chunkBook,
+  chunkSections,
+  cleanText,
+  sectionize,
+  toSections,
+  type CleanOptions,
+  type SectionRule,
+} from "./chunk-scripture";
+import type { Manifest } from "./manifest";
+import type { ScriptureChunk } from "./types";
+import { PERIPHERAL, parseUsfm } from "./usfm";
+
+const ALL: Tradition[] = [...TRADITIONS];
+const ETHIOPIAN_MONTHS: Record<string, string> = {
+  FIRST: "Maskaram", SECOND: "Teqemt", THIRD: "Hedar", FOURTH: "Takhsas", FIFTH: "Ter",
+  SIXTH: "Yakatit", SEVENTH: "Maggabit", EIGHTH: "Miyazya", NINTH: "Genbot", TENTH: "Sane",
+  ELEVENTH: "Hamle", TWELFTH: "Nahase", THIRTEENTH: "Pagumen",
+};
+const MONTHS =
+  /^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\b/i;
+
+interface TextRule {
+  refPrefix: string;
+  traditions: Tradition[];
+  clean: CleanOptions;
+  defaultHeading: string;
+  /** OCR sources: rule-driven sections instead of generic heading detection. */
+  sections?: SectionRule;
+  /** The text numbers its own paragraphs: refs become "§12–15" (see chunkSections). */
+  paragraphNumbers?: boolean;
+  /** Rename detected headings (exact match); "" leaves just the work's name in the ref. */
+  renameHeadings?: Record<string, string>;
+}
+
+/** Footnotes and index lines common to the OCR scans. */
+const FOOTNOTE = /^[\^*†‡§]\s?|^\d{1,2}\s+(Lit\.|Cf\.|See|Or|i\.e\.|Reading|Read)\b/;
+const INDEX_LINE = /\d+\s*,\s*\d+/;
+
+/** CCEL plain text (Schaff's Fathers): rules, separators and "[614] Luke ii. 29." footnotes. */
+const CCEL: CleanOptions = {
+  dropLines: [/^[_-]{10,}$/],
+  dropParagraphs: /^\[\d+\]\s/,
+  // Footnote calls, without leaving a space before punctuation ("wealth [12] ," -> "wealth,").
+  strip: /\s?\[\d+\]\s*(?=[,.;:?!])|\s?\[\d+\]/g,
+};
+
+export const TEXT_RULES: Record<string, TextRule> = {
+  enoch: {
+    refPrefix: "Book of Enoch",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^CHAPTER I\.$/,
+      replace: [
+        // The OCR reads "I" and "]" as "|": "from them | heard", "[of their ungodliness|".
+        [/(^|[ \t])\|(?=\s)/gm, "$1I"],
+        [/\|/g, "]"],
+        // Numerals the OCR got wrong in a way the sequence can't settle
+        // (Charles prints 92, 91, 93 in that order).
+        [/^CHAPTER LXIil\.[ \t]*$/m, "CHAPTER LXII."],
+        [/^CHAPTER XCIIl\.[ \t]*$/m, "CHAPTER XCIII."],
+        [/(^CHAPTER LXXVII\.\s*$[\s\S]*?^)CHAPTER LXXVII\./m, "$1CHAPTER LXXVIII."],
+        // The heading of chapter CII is lost in the scan.
+        [/^(1\. In those days when He hath brought a grievous fire upon you)/m, "CHAPTER CII.\n\n$1"],
+      ],
+      dropLines: [/^www\.globalgrey/, /^The Book of Enoch By R\. ?H\. Charles/, /^THE BOOK OF ENOCH$/, /^[IVXLC]+-[IVXLC]+\b/, /^[IVXLC][IVXLCxil]+\.\s/, /^Chapter [IVXLCl]+\.$/, /^ee$/],
+      // Charles's brackets mark his emendations; readers only need the words.
+      strip: /\[|\]/g,
+    },
+    defaultHeading: "Chapter I",
+    sections: { sectionStart: /^CHAPTER [IVXLCxil ]+\.?$/, name: "chapterNumeral" },
+    paragraphNumbers: true,
+  },
+  kebra_nagast: {
+    refPrefix: "Kebra Nagast",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^THE\s+GLORY\s+OF\s+KINGS$/,
+      // OCR slips in the chapter titles.
+      replace: [
+        [/KlNG/g, "KING"],
+        [/ZlON/g, "ZION"],
+        [/GlFT/g, "GIFT"],
+        [/^GLDRY/m, "GLORY"],
+        [/ROB\^L/g, "ROBEL"],
+        [/TAMR!N/g, "TAMRIN"],
+        [/R6M[&£]|RoMK/g, "ROME"],
+      ],
+      endAt: /^INDEX$/,
+      dropLines: [/^THE GLORY OF KINGS$/, /^The Queen of[- ]?Sh.ba and her Son Menyelek$/, /^PL.TE\b/, /^From Brit\./, /^Colophon$/],
+      // Page-foot notes: "1 Genesis i, 26.", "* Compare Genesis ix, 25-27."
+      dropParagraphs: /^[1-9*•†§]\s+[A-Z(]/,
+    },
+    defaultHeading: "The Glory of Kings",
+    sections: { sectionStart: /^([0-9iIl]{1,3})\s?[.,:-]\s?(.{4,})$/, name: "numberedChapter" },
+  },
+  adam_and_eve: {
+    refPrefix: "The Book of Adam and Eve",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^BOOK I\.$/,
+      endAt: /^INDEX\.?$/,
+      replace: [
+        // "CHAPTER LIIL" / "CHAPTER LXXIIL": a final I misread as L.
+        [/^(CHAPTER [IVXL ]*I)L[ \t]*$/gm, "$1I."],
+        // "0 God" is the OCR of "O God".
+        [/(^|["“\s])0\s+(?=[A-Z])/gm, "$1O "],
+      ],
+      // Page headers: "2 THE BOOK OF ADAM AND EVE. [BOOK", "i.] THE CAVE OF TREASURES. 7".
+      dropLines: [/THE BOOK OF ADAM AND EVE/, /^[ivxlI1]+\.\]\s/, /\b(CAVE|TREASURES)\b.*\d+$/],
+      // Footnotes at the page foot: "* The Ethiopic translator adds…", "f Of the week…", "1 Heb. …".
+      dropParagraphs: /^[*†‡§ft\d]{1,2}\s+\S/,
+      // Note calls: "day,f", "planted1", "heaven .4J".
+      strip: /(?<=[a-z][,.;:]?)\d{1,2}(?=[\s,.;:]|$)|(?<=[,.;:]\s*)[ft*§†](?=\s|$)|\s\.\d[A-Z]?(?=\s|$)/g,
+    },
+    defaultHeading: "Book I",
+    sections: {
+      runningContext: /^(?:\[)?BOOK (I|II|III|IV)\.?\]?$/,
+      contextLabel: (n: string) => `Book ${n}`,
+      sectionStart: /^CHAPTER [IVXLCYTxil ]+[.§ ]*$/,
+      name: "chapterNumeral",
+    },
+  },
+  miracles_of_mary: {
+    refPrefix: "Miracles of the Blessed Virgin Mary",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The translated miracles only: not the salutations, the Life of Hanna,
+      // the "magical prayers" or the Ethiopic text printed after them.
+      startAt: /^THE COVENANT OF CHRIST WITH THE BLESSED VIRGIN MARY\.$/,
+      endAt: /^SALUTATIONS TO THE MEMBERS OF THE BODY/,
+      replace: [
+        // Chapter XXXI is printed "XXX" a second time.
+        [/(^CHAPTER XXX\.[ \t]*$[\s\S]*?^)CHAPTER XXX\./m, "$1CHAPTER XXXI."],
+        [/^CHAPTER IL\.?[ \t]*$/m, "CHAPTER II."],
+      ],
+      dropLines: [
+        /[\u1200-\u137F]/, // Ethiopic lines of the plates
+        /MIRACLES OF THE BLESSED VIRGIN/,
+        /^PLATE\b/i,
+        /^[A-Z][A-Z ,'’()-]+\.\s*\d+\.?$/, // running header with page number
+        /^[IVXL]{1,4}\.\s+[A-Z][a-z]/, // plate captions: "I. The cannibal of Kemer…"
+        /^\(See page/,
+        /^THE COVENANT OF CHRIST WITH THE BLESSED VIRGIN MARY\.$/,
+      ],
+      inline: [/\[[AB] fol\.[^\]]*\]/g, /\[B\. fol\.[^\]]*\]/g],
+      dropCaptions: true,
+    },
+    defaultHeading: "Chapter I: The Covenant Of Christ With The Blessed Virgin Mary",
+    sections: { sectionStart: /^CHAPTER ([IVXLCxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
+  },
+  takla_haymanot: {
+    refPrefix: "Life of Takla Haymanot",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The Life (Budge's volume I), from the scribe's preface to the blessings at its end.
+      startAt: /^\[THE +SCRIBE’S +PREFACE\.\]$/,
+      replace: [
+        [/^CHAPTER +VIIA\.? *$/m, "CHAPTER VII."],
+        [/^CHAPTERIX *$/m, "CHAPTER IX."],
+        [/^CHAPTER +LIU\.? *$/m, "CHAPTER LIII."],
+        [/^HOWMATAEOME/m, "HOW MATALOME"],
+        [/^HOWTAKLA/m, "HOW TAKLA"],
+        [/^: +HOW/m, "HOW"],
+        [/¬[ \t]*\n\s*/g, ""], // "for¬" / "gotten"
+        [/\$aga/g, "Saga"],
+        // Title lines the OCR read in small letters.
+        ...[
+          "HOW gabra wahad persuaded matalome to put the healing power",
+          "HOW matalome had the priests from shawa and takla haymanot",
+          "takla haymanot drives an evil spirit out of a man, and his",
+          "spiritual work is so successful and so great that it becomes",
+          "proverbial IN",
+          "HOW takla haymanot went up the MOUNTAIN of dada and slew",
+        ].map((l): [RegExp, string] => [new RegExp(`^${l.split(" ").join(" +")}`, "m"), l.toUpperCase()]),
+      ],
+      dropPlates: /^PLATE\b|\(Folio \d+/i,
+      keepCapsAfter: /^CHAPTER\b/,
+      joinBrokenLines: true,
+      dropGarbage: true,
+      dropLines: [
+        /^\[THE +SCRIBE’S +PREFACE\.\]$/,
+        /[({[]\s*See\s+cha/i, // what is left of a plate caption
+        /\bflic\b/, // the black-letter "Here beginneth…" lines
+        /^[IVXL]{1,4}\.\s*[—-]/, // plate captions: "I.— Christ appears to…"
+      ],
+      // Page-foot notes: "1 Ethiopic tradition asserts…", "See Genesis Chapter V."
+      // The scan sets the note number as a stray mark: "■ He reigned…", "s The name…", "' 12 He founded…".
+      dropParagraphs: /^(([1-9*'’■•?>|]|\d{1,2}|s(?=\s+[A-Z]))\s+(?!\(Fol)\S|See\s+[A-Z][a-z]+\s+(Chapter|chap))/,
+      inline: [/\(Fol(io)?\.?\s*[^)]{0,14}\)/gi, /\[Page [^\]]{0,6}\]/gi, /\(see Plate[^)]{0,10}\)/gi],
+      // Note calls: "Adam1 begat".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9*](?=\s|$)/g,
+    },
+    defaultHeading: "The Scribe’s Preface",
+    sections: { sectionStart: /^CHAPTER ([IVXLCYxil ]+)\.?$/, name: "loneNumeral", label: "Chapter", titleEndsWithPeriod: true },
+  },
+  philoxenus: {
+    refPrefix: "Philoxenus of Mabbogh",
+    traditions: ALL,
+    clean: {
+      // Volume II, the English translation, from the Prologue to the printer's mark.
+      startAt: /^NOW\s+THE\s+FIRST\s+DISCOURSE\s+IS\s+BY\s+THE/,
+      endAt: /^PRINTED\s+BY\s+W\.\s+DRUGULIN/,
+      replace: [
+        // Each discourse opens "[P. 26] THE SECOND DISCOURSE: WHICH TEACHETH…" over many
+        // lines of capitals; the scan's page marks tell the headings apart.
+        ...(
+          [
+            ["26", "II", "On Faith"],
+            ["52", "III", "On Faith"],
+            ["74", "IV", "On Faith and Simplicity"],
+            ["I20", "V", "On Simplicity"],
+            ["159", "VI", "On the Fear of God"],
+            ["191", "VII", "On the Fear of God"],
+            ["222", "VIII", "On Poverty"],
+            ["257", "IX", "On Poverty"],
+            ["353", "X", "On the Lust of the Belly"],
+            ["420", "XI", "On Abstinence"],
+            ["494", "XII", "On Fornication"],
+            ["551", "XIII", "On Fornication"],
+          ] as const
+        ).map(([page, n, title]): [RegExp, string] => [
+          new RegExp(`^\\[[Pp][-.,]?\\s*${page}[\\]I]?\\s+THE\\s+\\w+\\s+DISCOURSE[\\s\\S]*?\\.[ \\t]*$`, "m"),
+          `DISCOURSE ${n}.\n\n${title.toUpperCase()}.`,
+        ]),
+        [/^WHICH\s+Is\^ON\s+SIMPLICITY\.\s*$/m, ""],
+      ],
+      keepCapsAfter: /^DISCOURSE [IVX]+\.$/,
+      joinBrokenLines: true,
+      dropGarbage: true,
+      dropLines: [
+        /^NOW\s+THE\s+FIRST\s+DISCOURSE/,
+        /^GRACE\s+OF\s+OUR\s+LORD\s+THE\s+PROLOGUE/,
+        /^TO\s+ALL\s+THIS\s+VOLUME\.$/,
+        /^\S{0,4}\s*the\s+\w+\s+discourse\.?$/i, // running header in small letters
+        /^[A-Za-z]{1,2}-?$/, // a stray letter from the page edge
+        /^[IVXL]{1,5}\.$/,
+      ],
+      // Page-foot notes ("^ Hebrews ii. 17.", "' A reads…", "St. Matthew ix. 17.") and the "Here endeth…" colophons.
+      dropParagraphs: /^([\^'’*•]|\d\s)|^Here\s+endeth|^\W{0,2}\s*(J\s+)?(St\.\s+)?([1-3I]\s+)?[A-Z][a-z]+\.?\s+[ivxlcIVXL]+[.,%](\s*[\dil]|\s*$)/,
+      inline: [/\[p\.?\s*[0-9Il]{1,3}\]/gi],
+      // Note calls: "saying,' that", "doers.' For".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9'*^](?=\s|$)/g,
+    },
+    defaultHeading: "Discourse I: The Prologue",
+    sections: { sectionStart: /^DISCOURSE ([IVX]+)\.$/, name: "loneNumeral", label: "Discourse", titleEndsWithPeriod: true },
+  },
+  baralam: {
+    refPrefix: "Baralam and Yewasef",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      // The translated story, from its first heading to the colophon.
+      startAt: /^\[The History of Baral.m and Y.w.s.f\.\]$/,
+      endAt: /^COLOPHON$/,
+      replace: [
+        // Headings wrapped over two or three lines: "[How King Wadägös thanked his gods…" / "…as to his future.]".
+        [/^(\[(?:How|The|Baral|Y.w)[^\]|\n]*)\n([^\]|\n]*\n)?([^\]|\n]*[\]|)]\.?[ \t]*)$/gm, "$1 $2$3"],
+        [/^(\[(?:How|The)[^\]|\n]*) ([^\]|\n]*)\n/gm, "$1 $2 "],
+        [/^\|\s*Y.w.scf"s farewell/m, "[Yéwásef’s farewell"],
+        [/as to his Suture/, "as to his future"],
+        [/become\s+@\s+Christian/, "become a Christian"],
+        [/granted his sows request/, "granted his son’s request"],
+        // One spelling for the names the OCR reads with stray accents.
+        [/\bY(&|[eé])w[^\s,.;:’'"]{2,4}[fé]\b/g, "Yéwásef"],
+        [/\bN[äáa]k[öóo]r\b/g, "Nákór"],
+        [/\bJor(giveness|th|ms?)\b/g, "for$1"],
+        [/Baral[äa]m\b/g, "Baralám"],
+        [/\bWad[äáa]g[öóo]s\b/g, "Wadágós"],
+        [/\bZard[äáa]n\b/g, "Zardán"],
+        [/ à last blessing/, " a last blessing"],
+      ],
+      dropLines: [
+        /^B\.\s*\S{0,3}\s*\d*$/, // printer's signature marks: "B. 9"
+        /^\[?\s*[\dixvlc]{1,6}\s*[\]|)}]?$/i, // page numbers: "[42]", "[ cxxi ]"
+      ],
+      // Page-foot notes: "! Ephesians vi. 12.", "1 Psalm cxlviii. 5.", "* See the Introduction…".
+      dropParagraphs: /^([!*†?]|\d\s+[A-Z]|\d\s+(Le|I\.\s*e)\.)/,
+      inline: [/\s?\[p\.\s*\d+\]/g],
+      // Note calls: "unto him,1 and", "salvation.? And".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9!?*](?=\s|$)(?<![.?!]\?)/g,
+    },
+    defaultHeading: "The History of Baralam and Yewasef",
+    sections: { sectionStart: /^[[|]\s*((How|The|Baral|Y.w)[^\]|)]*?)\.?\s*[\]|)]\.?$/, name: "contextLine", titleGroup: 1 },
+  },
+  jubilees: {
+    refPrefix: "Book of Jubilees",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      startAt: /^Prologue$/,
+      endAt: /^INDEX$/,
+      dropLines: [/THE BOOK OF JUBILEES/, /^\([ivxl]+\.\s*\d/],
+      // Page-foot notes: "1 The effect of a solar year…", "• For 33-34 cf. 1 Enoch…", "' A lunar year…".
+      dropParagraphs: /^[1-9*•'’■>§†]{1,2}\s+\S/,
+      // Note calls: "world,3", "feasts.1", "soon.*", "days l of", "of 2 their".
+      strip: /(?<=[A-Za-z][.,;:!?"”)\]]{0,2})[1-9*•§](?=\s|$)|(?<=\s)[1-9l*•§](?=\s)/g,
+    },
+    defaultHeading: "Prologue",
+    sections: { sectionStart: /^([IVXLl]+)\.[1-9*]?\s+(?=[A-Z])/, name: "romanChapterStart" },
+  },
+  ephrem: {
+    refPrefix: "Ephrem the Syrian",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Three Homilies\.$/,
+      endAt: /^Aphrahat\.$/,
+      dropLines: [...CCEL.dropLines!, /^Three Homilies\.$/],
+    },
+    defaultHeading: "Three Homilies",
+    sections: { sectionStart: /^On (Our Lord|Admonition and Repentance|the Sinful Woman)\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+  },
+  aphrahat: {
+    refPrefix: "Aphrahat",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Letter of an Inquirer\.$/,
+      endAt: /^Indexes$/,
+      dropLines: [...CCEL.dropLines!, /^The "Demonstrations" of Aphrahat\.$/],
+    },
+    defaultHeading: "Letter of an Inquirer",
+    sections: { sectionStart: /^(Letter of an Inquirer\.|Demonstration [IVXL]+\.--.+)$/, name: "contextLine" },
+    paragraphNumbers: true,
+  },
+  cyril_repentance: {
+    refPrefix: "Cyril of Jerusalem",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^Lecture II\.$/,
+      endAt: /^Lecture III\.$/,
+      dropLines: [...CCEL.dropLines!, /^On Repentance and Remission of Sins/],
+    },
+    defaultHeading: "Lecture II",
+    sections: { sectionStart: /^Lecture II\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+    renameHeadings: { "Lecture II": "Catechetical Lecture II, On Repentance" },
+  },
+  chrysostom_theodore: {
+    refPrefix: "John Chrysostom",
+    traditions: ALL,
+    clean: {
+      ...CCEL,
+      startAt: /^an exhortation to theodore after his fall\.$/,
+      endAt: /^St\. Chrysostom:$/,
+      dropLines: [...CCEL.dropLines!, /^an exhortation to theodore after his fall\.$/],
+    },
+    defaultHeading: "Letter I",
+    sections: { sectionStart: /^Letter (I|II)\.$/, name: "contextLine" },
+    paragraphNumbers: true,
+    renameHeadings: { "Letter I": "Letter to Theodore after his Fall", "Letter II": "Second Letter to Theodore" },
+  },
+  antony: {
+    refPrefix: "Athanasius, Life of Antony",
+    traditions: ALL,
+    // The dedicatory preface is skipped: the numbered Life starts at §1.
+    clean: { ...CCEL, startAt: /^1\. Antony you must know/, endAt: /^Introduction to Ad Episcopos/ },
+    defaultHeading: "",
+    paragraphNumbers: true,
+  },
+  isaac: {
+    refPrefix: "Isaac of Nineveh",
+    traditions: ALL,
+    clean: {
+      startAt: /^SIX TREATISES ON THE BEHAVIOUR OF/,
+      endAt: /^REGISTER$/,
+      replace: [[/^EX[ \t]*$/m, "IX"], [/(^|\s)\|(?=\s)/gm, "$1I"]],
+      dropLines: [
+        // Page headers: the treatise title cut short with "ETC." and a page number, often misread.
+        /\b(ETC|EIC|FTC|EC|HEC|SUC)\b[.,]?\s*[^a-z]*$/,
+        /^(SIX TREATISES ON THE BEHAVIOUR OF|EXCELLENCE\b)/,
+      ],
+      dropParagraphs: /^[1-9*]\)\s/,
+      strip: /\s?[1-9]\)(?=[\s,.;:]|$)/g,
+    },
+    defaultHeading: "Treatise I: Six Treatises on the Behaviour of Excellence",
+    sections: { sectionStart: /^([IVXLCxil]{1,7})$/, name: "loneNumeral", label: "Treatise" },
+  },
+  confessions: {
+    refPrefix: "Confessions",
+    traditions: ALL,
+    clean: { startAt: /^BOOK I$/, endAt: /^\*\*\* END OF THE PROJECT GUTENBERG/ },
+    defaultHeading: "BOOK I",
+  },
+  lausiac: {
+    refPrefix: "Lausiac History",
+    traditions: ALL,
+    clean: {
+      startAt: /^PROLOGUE\b/,
+      dropLines: [/^[\dIl]+\s+THE LAUSIAC HISTORY$/i, /^THE LAUSIAC HISTORY$/i, FOOTNOTE, INDEX_LINE],
+      inline: [/\[\d+\]\s*/g],
+    },
+    defaultHeading: "Prologue",
+    // Right-hand running header: chapter title + page number.
+    sections: { runningTitle: /^([A-Z][A-Z .,'’&()-]{3,}?)[\s.•·-]*\d{1,3}$/ },
+  },
+  paradise: {
+    refPrefix: "Paradise of the Holy Fathers",
+    traditions: ["catholic", "orthodox", "ethiopian_orthodox"],
+    clean: {
+      dropLines: [/par[ao]bise|paradise/i, /^contents\b/i, FOOTNOTE, INDEX_LINE],
+    },
+    defaultHeading: "Introduction",
+    // Blackletter chapter lines OCR badly; name each chapter by its opening words.
+    sections: { sectionStart: /^Chapter\b/i, name: "firstWords" },
+  },
+  synaxarium: {
+    refPrefix: "Ethiopian Synaxarium",
+    traditions: ["ethiopian_orthodox"],
+    clean: {
+      dropLines: [
+        /^[#\d\s]*THE ETHIOPIC SYNAXARIUM$/i,
+        /^(SON )?AND THE HOLY GHOST,? ONE GOD\.?$/i,
+        /^\d+\s+THE BOOK OF THE SAINTS/i,
+        FOOTNOTE,
+        INDEX_LINE,
+      ],
+      inline: [/\[fol\.[^\]]*\]/gi],
+    },
+    defaultHeading: "Preface",
+    // Each day opens with the Trinitarian invocation; the month comes from the running header.
+    sections: {
+      // The ordinal survives OCR; the small-caps month name does not.
+      runningContext:
+        /^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\b/i,
+      contextLabel: (ordinal: string) => ETHIOPIAN_MONTHS[ordinal.toUpperCase()] ?? ordinal,
+      sectionStart: /^(\[fol[^\]]*\]\s*)?IN THE NAME OF THE FATHER/i,
+      name: "contextFirstWords",
+    },
+  },
+};
+
+export interface BuildResult {
+  chunks: ScriptureChunk[];
+  skippedBooks: string[];
+}
+
+/** Build every chunk for one manifest entry. */
+export function buildSource(rawDir: string, manifest: Manifest, sourceId: string): BuildResult {
+  const entry = manifest.entries.find((e) => e.id === sourceId);
+  if (!entry) throw new Error(`build: ${sourceId} not in manifest`);
+
+  if (entry.format === "usfm-zip") {
+    const canon = canonByCode();
+    const chunks: ScriptureChunk[] = [];
+    const skippedBooks: string[] = [];
+    for (const f of entry.files) {
+      const files = unzipSync(readFileSync(join(rawDir, sourceId, f.name)));
+      const names = Object.keys(files).filter((n) => /\.(usfm|sfm)$/i.test(n)).sort();
+      for (const name of names) {
+        const book = parseUsfm(strFromU8(files[name]));
+        const info = canon.get(book.code);
+        if (!info) {
+          if (PERIPHERAL.has(book.code)) {
+            skippedBooks.push(book.code);
+            continue;
+          }
+          throw new Error(`build: ${name} has book code ${book.code}, not in data/canon.json`);
+        }
+        if (info.skip) {
+          skippedBooks.push(book.code);
+          continue;
+        }
+        chunks.push(
+          ...chunkBook(book.verses, {
+            sourceId,
+            code: book.code,
+            bookName: info.name,
+            traditions: info.traditions,
+          }),
+        );
+      }
+    }
+    return { chunks, skippedBooks };
+  }
+
+  const rule = TEXT_RULES[sourceId];
+  if (!rule) throw new Error(`build: no text rule for ${sourceId}`);
+  const lines = entry.files.flatMap((f) =>
+    cleanText(readFileSync(join(rawDir, sourceId, f.name), "utf8"), rule.clean),
+  );
+  const sections = (
+    rule.sections ? sectionize(lines, rule.sections, rule.defaultHeading) : toSections(lines, rule.defaultHeading)
+  ).map((s) => (rule.renameHeadings && s.heading in rule.renameHeadings ? { ...s, heading: rule.renameHeadings[s.heading] } : s));
+  const chunks = chunkSections(sections, {
+    sourceId,
+    title: entry.title,
+    refPrefix: rule.refPrefix,
+    traditions: rule.traditions,
+    paragraphNumbers: rule.paragraphNumbers,
+  });
+  return { chunks, skippedBooks: [] };
+}

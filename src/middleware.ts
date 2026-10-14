@@ -29,16 +29,38 @@ function safeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
+/** Upload / document-management routes from the original DocSearch app. */
+const DOCUMENT_ROUTES = /^\/(documents|api\/upload|api\/process|api\/documents)(\/|$)/;
+
+/** Header carrying a ?lang=en|am choice from the URL to the server components. */
+export const LANG_HEADER = "x-not-alone-lang";
+
 export function middleware(req: NextRequest): NextResponse {
+  // ?lang=am / ?lang=en gives every page a language-specific address, so search
+  // engines (which carry no cookie) can index the Amharic pages too.
+  const q = req.nextUrl.searchParams.get("lang");
+  const pass = () => {
+    if (q !== "en" && q !== "am") return NextResponse.next();
+    const headers = new Headers(req.headers);
+    headers.set(LANG_HEADER, q);
+    return NextResponse.next({ request: { headers } });
+  };
+
+  // The scripture corpus is curated and ingested by CI; uploading arbitrary
+  // PDFs into it (and paying to embed them) is off unless explicitly enabled.
+  if (process.env.SHOW_DOCUMENTS !== "1" && DOCUMENT_ROUTES.test(req.nextUrl.pathname)) {
+    return new NextResponse("Not found", { status: 404 });
+  }
+
   const password = process.env.APP_PASSWORD;
-  if (!password) return NextResponse.next();
+  if (!password) return pass();
 
   const header = req.headers.get("authorization") ?? "";
   if (header.startsWith("Basic ")) {
     try {
       const decoded = atob(header.slice("Basic ".length));
       const supplied = decoded.slice(decoded.indexOf(":") + 1);
-      if (safeEqual(supplied, password)) return NextResponse.next();
+      if (safeEqual(supplied, password)) return pass();
     } catch {
       // Malformed header — fall through to the challenge.
     }

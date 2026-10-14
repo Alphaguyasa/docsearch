@@ -29,6 +29,11 @@ name: eval
 
 on:
   pull_request:
+    # The paper-search harness grades questions about the original PDF corpus.
+    # Not Alone (pivot/scripture) serves a scripture corpus from the same
+    # secrets, so these questions cannot pass there; it has its own eval in
+    # scripture-eval.yml.
+    branches: [main]
     paths:
       - "src/lib/retrieve.ts"
       - "src/lib/embed.ts"

@@ -1,0 +1,8 @@
+outcome=success at 2026-09-30T16:40:11Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/36745796404
+
+> docsearch@0.1.0 scripture:ingest
+> tsx scripts/ingest-scripture.ts --max-minutes 320
+
+built 9264 chunks across 96 documents
+done 9264, to embed 0, stale 0
+finished: 9264/9264

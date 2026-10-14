@@ -1,0 +1,78 @@
+name: scripture-eval
+
+# Evaluates the scripture app against eval/scripture-golden.json and commits
+# eval/scripture-results.md. Runs automatically when ingestion reports
+# completion (the ingest workflow pushes ingest-progress.json on every run;
+# this job exits early until that file says complete), whenever the golden
+# set or the eval script changes, and when corpus/scripture/eval-trigger is
+# touched.
+
+on:
+  push:
+    branches: [pivot/scripture]
+    paths:
+      - "corpus/scripture/ingest-progress.json"
+      - "eval/scripture-golden.json"
+      - "scripts/scripture-eval.ts"
+      - ".github/workflows/scripture-eval.yml"
+      # Touch to re-run the eval by hand: workflow_dispatch only works for
+      # workflows on the default branch (same convention as deploy-trigger).
+      - "corpus/scripture/eval-trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: scripture-eval
+  cancel-in-progress: true
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Only after ingestion is complete
+        id: gate
+        run: |
+          if node -e "process.exit(require('./corpus/scripture/ingest-progress.json').complete === true ? 0 : 1)"; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Ingestion not complete yet — skipping."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm ci
+      - name: Evaluate
+        id: eval
+        if: steps.gate.outputs.ready == 'true'
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+          GENERATION_PROVIDER: gemini
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm run scripture:eval -- --generate 10
+      - name: Commit results and comment on the PR
+        if: steps.gate.outputs.ready == 'true' && always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f eval/scripture-results.md ] || { echo "no results file"; exit 1; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eval/scripture-results.md
+          git diff --cached --quiet || { git commit -m "chore(eval): scripture eval results [scripture-eval]"; for i in 1 2 3; do git push && break; git pull --rebase -q; done; }
+          PR=$(gh pr list --head pivot/scripture --json number --jq '.[0].number')
+          [ -n "$PR" ] && gh pr comment "$PR" --body "Scripture eval (${{ steps.eval.outcome }}): $(head -n 5 eval/scripture-results.md | tail -n 2) — full results in \`eval/scripture-results.md\`." || true
+      - name: Fail if gates failed
+        if: steps.eval.outcome == 'failure'
+        run: exit 1
