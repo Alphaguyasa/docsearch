@@ -40,5 +40,10 @@
 - The Next.js 15.5.27 upgrade was interrupted: Claude Code killed the npm install
   because the PC ran low on memory. Still ROADMAP item 0, first for the next run.
 
+- PR #100 merged (tag v2026-10-14-3). On `main`: deploy-not-alone **succeeded** (first
+  production release from main), fetch-scripture, scripture-eval and ci succeeded.
+  ingest-scripture **failed at checkout**: the `INGEST_PAT` secret is rejected. No data
+  lost (9264/9264 chunks already embedded). Added as ROADMAP 0b and NEEDS_APPROVAL #6.
+
 **Next run:** ROADMAP item 0 (Next.js 15.5.27 security patch), then item 1 (make
 "Oriental Orthodox" a real tradition filter).
