@@ -5,19 +5,6 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
-7. **A new Vercel project fails on every PR and blocks merges (2026-10-15).** PR #102
-   (critical Next.js security patch) has a failing commit status from Vercel project
-   `alpha-ed50/docsearch` (not the production `not-alone` project, which deploys from
-   `deploy-not-alone.yml`). It first appeared today; PRs #97–#101 had no such status.
-   Local check: `next build` with no env vars fails the same way on `main` and on the
-   PR ("Invalid environment configuration": SUPABASE_URL, VOYAGE_API_KEY…), so it is
-   almost certainly that project missing env vars, not the patch. The run can't read
-   Vercel logs and the merge policy forbids bypassing a failed check, so PR #102 is
-   **not merged**. Options (free): (a) disconnect the Git integration of
-   `alpha-ed50/docsearch` in Vercel (or delete that old project); (b) tell the run this
-   status may be ignored; (c) merge PR #102 yourself. Production still runs next 15.5.21
-   with the critical RCE advisories until #102 is merged.
-
 1. **Amharic Bible (1962) is not public domain.** `data/bible-am.json` is used under the
    Bible Society of Ethiopia's non-commercial permission. The new rule says public-domain
    or openly licensed only. Options: (a) keep it as a documented exception (it's what
@@ -38,13 +25,13 @@ decided, move it to "Decided" with the date and the answer.
    `NEEDS REVIEW` items in `data/canon.json` and a sample of answers; rotate the Supabase
    service_role key.
 
-6. **`INGEST_PAT` secret no longer works** (GitHub rejects it). Nothing is broken today,
-   since the corpus is fully ingested, and ROADMAP item 0b removes the need for it. If
-   you'd rather keep the PAT: create a fine-grained token (free) with Contents:
-   read/write on Alphaguyasa/docsearch and paste it into the repo secret `INGEST_PAT`.
-   Runs never change secrets themselves.
-
 ## Decided
+
+- 2026-10-15: **Old Vercel project `alpha-ed50/docsearch`** (docsearch-sand.vercel.app)
+  failed a preview on every PR. Alpha disconnected its Git integration and approved
+  merging PR #102 past that failing status.
+- 2026-10-15: **`INGEST_PAT` no longer needed.** ingest-scripture now chains with the
+  default GITHUB_TOKEN (ROADMAP 0b). The secret can be deleted whenever convenient.
 
 - 2026-10-14: **Workflows on main approved.** Every push to `main` deploys; the fetch,
   ingest and eval bots commit their bookkeeping files to `main`.

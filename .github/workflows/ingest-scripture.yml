@@ -3,10 +3,11 @@ name: ingest-scripture
 # Embeds the scripture corpus into the not-alone-scripture Supabase project.
 #
 # RESUMABLE AND SELF-CHAINING. Each run embeds until ~320 min, then records
-# progress in corpus/scripture/ingest-progress.json and pushes it with
-# INGEST_PAT. That push is what starts the next run (pushes made with the
-# default GITHUB_TOKEN never trigger workflows, by GitHub design). Scheduled
-# (cron) triggers are not used because they only run on the default branch.
+# progress in corpus/scripture/ingest-progress.json, pushes it with the
+# default GITHUB_TOKEN, and dispatches the next run with `gh workflow run`.
+# (A GITHUB_TOKEN push never triggers workflows, by GitHub design, but a
+# workflow_dispatch made with it does. This replaced the INGEST_PAT push,
+# which GitHub started rejecting on 2026-10-14.)
 #
 # Stops chaining when everything is embedded or after MAX_CONTINUATIONS runs.
 # Opens a GitHub issue on completion or when it gives up — that is the
@@ -25,6 +26,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write # dispatch the next chained run
 
 concurrency:
   group: ingest-scripture
@@ -39,8 +41,8 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        id: checkout
         with:
-          token: ${{ secrets.INGEST_PAT }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
@@ -74,7 +76,9 @@ jobs:
           TAIL=$(tail -n 25 ingest.log 2>/dev/null | sed 's/%/%25/g' | tr '\n' '|' | cut -c1-3500)
           if [ "${{ steps.ingest.outcome }}" = "success" ]; then echo "::notice title=ingest tail::$TAIL"; else echo "::error title=ingest tail::$TAIL"; fi
       - name: Record progress, chain, notify
-        if: always()
+        # Without a checkout there is no repo to record into; the failed
+        # checkout step is already the error worth reading.
+        if: always() && steps.checkout.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OUTCOME: ${{ steps.ingest.outcome }}
@@ -100,7 +104,9 @@ jobs:
             fi
           }
 
+          CHAIN=1
           if [ "$OUTCOME" = "success" ] && [ "$REMAINING" = "0" ]; then
+            CHAIN=0
             echo "{\"complete\": true, \"total\": $TOTAL, \"continuation\": $PREV}" > $PROG
             open_issue "Scripture ingestion complete — $TOTAL chunks" \
               "All $TOTAL chunks are embedded in the not-alone-scripture database. Run: $RUN_URL"
@@ -135,7 +141,15 @@ jobs:
             git add $PROG corpus/scripture/ingest-last.log
             if git diff --cached --quiet; then echo "progress unchanged — not chaining"; exit 0; fi
             git commit -q -m "chore(ingest): progress $DONE/$TOTAL [ingest-scripture]"
-            if git push -q origin HEAD:main; then echo "progress pushed — next run chained"; exit 0; fi
+            if git push -q origin HEAD:main; then
+              if [ "$CHAIN" = "1" ]; then
+                gh workflow run ingest-scripture.yml --ref main
+                echo "progress pushed — next run dispatched"
+              else
+                echo "progress pushed — ingestion complete, not chaining"
+              fi
+              exit 0
+            fi
             echo "push rejected (attempt $attempt), retrying on the new tip"
             sleep $((attempt * 5))
           done

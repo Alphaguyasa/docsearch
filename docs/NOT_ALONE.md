@@ -37,7 +37,7 @@ church books are under copyright.
 | Workflow | Trigger | What it does |
 |---|---|---|
 | `fetch-scripture.yml` | changes to sources/parsers | Downloads the public-domain corpus, commits `manifest.json`, `report.md`, `chunks-report.md` |
-| `ingest-scripture.yml` | changes to ingest code, or its own progress push | Embeds into Supabase for up to 320 min per run, then chains the next run. Opens an issue on completion. |
+| `ingest-scripture.yml` | changes to ingest code, or a dispatch from its previous run | Embeds into Supabase for up to 320 min per run, then chains the next run. Opens an issue on completion. |
 | `scripture-eval.yml` | ingestion complete, or golden-set changes | Runs `eval/scripture-golden.json`, commits `eval/scripture-results.md`, comments on the PR |
 
 ## Environment (Vercel project)

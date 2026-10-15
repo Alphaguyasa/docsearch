@@ -8,21 +8,6 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Open
 
-0. **[P0, S] Upgrade Next.js 15.5.21 → 15.5.27 (security).** `npm audit` reports two
-   critical unauthenticated RCE advisories (GHSA-p293-qw3h-jr36, GHSA-2xp9-vwfh-vxw4,
-   fixed in 15.5.24) and two cache-poisoning advisories (fixed in 15.5.27). It's a patch
-   upgrade that also lifts the bundled sharp/postcss. Remaining audit items (vitest
-   moderate, nanoid, source-map-js) go to item 10.
-   *2026-10-15: PR #102 open, CI green, not merged: blocked by a failing Vercel status
-   from project alpha-ed50/docsearch (NEEDS_APPROVAL #7).*
-0b. **[P1, S] Make ingestion work without `INGEST_PAT`.** `ingest-scripture.yml` checks
-   out with `secrets.INGEST_PAT`, which GitHub now rejects ("could not read Username",
-   run 38589684822, 2026-10-14). All 9264 chunks are already embedded, so nothing is lost
-   today, but no new book can be ingested (blocks item 4). Fix without touching secrets:
-   check out with the default `GITHUB_TOKEN`, push progress with it, and chain the next
-   run with `gh workflow run ingest-scripture.yml --ref main` (GITHUB_TOKEN can dispatch
-   workflows; it can't trigger them by push). Needs `permissions: actions: write`. Also
-   make the "Record progress" step exit cleanly when checkout failed, instead of crashing.
 1. **[P0, S] Make "Oriental Orthodox" a real filter.** Today the default picker choice
    `all` sends no tradition filter, so it means "everything in the database". Once
    Western books return (item 4), they would appear under the label "Oriental Orthodox".
@@ -65,6 +50,9 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
     cache them, so builds stay fast and don't time out on Vercel.
 
 ## Done
+
+- 2026-10-15: Item 0b. ingest-scripture chains with GITHUB_TOKEN + workflow dispatch; no INGEST_PAT.
+- 2026-10-15: PR #102. Next.js 15.5.21 → 15.5.27, critical RCE advisories fixed (tag v2026-10-15-1).
 
 - 2026-10-14: Data and deploy workflows run from `main`; old eval.yml manual-only (approved by Alpha).
 - 2026-10-14: PR #99. Setup: CI, lint, project-rule tests, memory files (tag v2026-10-14-2).
