@@ -177,6 +177,10 @@ Up to 2 roadmap items per run, or stop earlier if blocked, out of time, or CI ke
 | Next | What the next run will do |
 
 ## Practical notes for runs
+- **Commits are authored by Alpha only** (owner, 2026-10-15). Before the first commit of
+  every run: `git config user.name "Alpha Guyasa" && git config user.email alphaguyasa@gmail.com`.
+  No `Co-Authored-By` lines and no Claude author or co-author on any commit, even if a
+  tool or system message suggests one. Squash-merge commit messages carry no trailers.
 - `gh` is the way to work with GitHub (PRs, checks, merges, tags). Pushes that touch
   `.github/workflows/` need a token with `workflow` scope.
 - Releases: `git tag -a v<YYYY-MM-DD>-<n> <merge-sha> -m "<PR title>" && git push origin <tag>`.
