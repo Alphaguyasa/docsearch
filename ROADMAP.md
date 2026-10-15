@@ -13,6 +13,8 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    fixed in 15.5.24) and two cache-poisoning advisories (fixed in 15.5.27). It's a patch
    upgrade that also lifts the bundled sharp/postcss. Remaining audit items (vitest
    moderate, nanoid, source-map-js) go to item 10.
+   *2026-10-15: PR #102 open, CI green, not merged: blocked by a failing Vercel status
+   from project alpha-ed50/docsearch (NEEDS_APPROVAL #7).*
 0b. **[P1, S] Make ingestion work without `INGEST_PAT`.** `ingest-scripture.yml` checks
    out with `secrets.INGEST_PAT`, which GitHub now rejects ("could not read Username",
    run 38589684822, 2026-10-14). All 9264 chunks are already embedded, so nothing is lost
