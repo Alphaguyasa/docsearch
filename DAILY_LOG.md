@@ -47,3 +47,20 @@
 
 **Next run:** ROADMAP item 0 (Next.js 15.5.27 security patch), then item 1 (make
 "Oriental Orthodox" a real tradition filter).
+
+## 2026-10-15: run 2 (scheduled)
+
+- Main CI green at start. Model check: Opus 5.5 is the newest Opus; the run is on it.
+  No switch needed (Fable not used, per policy).
+- ROADMAP 0: PR #102 upgrades next 15.5.21 → 15.5.27. No criticals left in
+  `npm audit --omit=dev`; remaining highs (postcss inside next, sharp, nanoid,
+  source-map-js) stay in item 10. Local: lint 0 errors, typecheck, npm test 237/237,
+  vitest 339/339, build OK. GitHub CI green.
+- **Blocked:** a Vercel commit status from project `alpha-ed50/docsearch` fails on the
+  PR (new today; not the production project). Same failure reproduces on `main` code
+  when env vars are missing. Not merged per MERGE POLICY. NEEDS_APPROVAL #7.
+- ROADMAP 0b (ingest without INGEST_PAT) not started: one branch per run, and it would
+  hit the same Vercel status. Plan stays as written in ROADMAP.
+- Note: vitest needs CI's dummy env vars locally (runner.test imports env.ts).
+
+**Next run:** if #7 is resolved, merge #102 and tag; then item 0b, then item 1.
