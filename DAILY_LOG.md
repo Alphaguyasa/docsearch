@@ -63,4 +63,17 @@
   hit the same Vercel status. Plan stays as written in ROADMAP.
 - Note: vitest needs CI's dummy env vars locally (runner.test imports env.ts).
 
-**Next run:** if #7 is resolved, merge #102 and tag; then item 0b, then item 1.
+**Later the same day (Alpha in the session)**
+- Alpha confirmed the failing project was the old `alpha-ed50/docsearch`
+  (docsearch-sand.vercel.app), disconnected its Git integration, and approved merging
+  #102 past its status. #102 squash-merged as 5921ad3; ci and deploy-not-alone on main
+  succeeded, so production runs next 15.5.27.
+- Tag `v2026-10-15-1` could not be pushed from the cloud session (the git proxy only
+  allows the session branch; the tags API is blocked too). Alpha to create it, or the
+  next run with `gh`.
+- ROADMAP 0b: ingest-scripture checks out with GITHUB_TOKEN, chains with
+  `gh workflow run ... --ref main` (`actions: write`), and skips the progress step
+  when checkout failed. tests/ingest-workflow.test.ts pins it. Not exercised for real
+  until the next ingest run (it triggers on the workflow change when merged).
+
+**Next run:** item 1 (make "Oriental Orthodox" a real tradition filter), then item 2.
