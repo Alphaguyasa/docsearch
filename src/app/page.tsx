@@ -6,6 +6,7 @@ import { TRADITION_KEY, TRADITION_OPTIONS, type TraditionChoice } from "@/app/tr
 import type { UiSource } from "@/app/types";
 import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 import { peopleFor } from "@/lib/scripture/people-for";
+import { DEFAULT_TRADITION, filterFor, savedChoice } from "@/lib/scripture/tradition-choice";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 
 import { AnswerView } from "./components/AnswerView";
@@ -39,7 +40,7 @@ function extractCited(text: string): number[] {
 export default function Home() {
   const { t } = useT();
   const [question, setQuestion] = useState("");
-  const [tradition, setTradition] = useState<TraditionChoice>("all");
+  const [tradition, setTradition] = useState<TraditionChoice>(DEFAULT_TRADITION);
   const [status, setStatus] = useState<Status>("idle");
   const [sources, setSources] = useState<UiSource[]>([]);
   const [figures, setFigures] = useState<FigureSummary[]>([]);
@@ -55,9 +56,9 @@ export default function Home() {
   // Remember the reader's church on this device only.
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(TRADITION_KEY) as TraditionChoice | null;
-      // A choice the picker no longer offers (e.g. "catholic") falls back to "all".
-      if (saved && TRADITION_OPTIONS.some((o) => o.value === saved)) setTradition(saved);
+      // The old "all", or a choice the picker no longer offers, falls back to the default.
+      const offered = TRADITION_OPTIONS.map((o) => o.value);
+      setTradition(savedChoice(localStorage.getItem(TRADITION_KEY), offered));
     } catch {}
   }, []);
   function chooseTradition(t: TraditionChoice) {
@@ -116,7 +117,7 @@ export default function Home() {
       res = await fetch("/api/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: query, ...(tradition !== "all" ? { tradition } : {}) }),
+        body: JSON.stringify({ question: query, tradition }),
       });
     } catch {
       failEarly(t.story.errors.offline);
@@ -160,7 +161,7 @@ export default function Home() {
       ? []
       : figures.length
         ? figures
-        : peopleFor(lastQuestion.current, tradition !== "all" ? tradition : undefined);
+        : peopleFor(lastQuestion.current, filterFor(tradition));
 
   return (
     <main>

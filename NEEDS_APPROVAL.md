@@ -5,6 +5,15 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+6. **Should the default "Oriental Orthodox" view hide Ethiopian-only books?** The picker
+   hint says "the books the six Oriental Orthodox churches share", and the Ethiopian
+   choice says it "adds" the Synaxarium, Enoch, Kebra Nagast and others. But until now
+   the default sent no filter, so it has always shown those Ethiopian books (15 of the
+   49 people come only from them, e.g. Moses the Ethiopian). Run 3 made the default a
+   real filter that keeps today's content (tags `orthodox` + `ethiopian_orthodox`) and
+   only shuts out Catholic-only and Protestant-only sources. Options: (a) keep it so
+   (then the hint text should change); (b) hide Ethiopian-only books from the default,
+   as the hint says. No cost either way. *Default until you decide: (a), unchanged content.*
 1. **Amharic Bible (1962) is not public domain.** `data/bible-am.json` is used under the
    Bible Society of Ethiopia's non-commercial permission. The new rule says public-domain
    or openly licensed only. Options: (a) keep it as a documented exception (it's what

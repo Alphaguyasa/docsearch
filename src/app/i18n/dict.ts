@@ -35,14 +35,14 @@ const en = {
     sheetNote: "Stories are chosen from the books your church reads.",
     close: "Close",
     options: {
-      all: "Oriental Orthodox",
+      oriental_orthodox: "Oriental Orthodox",
       ethiopian_orthodox: "Ethiopian Orthodox Tewahedo",
       orthodox: "Eastern Orthodox",
       catholic: "Catholic",
       protestant: "Protestant",
     },
     hints: {
-      all: "The books the six Oriental Orthodox churches share",
+      oriental_orthodox: "The books the six Oriental Orthodox churches share",
       ethiopian_orthodox: "Adds the Synaxarium, Enoch, Jubilees, the Kebra Nagast, Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot and Baralam and Yewasef",
       orthodox: "Includes the longer Old Testament canon",
       catholic: "Includes the deuterocanonical books",
@@ -415,14 +415,14 @@ const am: Dict = {
     sheetNote: "ታሪኮቹ ቤተ ክርስቲያንዎ ከምታነባቸው መጻሕፍት ይመረጣሉ።",
     close: "ዝጋ",
     options: {
-      all: "ኦሪየንታል ኦርቶዶክስ",
+      oriental_orthodox: "ኦሪየንታል ኦርቶዶክስ",
       ethiopian_orthodox: "የኢትዮጵያ ኦርቶዶክስ ተዋሕዶ",
       orthodox: "የምሥራቅ ኦርቶዶክስ",
       catholic: "ካቶሊክ",
       protestant: "ፕሮቴስታንት",
     },
     hints: {
-      all: "ስድስቱ ኦሪየንታል ኦርቶዶክስ አብያተ ክርስቲያናት የሚጋሯቸው መጻሕፍት",
+      oriental_orthodox: "ስድስቱ ኦሪየንታል ኦርቶዶክስ አብያተ ክርስቲያናት የሚጋሯቸው መጻሕፍት",
       ethiopian_orthodox: "ስንክሳርን፣ መጽሐፈ ሄኖክን፣ መጽሐፈ ኩፋሌን፣ ክብረ ነገሥትን፣ ገድለ አዳምን፣ ተአምረ ማርያምን፣ ገድለ ተክለ ሃይማኖትንና ባርላምና ዮሳፍን ያክላል",
       orthodox: "ሰፊውን የብሉይ ኪዳን ቀኖና ያካትታል",
       catholic: "ዲዩትሮካኖኒካል መጻሕፍትን ያካትታል",
