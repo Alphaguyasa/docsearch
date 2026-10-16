@@ -8,14 +8,6 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Open
 
-2. **[P0, S] Opt-in picker for the other traditions.** Add Eastern Orthodox, Catholic and
-   Protestant to the church picker (English and Amharic labels) after Oriental Orthodox
-   and Ethiopian Tewahedo. The Protestant filter must exclude the deuterocanon; there is
-   already a canon test for that, so extend it to the picker → filter mapping
-   (`src/lib/scripture/tradition-choice.ts` already maps every choice; only
-   `TRADITION_OPTIONS` needs the new rows). Also decide what the Telegram bot sends: it
-   omits `tradition`, which means "no filter", so Western sources would reach it once
-   item 4 lands. Make it send `oriental_orthodox` (or the Ethiopian choice) first.
 3. **[P1, M] Split the `orthodox` tag into Eastern and Oriental.** `data/canon.json` and
    the source rules use one `orthodox` tag for both communions. Their canons differ
    (e.g. 3 Maccabees, Psalm 151, Prayer of Manasseh; Ethiopian broader canon), and
@@ -49,6 +41,7 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Done
 
+- 2026-10-16: Item 2. Picker offers Eastern Orthodox, Catholic, Protestant (opt-in); the Telegram bot sends the default church.
 - 2026-10-16: Item 1. "Oriental Orthodox" is a real choice (`oriental_orthodox` → tags orthodox + ethiopian_orthodox); saved "all" falls back to it.
 - 2026-10-15: Item 0b. ingest-scripture chains with GITHUB_TOKEN + workflow dispatch; no INGEST_PAT.
 - 2026-10-15: PR #102. Next.js 15.5.21 → 15.5.27, critical RCE advisories fixed (tag v2026-10-15-1).
