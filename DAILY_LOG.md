@@ -77,3 +77,16 @@
   until the next ingest run (it triggers on the workflow change when merged).
 
 **Next run:** item 1 (make "Oriental Orthodox" a real tradition filter), then item 2.
+
+## 2026-10-16: run 3 (scheduled)
+
+- Main CI green at start. Model check: Opus 5.5 is still the newest Opus; the run is on
+  it. No switch needed (Fable not used, per policy).
+- ROADMAP 1: PR #105. "Oriental Orthodox" is a real choice, `oriental_orthodox`, which
+  reads tags `orthodox` + `ethiopian_orthodox` (today's corpus, unchanged) and never
+  Catholic-only or Protestant-only sources. The site always sends its choice; a saved
+  `all` falls back to it. An omitted `tradition` in the API (Telegram bot) still means
+  no filter; folded into ROADMAP item 2. Local: lint 0 errors (11 warnings), typecheck,
+  npm test 246/246, vitest 339/339, build OK. GitHub CI green.
+- New question for Alpha: NEEDS_APPROVAL #6 (should the default hide Ethiopian-only
+  books, as the picker hint says?). Default: keep showing them.
