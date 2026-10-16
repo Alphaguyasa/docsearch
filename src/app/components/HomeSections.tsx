@@ -23,7 +23,7 @@ function Screen({ step }: { step: number }) {
               <p className="mock-type font-serif text-[14px] leading-6">{m.typed}</p>
               <div className="mt-3 flex items-center justify-between">
                 <span className="rounded-full bg-white/[0.07] px-2.5 py-1 text-[10px] text-[#b3a48f]">
-                  ✝ {t.church.options.all}
+                  ✝ {t.church.options.oriental_orthodox}
                 </span>
                 <span className="mock-send grid h-7 w-7 place-items-center rounded-full bg-[#e8b560] text-[#0b0907]">
                   <ArrowRight className="h-3.5 w-3.5" />

@@ -184,7 +184,7 @@ test("cleanPassage drops the leading reference and joins scanned line wraps", ()
 test("peopleFor finds people with no model when the story can't be written", () => {
   assert.equal(peopleFor("I denied Jesus when my friends laughed")[0]?.id, "peter");
   assert.ok(peopleFor("ጫት መቃም ማቆም አልቻልኩም").some((f) => f.id === "noah" || f.id === "prodigal_son"));
-  assert.ok(!peopleFor("I stole money", "protestant").some((f) => f.kind === "tradition" && f.id === "moses_the_ethiopian"));
+  assert.ok(!peopleFor("I stole money", ["protestant"]).some((f) => f.kind === "tradition" && f.id === "moses_the_ethiopian"));
   assert.deepEqual(peopleFor("what is the weather today"), []);
 });
 

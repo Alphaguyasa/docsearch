@@ -41,16 +41,19 @@ import { bump, searchCounts } from "@/lib/counts";
 import { cacheExample, exampleKey, getCachedExample } from "@/lib/example-cache";
 import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
-import { TRADITIONS } from "@/lib/scripture/canon";
 import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
 import { BUSY_MESSAGE, takeSearchSlot } from "@/lib/scripture/rate-limit";
 import { checkSafety, crisisResponse } from "@/lib/scripture/safety";
+import { filterFor, TRADITION_CHOICES } from "@/lib/scripture/tradition-choice";
 import { parseRef } from "@/lib/scripture/usfm";
 import type { FigureSummary, SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
 
 const requestSchema = z.object({
-  /** Optional tradition filter: only passages canonical / venerated there. */
-  tradition: z.enum(TRADITIONS).optional(),
+  /**
+   * Optional church: only passages canonical / venerated there. Omitted (the
+   * Telegram bot, scripts) means no filter.
+   */
+  tradition: z.enum(TRADITION_CHOICES).optional(),
   question: z
     .string()
     .trim()
@@ -157,7 +160,7 @@ export async function POST(request: Request): Promise<Response> {
   let tags: string[] = [];
   try {
     const result = await retrieveForStruggle(question, {
-      filterTraditions: tradition ? [tradition] : undefined,
+      filterTraditions: tradition ? filterFor(tradition) : undefined,
       llm: classify,
     });
     chunks = result.results;

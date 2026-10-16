@@ -10,10 +10,10 @@ import type { Tradition } from "./canon";
 import { rankFigures } from "./figures";
 import { matchTags } from "./struggle";
 
-export function peopleFor(message: string, tradition?: Tradition): FigureSummary[] {
+export function peopleFor(message: string, filter?: Tradition[]): FigureSummary[] {
   const tags = matchTags(message);
   if (!tags.length) return [];
-  return rankFigures(tags, tradition ? [tradition] : undefined, 3).map(({ id, name, summary, note, kind }) => ({
+  return rankFigures(tags, filter, 3).map(({ id, name, summary, note, kind }) => ({
     id,
     name,
     summary,
