@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { TRADITION_OPTIONS } from "../src/app/traditions";
@@ -46,18 +47,45 @@ test("default keeps everything an Orthodox church reads today", () => {
   for (const f of FIGURES) assert.ok(readIn(f.traditions, DEFAULT_TRADITION), f.id);
 });
 
-test("Protestant choice excludes the deuterocanon", () => {
-  for (const b of canonByCode().values()) {
-    if (b.section === "deuterocanon") assert.equal(readIn(b.traditions, "protestant"), false, b.code);
+test("picker offers Oriental, Ethiopian, then the opt-in traditions", () => {
+  assert.deepEqual(offered, ["oriental_orthodox", "ethiopian_orthodox", "orthodox", "catholic", "protestant"]);
+});
+
+test("every picker option maps to its own tradition's books", () => {
+  for (const choice of offered) {
+    assert.ok(filterFor(choice).length, choice);
+    // Every protocanonical book is read under every choice.
+    for (const b of canonByCode().values()) {
+      if (b.section === "protocanon") assert.ok(readIn(b.traditions, choice), `${choice} ${b.code}`);
+    }
   }
+});
+
+test("the Protestant picker option excludes the deuterocanon", () => {
+  const protestant = offered.find((c) => c === "protestant")!;
+  for (const b of canonByCode().values()) {
+    if (b.section === "deuterocanon") assert.equal(readIn(b.traditions, protestant), false, b.code);
+  }
+  // And Ethiopian-only and deuterocanonical figures stay out of Protestant results.
+  for (const f of FIGURES) {
+    if (!f.traditions.includes("protestant")) assert.equal(readIn(f.traditions, protestant), false, f.id);
+  }
+});
+
+test("the Catholic option reads the deuterocanon but not Ethiopian-only books", () => {
+  const canon = canonByCode();
+  assert.ok(readIn(canon.get("TOB")!.traditions, "catholic"));
+  assert.ok(readIn(canon.get("1MA")!.traditions, "catholic"));
+  assert.equal(readIn(canon.get("2ES")!.traditions, "catholic"), false);
+  assert.equal(readIn(canon.get("3MA")!.traditions, "catholic"), false);
 });
 
 test("a saved old 'all' or unknown value falls back to the default", () => {
   assert.equal(savedChoice("all", offered), "oriental_orthodox");
   assert.equal(savedChoice(null, offered), "oriental_orthodox");
   assert.equal(savedChoice("nonsense", offered), "oriental_orthodox");
-  // Valid choice the picker does not offer yet (ROADMAP item 2).
-  assert.equal(savedChoice("catholic", offered), "oriental_orthodox");
+  assert.equal(savedChoice("catholic", offered), "catholic");
+  assert.equal(savedChoice("protestant", ["oriental_orthodox"]), "oriental_orthodox", "not offered");
   assert.equal(savedChoice("ethiopian_orthodox", offered), "ethiopian_orthodox");
 });
 
@@ -68,4 +96,12 @@ test("every choice has a label and hint in English and Amharic", () => {
       assert.ok(DICTS[lang].church.hints[c], `${lang} hint ${c}`);
     }
   }
+});
+
+test("the Telegram bot asks for the default church, not 'no filter'", () => {
+  // The bot has no picker; an omitted tradition would let opt-in sources through.
+  const src = readFileSync("src/app/api/telegram/route.ts", "utf8");
+  assert.match(src, /const tradition = DEFAULT_TRADITION;/);
+  assert.match(src, /JSON\.stringify\(\{ question: text, tradition \}\)/);
+  assert.doesNotMatch(src, /peopleFor\(text\)/, "fallback people use the same filter");
 });

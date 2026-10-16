@@ -90,3 +90,13 @@
   npm test 246/246, vitest 339/339, build OK. GitHub CI green.
 - New question for Alpha: NEEDS_APPROVAL #6 (should the default hide Ethiopian-only
   books, as the picker hint says?). Default: keep showing them.
+- PR #105 squash-merged as a809b4a. Tag `v2026-10-16-1` made locally but the push was
+  refused (the cloud git proxy only allows the session branch, as on 2026-10-15).
+  Alpha to create it: `git tag -a v2026-10-16-1 a809b4a -m "..." && git push origin v2026-10-16-1`.
+- ROADMAP 2: the picker offers Eastern Orthodox, Catholic and Protestant after the two
+  Oriental choices (labels and hints already existed in EN and AM). The Telegram bot now
+  sends `tradition: oriental_orthodox` and filters its fallback people the same way, so
+  Western-only sources stay out of it. Tests pin the picker order, that every option
+  reads the protocanon, the Protestant option excludes the deuterocanon and
+  Ethiopian-only figures, and the bot request. Note: until item 3 splits the
+  `orthodox` tag, "Eastern Orthodox" reads every book tagged `orthodox`.

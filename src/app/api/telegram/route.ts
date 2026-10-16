@@ -16,6 +16,7 @@ import { ensureDailyStory, sendJourneyDay, sendToday, sendWalkDay, subscribe, un
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
+import { DEFAULT_TRADITION, filterFor } from "@/lib/scripture/tradition-choice";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
   SITE_URL,
@@ -117,9 +118,14 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   }
   if (text.length > 1000) return void (await send(t.tooLong));
 
+  // The bot has no church picker, so it reads the site's default view; sending it
+  // explicitly keeps opt-in (Western-only) sources out of its stories.
+  const tradition = DEFAULT_TRADITION;
+  const matchPeople = () => peopleFor(text, filterFor(tradition));
+
   // No story could be written: still send the people who carried this, or — if the
   // server never answered, so its safety gate never ran — check for crisis first.
-  const fallback = async (busy: boolean, people = peopleFor(text), checked = false) => {
+  const fallback = async (busy: boolean, people = matchPeople(), checked = false) => {
     const kind = checked ? undefined : phraseCheck(text);
     if (kind) return void (await send(crisisMessage(crisisResponse(kind), lang)));
     const msg = fallbackMessage(people, lang, busy);
@@ -132,20 +138,20 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
     res = await fetch(`${SITE_URL}/api/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-not-alone-client": "telegram" },
-      body: JSON.stringify({ question: text }),
+      body: JSON.stringify({ question: text, tradition }),
     });
   } catch {
     return fallback(false);
   }
   // A 429 comes after the server's safety gate, so the message was already checked.
-  if (res.status === 429) return fallback(true, peopleFor(text), true);
+  if (res.status === 429) return fallback(true, matchPeople(), true);
   if (!res.ok || !res.body) return fallback(false);
 
   const result = await collectStream(parseSearchStream(res.body)).catch(() => null);
   if (!result) return fallback(false);
   if (result.crisis) return void (await send(crisisMessage(result.crisis, lang)));
   if (result.error || !result.answer.trim()) {
-    return fallback(false, result.figures.length ? result.figures : peopleFor(text), true);
+    return fallback(false, result.figures.length ? result.figures : matchPeople(), true);
   }
   const parts = storyMessages(result, lang);
   for (const [i, part] of parts.entries()) {
