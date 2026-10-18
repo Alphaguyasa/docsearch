@@ -1,10 +1,10 @@
 # Scripture fetch report
 
-Generated 2026-10-14T15:29:17.549Z
+Generated 2026-10-18T14:39:38.850Z
 
 ## web — World English Bible with Deuterocanon
 
-#### `eng-web_usfm.zip` — 3244779 bytes
+#### `eng-web_usfm.zip` — 3245355 bytes
 (zip — contents listed by the parser session)
 
 ## confessions — The Confessions of Saint Augustine (tr. E. B. Pusey)
