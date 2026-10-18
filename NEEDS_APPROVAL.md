@@ -5,26 +5,6 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
-7. **What should the `oriental_orthodox` tag mean for a book?** (blocks ROADMAP 3.)
-   The six Oriental Orthodox churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean,
-   Malankara) do not share one Old Testament canon; for example the Ethiopian
-   Meqabyan are different books from 1-2 Maccabees. Options: (a) a book gets the tag
-   when it is scripture in **all six** (matches the picker hint "the books the six
-   churches share"; small, conservative); (b) when it is scripture in **any** of them
-   (wider, but then the tag says little); (c) tag per church later and keep
-   `ethiopian_orthodox` as the only Oriental tag for now. Each book's assignment needs a
-   cited reason, and several are already marked NEEDS REVIEW in canon.json, so a priest
-   or scholar should check the list either way. No cost. *Default until you decide:
-   nothing changes; the default view keeps reading `orthodox` + `ethiopian_orthodox`.*
-6. **Should the default "Oriental Orthodox" view hide Ethiopian-only books?** The picker
-   hint says "the books the six Oriental Orthodox churches share", and the Ethiopian
-   choice says it "adds" the Synaxarium, Enoch, Kebra Nagast and others. But until now
-   the default sent no filter, so it has always shown those Ethiopian books (15 of the
-   49 people come only from them, e.g. Moses the Ethiopian). Run 3 made the default a
-   real filter that keeps today's content (tags `orthodox` + `ethiopian_orthodox`) and
-   only shuts out Catholic-only and Protestant-only sources. Options: (a) keep it so
-   (then the hint text should change); (b) hide Ethiopian-only books from the default,
-   as the hint says. No cost either way. *Default until you decide: (a), unchanged content.*
 1. **Amharic Bible (1962) is not public domain.** `data/bible-am.json` is used under the
    Bible Society of Ethiopia's non-commercial permission. The new rule says public-domain
    or openly licensed only. Options: (a) keep it as a documented exception (it's what
@@ -47,6 +27,11 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Decided
 
+- 2026-10-18: **`oriental_orthodox` means the books all six Oriental Orthodox churches
+  share** (Alpha chose (a) for #7). This also settles #6 as (b): the default view hides
+  Ethiopian-only books such as Enoch and Jubilees, which stay under "Ethiopian Orthodox
+  Tewahedo", as the picker hint already says. A priest or scholar still checks the final
+  book list before launch (#5).
 - 2026-10-15: **Old Vercel project `alpha-ed50/docsearch`** (docsearch-sand.vercel.app)
   failed a preview on every PR. Alpha disconnected its Git integration and approved
   merging PR #102 past that failing status.

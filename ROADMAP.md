@@ -16,7 +16,11 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    a reason in canon.json, then point the `orthodox` and `oriental_orthodox` choices in
    `tradition-choice.ts` at the new tags. Ingest now retags done rows in place (3a,
    2026-10-18), so a canon.json change reaches the DB without re-embedding.
-   **Waits on NEEDS_APPROVAL #7** (what `oriental_orthodox` means for a book).
+   **Decided 2026-10-18:** a book gets `oriental_orthodox` only when all six Oriental
+   churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean, Malankara) read it as
+   scripture; Ethiopian-only books keep only `ethiopian_orthodox`, so the default view
+   no longer shows them. Each assignment cites its source; unsure ones are marked
+   NEEDS REVIEW and left out of the tag.
 4. **[P1, M] Bring back the Western sources removed in PR #78.** *The Imitation of
    Christ* (Catholic) and Bunyan's *Grace Abounding* (Protestant, a first-person story of
    sin and restoration) are public domain. *The Pilgrim's Progress* is allegory, not a
