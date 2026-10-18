@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { sourceKindLabel, sourceName, type UiSource } from "@/app/types";
+import { canonSplit } from "@/lib/scripture/canon-note";
 
 import { ChevronDown } from "./Icons";
 import { useT } from "../i18n/client";
@@ -40,6 +41,14 @@ export function Passages({
 
   if (sources.length === 0) return null;
 
+  // Scripture only: a tradition text's tags say who reads it, not whose Bible it is in.
+  const canonNote = (s: UiSource) => {
+    const split = s.kind === "scripture" ? canonSplit(s.traditions) : null;
+    if (!split) return null;
+    const names = (ts: string[]) => ts.map((x) => t.story.canonNames[x as keyof typeof t.story.canonNames]);
+    return t.story.canonNote(names(split.inCanon), names(split.notIn));
+  };
+
   const quote = (s: UiSource) => (
     <li
       key={s.n}
@@ -58,6 +67,7 @@ export function Passages({
           <span className="text-xs text-muted">{s.kind === "scripture" ? t.story.scripture : t.story.tradition}</span>
         )}
       </div>
+      {canonNote(s) && <p className="mt-0.5 text-xs text-muted">{canonNote(s)}</p>}
       <blockquote className="mt-1.5 whitespace-pre-wrap font-serif text-[16px] leading-7 text-foreground/90">
         {s.content}
       </blockquote>

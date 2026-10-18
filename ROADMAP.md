@@ -23,10 +23,6 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
    life, so re-add it only as clearly labelled allegory or leave it out. Recover the
    source rules from git history (`git show 58fbf1f^:corpus/scripture/sources.json`
    and the PR #78 diff), re-tag them, and let fetch/ingest re-run.
-5. **[P1, S] Show where traditions differ.** When an answer cites a book that is scripture
-   for some traditions but not others (e.g. the deuterocanon, Enoch), label it in the
-   citation panel ("Scripture for Catholic and Orthodox; not in the Protestant canon")
-   from `canon.json`, with a test.
 7. **[P2, S] Port the paper-search eval gate to the scripture app.** `eval.yml` grades the
    retired arXiv corpus, so it is now manual-only. Make `scripture-eval` a PR gate,
    retrieval-only (no Gemini calls) in CI.
@@ -44,6 +40,7 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Done
 
+- 2026-10-18: Item 5. Cited scripture outside some canons is labelled ("In the Catholic, Orthodox and Ethiopian Tewahedo canons; not in the Protestant canon."), EN and AM.
 - 2026-10-18: Item 3a. Ingest retags done rows whose tags changed (no re-embed); before, canon.json tag edits never reached the DB.
 - 2026-10-16: Item 2. Picker offers Eastern Orthodox, Catholic, Protestant (opt-in); the Telegram bot sends the default church.
 - 2026-10-16: Item 1. "Oriental Orthodox" is a real choice (`oriental_orthodox` → tags orthodox + ethiopian_orthodox); saved "all" falls back to it.
