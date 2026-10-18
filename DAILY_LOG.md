@@ -122,5 +122,12 @@
 - Tags `v2026-10-18-1` (f62f31a) and `-2` could not be pushed (the cloud git proxy
   refuses tags, as before). Alpha to create them.
 
-**Next run:** ROADMAP 4 (bring back *Imitation of Christ* and *Grace Abounding*), then
-7 (scripture-eval as a retrieval-only PR gate). Item 3 waits on NEEDS_APPROVAL #7.
+- After merge: the ingest run for #107 reported `retag 0` (DB tags already matched).
+
+**Later the same day (Alpha in the session)**
+- Alpha answered NEEDS_APPROVAL #7: `oriental_orthodox` = books all six Oriental
+  churches share (option a). That also settles #6: the default hides Ethiopian-only
+  books. ROADMAP 3 is unblocked.
+
+**Next run:** ROADMAP 3 (split the `orthodox` tag, per the decision), then 4 (bring
+back *Imitation of Christ* and *Grace Abounding*).
