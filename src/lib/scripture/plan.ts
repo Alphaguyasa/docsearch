@@ -5,6 +5,11 @@
  * same upsert), so "done" means: a row exists at (document, chunk_index) with
  * identical content and a non-null embedding. Anything else is (re)embedded.
  * Rows past the end of a rebuilt document are stale and deleted.
+ *
+ * WHY retag: a done row is never rewritten, so a change to a book's tags in
+ * data/canon.json (or a source's tags) would otherwise never reach the DB and
+ * the church filter would silently read the old tags. Tags are cheap to fix in
+ * place; re-embedding 9k chunks on Voyage's free tier would take days.
  */
 import type { ScriptureChunk } from "./types";
 
@@ -14,28 +19,52 @@ export interface ExistingRow {
   chunkIndex: number;
   content: string;
   embedded: boolean;
+  /** Tags on the row. Omitted = unknown, so the row is never retagged. */
+  traditions?: readonly string[];
+}
+
+export interface Retag {
+  traditions: string[];
+  ids: string[];
 }
 
 export interface IngestPlan {
   toEmbed: ScriptureChunk[];
   staleRowIds: string[];
   alreadyDone: number;
+  /** Done rows whose tags differ from the build, grouped by their new tags. */
+  retag: Retag[];
 }
 
 export function planIngest(expected: ScriptureChunk[], existing: ExistingRow[]): IngestPlan {
   const have = new Map(existing.map((r) => [`${r.documentKey}#${r.chunkIndex}`, r]));
   const wanted = new Set<string>();
   const toEmbed: ScriptureChunk[] = [];
+  const retag = new Map<string, Retag>();
   let alreadyDone = 0;
   for (const c of expected) {
     const key = `${c.documentKey}#${c.chunkIndex}`;
     wanted.add(key);
     const row = have.get(key);
-    if (row && row.embedded && row.content === c.content) alreadyDone++;
-    else toEmbed.push(c);
+    if (row && row.embedded && row.content === c.content) {
+      alreadyDone++;
+      if (row.traditions && !sameTags(row.traditions, c.traditions)) {
+        const tags = [...c.traditions].sort();
+        const k = tags.join(",");
+        if (!retag.has(k)) retag.set(k, { traditions: tags, ids: [] });
+        retag.get(k)!.ids.push(row.id);
+      }
+    } else toEmbed.push(c);
   }
   const staleRowIds = existing.filter((r) => !wanted.has(`${r.documentKey}#${r.chunkIndex}`)).map((r) => r.id);
-  return { toEmbed, staleRowIds, alreadyDone };
+  return { toEmbed, staleRowIds, alreadyDone, retag: [...retag.values()] };
+}
+
+/** Order does not matter: the filter reads tags as a set (`&&` overlap). */
+function sameTags(a: readonly string[], b: readonly string[]): boolean {
+  const x = new Set(a);
+  const y = new Set(b);
+  return x.size === y.size && [...x].every((t) => y.has(t));
 }
 
 /** Split into groups that are each committed to the DB before the next is embedded. */

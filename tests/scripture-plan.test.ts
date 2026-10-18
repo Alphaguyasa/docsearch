@@ -49,3 +49,29 @@ test("rows past the end of a rebuilt document are stale", () => {
 test("groups splits evenly with a remainder", () => {
   assert.deepEqual(groups([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]);
 });
+
+test("a done row whose tags changed is retagged, not re-embedded", () => {
+  const expected = [
+    { ...chunk("a", 0), traditions: ["catholic", "orthodox"] as ScriptureChunk["traditions"] },
+    { ...chunk("a", 1), traditions: ["orthodox", "catholic"] as ScriptureChunk["traditions"] },
+    { ...chunk("a", 2), traditions: ["orthodox"] as ScriptureChunk["traditions"] },
+  ];
+  const plan = planIngest(expected, [
+    { ...row("a", 0), traditions: ["orthodox"] },
+    { ...row("a", 1), traditions: ["catholic", "orthodox"] }, // same set, other order
+    { ...row("a", 2), traditions: ["orthodox"] },
+  ]);
+  assert.equal(plan.toEmbed.length, 0);
+  assert.equal(plan.alreadyDone, 3);
+  assert.deepEqual(plan.retag, [{ traditions: ["catholic", "orthodox"], ids: ["a-0"] }]);
+});
+
+test("rows with unknown tags, or that are re-embedded anyway, are not retagged", () => {
+  const expected = [
+    { ...chunk("a", 0), traditions: ["orthodox"] as ScriptureChunk["traditions"] },
+    { ...chunk("a", 1, "new"), traditions: ["orthodox"] as ScriptureChunk["traditions"] },
+  ];
+  const plan = planIngest(expected, [row("a", 0), { ...row("a", 1), traditions: [] }]);
+  assert.deepEqual(plan.retag, []);
+  assert.deepEqual(plan.toEmbed.map((c) => c.chunkIndex), [1]);
+});

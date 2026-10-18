@@ -5,6 +5,17 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+7. **What should the `oriental_orthodox` tag mean for a book?** (blocks ROADMAP 3.)
+   The six Oriental Orthodox churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean,
+   Malankara) do not share one Old Testament canon; for example the Ethiopian
+   Meqabyan are different books from 1-2 Maccabees. Options: (a) a book gets the tag
+   when it is scripture in **all six** (matches the picker hint "the books the six
+   churches share"; small, conservative); (b) when it is scripture in **any** of them
+   (wider, but then the tag says little); (c) tag per church later and keep
+   `ethiopian_orthodox` as the only Oriental tag for now. Each book's assignment needs a
+   cited reason, and several are already marked NEEDS REVIEW in canon.json, so a priest
+   or scholar should check the list either way. No cost. *Default until you decide:
+   nothing changes; the default view keeps reading `orthodox` + `ethiopian_orthodox`.*
 6. **Should the default "Oriental Orthodox" view hide Ethiopian-only books?** The picker
    hint says "the books the six Oriental Orthodox churches share", and the Ethiopian
    choice says it "adds" the Synaxarium, Enoch, Kebra Nagast and others. But until now
