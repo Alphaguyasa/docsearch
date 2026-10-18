@@ -7,6 +7,16 @@
  * them; people's answers come back in the language they wrote in.
  */
 export type Lang = "en" | "am";
+
+/** "A", "A and B", "A, B and C". */
+function listEn(xs: string[]): string {
+  return xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+}
+
+/** "A", "A እና B", "A፣ B እና C". */
+function listAm(xs: string[]): string {
+  return xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join("፣ ")} እና ${xs[xs.length - 1]}`;
+}
 export const LANGS: Lang[] = ["en", "am"];
 export const LANG_COOKIE = "not-alone-lang";
 
@@ -246,6 +256,17 @@ const en = {
     scripture: "Scripture",
     tradition: "Church tradition",
     passage: (n: number) => `Read passage ${n}`,
+    // `orthodox` is one tag for Eastern and Oriental Orthodox until ROADMAP item 3 splits it.
+    canonNames: {
+      protestant: "Protestant",
+      catholic: "Catholic",
+      orthodox: "Orthodox",
+      ethiopian_orthodox: "Ethiopian Tewahedo",
+    },
+    canonNote: (inCanon: string[], notIn: string[]) =>
+      `In the ${listEn(inCanon)} ${inCanon.length === 1 ? "canon" : "canons"}; not in the ${listEn(notIn)} ${
+        notIn.length === 1 ? "canon" : "canons"
+      }.`,
     prayer: {
       label: "A prayer you can pray",
       titles: {
@@ -620,6 +641,14 @@ const am: Dict = {
     scripture: "መጽሐፍ ቅዱስ",
     tradition: "የቤተ ክርስቲያን ትውፊት",
     passage: (n: number) => `ክፍል ${n}ን ያንብቡ`,
+    canonNames: {
+      protestant: "ፕሮቴስታንት",
+      catholic: "ካቶሊክ",
+      orthodox: "ኦርቶዶክስ",
+      ethiopian_orthodox: "ኢትዮጵያ ተዋሕዶ",
+    },
+    canonNote: (inCanon: string[], notIn: string[]) =>
+      `በ${listAm(inCanon)} ቀኖና ውስጥ አለ፤ በ${listAm(notIn)} ቀኖና ውስጥ የለም።`,
     prayer: {
       label: "ሊጸልዩት የሚችሉት ጸሎት",
       titles: {

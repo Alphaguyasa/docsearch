@@ -100,3 +100,27 @@
   reads the protocanon, the Protestant option excludes the deuterocanon and
   Ethiopian-only figures, and the bot request. Note: until item 3 splits the
   `orthodox` tag, "Eastern Orthodox" reads every book tagged `orthodox`.
+
+## 2026-10-18: run 4 (scheduled)
+
+- Main CI green at start (ci and deploy on 54d9430). Model check: Opus 5.5 is still the
+  newest Opus; the run is on it. No switch needed (Fable not used, per policy).
+- ROADMAP 3 (split `orthodox`): found that ingest only compared content, so a tag edit
+  in canon.json never reached rows already embedded. **PR #107** (3a): ingest now
+  retags done rows in place, grouped by new tags, with no re-embedding. Squash-merged as
+  f62f31a. Its merge starts one ingest run, which should report `retag 0`.
+  The split itself is **blocked on NEEDS_APPROVAL #7**: the six Oriental churches do not
+  share one canon, so what `oriental_orthodox` means for a book is Alpha's call, and
+  every assignment needs a cited reason.
+- ROADMAP 4 (Western sources) skipped for now: it is M and needs a full run. ROADMAP 5
+  went next.
+- ROADMAP 5: under each cited scripture passage that not every church reads, a line such as
+  "In the Catholic, Orthodox and Ethiopian Tewahedo canons; not in the Protestant
+  canon." (EN and AM), from the passage's canon.json tags. Tests in
+  tests/canon-note.test.ts. Local: lint 0 errors (11 warnings), typecheck, npm test
+  256/256, vitest 339/339, build OK.
+- Tags `v2026-10-18-1` (f62f31a) and `-2` could not be pushed (the cloud git proxy
+  refuses tags, as before). Alpha to create them.
+
+**Next run:** ROADMAP 4 (bring back *Imitation of Christ* and *Grace Abounding*), then
+7 (scripture-eval as a retrieval-only PR gate). Item 3 waits on NEEDS_APPROVAL #7.
