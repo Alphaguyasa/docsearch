@@ -11,9 +11,12 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 3. **[P1, M] Split the `orthodox` tag into Eastern and Oriental.** `data/canon.json` and
    the source rules use one `orthodox` tag for both communions. Their canons differ
    (e.g. 3 Maccabees, Psalm 151, Prayer of Manasseh; Ethiopian broader canon), and
-   Chalcedon divides them. Add `eastern_orthodox` / `oriental_orthodox` tags with an
-   additive migration (new array values only, no rewrite of existing rows until approved),
-   and document every book's assignment with a reason in canon.json.
+   Chalcedon divides them. Add `eastern_orthodox` / `oriental_orthodox` tags (keep
+   `orthodox` until Alpha approves removing it), document every book's assignment with
+   a reason in canon.json, then point the `orthodox` and `oriental_orthodox` choices in
+   `tradition-choice.ts` at the new tags. Ingest now retags done rows in place (3a,
+   2026-10-18), so a canon.json change reaches the DB without re-embedding.
+   **Waits on NEEDS_APPROVAL #7** (what `oriental_orthodox` means for a book).
 4. **[P1, M] Bring back the Western sources removed in PR #78.** *The Imitation of
    Christ* (Catholic) and Bunyan's *Grace Abounding* (Protestant, a first-person story of
    sin and restoration) are public domain. *The Pilgrim's Progress* is allegory, not a
@@ -41,6 +44,7 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Done
 
+- 2026-10-18: Item 3a. Ingest retags done rows whose tags changed (no re-embed); before, canon.json tag edits never reached the DB.
 - 2026-10-16: Item 2. Picker offers Eastern Orthodox, Catholic, Protestant (opt-in); the Telegram bot sends the default church.
 - 2026-10-16: Item 1. "Oriental Orthodox" is a real choice (`oriental_orthodox` → tags orthodox + ethiopian_orthodox); saved "all" falls back to it.
 - 2026-10-15: Item 0b. ingest-scripture chains with GITHUB_TOKEN + workflow dispatch; no INGEST_PAT.

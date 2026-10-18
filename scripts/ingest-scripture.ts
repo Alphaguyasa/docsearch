@@ -91,9 +91,15 @@ async function main(): Promise<void> {
   // Existing chunks
   // Existing chunks. Rows are always written together with their embedding,
   // but check for nulls anyway (e.g. rows inserted by hand) so they get redone.
-  const rows = await fetchAllRows<{ id: string; document_id: string; chunk_index: number; content: string }>(
+  const rows = await fetchAllRows<{
+    id: string;
+    document_id: string;
+    chunk_index: number;
+    content: string;
+    traditions: string[] | null;
+  }>(
     "chunks",
-    (from, to) => db.from("chunks").select("id,document_id,chunk_index,content").order("id").range(from, to),
+    (from, to) => db.from("chunks").select("id,document_id,chunk_index,content,traditions").order("id").range(from, to),
   );
   const nullIds = new Set(
     (
@@ -111,10 +117,21 @@ async function main(): Promise<void> {
     chunkIndex: r.chunk_index,
     content: r.content,
     embedded: !nullIds.has(r.id),
+    traditions: r.traditions ?? [],
   }));
 
   const plan = planIngest(expected, existing);
-  console.log(`done ${plan.alreadyDone}, to embed ${plan.toEmbed.length}, stale ${plan.staleRowIds.length}`);
+  const retagCount = plan.retag.reduce((n, r) => n + r.ids.length, 0);
+  console.log(
+    `done ${plan.alreadyDone}, to embed ${plan.toEmbed.length}, stale ${plan.staleRowIds.length}, retag ${retagCount}`,
+  );
+  // Tags only: content and embedding stay as they are.
+  for (const r of plan.retag) {
+    for (const ids of groups(r.ids, 100)) {
+      const upd = await db.from("chunks").update({ traditions: r.traditions }).in("id", ids);
+      if (upd.error) throw new Error(`retag failed: ${upd.error.message}`);
+    }
+  }
   for (const ids of groups(plan.staleRowIds, 100)) {
     const del = await db.from("chunks").delete().in("id", ids);
     if (del.error) throw new Error(`stale delete failed: ${del.error.message}`);
