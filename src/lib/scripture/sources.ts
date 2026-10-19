@@ -407,7 +407,9 @@ export const TEXT_RULES: Record<string, TextRule> = {
   },
   paradise: {
     refPrefix: "Paradise of the Holy Fathers",
-    traditions: ["catholic", "orthodox", "ethiopian_orthodox"],
+    // Not scripture, so the six-church canon rule does not apply; it keeps the
+    // readers it had before `orthodox` was split. Checked in the pre-launch review.
+    traditions: ["catholic", "orthodox", "eastern_orthodox", "oriental_orthodox", "ethiopian_orthodox"],
     clean: {
       dropLines: [/par[ao]bise|paradise/i, /^contents\b/i, FOOTNOTE, INDEX_LINE],
     },
