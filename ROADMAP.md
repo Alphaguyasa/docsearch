@@ -29,6 +29,11 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
     60s to build (16 retries in one build). Find out why (fonts fetched per route?) and
     cache them, so builds stay fast and don't time out on Vercel.
 
+13. **[P3, S] Make ingest's retag robust to statement timeouts.** On 2026-10-19 one
+    batch of 100 row updates hit Supabase's statement timeout (each update rewrites
+    the HNSW and tsv index entries). The chained rerun recovered, but retag should use
+    smaller batches and split a batch in half on a timeout.
+
 ## Done
 
 - 2026-10-19: Item 3. `orthodox` split: canon.json tags `eastern_orthodox` / `oriental_orthodox` with a cited basis per book (PR #110); the default reads `oriental_orthodox`, "Eastern Orthodox" reads `eastern_orthodox` (PR B). `orthodox` stays until Alpha approves removing it.

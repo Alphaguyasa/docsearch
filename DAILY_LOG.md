@@ -141,7 +141,11 @@ back *Imitation of Christ* and *Grace Abounding*).
   - **PR #110** (squash-merged as e912bbc): canon.json gets `eastern_orthodox` (same
     books as `orthodox`) and `oriental_orthodox` (books all six Oriental churches read),
     with a `references` table and a cited `basis` per book; the validator enforces it.
-    No visible change. Then ingest-scripture was dispatched to retag the DB.
+    No visible change. Then ingest-scripture was dispatched to retag the DB. The
+    first run failed (`retag 5008`, then "canceling statement due to statement
+    timeout"; Paradise raw files were also missing that run). It chained itself, and
+    the next run retagged 6137 rows and finished 9264/9264. A third, verification run
+    reported `retag 0`. Only after that was PR B merged.
   - **PR B**: the default reads `oriental_orthodox` and "Eastern Orthodox" reads
     `eastern_orthodox`. Canon notes name Eastern Orthodox, and never say "not in the
     Oriental Orthodox canon" (a missing tag can mean NEEDS REVIEW, not absent).
