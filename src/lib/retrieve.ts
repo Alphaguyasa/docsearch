@@ -39,7 +39,8 @@ export interface RetrieveOptions {
   embedder?: (text: string) => Promise<{ embedding: number[]; usage: EmbedUsage }>;
   /**
    * Restrict results to chunks tagged with ANY of these traditions
-   * (protestant | catholic | orthodox | ethiopian_orthodox). Omitted = no filter.
+   * (protestant | catholic | orthodox | eastern_orthodox | oriental_orthodox |
+   * ethiopian_orthodox). Omitted = no filter.
    * Only sent to the database when set, so the pre-pivot schema keeps working.
    */
   filterTraditions?: string[];

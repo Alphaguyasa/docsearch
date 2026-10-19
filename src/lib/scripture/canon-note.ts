@@ -6,7 +6,7 @@
  * chunks carry their book's tags from data/canon.json (traditionsFor), and a
  * ref like "Tobit 4:7" would need parsing back to a USFM code to look up.
  */
-import { TRADITIONS, type Tradition } from "./canon";
+import { LEGACY_TRADITIONS, type Tradition } from "./canon";
 
 export interface CanonSplit {
   inCanon: Tradition[];
@@ -16,7 +16,9 @@ export interface CanonSplit {
 /** null when every tradition reads the book (nothing to point out) or the tags are unknown. */
 export function canonSplit(traditions: readonly string[] | undefined): CanonSplit | null {
   if (!traditions?.length) return null;
-  const inCanon = TRADITIONS.filter((t) => traditions.includes(t));
-  const notIn = TRADITIONS.filter((t) => !traditions.includes(t));
+  // Legacy tags only until the DB is retagged: a row without the new tags would
+  // otherwise read as "not in the Eastern or Oriental Orthodox canons".
+  const inCanon: Tradition[] = LEGACY_TRADITIONS.filter((t) => traditions.includes(t));
+  const notIn: Tradition[] = LEGACY_TRADITIONS.filter((t) => !traditions.includes(t));
   return inCanon.length && notIn.length ? { inCanon, notIn } : null;
 }

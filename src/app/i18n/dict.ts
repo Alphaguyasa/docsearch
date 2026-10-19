@@ -256,11 +256,13 @@ const en = {
     scripture: "Scripture",
     tradition: "Church tradition",
     passage: (n: number) => `Read passage ${n}`,
-    // `orthodox` is one tag for Eastern and Oriental Orthodox until ROADMAP item 3 splits it.
+    // `orthodox` is the legacy tag for both; notes use it until the DB carries the split tags.
     canonNames: {
       protestant: "Protestant",
       catholic: "Catholic",
       orthodox: "Orthodox",
+      eastern_orthodox: "Eastern Orthodox",
+      oriental_orthodox: "Oriental Orthodox",
       ethiopian_orthodox: "Ethiopian Tewahedo",
     },
     canonNote: (inCanon: string[], notIn: string[]) =>
@@ -645,6 +647,8 @@ const am: Dict = {
       protestant: "ፕሮቴስታንት",
       catholic: "ካቶሊክ",
       orthodox: "ኦርቶዶክስ",
+      eastern_orthodox: "የምሥራቅ ኦርቶዶክስ",
+      oriental_orthodox: "ኦሪየንታል ኦርቶዶክስ",
       ethiopian_orthodox: "ኢትዮጵያ ተዋሕዶ",
     },
     canonNote: (inCanon: string[], notIn: string[]) =>

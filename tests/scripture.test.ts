@@ -27,8 +27,8 @@ test("no deuterocanonical book leaks into the protestant filter", () => {
   }
 });
 
-test("Prayer of Manasseh is orthodox + ethiopian only", () => {
-  assert.deepEqual(traditionsFor("MAN").sort(), ["ethiopian_orthodox", "orthodox"]);
+test("Prayer of Manasseh is Eastern Orthodox + Ethiopian only, not shared by every Oriental church", () => {
+  assert.deepEqual(traditionsFor("MAN").sort(), ["eastern_orthodox", "ethiopian_orthodox", "orthodox"]);
 });
 
 test("unknown book code throws instead of guessing", () => {

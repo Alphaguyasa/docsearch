@@ -4,8 +4,22 @@
  */
 import canonJson from "../../../data/canon.json";
 
-export const TRADITIONS = ["protestant", "catholic", "orthodox", "ethiopian_orthodox"] as const;
+export const TRADITIONS = [
+  "protestant",
+  "catholic",
+  "orthodox",
+  "eastern_orthodox",
+  "oriental_orthodox",
+  "ethiopian_orthodox",
+] as const;
 export type Tradition = (typeof TRADITIONS)[number];
+
+/**
+ * The four tags every row carried before ROADMAP item 3 split `orthodox`.
+ * WHY kept apart: until ingest retags the DB, rows only carry these, so what
+ * the reader sees (filters, canon notes) reads them alone.
+ */
+export const LEGACY_TRADITIONS = ["protestant", "catholic", "orthodox", "ethiopian_orthodox"] as const;
 
 export interface CanonBook {
   code: string;
@@ -13,6 +27,8 @@ export interface CanonBook {
   traditions: Tradition[];
   section: "protocanon" | "deuterocanon";
   note?: string;
+  /** Why the book carries (or lacks) each Orthodox tag, citing `references` keys in [brackets]. */
+  basis?: string;
   skip?: boolean;
 }
 
@@ -20,6 +36,7 @@ export interface Canon {
   version: number;
   source: string;
   traditions: Tradition[];
+  references: Record<string, string>;
   books: CanonBook[];
 }
 
@@ -37,8 +54,27 @@ export function validateCanon(raw: unknown): Canon {
     for (const t of b.traditions) {
       if (!(TRADITIONS as readonly string[]).includes(t)) problems.push(`${b.code}: unknown tradition ${t}`);
     }
-    if (b.section === "protocanon" && b.traditions.length !== TRADITIONS.length) {
+    // A book any Oriental church is unconfirmed for stays out of `oriental_orthodox`
+    // and says so (decided 2026-10-18); every other protocanonical book carries all tags.
+    const review = /NEEDS REVIEW/.test(b.basis ?? "");
+    const expected = TRADITIONS.filter((t) => !(review && t === "oriental_orthodox"));
+    if (b.section === "protocanon" && !expected.every((t) => b.traditions.includes(t))) {
       problems.push(`${b.code}: protocanonical books must carry all traditions`);
+    }
+    if (review && b.traditions.includes("oriental_orthodox")) {
+      problems.push(`${b.code}: marked NEEDS REVIEW but tagged oriental_orthodox`);
+    }
+    // `orthodox` stays the same set as `eastern_orthodox` until Alpha approves removing it.
+    if (b.traditions.includes("orthodox") !== b.traditions.includes("eastern_orthodox")) {
+      problems.push(`${b.code}: orthodox and eastern_orthodox must go together`);
+    }
+    // All six Oriental churches include the Ethiopian one.
+    if (b.traditions.includes("oriental_orthodox") && !b.traditions.includes("ethiopian_orthodox")) {
+      problems.push(`${b.code}: oriental_orthodox without ethiopian_orthodox`);
+    }
+    if (!b.skip && !b.basis) problems.push(`${b.code}: missing basis (cite why each Orthodox tag is or is not set)`);
+    for (const [, key] of (b.basis ?? "").matchAll(/\[([a-z0-9-]+)\]/g)) {
+      if (!c.references?.[key]) problems.push(`${b.code}: basis cites unknown reference [${key}]`);
     }
     if (b.section === "deuterocanon" && b.traditions.includes("protestant")) {
       problems.push(`${b.code}: deuterocanonical book tagged protestant`);

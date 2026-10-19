@@ -5,6 +5,8 @@
   "protestant",
   "catholic",
   "orthodox",
+  "eastern_orthodox",
+  "oriental_orthodox",
   "ethiopian_orthodox"
  ],
  "books": [
@@ -15,9 +17,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "EXO",
@@ -26,9 +31,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "LEV",
@@ -37,9 +45,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "NUM",
@@ -48,9 +59,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "DEU",
@@ -59,9 +73,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JOS",
@@ -70,9 +87,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JDG",
@@ -81,9 +101,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "RUT",
@@ -92,9 +115,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "1SA",
@@ -103,9 +129,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "2SA",
@@ -114,9 +143,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "1KI",
@@ -125,9 +157,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "2KI",
@@ -136,9 +171,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "1CH",
@@ -147,9 +185,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "2CH",
@@ -158,9 +199,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "EZR",
@@ -169,9 +213,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "NEH",
@@ -180,9 +227,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "EST",
@@ -191,9 +241,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JOB",
@@ -202,9 +255,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "PSA",
@@ -213,9 +269,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "PRO",
@@ -224,9 +283,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "ECC",
@@ -235,9 +297,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "SNG",
@@ -246,9 +311,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "ISA",
@@ -257,9 +325,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JER",
@@ -268,9 +339,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "LAM",
@@ -279,9 +353,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "EZK",
@@ -290,9 +367,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "DAN",
@@ -301,9 +381,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "HOS",
@@ -312,9 +395,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JOL",
@@ -323,9 +409,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "AMO",
@@ -334,9 +423,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "OBA",
@@ -345,9 +437,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "JON",
@@ -356,9 +451,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "MIC",
@@ -367,9 +465,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "NAM",
@@ -378,9 +479,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "HAB",
@@ -389,9 +493,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "ZEP",
@@ -400,9 +507,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "HAG",
@@ -411,9 +521,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "ZEC",
@@ -422,9 +535,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "MAL",
@@ -433,9 +549,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Hebrew Bible book: in the Old Testament of every church here [chart]."
   },
   {
    "code": "MAT",
@@ -444,9 +563,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "MRK",
@@ -455,9 +577,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "LUK",
@@ -466,9 +591,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "JHN",
@@ -477,9 +605,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "ACT",
@@ -488,9 +619,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "ROM",
@@ -499,9 +633,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "1CO",
@@ -510,9 +647,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "2CO",
@@ -521,9 +661,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "GAL",
@@ -532,9 +675,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "EPH",
@@ -543,9 +689,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "PHP",
@@ -554,9 +703,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "COL",
@@ -565,9 +717,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "1TH",
@@ -576,9 +731,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "2TH",
@@ -587,9 +745,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "1TI",
@@ -598,9 +759,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "2TI",
@@ -609,9 +773,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "TIT",
@@ -620,9 +787,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "PHM",
@@ -631,9 +801,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "HEB",
@@ -642,9 +815,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "JAS",
@@ -653,9 +829,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "1PE",
@@ -664,9 +843,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "2PE",
@@ -675,9 +857,11 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Syriac Peshitta lacks it [peshitta-nt]."
   },
   {
    "code": "1JN",
@@ -686,9 +870,12 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "New Testament book read by every church here, including the Syriac Peshitta [peshitta-nt]."
   },
   {
    "code": "2JN",
@@ -697,9 +884,11 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Syriac Peshitta lacks it [peshitta-nt]."
   },
   {
    "code": "3JN",
@@ -708,9 +897,11 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Syriac Peshitta lacks it [peshitta-nt]."
   },
   {
    "code": "JUD",
@@ -719,9 +910,11 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Syriac Peshitta lacks it [peshitta-nt]."
   },
   {
    "code": "REV",
@@ -730,9 +923,11 @@
     "protestant",
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
-   "section": "protocanon"
+   "section": "protocanon",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Syriac Peshitta lacks it [peshitta-nt]."
   },
   {
    "code": "TOB",
@@ -740,10 +935,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Catholic, Orthodox and Ethiopian canons."
+   "note": "Catholic, Orthodox and Ethiopian canons.",
+   "basis": "Coptic [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [chart]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "JDT",
@@ -751,10 +949,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Catholic, Orthodox and Ethiopian canons."
+   "note": "Catholic, Orthodox and Ethiopian canons.",
+   "basis": "Coptic [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "WIS",
@@ -762,10 +963,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Catholic, Orthodox and Ethiopian canons."
+   "note": "Catholic, Orthodox and Ethiopian canons.",
+   "basis": "Coptic [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "SIR",
@@ -773,10 +977,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Catholic, Orthodox and Ethiopian canons."
+   "note": "Catholic, Orthodox and Ethiopian canons.",
+   "basis": "Coptic [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "BAR",
@@ -784,10 +991,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Catholic, Orthodox and Ethiopian canons."
+   "note": "Catholic, Orthodox and Ethiopian canons.",
+   "basis": "Coptic [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "LJE",
@@ -795,10 +1005,12 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Baruch 6 in Catholic Bibles; separate book in Orthodox."
+   "note": "Baruch 6 in Catholic Bibles; separate book in Orthodox.",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. The Coptic list [coptic] does not name it apart from Baruch. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "S3Y",
@@ -806,10 +1018,12 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Addition to Daniel 3."
+   "note": "Addition to Daniel 3.",
+   "basis": "Not oriental_orthodox: NEEDS REVIEW. Not named in the Syriac base text [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "SUS",
@@ -817,10 +1031,13 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Addition to Daniel."
+   "note": "Addition to Daniel.",
+   "basis": "Coptic 'Sequel of Daniel' [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "BEL",
@@ -828,39 +1045,48 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Addition to Daniel."
+   "note": "Addition to Daniel.",
+   "basis": "Coptic 'Sequel of Daniel' [coptic], Ethiopian [tewahedo], Armenian [armenian], Syriac [peshitta]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "1MA",
    "name": "1 Maccabees",
    "traditions": [
     "catholic",
-    "orthodox"
+    "orthodox",
+    "eastern_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Ethiopian Meqabyan are different books; not tagged ethiopian_orthodox. NEEDS REVIEW."
+   "note": "Ethiopian Meqabyan are different books; not tagged ethiopian_orthodox. NEEDS REVIEW.",
+   "basis": "Not oriental_orthodox: the Ethiopian canon lacks it [tewahedo]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "2MA",
    "name": "2 Maccabees",
    "traditions": [
     "catholic",
-    "orthodox"
+    "orthodox",
+    "eastern_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "As 1MA. NEEDS REVIEW."
+   "note": "As 1MA. NEEDS REVIEW.",
+   "basis": "Not oriental_orthodox: the Ethiopian canon lacks it [tewahedo]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "3MA",
    "name": "3 Maccabees",
    "traditions": [
-    "orthodox"
+    "orthodox",
+    "eastern_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Greek Orthodox canon."
+   "note": "Greek Orthodox canon.",
+   "basis": "Not oriental_orthodox: not in the Coptic [coptic] or Ethiopian [tewahedo] lists. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "4MA",
@@ -875,10 +1101,12 @@
    "name": "1 Esdras",
    "traditions": [
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Greek Esdras A. NEEDS REVIEW for Ethiopian."
+   "note": "Greek Esdras A. NEEDS REVIEW for Ethiopian.",
+   "basis": "Not oriental_orthodox: not in the Coptic list [coptic]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "2ES",
@@ -887,27 +1115,33 @@
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Ezra Sutuel (4 Ezra) in the Ethiopian canon; Slavonic appendix. NEEDS REVIEW."
+   "note": "Ezra Sutuel (4 Ezra) in the Ethiopian canon; Slavonic appendix. NEEDS REVIEW.",
+   "basis": "Not oriental_orthodox or eastern_orthodox: Ezra Sutuel (4 Ezra) is in the Ethiopian canon [tewahedo] but not the Coptic list [coptic]."
   },
   {
    "code": "MAN",
    "name": "Prayer of Manasseh",
    "traditions": [
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": "Appendix in Vulgate, not Catholic canon."
+   "note": "Appendix in Vulgate, not Catholic canon.",
+   "basis": "Not oriental_orthodox: not in the Coptic list [coptic]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "PS2",
    "name": "Psalm 151",
    "traditions": [
     "orthodox",
+    "eastern_orthodox",
+    "oriental_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
-   "note": ""
+   "note": "",
+   "basis": "Oriental Orthodox churches [psalm151]; Coptic [coptic]. Eastern Orthodox [orthodoxwiki]."
   },
   {
    "code": "ESG",
@@ -915,6 +1149,7 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
@@ -927,11 +1162,28 @@
    "traditions": [
     "catholic",
     "orthodox",
+    "eastern_orthodox",
     "ethiopian_orthodox"
    ],
    "section": "deuterocanon",
    "note": "Duplicates DAN + additions already ingested separately; skipped in v1.",
    "skip": true
   }
- ]
+ ],
+ "tradition_rules": {
+  "orthodox": "Legacy tag, the same books as eastern_orthodox. Kept until Alpha approves removing it (ROADMAP item 3).",
+  "eastern_orthodox": "Books the Eastern Orthodox (Greek and Slavonic) churches read as scripture [orthodoxwiki].",
+  "oriental_orthodox": "Only books all six Oriental Orthodox churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean, Malankara) read as scripture (Alpha, 2026-10-18). Each book cites a source per church; a book any church is unconfirmed for is marked NEEDS REVIEW and left out. The Eritrean church is taken to keep the Ethiopian canon it shares, and the Malankara church the Syriac (Peshitta) canon; both to be confirmed in the pre-launch review (NEEDS_APPROVAL #5).",
+  "ethiopian_orthodox": "Books the Ethiopian Orthodox Tewahedo Church reads as scripture [tewahedo]."
+ },
+ "references": {
+  "coptic": "Coptic Orthodox Diocese of Los Angeles, 'The Deuterocanonical Books': Tobit, Judith, Sequel of Esther, Wisdom, Sirach, Baruch, Sequel of Daniel, 1 and 2 Maccabees, Psalm 151. https://www.lacopts.org/orthodoxy/our-faith/the-holy-bible/the-deuterocanonical-books/",
+  "tewahedo": "Wikipedia, 'Orthodox Tewahedo biblical canon': the whole Catholic deuterocanon except 1 and 2 Maccabees (the Meqabyan are different books); the Prayer of Manasseh within 2 Chronicles. https://en.wikipedia.org/wiki/Orthodox_Tewahedo_biblical_canon",
+  "armenian": "Armenian Church Library: the Armenian Apostolic Church recognises the deuterocanonical books as scripture (Wisdom, Tobit, Judith, 1 and 2 Maccabees named). https://www.armenianchurchlibrary.com/AmericanStandardVersion.html",
+  "peshitta": "Encyclopedia.pub, 'Peshitta': the Leiden base text has the Hebrew Bible books plus Wisdom, Letter of Jeremiah, Baruch, Bel and the Dragon, Susanna, Judith, Sirach, 1-4 Maccabees. https://encyclopedia.pub/entry/28378",
+  "peshitta-nt": "Syriac Orthodox Resources, 'The Peshitto': the Peshitta New Testament lacks 2 Peter, 2 and 3 John, Jude and Revelation, which are still not read in Syriac churches. https://syriacorthodoxresources.org/Bible/Peshitto.html",
+  "chart": "Bombaxo, 'Comparison Chart of the Historically Held Biblical Canons' (Syrian, Coptic, Ethiopian and Armenian columns). https://www.bombaxo.com/biblical-canon/comparison-chart-of-the-historically-held-canons-of-different-churches/",
+  "psalm151": "Wikipedia, 'Psalm 151': accepted as canonical by the Eastern Orthodox and Oriental Orthodox churches. https://en.wikipedia.org/wiki/Psalm_151",
+  "orthodoxwiki": "OrthodoxWiki, 'Deuterocanon': the Eastern Orthodox Old Testament adds 1 Esdras, Tobit, Judith, Wisdom, Sirach, Baruch, Letter of Jeremiah, the additions to Daniel and Esther, 1-3 Maccabees, the Prayer of Manasseh and Psalm 151 (4 Maccabees in an appendix). https://orthodoxwiki.org/Deuterocanon"
+ }
 }
