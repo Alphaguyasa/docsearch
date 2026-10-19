@@ -27,8 +27,6 @@ const ETHIOPIAN_MONTHS: Record<string, string> = {
   SIXTH: "Yakatit", SEVENTH: "Maggabit", EIGHTH: "Miyazya", NINTH: "Genbot", TENTH: "Sane",
   ELEVENTH: "Hamle", TWELFTH: "Nahase", THIRTEENTH: "Pagumen",
 };
-const MONTHS =
-  /^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH|ELEVENTH|TWELFTH|THIRTEENTH)\s+MONTH\b/i;
 
 interface TextRule {
   refPrefix: string;

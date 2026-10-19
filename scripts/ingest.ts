@@ -20,7 +20,7 @@ import {
   type Page,
 } from "../src/lib/chunk";
 import { fetchAllRows } from "../src/lib/paginate";
-import { extractPdf, insertChunks } from "../src/lib/pipeline";
+import { extractPdf } from "../src/lib/pipeline";
 
 // Lazily-loaded module types (imported only on the live path, see main()).
 type Db = typeof import("../src/lib/db").db;

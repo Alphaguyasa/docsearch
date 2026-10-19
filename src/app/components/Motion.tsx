@@ -41,7 +41,8 @@ export function RevealGroup({
     );
     el.querySelectorAll("[data-reveal]").forEach((n) => io.observe(n));
     return () => io.disconnect();
-  }, []);
+    // Both possible refs are stable objects, so this still runs once per mount.
+  }, [ref]);
   return createElement(as, { ref, className }, children);
 }
 

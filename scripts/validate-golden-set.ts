@@ -25,7 +25,7 @@
  */
 import "../src/lib/loadenv";
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { fetchByIds } from "../src/lib/paginate";
@@ -570,10 +570,6 @@ async function main(): Promise<void> {
   }
 
   console.log(`\n✓ Golden set is valid (${questions.length} questions).\n`);
-}
-
-function errorMessage(reason: unknown): string {
-  return reason instanceof Error ? reason.message : String(reason);
 }
 
 main().catch((err) => {

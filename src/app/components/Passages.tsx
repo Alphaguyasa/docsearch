@@ -37,6 +37,9 @@ export function Passages({
     if (active === null) return;
     if (!cited.includes(active)) setMore(true);
     requestAnimationFrame(() => refs.current.get(active)?.scrollIntoView({ behavior: "smooth", block: "center" }));
+    // Only a new highlight scrolls: `cited` grows as the story streams, and
+    // re-running on it would jump the page while the reader is reading.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deliberate, see above
   }, [active]);
 
   if (sources.length === 0) return null;
