@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-10-18T14:44:52.384Z
+Generated 2026-10-19T03:49:38.960Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -206,42 +206,42 @@ tum est eum finiaset omnes sermones illius, tradidit spiritnm. Et videt Seth man
 " Come, come," said the Deliverer to Adam ; " come, and put on thy garment of light, where the sun never sets ; wear on thy bro
 ```
 
-**Athanasius, Life of Antony §1–2** (592 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Athanasius, Life of Antony §1–2** (592 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Athanasius, Life of Antony §1–2
 
 1. Antony you must know was by descent an Egyptian: his parents were of good family and possessed considerable wealth, and as they were Christians he also was reared in the same Faith. In infancy he was brought up with his parents, knowing nought else but them and his home. But when he was grown and arrived at boyhood, and was advancing in years, he could not endure to learn letters, not caring to associate with other boys; but all his desire was, as it is written of Jacob, to live a plain man at home. With his parents he used to attend the Lord's House, and neither as a child was he idle nor when older did he despise them; but was both obedient to his father
 ```
 
-**Athanasius, Life of Antony §45** (404 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Athanasius, Life of Antony §45** (404 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Athanasius, Life of Antony §45
 
 45. Antony, however, according to his custom, returned alone to his own cell, increased his discipline, and sighed daily as he thought of the mansions in Heaven, having his desire fixed on them, and pondering over the shortness of man's life. And he used to eat and sleep, and go about all other bodily necessities with shame when he thought of the spiritual faculties of the soul. So often, when about to eat with any other hermits, recollecting the spiritual food, he begged to be excused, and departed far off from them, deeming it a matter for shame if he should be seen eating by others. He used, however, when by himself, to eat through bodily necessity, but oft
 ```
 
-**Athanasius, Life of Antony §86** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Athanasius, Life of Antony §86** (353 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Athanasius, Life of Antony §86
 
 86. And a certain general, Balacius by name, persecuted us Christians bitterly on account of his regard for the Arians--that name of ill-omen. And as his ruthlessness was so great that he beat virgins, and stripped and scourged monks, Antony at this time wrote a letter as follows, and sent it to him. I see wrath coming upon thee, wherefore cease to persecute the Christians, lest haply wrath catch hold of thee, for even now it is on the point of coming upon thee.' But Balacius laughed and threw the letter on the ground, and spit on it, and insulted the bearers, bidding them tell this to Antony: Since thou takest thought for the monks, soon I will come after the
 ```
 
-**Aphrahat, Letter of an Inquirer §1–2** (443 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Aphrahat, Letter of an Inquirer §1–2** (443 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Aphrahat, Letter of an Inquirer §1–2
 
 1. Beloved, I send thee inquiries and questions, for I am compelled to seek further instruction of thee on many points. Do not thou refuse to hear me. My spirit urges me to warn thee about many topics that thou mayest unfold for me the spiritual perceptions of thy mind, and mayest show me of all that thou hast apprehended from the holy books, that so my deficiency may be supplied by thee and my hunger satisfied by thy doctrine, and that thou mayest assuage my thirst from the fountain of thine instruction. Yet though many things are set in my thought to ask thee, they all are notwithstanding reserved with me, that when I come to thee, thou mayest instruct
 ```
 
-**Aphrahat, Demonstration VIII — Of the Resurrection of the Dead §10–11** (550 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Aphrahat, Demonstration VIII — Of the Resurrection of the Dead §10–11** (550 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Aphrahat, Demonstration VIII — Of the Resurrection of the Dead §10–11
 
 10. And Moses again proclaimed clearly the Resurrection of the dead, for he said as from the mouth of his God:--It is I that cause to die and it is I that make alive. Again also Hannah said thus in her prayer:--The Lord causeth to die and quickeneth; He bringeth down to Sheol and bringeth up (therefrom). The Prophet Isaiah also said thus:--Thy dead shall live, O Lord, and their bodies shall rise, and they that sleep in the dust shall awake and praise thee. David also proclaimed, saying:--For lo! for the dead Thou workest wonderful things, and the mighty ones shall rise and make confession unto Thee, and those that are in 
 ```
 
-**Aphrahat, Demonstration XXII — Of Death and the Latter Times §6–8** (490 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Aphrahat, Demonstration XXII — Of Death and the Latter Times §6–8** (490 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Aphrahat, Demonstration XXII — Of Death and the Latter Times §6–8
 
@@ -283,7 +283,7 @@ Baralam and Yewasef, How Yéwásef admonished king Baráséyás, and counselled 
 ye merciful like your Heavenly Father’ This is the commandment which those who occupy exceedingly exalted positions should seek to follow above all others. And it is especially fitting that the man who is appointed to an exalted position should be like unto Him, Who is the Giver of power, in all the fair deeds which enable him to show compassion and mercy. And especially in respect of the Law of His commandment—there is nothing like unto this to draw a man to love him (i.e. the king). It is like a gift which is given to the needy with gracious benevolence. He who minister
 ```
 
-**John Chrysostom, Letter to Theodore after his Fall §1** (597 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**John Chrysostom, Letter to Theodore after his Fall §1** (597 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 John Chrysostom, Letter to Theodore after his Fall §1
 
@@ -297,7 +297,7 @@ Wherefore no one would now blame me if I were to compose more lamentations than 
 
 ```
 
-**John Chrysostom, Letter to Theodore after his Fall §8 (part 18)** (509 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**John Chrysostom, Letter to Theodore after his Fall §8 (part 18)** (509 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 John Chrysostom, Letter to Theodore after his Fall §8 (part 18)
 
@@ -310,7 +310,7 @@ Now we ought to form some such image of the beauty of the soul.
 "For they shall be," we read 
 ```
 
-**John Chrysostom, Second Letter to Theodore §3 (part 2)** (469 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**John Chrysostom, Second Letter to Theodore §3 (part 2)** (469 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 John Chrysostom, Second Letter to Theodore §3 (part 2)
 
@@ -321,28 +321,28 @@ Slaughter has brought about righteousness, and mercy has been a cause of condemn
 It was reckoned to Phinees for righteousness that he pierced to death the woman who committed fornication, together with the fornicator; but Samuel, that saint of God although he wept and mourned and entreated for whole nights, could not rescue Saul from the condemnation which God issued against him, because he saved, contrary to the design of G
 ```
 
-**Confessions, Book I** (327 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Confessions, Book I** (327 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Confessions, Book I
 
 Great art Thou, O Lord, and greatly to be praised; great is Thy power, and Thy wisdom infinite. And Thee would man praise; man, but a particle of Thy creation; man, that bears about him his mortality, the witness of his sin, the witness that Thou resistest the proud: yet would man praise Thee; he, but a particle of Thy creation. Thou awakest us to delight in Thy praise; for Thou madest us for Thyself, and our heart is restless, until it repose in Thee. Grant me, Lord, to know and understand which is first, to call on Thee or to praise Thee? and, again, to know Thee or to call on Thee? for who can call on Thee, not knowing Thee? for he that knoweth Thee not, may call on T
 ```
 
-**Confessions, Book IX (part 3)** (369 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Confessions, Book IX (part 3)** (369 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Confessions, Book IX (part 3)
 
 Moreover, it had at first troubled me that in this very summer my lungs began to give way, amid too great literary labour, and to breathe deeply with difficulty, and by the pain in my chest to show that they were injured, and to refuse any full or lengthened speaking; this had troubled me, for it almost constrained me of necessity to lay down that burden of teaching, or, if I could be cured and recover, at least to intermit it. But when the full wish for leisure, that I might see how that Thou art the Lord, arose, and was fixed, in me; my God, Thou knowest, I began even to rejoice that I had this secondary, and that no feigned, excuse, which might something mod
 ```
 
-**Confessions, Book XIII (part 4)** (550 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Confessions, Book XIII (part 4)** (550 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Confessions, Book XIII (part 4)
 
 But what was the cause, O true-speaking Light?--unto Thee lift I up my heart, let it not teach me vanities, dispel its darkness; and tell me, I beseech Thee, by our mother charity, tell me the reason, I beseech Thee, why after the mention of heaven, and of the earth invisible and without form, and darkness upon the deep, Thy Scripture should then at length mention Thy Spirit? Was it because it was meet that the knowledge of Him should be conveyed, as being "borne above"; and this could not be said, unless that were first mentioned, over which Thy Spirit may be understood to have been borne. For neither was He borne above the Father, nor the Son, nor could He 
 ```
 
-**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2** (611 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2** (611 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Cyril of Jerusalem, Catechetical Lecture II, On Repentance §1–2
 
@@ -351,14 +351,14 @@ The righteousness of the righteous shall be upon him, and the wickedness of the 
 1. A fearful thing is sin, and the sorest disease of the soul is transgression, secretly cutting its sinews, and becoming also the cause of eternal fire; an evil of a man's own choosing, an offspring of the will. For that we sin of our own free will the Prophet says plainly in a certain place: Yet I planted thee a fruitful vine, wholly true: how art thou turned to bitterness, (and become) the strange vine ? The planting was good, the fruit coming from the will is evil; and
 ```
 
-**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10** (374 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10** (374 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Cyril of Jerusalem, Catechetical Lecture II, On Repentance §10
 
 10. Nay more, if a whole people sin, this surpasses not the loving-kindness of God. The people made a calf, yet God ceased not from His loving-kindness. Men denied God, but God denied not Himself . These be thy gods, O Israel, they said: yet again, as He was wont, the God of Israel became their Saviour. And not only the people sinned, but also Aaron the High Priest. For it is Moses that says: And the anger of the Lord came upon Aaron: and I prayed for him, saith he, and God forgave him. What then, did Moses praying for a High Priest that sinned prevail with God, and shall not Jesus, His Only-begotten, prevail with God when He pr
 ```
 
-**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17** (489 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17** (489 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Cyril of Jerusalem, Catechetical Lecture II, On Repentance §16–17
 
@@ -404,7 +404,7 @@ And transform themselves into what they were not into sinners: They shall be tro
 5. And in 
 ```
 
-**Ephrem the Syrian, On Our Lord §1** (570 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Ephrem the Syrian, On Our Lord §1** (570 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Ephrem the Syrian, On Our Lord §1
 
@@ -413,21 +413,21 @@ Ephrem the Syrian, On Our Lord §1
 Therefore let all mouths render praise to Him Who has removed from them blasphemous speech. Glory to Thee Who didst depart from one dwelling to take up thy abode in another! that He might come and make us a dwelling-place for His Sender, the only-begotten departed from [being] with Deity and took up His abode in the Virgin; that by a common manner of birth, though only-begotten, He might become the brother of many. And He departed from Sheol and took up His abode in the Kingdom; that He might seek out a path from Sheol which oppresses all, to the Kingdom which re
 ```
 
-**Ephrem the Syrian, On Our Lord §42 (part 2)** (597 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Ephrem the Syrian, On Our Lord §42 (part 2)** (597 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Ephrem the Syrian, On Our Lord §42 (part 2)
 
 Now observe this son of Israel, how he was like Israel in stubbornness. For heathenism was bound up in the mind of the People; therefore Moses was taken away from them, that the wickedness that was within them might become manifest. But that they might not be put to shame, and that it might not be known how they were seeking idols, they first sought for Moses, and then for idols. As for this Moses, we know not what has become of him. And if God, Who cannot die, brought thee out of Egypt, why dost thou seek for a man, who at some time must die? Yet they did not desire Moses, that he should become a god to them; because Moses could hear and see and 
 ```
 
-**Ephrem the Syrian, On the Sinful Woman §5** (241 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Ephrem the Syrian, On the Sinful Woman §5** (241 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Ephrem the Syrian, On the Sinful Woman §5
 
 5. These things spake the perfumer, in wisdom, to the harlot. The sinful woman answered and said to him, to the perfumer after his discourse, "Hinder me not, O man, and stop me not by thy questioning. I have asked of thee ointment, not freely, but I will pay thee its value not grudgingly. Take thee the gold, as much as thou demandest, and give me the precious ointment; take thee that which endures not and give me that which endures; and I will go to Him who endures, and will buy that which endures. And as to that thou saidst, about a merchant; a Man has met me today Who bears riches in abundance. He has robbed me and I have robbed Him; He has robbed
 ```
 
-**Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence** (554 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence** (554 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence
 
@@ -436,7 +436,7 @@ The fear of God is the foundation of excellence ; for excellence is said to be t
 There is scarcely to be found a man who is able to bear honours, or poss
 ```
 
-**Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… (part 15)** (519 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… (part 15)** (519 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… (part 15)
 
@@ -449,7 +449,7 @@ struggle concerning them. So he will not have rest from them, so as to have occa
 How is it possible that he should persuade a man, who is not to be persuaded to go five steps outside the door of his hut, to leave the desert or to approach unto the town? And he that can not be induced to look through h
 ```
 
-**Isaac of Nineveh, Treatises LXXV–LXXVI: On Hidden States And The Powers And Influences Which Are In Them (part 4)** (86 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Isaac of Nineveh, Treatises LXXV–LXXVI: On Hidden States And The Powers And Influences Which Are In Them (part 4)** (86 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Isaac of Nineveh, Treatises LXXV–LXXVI: On Hidden States And The Powers And Influences Which Are In Them (part 4)
 
@@ -512,7 +512,7 @@ Thus Micah the Prophet prophesied and said, " The Word of God shall appear in Je
 Thus Hosea thePr
 ```
 
-**Lausiac History, Prologue** (105 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Lausiac History, Prologue** (105 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Lausiac History, Prologue
 
@@ -547,14 +547,14 @@ THE VIRGIN AND ATHANASIUS
 THE COMPASSIONATE MONK .
 ```
 
-**Lausiac History, Pachon** (341 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Lausiac History, Pachon** (341 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Lausiac History, Pachon
 
 [i] There dwelt in Scete a man named Pachon, who had reached his sixtieth year or thereabouts. Now I happened to be dejected, having been tormented by the love of women, both in my (waking) thoughts and my nocturnal visions. And I was nearly leaving the desert, passion driving me, yet I did not refer the matter to my neighbours, nor to my teacher Evagrius. But I journeyed secretly into the great desert and spent fifteen days in meeting the fathers who had grown old in the desert at Scete. Among others I met Pachon. Well, finding him more guileless and better versed in asceticism than the rest, I was bold to refer to him the state of my mind. And he said to me : " Let
 ```
 
-**Lausiac History, Amma Talis And Taor** (472 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Lausiac History, Amma Talis And Taor** (472 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Lausiac History, Amma Talis And Taor
 
@@ -604,7 +604,7 @@ wine in the morning he rose up to go to the church, and as he was on
 his way thither there came against him a lion, which roared at the monk and wished to rend him. Then
 ```
 
-**Paradise of the Holy Fathers, Introduction** (544 tokens, catholic, orthodox, ethiopian_orthodox)
+**Paradise of the Holy Fathers, Introduction** (544 tokens, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Paradise of the Holy Fathers, Introduction
 
@@ -623,14 +623,14 @@ FROM THE STORY OF THE MONK WHO VISITED SYLVANUS IN SINAI.
 ORGARDENOFTHE HOLY FATHERS BE- ING HISTORIES OF THE ANCHORITES RECLUSES MONKS COENOBITES AND ASCETIC FATHERS OF THE DESERTS OF EGYPT BETWEEN A.D. CCL AND A. D.CCCCCIRCIT
 ```
 
-**Paradise of the Holy Fathers, “NOW before we bring this history to a…” (part 2)** (613 tokens, catholic, orthodox, ethiopian_orthodox)
+**Paradise of the Holy Fathers, “NOW before we bring this history to a…” (part 2)** (613 tokens, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Paradise of the Holy Fathers, “NOW before we bring this history to a…” (part 2)
 
 Now on one occasion a certain brother went to him, and seeing that his hands were covered with blood through plaiting mats, he said unto him, “Why dost thou work and toil in this “ manner, seeing that thou art so seriously ill? Thinkest thou “ that thou wouldst not obtain permission not to work and to “ be idle from God? God knoweth that thou art sick, and no “ man who hath thy complaint hath ever worked. We feed and “ take care of strangers and poor folk, and are we not in duty “ bound to minister unto thy wants, thou who art one of us, “ and art so holy a man, with all our soul and with the greatest “joy and g
 ```
 
-**Paradise of the Holy Fathers, “TWO of the fathers entreated God to inform…” (part 144)** (507 tokens, catholic, orthodox, ethiopian_orthodox)
+**Paradise of the Holy Fathers, “TWO of the fathers entreated God to inform…” (part 144)** (507 tokens, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Paradise of the Holy Fathers, “TWO of the fathers entreated God to inform…” (part 144)
 
@@ -641,7 +641,7 @@ And I know that “ when the judge cometh here he will kill me without asking �
 And he answered and said unto the woman and her husband, “ Because I see that ye preserve the “purity of your bodies for Christ’s sake, and that ye have “chosen to remain in great tribulation and not to destroy “ your chastity, God hath put it into my heart to do unto you an “ a6l of grace which ye deserve, and perhaps
 ```
 
-**Philoxenus of Mabbogh, Discourse I: The Prologue** (529 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Philoxenus of Mabbogh, Discourse I: The Prologue** (529 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Philoxenus of Mabbogh, Discourse I: The Prologue
 
@@ -650,14 +650,14 @@ Our Lord and our Redeemer Jesus Christ in His living Gospel invited us to draw n
 and whosoever beginneth thus is called a wise man by the word of our Redeemer,
 ```
 
-**Philoxenus of Mabbogh, Discourse IX: On Poverty (part 50)** (421 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Philoxenus of Mabbogh, Discourse IX: On Poverty (part 50)** (421 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Philoxenus of Mabbogh, Discourse IX: On Poverty (part 50)
 
 become disciples] because of their lust for mammon, and they have drawn nigh unto this life which demandeth poverty, in order that that which they have not been able to acquire from the world, they may go forth and acquire outside the world. And by the hand of that one feeble disciple, [concerning whom] it is written in the Gospel of our Redeemer, Jesus hath rebuked this wicked thought in all [His] foot-soldiers. "And one ''came and drew nigh and said unto Him, Master, I ''will follow Thee whithersoever thou goest. Jesus saith "unto him. The foxes have holes, and the birds of "heaven have nests, but the Son of man hath not "where to 
 ```
 
-**Philoxenus of Mabbogh, Discourse XIII: On Fornication (part 13)** (456 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Philoxenus of Mabbogh, Discourse XIII: On Fornication (part 13)** (456 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Philoxenus of Mabbogh, Discourse XIII: On Fornication (part 13)
 
@@ -724,21 +724,21 @@ And at that time the disciples of the holy man began to labour with their hands 
 ps in the fie □bbing a woi vild creature:
 ```
 
-**Genesis 1:1-13** (353 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Genesis 1:1-13** (353 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Genesis 1:1-13
 
 In the beginning, God created the heavens and the earth. The earth was formless and empty. Darkness was on the surface of the deep and God’s Spirit was hovering over the surface of the waters. God said, “Let there be light,” and there was light. God saw the light, and saw that it was good. God divided the light from the darkness. God called the light “day”, and the darkness he called “night”. There was evening and there was morning, the first day. God said, “Let there be an expanse in the middle of the waters, and let it divide the waters from the waters.” God made the expanse, and divided the waters which were under the expanse from the waters which were above the expanse; a
 ```
 
-**Isaiah 52:3-11** (311 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Isaiah 52:3-11** (311 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Isaiah 52:3-11
 
 For Yahweh says, “You were sold for nothing; and you will be redeemed without money.” For the Lord Yahweh says: “My people went down at the first into Egypt to live there; and the Assyrian has oppressed them without cause. “Now therefore, what do I do here,” says Yahweh, “seeing that my people are taken away for nothing? Those who rule over them mock,” says Yahweh, “and my name is blasphemed continually all day long. Therefore my people shall know my name. Therefore they shall know in that day that I am he who speaks. Behold, it is I.” How beautiful on the mountains are the feet of him who brings good news, who publishes peace, who brings good news, who proclaims salvation, w
 ```
 
-**Acts 8:34-9:4** (302 tokens, protestant, catholic, orthodox, ethiopian_orthodox)
+**Acts 8:34-9:4** (302 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Acts 8:34-9:4
 
