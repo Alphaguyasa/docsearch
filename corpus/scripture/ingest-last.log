@@ -1,11 +1,8 @@
-outcome=failure at 2026-10-19T03:51:39Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/39196192496
+outcome=success at 2026-10-19T03:53:23Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/39196671693
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
-raw files missing, skipped this run: paradise
-built 8135 chunks across 95 documents
-done 8135, to embed 0, stale 0, retag 5008
-Error: retag failed: canceling statement due to statement timeout
-    at main (/home/runner/work/docsearch/docsearch/scripts/ingest-scripture.ts:132:28)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+built 9264 chunks across 96 documents
+done 9264, to embed 0, stale 0, retag 6137
+finished: 9264/9264
