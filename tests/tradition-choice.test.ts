@@ -34,17 +34,36 @@ test("default excludes Protestant-only and Catholic-only sources", () => {
   assert.ok(rankFigures(tags, filterFor("catholic"), 99, [western]).length, "opt-in still finds it");
 });
 
-test("default keeps everything an Orthodox church reads today", () => {
+test("default reads only what all six Oriental churches share", () => {
   for (const b of canonByCode().values()) {
     if (b.skip || b.traditions.length === 0) continue;
-    const orthodox = b.traditions.some((t) => t === "orthodox" || t === "ethiopian_orthodox");
-    assert.equal(readIn(b.traditions, DEFAULT_TRADITION), orthodox, b.code);
+    assert.equal(readIn(b.traditions, DEFAULT_TRADITION), b.traditions.includes("oriental_orthodox"), b.code);
+  }
+  // Decided 2026-10-18: Ethiopian-only books stay under "Ethiopian Orthodox Tewahedo".
+  for (const code of ["REV", "1MA", "2ES", "MAN"]) {
+    assert.equal(readIn(canonByCode().get(code)!.traditions, DEFAULT_TRADITION), false, code);
   }
   for (const [id, rule] of Object.entries(TEXT_RULES)) {
+    const ethOnly = rule.traditions.length === 1 && rule.traditions[0] === "ethiopian_orthodox";
     const western = rule.traditions.every((t) => t === "catholic" || t === "protestant");
-    assert.equal(readIn(rule.traditions, DEFAULT_TRADITION), !western, id);
+    assert.equal(readIn(rule.traditions, DEFAULT_TRADITION), !western && !ethOnly, id);
+    if (ethOnly) assert.ok(readIn(rule.traditions, "ethiopian_orthodox"), id);
   }
-  for (const f of FIGURES) assert.ok(readIn(f.traditions, DEFAULT_TRADITION), f.id);
+  for (const f of FIGURES) {
+    const ethOnly = f.traditions.length === 1 && f.traditions[0] === "ethiopian_orthodox";
+    assert.equal(readIn(f.traditions, DEFAULT_TRADITION), !ethOnly, f.id);
+    assert.ok(readIn(f.traditions, "ethiopian_orthodox"), f.id);
+  }
+});
+
+test("Eastern Orthodox keeps its saved value but reads the split tag", () => {
+  assert.deepEqual(filterFor("orthodox"), ["eastern_orthodox"]);
+  for (const b of canonByCode().values()) {
+    if (b.skip) continue;
+    assert.equal(readIn(b.traditions, "orthodox"), b.traditions.includes("eastern_orthodox"), b.code);
+  }
+  assert.ok(readIn(canonByCode().get("3MA")!.traditions, "orthodox"));
+  assert.ok(!readIn(canonByCode().get("2ES")!.traditions, "orthodox"));
 });
 
 test("picker offers Oriental, Ethiopian, then the opt-in traditions", () => {
@@ -54,9 +73,11 @@ test("picker offers Oriental, Ethiopian, then the opt-in traditions", () => {
 test("every picker option maps to its own tradition's books", () => {
   for (const choice of offered) {
     assert.ok(filterFor(choice).length, choice);
-    // Every protocanonical book is read under every choice.
+    // Every protocanonical book is read under every choice, except the NEEDS REVIEW
+    // ones the default leaves out until every Oriental church is confirmed.
     for (const b of canonByCode().values()) {
-      if (b.section === "protocanon") assert.ok(readIn(b.traditions, choice), `${choice} ${b.code}`);
+      const review = choice === "oriental_orthodox" && /NEEDS REVIEW/.test(b.basis ?? "");
+      if (b.section === "protocanon" && !review) assert.ok(readIn(b.traditions, choice), `${choice} ${b.code}`);
     }
   }
 });

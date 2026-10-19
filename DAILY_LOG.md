@@ -131,3 +131,25 @@
 
 **Next run:** ROADMAP 3 (split the `orthodox` tag, per the decision), then 4 (bring
 back *Imitation of Christ* and *Grace Abounding*).
+
+## 2026-10-19: run 5 (scheduled)
+
+- Main CI green at start (ci and deploy on 81e8b8b). Model check: Opus 5.5 is still the
+  newest Opus; the run is on it. No switch needed (Fable not used, per policy).
+- ROADMAP 3 (split `orthodox`), in two PRs so the site never filters on tags the DB
+  lacks:
+  - **PR #110** (squash-merged as e912bbc): canon.json gets `eastern_orthodox` (same
+    books as `orthodox`) and `oriental_orthodox` (books all six Oriental churches read),
+    with a `references` table and a cited `basis` per book; the validator enforces it.
+    No visible change. Then ingest-scripture was dispatched to retag the DB.
+  - **PR B**: the default reads `oriental_orthodox` and "Eastern Orthodox" reads
+    `eastern_orthodox`. Canon notes name Eastern Orthodox, and never say "not in the
+    Oriental Orthodox canon" (a missing tag can mean NEEDS REVIEW, not absent).
+  - Now hidden from the default: 2 Peter, 2-3 John, Jude and Revelation, plus the Letter
+    of Jeremiah and the Song of the Three (all NEEDS REVIEW); 1-3 Maccabees, 1-2 Esdras
+    and the Prayer of Manasseh; and every Ethiopian-only source and figure
+    (Synaxarium etc.), as Alpha decided. New question: NEEDS_APPROVAL #8.
+  - The canon reference sites were blocked from the cloud session (proxy 403), so each
+    basis was written from search-result excerpts and cites the page it came from.
+- Local: lint 0 errors (11 warnings), typecheck, npm test 265/265, vitest 339/339,
+  build OK.
