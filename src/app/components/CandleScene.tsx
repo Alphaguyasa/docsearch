@@ -187,6 +187,7 @@ export function CandleScene({
     return () => ro.disconnect();
     // Keyed on the painting's values, not the object: a parent re-render (every
     // streamed word of a story) must not tear the scene down and rebuild it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deliberate, see above
   }, [painting?.small, painting?.large, painting?.aspect, glow, embers]);
 
   useEffect(() => {
@@ -424,6 +425,7 @@ export function CandleScene({
     };
     // Keyed on the painting's values, not the object: a parent re-render (every
     // streamed word of a story) must not tear the scene down and rebuild it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deliberate, see above
   }, [painting?.small, painting?.large, painting?.aspect, glow, embers]);
 
   return (

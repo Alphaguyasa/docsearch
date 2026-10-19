@@ -34,7 +34,7 @@ export function rankFigures(tags: string[], filter?: Tradition[], limit = 3, all
       const matched = f.sins.filter((s) => tags.includes(s));
       return { f, order, score: matched.length, specific: matched.reduce((n, t) => n + 1 / holders(t), 0) };
     })
-    .filter(({ f, score }) => score > 0)
+    .filter(({ score }) => score > 0)
     .filter(({ f }) => f.passages.some((p) => p.sourceId !== "pending"))
     .filter(({ f }) => !filter?.length || f.traditions.some((t) => filter.includes(t as Tradition)))
     .sort(

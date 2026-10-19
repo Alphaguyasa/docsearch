@@ -157,3 +157,26 @@ back *Imitation of Christ* and *Grace Abounding*).
     basis was written from search-result excerpts and cites the page it came from.
 - Local: lint 0 errors (11 warnings), typecheck, npm test 265/265, vitest 339/339,
   build OK.
+- **PR #111** squash-merged as fe64d02 after the verification run. Tags `v2026-10-19-1`
+  (e912bbc) and `v2026-10-19-2` (fe64d02) were refused by the cloud git proxy and the
+  refs API (403), as on earlier days. Alpha to create them.
+- ROADMAP 8 (lint): the 11 warnings are fixed and `npm run lint` now passes
+  `--max-warnings 0`. Unused imports, vars and an arg were removed (no behaviour
+  change). Motion's effect now lists its stable `ref`. CandleScene and Passages keep
+  their deliberate deps, with a reason in an eslint-disable line.
+- Note: restarting the session branch after each squash-merge needed a
+  `--force-with-lease` push. The branch held only already-merged history, so no
+  unmerged work was rewritten.
+
+**Report**
+| Field | Content |
+|---|---|
+| Done | ROADMAP 3: #110 (tags + cited basis), #111 (filters use them). ROADMAP 8: lint PR |
+| Merged | #110 yes, #111 yes; lint PR, see PR. Tags not pushed (proxy 403) |
+| Failed or blocked | First retag run hit a statement timeout (recovered by its chained run); tag pushes blocked |
+| Roadmap | 7 open (4, 7, 9, 10, 11, 12, 13). No replan needed |
+| Model | Opus 5.5, still the newest Opus. No action |
+| Needs approval | New #8 (what the default now hides, incl. Revelation), plus #1-5 |
+| Next | ROADMAP 4 (Imitation of Christ, Grace Abounding), then 7 (scripture eval gate) |
+
+**Next run:** ROADMAP 4, then 7.

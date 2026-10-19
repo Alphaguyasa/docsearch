@@ -20,7 +20,7 @@
  */
 import "../src/lib/loadenv"; // must precede modules that read env
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { cacheStats, setCacheEnabled } from "../eval/src/cache";
