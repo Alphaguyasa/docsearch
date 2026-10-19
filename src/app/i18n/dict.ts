@@ -256,7 +256,7 @@ const en = {
     scripture: "Scripture",
     tradition: "Church tradition",
     passage: (n: number) => `Read passage ${n}`,
-    // `orthodox` is the legacy tag for both; notes use it until the DB carries the split tags.
+    // Notes name eastern_orthodox, never the legacy `orthodox` (see canon-note.ts).
     canonNames: {
       protestant: "Protestant",
       catholic: "Catholic",

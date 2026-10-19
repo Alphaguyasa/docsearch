@@ -5,6 +5,23 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+8. **Books the default view now hides (ROADMAP 3, 2026-10-19).** Following the
+   "all six churches" rule, the Oriental Orthodox default no longer shows:
+   - **2 Peter, 2 and 3 John, Jude, Revelation**: NEEDS REVIEW. The Syriac Peshitta
+     lacks them and Syriac churches still do not read them in the liturgy
+     (syriacorthodoxresources.org). I could not confirm whether the Syriac Orthodox
+     Church counts them as scripture today.
+   - **Letter of Jeremiah, Song of the Three**: NEEDS REVIEW. Not named separately in
+     the Coptic list or the Syriac base text.
+   - 1-3 Maccabees, 1-2 Esdras and the Prayer of Manasseh: one church's list lacks them.
+   They stay under "Ethiopian Orthodox Tewahedo" (and Eastern Orthodox where they
+   apply). Two assumptions to check: the Eritrean church keeps the Ethiopian canon, and
+   the Malankara church keeps the Syriac one. The Paradise of the Holy Fathers (not
+   scripture) keeps its readers in the default. The canon sites could not be opened
+   from the cloud session, so each basis comes from search-result excerpts; the
+   pre-launch review (#5) should check them. *Default: as above. To show any of these
+   books in the default, remove "NEEDS REVIEW" from its `basis` in data/canon.json and
+   add `oriental_orthodox`.*
 1. **Amharic Bible (1962) is not public domain.** `data/bible-am.json` is used under the
    Bible Society of Ethiopia's non-commercial permission. The new rule says public-domain
    or openly licensed only. Options: (a) keep it as a documented exception (it's what

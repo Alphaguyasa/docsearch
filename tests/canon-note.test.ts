@@ -17,12 +17,21 @@ test("unknown tags give no label rather than a wrong one", () => {
 
 test("the deuterocanon is labelled as outside the Protestant canon", () => {
   assert.deepEqual(canonSplit(traditionsFor("TOB")), {
-    inCanon: ["catholic", "orthodox", "ethiopian_orthodox"],
+    inCanon: ["catholic", "eastern_orthodox", "ethiopian_orthodox"],
     notIn: ["protestant"],
   });
   assert.deepEqual(canonSplit(traditionsFor("2ES")), {
     inCanon: ["ethiopian_orthodox"],
-    notIn: ["protestant", "catholic", "orthodox"],
+    notIn: ["protestant", "catholic", "eastern_orthodox"],
+  });
+});
+
+test("a book left out of oriental_orthodox is never labelled 'not in the Oriental Orthodox canon'", () => {
+  // Revelation is NEEDS REVIEW for the Syriac church, not absent from every Oriental canon.
+  assert.equal(canonSplit(traditionsFor("REV")), null);
+  assert.deepEqual(canonSplit(traditionsFor("1MA")), {
+    inCanon: ["catholic", "eastern_orthodox"],
+    notIn: ["protestant", "ethiopian_orthodox"],
   });
 });
 

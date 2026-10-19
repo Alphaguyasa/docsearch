@@ -14,12 +14,6 @@ export const TRADITIONS = [
 ] as const;
 export type Tradition = (typeof TRADITIONS)[number];
 
-/**
- * The four tags every row carried before ROADMAP item 3 split `orthodox`.
- * WHY kept apart: until ingest retags the DB, rows only carry these, so what
- * the reader sees (filters, canon notes) reads them alone.
- */
-export const LEGACY_TRADITIONS = ["protestant", "catholic", "orthodox", "ethiopian_orthodox"] as const;
 
 export interface CanonBook {
   code: string;

@@ -1,12 +1,11 @@
 /**
  * The reader's "My church" choice, and the data tags each choice reads.
  *
- * WHY a separate choice from the data tags: "Oriental Orthodox" is the default
- * view. canon.json now carries `oriental_orthodox` and `eastern_orthodox`
- * (ROADMAP item 3), but rows in the DB only get them once ingest retags, so for
- * now the default still reads every book tagged for an Orthodox church and
- * never a book tagged only Catholic or only Protestant, so Western sources
- * that come back stay opt-in. The next step points the choices at the new tags.
+ * WHY a separate choice from the data tags: the picker's "Eastern Orthodox"
+ * option keeps its old saved value, `orthodox`, but reads the split
+ * `eastern_orthodox` tag (ROADMAP item 3). "Oriental Orthodox", the default,
+ * reads only books all six Oriental churches share (Alpha, 2026-10-18), so
+ * Ethiopian-only books and Western-only sources stay opt-in.
  */
 import type { Tradition } from "./canon";
 
@@ -17,9 +16,9 @@ export type TraditionChoice = (typeof TRADITION_CHOICES)[number];
 export const DEFAULT_TRADITION: TraditionChoice = "oriental_orthodox";
 
 const FILTERS: Record<TraditionChoice, Tradition[]> = {
-  oriental_orthodox: ["orthodox", "ethiopian_orthodox"],
+  oriental_orthodox: ["oriental_orthodox"],
   ethiopian_orthodox: ["ethiopian_orthodox"],
-  orthodox: ["orthodox"],
+  orthodox: ["eastern_orthodox"],
   catholic: ["catholic"],
   protestant: ["protestant"],
 };
