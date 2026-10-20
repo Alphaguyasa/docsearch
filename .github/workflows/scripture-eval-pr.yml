@@ -1,0 +1,76 @@
+name: scripture-eval-pr
+
+# PR gate for the scripture app: the retrieval, tradition-filter, crisis and
+# off-topic checks of scripts/scripture-eval.ts in --retrieval-only mode.
+# WHY no Gemini: its free tier is shared with the live site (about 20 requests
+# a day per model), so the key is never given to this job; a dummy stands in.
+# Voyage's free tier is shared too (3 req/min), so the gate runs only when a PR
+# touches retrieval, the figures, the canon or the golden set.
+# It reads the production database, i.e. main's corpus: it tests retrieval
+# code and data/*.json, not corpus changes that have not been ingested yet.
+# Results go to the job summary; nothing is committed. Skips cleanly when the
+# secrets are absent (fork PRs).
+
+on:
+  pull_request:
+    paths:
+      - "src/lib/scripture/retrieve-struggle.ts"
+      - "src/lib/scripture/struggle.ts"
+      - "src/lib/scripture/figures.ts"
+      - "src/lib/scripture/tradition-choice.ts"
+      - "src/lib/scripture/canon.ts"
+      - "src/lib/scripture/safety.ts"
+      - "src/lib/retrieve.ts"
+      - "src/lib/embed.ts"
+      - "data/figures.seed.json"
+      - "data/canon.json"
+      - "data/crisis-resources.json"
+      - "eval/scripture-golden.json"
+      - "scripts/scripture-eval.ts"
+      - "scripts/scripture-eval-mode.ts"
+      - ".github/workflows/scripture-eval-pr.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scripture-eval-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  retrieval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Only with the database and Voyage secrets
+        id: gate
+        env:
+          HAS_DB: ${{ secrets.SCRIPTURE_SUPABASE_URL != '' && secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY != '' }}
+          HAS_VOYAGE: ${{ secrets.VOYAGE_API_KEY != '' }}
+        run: |
+          if [ "$HAS_DB" = "true" ] && [ "$HAS_VOYAGE" = "true" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Secrets not available (fork PR?) — skipping the retrieval gate." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          node-version: 24
+          cache: npm
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm ci
+      - name: Evaluate (retrieval-only, no LLM)
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SCRIPTURE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SCRIPTURE_SUPABASE_SERVICE_ROLE_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+          GENERATION_PROVIDER: gemini
+          GEMINI_API_KEY: retrieval-only-unused
+        run: npm run scripture:eval -- --retrieval-only
+      - name: Results to the job summary
+        if: always() && steps.gate.outputs.ready == 'true'
+        run: '[ -f eval/scripture-results.md ] && cat eval/scripture-results.md >> "$GITHUB_STEP_SUMMARY" || true'

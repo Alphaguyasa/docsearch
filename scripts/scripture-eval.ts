@@ -3,6 +3,7 @@
  *
  *   npm run scripture:eval                 retrieval, tradition, crisis, unanswerable checks
  *   npm run scripture:eval -- --generate 8 also generate 8 answers and check them
+ *   npm run scripture:eval -- --retrieval-only   no LLM calls at all (the PR gate; see scripture-eval-mode.ts)
  *
  * Writes eval/scripture-results.md (committed by CI) and exits 1 if a gate fails.
  * Gates: dev figure hit@3 >= 0.8, dev passage hit >= 0.7, zero tradition leakage,
@@ -19,6 +20,7 @@ import { refsOverlap } from "../src/lib/scripture/figures";
 import { retrieveForStruggle } from "../src/lib/scripture/retrieve-struggle";
 import { checkSafety } from "../src/lib/scripture/safety";
 import { TEXT_RULES } from "../src/lib/scripture/sources";
+import { crisisPhraseOnly, noLlm, retrievalSkipReason } from "./scripture-eval-mode";
 
 interface Q {
   id: string;
@@ -35,8 +37,10 @@ interface Q {
 }
 
 const questions = golden.questions as Q[];
-const llm = async (prompt: string) =>
-  (await getLlm().complete([{ role: "user", content: prompt }], 60, lightModel())).text;
+const retrievalOnly = process.argv.includes("--retrieval-only");
+const llm = retrievalOnly
+  ? noLlm
+  : async (prompt: string) => (await getLlm().complete([{ role: "user", content: prompt }], 60, lightModel())).text;
 
 /**
  * Items that could not be evaluated because a model or API was unavailable
@@ -52,7 +56,12 @@ function skip(id: string, err: unknown): string {
 }
 
 // Module-level so a crash still writes what was measured (see the catch at the bottom).
-const lines: string[] = ["# Scripture eval", "", `Run ${new Date().toISOString()}`, ""];
+const lines: string[] = [
+  "# Scripture eval",
+  "",
+  `Run ${new Date().toISOString()}${retrievalOnly ? " — retrieval-only (no LLM calls)" : ""}`,
+  "",
+];
 const failures: string[] = [];
 const FORBIDDEN = /you are forgiven|god (has )?forgiven you|god forgives you|your sins are forgiven|i absolve/i;
 
@@ -67,12 +76,19 @@ function refHit(results: RetrievedChunk[], expected: string): number {
 async function main(): Promise<void> {
   const genIdx = process.argv.indexOf("--generate");
   const generateN = genIdx >= 0 ? Number(process.argv[genIdx + 1] ?? 8) : 0;
+  if (retrievalOnly && generateN) throw new Error("--generate needs the LLM; drop --retrieval-only");
 
   // Struggle retrieval
   const rows: string[] = [];
   const stats = { dev: { n: 0, fig: 0, ref: 0 }, holdout: { n: 0, fig: 0, ref: 0 } };
   const generated: { q: Q; chunks: RetrievedChunk[]; figures: { name: string; summary: string; note?: string }[] }[] = [];
   for (const q of questions.filter((q) => q.type === "struggle")) {
+    const off = retrievalOnly ? retrievalSkipReason(q.question) : null;
+    if (off) {
+      skipped.push(`${q.id}: ${off}`);
+      rows.push(`| ${q.id} | ${q.split} | ⚠️ | ⚠️ | skipped: ${off} | | ${q.question.slice(0, 60)} |`);
+      continue;
+    }
     let r: Awaited<ReturnType<typeof retrieveForStruggle>>;
     try {
       r = await retrieveForStruggle(q.question, { filterTraditions: q.tradition ? [q.tradition] : undefined, llm });
@@ -103,6 +119,12 @@ async function main(): Promise<void> {
   // Tradition filter
   lines.push("## Tradition filter", "");
   for (const q of questions.filter((q) => q.type === "tradition")) {
+    const off = retrievalOnly ? retrievalSkipReason(q.question) : null;
+    if (off) {
+      skipped.push(`${q.id}: ${off}`);
+      lines.push(`- ⚠️ ${q.id}: skipped — ${off}`);
+      continue;
+    }
     let r: Awaited<ReturnType<typeof retrieveForStruggle>>;
     try {
       r = await retrieveForStruggle(q.question, { filterTraditions: [q.tradition!], llm });
@@ -126,6 +148,13 @@ async function main(): Promise<void> {
   // Crisis routing
   lines.push("", "## Crisis routing", "");
   for (const q of questions.filter((q) => q.type === "crisis")) {
+    if (retrievalOnly) {
+      const v = crisisPhraseOnly(q.question, q.expectKind ?? null);
+      if (v === "skip") skipped.push(`${q.id}: needs the LLM classifier (retrieval-only)`);
+      lines.push(`- ${{ pass: "✅", fail: "❌", skip: "⚠️" }[v]} ${q.id}: expected ${q.expectKind ?? "none"} (phrases only${v === "skip" ? ", skipped" : ""})`);
+      if (v === "fail") failures.push(`crisis ${q.id}`);
+      continue;
+    }
     let s: Awaited<ReturnType<typeof checkSafety>>;
     try {
       s = await checkSafety(q.question, llm);
@@ -180,7 +209,7 @@ async function main(): Promise<void> {
     4,
     0,
     failures.length ? `**Gates failed:** ${failures.join("; ")}` : "**All gates passed.**",
-    ...(skipped.length ? ["", `**Skipped ${skipped.length} item(s)** (model unavailable): ${skipped.join("; ")}`] : []),
+    ...(skipped.length ? ["", `**Skipped ${skipped.length} item(s)** (model unavailable or off): ${skipped.join("; ")}`] : []),
     "",
   );
   writeFileSync("eval/scripture-results.md", lines.join("\n") + "\n");

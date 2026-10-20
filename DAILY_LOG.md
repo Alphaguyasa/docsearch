@@ -180,3 +180,28 @@ back *Imitation of Christ* and *Grace Abounding*).
 | Next | ROADMAP 4 (Imitation of Christ, Grace Abounding), then 7 (scripture eval gate) |
 
 **Next run:** ROADMAP 4, then 7.
+
+## 2026-10-20: run 6 (scheduled)
+
+- Main CI green at start (ci and deploy on 090bff5). Model check: Opus 5.5 is still the
+  newest Opus on the models page; the run is on it. No switch needed (Fable not used, per policy).
+- ROADMAP 4 (Western sources): **PR #113**, squash-merged as 7ec9c4f. *The Imitation of
+  Christ* (tags catholic, protestant) and *Grace Abounding* (protestant) are back in
+  sources.json. Their parse rules and tests are restored unchanged from before PR #78.
+  New: a "Catholic and Protestant books" group in the library, About and footer lines
+  (EN, AM), and SOURCES.md rows. A passage that only Western churches read is labelled
+  "Church tradition (Protestant)" in the answer prompt. *The Pilgrim's Progress* stays
+  out (allegory). The merge starts fetch-scripture (Gutenberg, serialised) and then ingest.
+- ROADMAP 7 (scripture eval gate): new `scripture-eval-pr.yml` and a `--retrieval-only`
+  flag for `scripts/scripture-eval.ts`. The job never gets the Gemini key. Without the
+  LLM, questions that need it are skipped and reported, not counted: 3 of 35 dev and 4
+  of 10 holdout struggles, 1 of 4 tradition checks, 0 of 8 crisis. Path filters keep it
+  off PRs that don't touch retrieval, because Voyage's free tier is shared with the site.
+  Tests are in tests/scripture-eval-mode.test.ts. See its PR for the merge.
+- Local: lint 0 warnings, typecheck, npm test 272/272, vitest 339/339, build OK.
+- Tag `v2026-10-20-1` (7ec9c4f) was refused by the cloud git proxy, as on earlier days.
+  Alpha to create it.
+
+**Next run:** ROADMAP 9 (grow the golden set for Catholic, Protestant and Eastern
+Orthodox; dev split only), then 10 (npm audit). Check that the fetch and ingest of the
+two new sources finished.

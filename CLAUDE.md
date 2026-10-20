@@ -52,6 +52,9 @@ Deeper docs: `docs/NOT_ALONE.md` (request path, pipelines, bot, env), `docs/PIVO
 - Every push to `main` deploys to production (`deploy-not-alone.yml`), except the bots'
   bookkeeping files. A merge is a release. The deploy step also re-syncs the production
   env vars from GitHub secrets (same values); do not edit that step.
+- `scripture-eval-pr.yml` is the scripture PR gate: `npm run scripture:eval -- --retrieval-only`
+  (no LLM calls, no Gemini key), only on PRs that touch retrieval, figures, canon, safety
+  or the golden set, because Voyage's free tier is shared with the live site.
 - `eval.yml` (the old paper-search harness) is manual-only: it grades the retired
   arXiv corpus and would spend the site's Gemini quota.
 
