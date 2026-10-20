@@ -9,10 +9,12 @@ Holy Fathers* and the Ethiopian Synaxarium), plus the Books of Enoch and Jubilee
 (Ephrem's three homilies, Aphrahat's Demonstrations, and from archive.org
 Wensinck's 1923 *Mystic Treatises* of St. Isaac of Nineveh, Cyril of Jerusalem's
 Lecture II *On Repentance*, Chrysostom's letters to Theodore, Athanasius's
-*Life of Antony*). The site serves the Oriental Orthodox churches: only
-books they read are kept, and the church picker offers "Oriental Orthodox"
-(everything) or "Ethiopian Orthodox Tewahedo" (adds the Ethiopian books).
-Texts that number their own paragraphs or verses are cited by them:
+*Life of Antony*). For readers who opt in to Catholic or Protestant, Thomas à
+Kempis's *Imitation of Christ* (Catholic and Protestant) and Bunyan's *Grace
+Abounding* (Protestant). Oriental Orthodox is the default view (the books all
+six Oriental churches share); "Ethiopian Orthodox Tewahedo" adds the Ethiopian
+books, and Eastern Orthodox, Catholic and Protestant are opt-in. *The Pilgrim's
+Progress* is left out: it is allegory, not a life. Texts that number their own paragraphs or verses are cited by them:
 "Ephrem the Syrian, On Admonition and Repentance §3–5", "Book of Enoch,
 Chapter XCVIII §1–3".
 

@@ -392,7 +392,7 @@ const en = {
     notice: "Not Alone is not a counselling or emergency service. If you are in danger, reach someone now.",
     needHelp: "Need help now?",
     sources:
-      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, the Book of Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot, Baralam and Yewasef, St. Ephrem, Aphrahat, St. Isaac the Syrian, Philoxenus of Mabbogh, St. Cyril of Jerusalem, St. John Chrysostom and the Life of Antony.",
+      "Scripture: World English Bible (public domain). Church Fathers: Augustine’s Confessions, the Lausiac History, the Paradise of the Holy Fathers, the Ethiopian Synaxarium. Also the Books of Enoch and Jubilees, the Kebra Nagast, the Book of Adam and Eve, the Miracles of Mary, the Life of Takla Haymanot, Baralam and Yewasef, St. Ephrem, Aphrahat, St. Isaac the Syrian, Philoxenus of Mabbogh, St. Cyril of Jerusalem, St. John Chrysostom, the Life of Antony, The Imitation of Christ and Bunyan’s Grace Abounding.",
     care: "Made with care for anyone carrying something alone.",
     nav: "Footer",
   },
@@ -776,7 +776,7 @@ const am: Dict = {
     notice: "Not Alone የምክር ወይም የአደጋ ጊዜ አገልግሎት አይደለም። አደጋ ላይ ከሆኑ አሁኑኑ ሰው ያግኙ።",
     needHelp: "እርዳታ ይፈልጋሉ?",
     sources:
-      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ገድለ አዳም፣ ተአምረ ማርያም፣ ገድለ ተክለ ሃይማኖት፣ ባርላምና ዮሳፍ፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ፊሎክሴኖስ ዘመንበግ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅና የቅዱስ እንጦንስ ሕይወት።",
+      "መጽሐፍ ቅዱስ፦ World English Bible (የሕዝብ ንብረት)። የቤተ ክርስቲያን አባቶች፦ የአውግስጢኖስ ኑዛዜ፣ ላውስያክ ታሪክ፣ የቅዱሳን አባቶች ገነት፣ የኢትዮጵያ ስንክሳር። እንዲሁም መጽሐፈ ሄኖክ፣ መጽሐፈ ኩፋሌ፣ ክብረ ነገሥት፣ ገድለ አዳም፣ ተአምረ ማርያም፣ ገድለ ተክለ ሃይማኖት፣ ባርላምና ዮሳፍ፣ ቅዱስ ኤፍሬም፣ አፍራሃት፣ ቅዱስ ይስሐቅ ሶርያዊ፣ ፊሎክሴኖስ ዘመንበግ፣ ቅዱስ ቄርሎስ፣ ቅዱስ ዮሐንስ አፈወርቅ፣ የቅዱስ እንጦንስ ሕይወት፣ «ክርስቶስን መምሰል» እና የበንያን «የበዛ ጸጋ»።",
     care: "ብቻውን ሸክም ለተሸከመ ሁሉ በፍቅር የተሠራ።",
     nav: "የግርጌ ማውጫ",
   },

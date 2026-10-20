@@ -15,13 +15,13 @@ test("the library lists every fetched source exactly once", () => {
   assert.deepEqual([...listed].sort(), [...sources].sort());
 });
 
-test("'shown to' in the library marks exactly the Ethiopian-only books", () => {
+test("'shown to' in the library marks exactly the books the default view hides, with their readers", () => {
   for (const b of books) {
     for (const id of b.sourceIds) {
       const rule = TEXT_RULES[id];
       if (!rule) continue; // Scripture: tradition is per book
-      const ethOnly = rule.traditions.length === 1 && rule.traditions[0] === "ethiopian_orthodox";
-      assert.deepEqual(b.onlyFor, ethOnly ? ["ethiopian_orthodox"] : undefined, id);
+      const hidden = !rule.traditions.includes("oriental_orthodox");
+      assert.deepEqual(b.onlyFor, hidden ? rule.traditions : undefined, id);
     }
   }
 });

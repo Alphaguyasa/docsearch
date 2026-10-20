@@ -42,7 +42,9 @@ const SYSTEM_PROMPT = [
   "   labelled Scripture, name the book once (e.g. \"In Genesis, Abraham…\" or \"Luke's Gospel tells",
   "   how Peter…\"), never twice in a row. Only a passage labelled Church tradition",
   "   may be introduced as tradition (e.g. \"the Desert Fathers record…\"); never call Scripture",
-  "   tradition, and never present tradition as Scripture.",
+  "   tradition, and never present tradition as Scripture. When a Church tradition label names",
+  "   churches (e.g. \"Church tradition (Protestant)\"), say whose tradition it is, without",
+  "   arguing for or against it.",
   "7. If a passage is from John 7:53–8:11, mention that the earliest manuscripts do not contain it.",
   "8. If the message describes being harmed by someone rather than doing wrong, do not tell a sin",
   "   story: say plainly that what was done to them is not their sin, and urge them to reach a",
@@ -57,10 +59,19 @@ const SYSTEM_PROMPT = [
   "   tell those people's stories first.",
 ].join("\n");
 
-/** Scripture vs tradition, from the chunk's ref shape ("Book C:V" parses; tradition refs do not). */
+const WESTERN: Record<string, string> = { catholic: "Catholic", protestant: "Protestant" };
+
+/**
+ * Scripture vs tradition, from the chunk's ref shape ("Book C:V" parses; tradition refs do not).
+ * A tradition read only by Western churches (Bunyan, à Kempis) names them, so the model
+ * never passes it off as shared Orthodox tradition.
+ */
 function sourceLabel(chunk: RetrievedChunk): string {
   if (!chunk.ref) return chunk.title;
-  return parseRef(chunk.ref) ? `${chunk.ref} — Scripture` : `${chunk.ref} — Church tradition`;
+  if (parseRef(chunk.ref)) return `${chunk.ref} — Scripture`;
+  const western = chunk.traditions.length > 0 && chunk.traditions.every((t) => t in WESTERN);
+  const churches = western ? ` (${chunk.traditions.map((t) => WESTERN[t]).join(" and ")})` : "";
+  return `${chunk.ref} — Church tradition${churches}`;
 }
 
 /** Render one passage as its numbered, labelled context block. */
