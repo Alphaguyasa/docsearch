@@ -8,12 +8,6 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Open
 
-4. **[P1, M] Bring back the Western sources removed in PR #78.** *The Imitation of
-   Christ* (Catholic) and Bunyan's *Grace Abounding* (Protestant, a first-person story of
-   sin and restoration) are public domain. *The Pilgrim's Progress* is allegory, not a
-   life, so re-add it only as clearly labelled allegory or leave it out. Recover the
-   source rules from git history (`git show 58fbf1f^:corpus/scripture/sources.json`
-   and the PR #78 diff), re-tag them, and let fetch/ingest re-run.
 7. **[P2, S] Port the paper-search eval gate to the scripture app.** `eval.yml` grades the
    retired arXiv corpus, so it is now manual-only. Make `scripture-eval` a PR gate,
    retrieval-only (no Gemini calls) in CI.
@@ -34,6 +28,7 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Done
 
+- 2026-10-20: Item 4. *The Imitation of Christ* (Catholic + Protestant) and *Grace Abounding* (Protestant) are back as opt-in sources, with their parse rules and tests, a library group, About/footer lines (EN, AM) and SOURCES.md rows. Western-only passages are labelled "Church tradition (Protestant)" in the answer prompt. *The Pilgrim's Progress* stays out (allegory, not a life).
 - 2026-10-19: Item 8. The 11 ESLint warnings are fixed (unused imports and vars removed; two deliberate hook deps documented) and `npm run lint` runs with `--max-warnings 0`.
 - 2026-10-19: Item 3. `orthodox` split: canon.json tags `eastern_orthodox` / `oriental_orthodox` with a cited basis per book (PR #110); the default reads `oriental_orthodox`, "Eastern Orthodox" reads `eastern_orthodox` (PR B). `orthodox` stays until Alpha approves removing it.
 - 2026-10-18: Item 5. Cited scripture outside some canons is labelled ("In the Catholic, Orthodox and Ethiopian Tewahedo canons; not in the Protestant canon."), EN and AM.

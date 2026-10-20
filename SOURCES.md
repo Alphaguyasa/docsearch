@@ -14,6 +14,8 @@ anything other than plain worldwide public domain is flagged below and listed in
 |---|---|---|---|
 | `web` | World English Bible with Deuterocanon | Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only) | verified |
 | `confessions` | The Confessions of Saint Augustine (tr. E. B. Pusey) | Public domain (Project Gutenberg #3296; Pusey d. 1882) | verified-at-fetch |
+| `imitation` | The Imitation of Christ (Thomas à Kempis, tr. William Benham) | Public domain (Project Gutenberg #1653; Benham d. 1910) | verified-at-fetch |
+| `grace_abounding` | Grace Abounding to the Chief of Sinners (John Bunyan, 1666) | Public domain (Project Gutenberg #654; Bunyan d. 1688, 1905 RTS text) | verified-at-fetch |
 | `enoch` | The Book of Enoch (tr. R. H. Charles, 1917) | Public domain (published 1917; Charles d. 1931) | verified |
 | `kebra_nagast` | The Kebra Nagast: The Queen of Sheba and her only son Menyelek (tr. E. A. Wallis Budge, 1922) | Public domain (published 1922; Budge d. 1934) | verified |
 | `jubilees` | The Book of Jubilees (tr. R. H. Charles, 1917) | Public domain (published 1917; Charles d. 1931) | verified |

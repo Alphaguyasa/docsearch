@@ -107,6 +107,16 @@ test("passages carry a Scripture / Church tradition label", async () => {
   assert.match(user.content, /\[2\] \(The Paradise of the Holy Fathers §4 — Church tradition\)/);
 });
 
+test("a tradition only Western churches read is labelled with those churches", async () => {
+  const { buildMessages } = await answerModule();
+  const bunyan = { ...chunk("Grace Abounding §45–47"), traditions: ["protestant"] };
+  const kempis = { ...chunk("The Imitation of Christ, Book I, Chapter I §1–2"), traditions: ["catholic", "protestant"] };
+  const [system, user] = buildMessages("I doubt", [bunyan, kempis]);
+  assert.match(user.content, /\[1\] \(Grace Abounding §45–47 — Church tradition \(Protestant\)\)/);
+  assert.match(user.content, /\[2\] \(The Imitation of Christ, Book I, Chapter I §1–2 — Church tradition \(Catholic and Protestant\)\)/);
+  assert.match(system.content, /say whose tradition it is/);
+});
+
 test("someone in distress is pointed to real help, not a story", () => {
   assert.equal(phraseCheck("I don't want to live anymore"), "self_harm");
   for (const kind of ["self_harm", "abuse_victim", "harm_to_others"] as const) {

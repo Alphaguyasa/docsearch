@@ -244,4 +244,29 @@ export const LIBRARY: LibraryGroup[] = [
       },
     ],
   },
+  {
+    title: { en: "Catholic and Protestant books", am: "የካቶሊክና የፕሮቴስታንት መጻሕፍት" },
+    books: [
+      {
+        sourceIds: ["imitation"],
+        title: { en: "Thomas à Kempis, The Imitation of Christ", am: "ቶማስ አ ኬምፒስ፣ ክርስቶስን መምሰል" },
+        by: { en: "tr. William Benham", am: "በWilliam Benham የተተረጎመ" },
+        note: {
+          en: "A Catholic book of the inner life from the 1400s, read by Protestants too.",
+          am: "በ1400ዎቹ የተጻፈ የውስጥ ሕይወት የካቶሊክ መጽሐፍ፤ ፕሮቴስታንቶችም ያነቡታል።",
+        },
+        onlyFor: ["catholic", "protestant"],
+      },
+      {
+        sourceIds: ["grace_abounding"],
+        title: { en: "John Bunyan, Grace Abounding to the Chief of Sinners", am: "ጆን በንያን፣ ለኃጢአተኞች አለቃ የበዛ ጸጋ" },
+        by: { en: "1666", am: "1666 (እ.ኤ.አ.)" },
+        note: {
+          en: "A Protestant preacher’s own story of despair, doubt and grace.",
+          am: "የአንድ ፕሮቴስታንት ሰባኪ የራሱ የተስፋ መቁረጥ፣ የጥርጣሬና የጸጋ ታሪክ።",
+        },
+        onlyFor: ["protestant"],
+      },
+    ],
+  },
 ];
