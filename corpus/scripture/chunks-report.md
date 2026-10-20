@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-10-19T04:03:58.397Z
+Generated 2026-10-20T03:47:41.264Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -13,6 +13,8 @@ Generated 2026-10-19T04:03:58.397Z
 | cyril_repentance | 1 | 13 | 5703 | 439 | 611 |
 | enoch | 1 | 148 | 51208 | 346 | 611 |
 | ephrem | 1 | 76 | 36000 | 474 | 613 |
+| grace_abounding | 1 | 150 | 76581 | 511 | 624 |
+| imitation | 1 | 201 | 85196 | 424 | 614 |
 | isaac | 1 | 432 | 226724 | 525 | 633 |
 | jubilees | 1 | 169 | 72266 | 428 | 612 |
 | kebra_nagast | 1 | 252 | 109086 | 433 | 617 |
@@ -25,7 +27,7 @@ Generated 2026-10-19T04:03:58.397Z
 | web | 78 | 3218 | 1195260 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 9264 chunks, 3991525 tokens ≈ 6.7 h of embedding at 10000 TPM.
+**Total:** 9615 chunks, 4153302 tokens ≈ 6.9 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
@@ -427,6 +429,66 @@ Ephrem the Syrian, On the Sinful Woman §5
 5. These things spake the perfumer, in wisdom, to the harlot. The sinful woman answered and said to him, to the perfumer after his discourse, "Hinder me not, O man, and stop me not by thy questioning. I have asked of thee ointment, not freely, but I will pay thee its value not grudgingly. Take thee the gold, as much as thou demandest, and give me the precious ointment; take thee that which endures not and give me that which endures; and I will go to Him who endures, and will buy that which endures. And as to that thou saidst, about a merchant; a Man has met me today Who bears riches in abundance. He has robbed me and I have robbed Him; He has robbed
 ```
 
+**Grace Abounding, A Preface** (516 tokens, protestant)
+```
+Grace Abounding, A Preface
+
+CHILDREN, Grace be with you. Amen. I being taken from you in presence, and so tied up that I cannot perform that duty, that from God doth lie upon me to you-ward, for your farther edifying and building up in faith and holiness, etc., yet that you may see my soul hath fatherly care and desire after your spiritual and everlasting welfare, I now once again, as before, from the top of Shenir and Hermon, so now from the lions’ dens, from the mountains of the leopards (Song iv. 8), do look yet after you all, greatly longing to see your safe arrival into THE desired Haven.
+
+I thank God upon every remembrance of you; and rejoice, even while I stick between the teeth of th
+```
+
+**Grace Abounding §225–227** (561 tokens, protestant)
+```
+Grace Abounding §225–227
+
+225. And as touching that in the 12th of the Hebrews, about Esau’s selling of his birthright; though this was that which killed me, and stood like a spear against me, yet now I did consider, First, that his was not a hasty thought against the continual labour of his mind, but a thought consented to, and put in practice likewise, and that after some deliberation, Gen. xxv. Secondly, It was a public and open action, even before his brother, if not before many more; this made his sin of a far more heinous nature than otherwise it would have been. Thirdly, He continued to slight his birthright: He did eat and drink, and went his way: thus Esau despised his birthright, y
+```
+
+**Grace Abounding, A Relation Of My Imprisonment In The Month Of November 1660 (part 25)** (454 tokens, protestant)
+```
+Grace Abounding, A Relation Of My Imprisonment In The Month Of November 1660 (part 25)
+
+Twis. But Judge Twisdon told her, that she made poverty her cloak; and said, moreover, that he understood I was maintained better by running up and down a preaching, than by following my calling.
+
+Hale. What is his calling? said Judge Hale.
+
+Answer. Then some of the company that stood by, said, A tinker, my lord.
+
+Wom. Yes, said she; and because he is a tinker, and a poor man, therefore he is despised, and cannot have justice.
+
+Hale. Then Judge Hale answered very mildly, saying, I tell thee, woman, seeing it is so, that they have taken what thy husband spake for a conviction; thou must either apply thysel
+```
+
+**The Imitation of Christ, Book I, Chapter I §1–5** (606 tokens, catholic, protestant)
+```
+The Imitation of Christ, Book I, Chapter I §1–5
+
+Of the imitation of Christ, and of contempt of the world and all its vanities
+
+_He that followeth me shall not walk in darkness_, saith the Lord. These are the words of Christ; and they teach us how far we must imitate His life and character, if we seek true illumination, and deliverance from all blindness of heart. Let it be our most earnest study, therefore, to dwell upon the life of Jesus Christ.
+
+2. His teaching surpasseth all teaching of holy men, and such as have His Spirit find therein the hidden manna. But there are many who, though they frequently hear the Gospel, yet feel but little longing after it, because they have not the mind of
+```
+
+**The Imitation of Christ, Book III, Chapter XXI §7** (201 tokens, catholic, protestant)
+```
+The Imitation of Christ, Book III, Chapter XXI §7
+
+7. And I said Lord, I have called upon Thee, and I have longed to enjoy Thee, being ready to reject everything for Thy sake. For Thou didst first move me to seek Thee. Therefore, blessed be Thou, O Lord, who has wrought this good work upon Thy servant, according to the multitude of Thy mercy. What then hath Thy servant to say in Thy presence, save to humble himself greatly before Thee, being alway mindful of his own iniquity and vileness. For there is none like unto Thee in all marvels of heaven and earth. Excellent are Thy works, true are Thy judgments, and by Thy Providence are all things governed. Therefore praise and glory be unto Thee, 
+```
+
+**The Imitation of Christ, Book IV, Chapter VIII §1–2** (432 tokens, catholic, protestant)
+```
+The Imitation of Christ, Book IV, Chapter VIII §1–2
+
+Of the oblation of Christ upon the cross, and of resignation of self
+
+The Voice of the Beloved
+
+As I of my own will offered myself unto God the Father on the Cross for thy sins with outstretched hands and naked body, so that nothing remained in Me that did not become altogether a sacrifice for the Divine propitiation; so also oughtest thou every day to offer thyself willingly unto Me for a pure and holy oblation with all thy strength and affections, even to the utmost powers of thine heart. What more do I require of thee than thou study to resign thyself altogether unto Me? Whatsoever thou givest besides thyself, I nothing care for, for I 
+```
+
 **Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence** (554 tokens, protestant, catholic, orthodox, eastern_orthodox, oriental_orthodox, ethiopian_orthodox)
 ```
 Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence
@@ -764,6 +826,10 @@ The eunuch answered Philip, “Who is the prophet talking about? About himself, 
 **enoch** — 138 sections: Book of Enoch, Chapter I §1–9 · Book of Enoch, Chapter II §1–3 · Book of Enoch, Chapter III · Book of Enoch, Chapter IV · Book of Enoch, Chapter V §1–5 · Book of Enoch, Chapter VI §1 · Book of Enoch, Chapter VII §1 · Book of Enoch, Chapter VIII §1 · Book of Enoch, Chapter IX §1 · Book of Enoch, Chapter X §1 · Book of Enoch, Chapter XI §1 · Book of Enoch, Chapter XII §1–3 · Book of Enoch, Chapter XIII §1 · Book of Enoch, Chapter XIV §1 · Book of Enoch, Chapter XV §1 · Book of Enoch, Chapter XVI §1 · Book of Enoch, Chapter XVII §1 · Book of Enoch, Chapter XVIII §1 · Book of Enoch, Chapter XIX §1 · Book of Enoch, Chapter XX §1 · Book of Enoch, Chapter XXI §1 · Book of Enoch, Chapter XXII §1–9 · Book of Enoch, Chapter XXII §9 · Book of Enoch, Chapter XXIII §1 · Book of Enoch, Chapter XXIV §1 · Book of Enoch, Chapter XXV §1 · Book of Enoch, Chapter XXVI §1 · Book of Enoch, Chapter XXVII §1–4 · Book of Enoch, Chapter XXVIII §1 · Book of Enoch, Chapter XXIX §1 · Book of Enoch, Chapter XXX · Book of Enoch, Chapter XXXI §1 · Book of Enoch, Chapter XXXII §1–4 · Book of Enoch, Chapter XXXIII §1 · Book of Enoch, Chapter XXXIV §1 · Book of Enoch, Chapter XXXV §1 · Book of Enoch, Chapter XXXVI §1 · Book of Enoch, Chapter XXXVII §1 · Book of Enoch, Chapter XXXVIII §1–6 · Book of Enoch, Chapter XXXIX §1–8
 
 **ephrem** — 63 sections: Ephrem the Syrian, On Our Lord §1 · Ephrem the Syrian, On Our Lord §2 · Ephrem the Syrian, On Our Lord §2–5 · Ephrem the Syrian, On Our Lord §5 · Ephrem the Syrian, On Our Lord §5–7 · Ephrem the Syrian, On Our Lord §8–9 · Ephrem the Syrian, On Our Lord §10 · Ephrem the Syrian, On Our Lord §11 · Ephrem the Syrian, On Our Lord §12 · Ephrem the Syrian, On Our Lord §13 · Ephrem the Syrian, On Our Lord §14–15 · Ephrem the Syrian, On Our Lord §16 · Ephrem the Syrian, On Our Lord §17 · Ephrem the Syrian, On Our Lord §18–19 · Ephrem the Syrian, On Our Lord §20 · Ephrem the Syrian, On Our Lord §21 · Ephrem the Syrian, On Our Lord §21–22 · Ephrem the Syrian, On Our Lord §23–24 · Ephrem the Syrian, On Our Lord §25 · Ephrem the Syrian, On Our Lord §26 · Ephrem the Syrian, On Our Lord §27 · Ephrem the Syrian, On Our Lord §28 · Ephrem the Syrian, On Our Lord §30 · Ephrem the Syrian, On Our Lord §31 · Ephrem the Syrian, On Our Lord §33 · Ephrem the Syrian, On Our Lord §34 · Ephrem the Syrian, On Our Lord §35 · Ephrem the Syrian, On Our Lord §36 · Ephrem the Syrian, On Our Lord §37–38 · Ephrem the Syrian, On Our Lord §39 · Ephrem the Syrian, On Our Lord §40 · Ephrem the Syrian, On Our Lord §42 · Ephrem the Syrian, On Our Lord §44 · Ephrem the Syrian, On Our Lord §45 · Ephrem the Syrian, On Our Lord §46 · Ephrem the Syrian, On Our Lord §47 · Ephrem the Syrian, On Our Lord §49–50 · Ephrem the Syrian, On Our Lord §51 · Ephrem the Syrian, On Our Lord §52 · Ephrem the Syrian, On Our Lord §53–54
+
+**grace_abounding** — 110 sections: Grace Abounding, A Preface · Grace Abounding §1–4 · Grace Abounding §5–9 · Grace Abounding §10–14 · Grace Abounding §15–17 · Grace Abounding §18–21 · Grace Abounding §22–24 · Grace Abounding §25–28 · Grace Abounding §29–32 · Grace Abounding §33–36 · Grace Abounding §37–39 · Grace Abounding §40–43 · Grace Abounding §44 · Grace Abounding §45–47 · Grace Abounding §48–50 · Grace Abounding §51–53 · Grace Abounding §54–57 · Grace Abounding §58–62 · Grace Abounding §63–66 · Grace Abounding §67–70 · Grace Abounding §71–72 · Grace Abounding §73–76 · Grace Abounding §77–79 · Grace Abounding §80–83 · Grace Abounding §84–85 · Grace Abounding §86–88 · Grace Abounding §89–91 · Grace Abounding §92–94 · Grace Abounding §95–98 · Grace Abounding §99–102 · Grace Abounding §103–105 · Grace Abounding §106–109 · Grace Abounding §110–112 · Grace Abounding §113–116 · Grace Abounding §117–119 · Grace Abounding §120–121 · Grace Abounding §121–124 · Grace Abounding §125–128 · Grace Abounding §129–131 · Grace Abounding §132–136
+
+**imitation** — 201 sections: The Imitation of Christ, Book I, Chapter I §1–5 · The Imitation of Christ, Book I, Chapter II §1–4 · The Imitation of Christ, Book I, Chapter III §1–3 · The Imitation of Christ, Book I, Chapter III §4–6 · The Imitation of Christ, Book I, Chapter IV §1–2 · The Imitation of Christ, Book I, Chapter V §1–2 · The Imitation of Christ, Book I, Chapter VI §1–2 · The Imitation of Christ, Book I, Chapter VII §1–3 · The Imitation of Christ, Book I, Chapter VIII §1–2 · The Imitation of Christ, Book I, Chapter IX §1–3 · The Imitation of Christ, Book I, Chapter X §1–2 · The Imitation of Christ, Book I, Chapter XI §1–4 · The Imitation of Christ, Book I, Chapter XI §5–6 · The Imitation of Christ, Book I, Chapter XII §1–2 · The Imitation of Christ, Book I, Chapter XIII §1–4 · The Imitation of Christ, Book I, Chapter XIII §5–7 · The Imitation of Christ, Book I, Chapter XIII §8 · The Imitation of Christ, Book I, Chapter XIV §1–3 · The Imitation of Christ, Book I, Chapter XV §1–3 · The Imitation of Christ, Book I, Chapter XVI §1–4 · The Imitation of Christ, Book I, Chapter XVII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §1–3 · The Imitation of Christ, Book I, Chapter XVIII §4–6 · The Imitation of Christ, Book I, Chapter XIX §1–3 · The Imitation of Christ, Book I, Chapter XIX §4–6 · The Imitation of Christ, Book I, Chapter XIX §7 · The Imitation of Christ, Book I, Chapter XX §1–4 · The Imitation of Christ, Book I, Chapter XX §5–7 · The Imitation of Christ, Book I, Chapter XX §8 · The Imitation of Christ, Book I, Chapter XXI §1–3 · The Imitation of Christ, Book I, Chapter XXI §4–6 · The Imitation of Christ, Book I, Chapter XXII §1–3 · The Imitation of Christ, Book I, Chapter XXII §4–6 · The Imitation of Christ, Book I, Chapter XXII §7 · The Imitation of Christ, Book I, Chapter XXIII §1–3 · The Imitation of Christ, Book I, Chapter XXIII §4–7 · The Imitation of Christ, Book I, Chapter XXIII §8–9 · The Imitation of Christ, Book I, Chapter XXIV §1–3 · The Imitation of Christ, Book I, Chapter XXIV §4–5 · The Imitation of Christ, Book I, Chapter XXIV §6–7
 
 **isaac** — 54 sections: Isaac of Nineveh, Treatise I: Six Treatises on the Behaviour of Excellence · Isaac of Nineveh, Treatise IV: · Isaac of Nineveh, Treatise V: · Isaac of Nineveh, Treatise VI: · Isaac of Nineveh, Treatises VII–VIII: On Other Subjects, Chapter By Chapter, In Short Sections. On The Character… · Isaac of Nineveh, Treatises IX–X: On Sins [Committed] Intentionally And Witt Evil Will And On Those… · Isaac of Nineveh, Treatise XI: Whereby The Beauty Of Solitary Life Is To Be Preserved And How It Can Be A… · Isaac of Nineveh, Treatises XII–XIV: That It Is Not Beautilful For The Servant Of God Who Has Renunciated The… · Isaac of Nineveh, Treatises XV–XVII: Cinctly And Without Prolixity. And On Thi Question How And At What Time Its… · Isaac of Nineveh, Treatise XVIII: Things Which I Have Heard From Old Mien Ani) Stories Of Holy People… · Isaac of Nineveh, Treatise XIX: On The Revelations And Powers Which Happen To The Saints In Images · Isaac of Nineveh, Treatise XX: On Various Intelligible Forces Of Thi Mind In Connection With Thie Action Of… · Isaac of Nineveh, Treatise XXI: On That Which Happens During Prayer [Unto Those Who Live] In Solitude · Isaac of Nineveh, Treatise XXII: On Various [Experiences] During Prayer And On The Limits Of The Power Of… · Isaac of Nineveh, Treatise XXIII: On The Speech Of True Knowledge · Isaac of Nineveh, Treatises XXIV–XXV: On The Things A Brother Is Provided With In His Cell · Isaac of Nineveh, Treatises XXVI–XXVII: Against Those Who Say: If God Is Good Wherefore Has He Made These Things? · Isaac of Nineveh, Treatises XXVIII–XXIX: A Symbolical Demonstration Concerning The Theory Of Sabbath And Sunday · Isaac of Nineveh, Treatise XXX: On The Power And The Evil Action Of Sin And Concerning Those In Whom It… · Isaac of Nineveh, Treatise XXXI: The Struggle Or Rather The Danger Of Falling That Excellent Works Incur · Isaac of Nineveh, Treatises XXXII–XXXIII: On Thi Action Of Divine Love · Isaac of Nineveh, Treatise XXXIV: On The Natural Children Of Virtues And The Like · Isaac of Nineveh, Treatise XXXV: A Treatise In Questions And Answers Concerning Constant Behaviour And… · Isaac of Nineveh, Treatises XXXVI–XXXIX: On The Various Ways In Which Satan Wars Against Those Who Tread The… · Isaac of Nineveh, Treatise XL: Exposition Concerning The Degrees Of The Path, Namely Concerning The Power… · Isaac of Nineveh, Treatise XLI: A Letter Which He Wrote To One Of The Brethren Who Loved Solitude… · Isaac of Nineveh, Treatises XLII–XLIII: The Answer He Sent His Natural And Spirl Tual Brother Who Had Tried To… · Isaac of Nineveh, Treatise XLIV: Concerning How Many Degrees Knowledge Has And Concerning The Degrees Of… · Isaac of Nineveh, Treatise XLV: Profitable Advice · Isaac of Nineveh, Treatises XLVI–XLVIII: Other Considerations · Isaac of Nineveh, Treatises XLIX–L: On The Gloomy Darkness Which During Solitude Befalls Those Who Walk In The… · Isaac of Nineveh, Treatises LI–LIII: On The Three Degrees Of Knowledge And The Discrimination Between Their… · Isaac of Nineveh, Treatise LIV: Other Explanations Concerning Maggenanutha ') · Isaac of Nineveh, Treatise LV: How The Hidden Alertness Witein The Soul Is To Be Preserved How Sleepiness… · Isaac of Nineveh, Treatise LVI: Beautiful Considerations ') Concerning The Life Of Man · Isaac of Nineveh, Treatise LVII: How Patience For The Sake Of The Love Of God Acquires Help From God · Isaac of Nineveh, Treatise LVIII: Aon On Those Who Live In The Neighbourhood Ol God And Pass All Their Days… · Isaac of Nineveh, Treatise LIX: A Profitable Discourse · Isaac of Nineveh, Treatise LX: That Without Necessity We Should Not Desire Nor Ask That Any Sign Should… · Isaac of Nineveh, Treatise LXI: For Which Causes God Admits Temptations To His Friends
 
