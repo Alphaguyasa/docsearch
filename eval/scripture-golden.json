@@ -438,6 +438,94 @@
    "split": "dev"
   },
   {
+   "id": "s36",
+   "type": "struggle",
+   "question": "As a teenager I stole fruit I didn't even want, just for the thrill of doing wrong",
+   "expectFigures": [
+    "augustine"
+   ],
+   "expectRefs": [
+    "Confessions, Book II"
+   ],
+   "split": "dev",
+   "tradition": "catholic"
+  },
+  {
+   "id": "s37",
+   "type": "struggle",
+   "question": "I envy a friend at church that everyone praises",
+   "expectFigures": [
+    "miriam",
+    "envious_elder"
+   ],
+   "expectRefs": [
+    "Numbers 12:1-10",
+    "Paradise of the Holy Fathers, “ABBA ISAAC, the priest of the Cells, used…”"
+   ],
+   "split": "dev",
+   "tradition": "catholic"
+  },
+  {
+   "id": "s38",
+   "type": "struggle",
+   "question": "I look down on others at church because I think I'm better than them",
+   "expectFigures": [
+    "nebuchadnezzar",
+    "paul"
+   ],
+   "expectRefs": [
+    "Daniel 4:28-33",
+    "Acts 9:1-2"
+   ],
+   "split": "dev",
+   "tradition": "protestant"
+  },
+  {
+   "id": "s39",
+   "type": "struggle",
+   "question": "I keep lying to my wife about where the money goes",
+   "expectFigures": [
+    "abraham",
+    "jacob"
+   ],
+   "expectRefs": [
+    "Genesis 12:10-20",
+    "Genesis 27:1-36"
+   ],
+   "split": "dev",
+   "tradition": "protestant"
+  },
+  {
+   "id": "s40",
+   "type": "struggle",
+   "question": "I got drunk and shamed myself in front of my children",
+   "expectFigures": [
+    "noah",
+    "prodigal_son"
+   ],
+   "expectRefs": [
+    "Genesis 9:20-27",
+    "Luke 15:11-16"
+   ],
+   "split": "dev",
+   "tradition": "eastern_orthodox"
+  },
+  {
+   "id": "s41",
+   "type": "struggle",
+   "question": "I used to be a prostitute and I don't think the church will have me",
+   "expectFigures": [
+    "thais",
+    "rahab"
+   ],
+   "expectRefs": [
+    "Paradise of the Holy Fathers, “AND now I desire to narrate unto you…”",
+    "Joshua 2:1-21"
+   ],
+   "split": "dev",
+   "tradition": "eastern_orthodox"
+  },
+  {
    "id": "h01",
    "type": "struggle",
    "question": "I had an affair with my coworker's wife",
@@ -621,6 +709,105 @@
     "3MA",
     "2ES",
     "PS2"
+   ]
+  },
+  {
+   "id": "t05",
+   "type": "tradition",
+   "question": "I was a violent robber",
+   "tradition": "eastern_orthodox",
+   "expectFigures": [
+    "moses_the_ethiopian"
+   ],
+   "forbidBooks": [
+    "2ES"
+   ],
+   "forbidSources": [
+    "synaxarium",
+    "enoch",
+    "jubilees",
+    "kebra_nagast",
+    "imitation",
+    "grace_abounding"
+   ]
+  },
+  {
+   "id": "t06",
+   "type": "tradition",
+   "question": "I made an idol of money",
+   "tradition": "catholic",
+   "forbidFigures": [
+    "cyprian"
+   ],
+   "forbidBooks": [
+    "3MA",
+    "1ES",
+    "2ES",
+    "MAN",
+    "PS2"
+   ],
+   "forbidSources": [
+    "synaxarium",
+    "enoch",
+    "jubilees",
+    "grace_abounding"
+   ]
+  },
+  {
+   "id": "t07",
+   "type": "tradition",
+   "question": "I used to be a prostitute and I feel ashamed",
+   "tradition": "protestant",
+   "forbidFigures": [
+    "thais",
+    "mary_of_egypt"
+   ],
+   "forbidBooks": [
+    "TOB",
+    "JDT",
+    "WIS",
+    "SIR",
+    "BAR",
+    "LJE",
+    "S3Y",
+    "SUS",
+    "BEL",
+    "1MA",
+    "2MA",
+    "3MA",
+    "1ES",
+    "2ES",
+    "MAN",
+    "PS2"
+   ],
+   "forbidSources": [
+    "paradise",
+    "synaxarium",
+    "enoch",
+    "jubilees"
+   ]
+  },
+  {
+   "id": "t08",
+   "type": "tradition",
+   "question": "I lived for years chasing pleasure and ambition",
+   "tradition": "oriental_orthodox",
+   "forbidBooks": [
+    "LJE",
+    "S3Y",
+    "1MA",
+    "2MA",
+    "3MA",
+    "1ES",
+    "2ES",
+    "MAN"
+   ],
+   "forbidSources": [
+    "imitation",
+    "grace_abounding",
+    "enoch",
+    "jubilees",
+    "synaxarium"
    ]
   },
   {
