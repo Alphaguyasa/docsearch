@@ -205,3 +205,49 @@ back *Imitation of Christ* and *Grace Abounding*).
 **Next run:** ROADMAP 9 (grow the golden set for Catholic, Protestant and Eastern
 Orthodox; dev split only), then 10 (npm audit). Check that the fetch and ingest of the
 two new sources finished.
+
+## 2026-10-21: run 7 (scheduled)
+
+- Main at start: ci and deploy green on 8102d27. The post-merge **scripture-eval was red**
+  ("generation s02"): every generated answer after s01 was cut off mid-sentence. The
+  eval capped answers at 900 tokens and Gemini spends them thinking. The live stream
+  has no cap, so readers were not affected. **PR #115** removes the cap; squash-merged
+  as eb1e95b. Its merge re-runs the full eval on main.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- Last run said the merge of #113 would start ingest. It did not: fetch-scripture's
+  manifest commit is a GITHUB_TOKEN push, which triggers nothing. The Imitation of
+  Christ and Grace Abounding were fetched but not embedded. ingest-scripture was
+  dispatched by hand (run 39539583131, still running at log time). The permanent
+  fix is ROADMAP 17.
+- ROADMAP 9 (golden set): **PR #116**, squash-merged as 4035450. 6 dev struggles with
+  a church filter (Catholic, Protestant, Eastern Orthodox) and 4 filter checks
+  (including the Oriental Orthodox default vs the Western-only books). Holdout
+  untouched. New tests/scripture-golden.test.ts. The retrieval-only PR gate passed.
+  One push-triggered CI build failed on a Google Fonts fetch inside next/font, which
+  the PR does not touch; one rerun passed.
+- ROADMAP 10 (npm audit): 9 advisories (5 high) → 2 (1 high, 1 moderate), all in-range
+  upgrades: sharp 0.35.5, vite 8.3.4, nanoid, source-map-js, postcss 8.5.31, vitest
+  4.1.12. Left: postcss 8.4.31 pinned by next 15 (needs next 16, ROADMAP 21). npm 10
+  crashes on this tree ("reading 'edgesOut'"); npm 11 works. Local on the upgrade:
+  lint 0 warnings, typecheck, npm test 272/272, vitest 339/339, build OK. See its PR
+  for the merge.
+- **Replan** (only 3 items would have been left): a code, security and i18n audit added
+  ROADMAP 14-23. Top: **14 (P0), the safety classifier fails open on an empty
+  reply** (verified in safety.ts:81), and 15, the crisis message is English only.
+- Tags `v2026-10-21-1` (eb1e95b) and `-2` (4035450) were refused by the cloud git
+  proxy, as on earlier days. Alpha to create them.
+
+**Report**
+| Field | Content |
+|---|---|
+| Done | Main fix: #115 (eval cap). ROADMAP 9: #116. ROADMAP 10: npm audit PR |
+| Merged | #115 yes, #116 yes; audit PR, see PR. Tags not pushed (proxy) |
+| Failed or blocked | Ingest of #113's sources never started (dispatched today); tag pushes refused |
+| Roadmap | Replanned: 13 open; top is 14 (P0 safety fail-open) |
+| Model | Opus 5.5, still the newest Opus. No action |
+| Needs approval | New #9 (CRON_SECRET), plus #1-5, #8 |
+| Next | ROADMAP 14 (safety fail-open), then 15 (Amharic crisis message) |
+
+**Next run:** ROADMAP 14, then 15. Check that ingest finished and the full eval on main is green.
+
