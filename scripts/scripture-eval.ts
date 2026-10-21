@@ -192,7 +192,10 @@ async function main(): Promise<void> {
       const { buildMessages } = await import("../src/lib/answer");
       let a: Awaited<ReturnType<ReturnType<typeof getLlm>["complete"]>>;
       try {
-        a = await getLlm().complete(buildMessages(g.q.question, g.chunks, g.figures), 900);
+        // No tighter cap than the site's: Gemini counts thinking against
+        // maxOutputTokens, and a 900 cap cut answers off mid-sentence (s02
+        // came back with no citation on 2026-10-20). The live stream sets none.
+        a = await getLlm().complete(buildMessages(g.q.question, g.chunks, g.figures));
       } catch (err) {
         lines.push(`### ⚠️ ${g.q.id}: skipped — ${skip(g.q.id, err)}`, "");
         continue;
