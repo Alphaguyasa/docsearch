@@ -8,9 +8,6 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Open
 
-9. **[P2, M] Grow the golden set with scripture questions** for each new tradition
-   (Catholic, Protestant, Eastern Orthodox struggles and filter checks). Add to the dev
-   split only; the holdout stays frozen (hash-pinned in tests/project-rules.test.ts).
 10. **[P2, S] `npm audit` and dependency review.** Record findings; upgrade only patch and
     minor versions with clear licenses.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
@@ -25,6 +22,7 @@ Last replan: 2026-10-14 (first audit, after main became Not Alone).
 
 ## Done
 
+- 2026-10-21: Item 9. The scripture golden set gains 6 dev struggles read through Catholic, Protestant and Eastern Orthodox (Augustine, Miriam, Nebuchadnezzar, Abraham, Noah, Thais/Rahab) and 4 filter checks (Eastern Orthodox, Catholic, Protestant and the Oriental Orthodox default, which must not show the Western-only books). The holdout is unchanged. tests/scripture-golden.test.ts checks that every figure, source, book and tradition the set names exists, and that a check never forbids what that church reads.
 - 2026-10-20: Item 7. `scripture-eval-pr.yml` runs the scripture eval as a PR gate in `--retrieval-only` mode: no Gemini key is given to the job, questions that need the LLM tagger or classifier are skipped and reported, and it only runs on PRs touching retrieval, figures, canon, safety or the golden set (Voyage free tier is shared with the site).
 - 2026-10-20: Item 4. *The Imitation of Christ* (Catholic + Protestant) and *Grace Abounding* (Protestant) are back as opt-in sources, with their parse rules and tests, a library group, About/footer lines (EN, AM) and SOURCES.md rows. Western-only passages are labelled "Church tradition (Protestant)" in the answer prompt. *The Pilgrim's Progress* stays out (allegory, not a life).
 - 2026-10-19: Item 8. The 11 ESLint warnings are fixed (unused imports and vars removed; two deliberate hook deps documented) and `npm run lint` runs with `--max-warnings 0`.
