@@ -8,11 +8,6 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Open
 
-14. **[P0, S] Safety classifier fails open on an empty reply.** `checkSafety`
-    (src/lib/scripture/safety.ts:81) treats only a thrown error as a crisis. An empty
-    reply (the 20-token cap used up by thinking, or a Gemini prompt block) returns
-    `crisis: false`, so a distress message the phrase list misses can get a story
-    instead of help. Any reply without NONE should count as SELF_HARM. Add tests.
 15. **[P1, S] Crisis message in Amharic.** `MESSAGES` in safety.ts and the `detail`
     fields in data/crisis-resources.json are English only, on the site and the bot.
     Add `am` strings (gentle, short) and pick by language.
@@ -58,6 +53,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-22: Item 14. The safety classifier no longer fails open: only an explicit NONE clears a distress message; an empty, blocked or garbled reply counts as SELF_HARM, like a thrown error.
 - 2026-10-21: Item 10. npm audit: 9 advisories (5 high) → 2. sharp 0.35.5 (libvips CVEs), vite 8.3.4, nanoid, source-map-js, postcss 8.5.31, vitest and coverage-v8 4.1.12; no majors, licenses unchanged. Left for item 21: postcss 8.4.31 pinned inside next 15. (npm 10 crashes on this tree with "reading 'edgesOut'"; use npm 11, as CI does.)
 - 2026-10-21: PR #115. The scripture eval no longer caps generated answers at 900 tokens (Gemini spends them thinking; answers came back cut off and the main eval failed).
 - 2026-10-21: Item 9. The scripture golden set gains 6 dev struggles read through Catholic, Protestant and Eastern Orthodox (Augustine, Miriam, Nebuchadnezzar, Abraham, Noah, Thais/Rahab) and 4 filter checks (Eastern Orthodox, Catholic, Protestant and the Oriental Orthodox default, which must not show the Western-only books). The holdout is unchanged. tests/scripture-golden.test.ts checks that every figure, source, book and tradition the set names exists, and that a check never forbids what that church reads.

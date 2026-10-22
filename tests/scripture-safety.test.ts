@@ -39,6 +39,15 @@ test("distress without a phrase hit asks the classifier; classifier failure fail
   assert.deepEqual(await checkSafety("I feel hopeless", async () => { throw new Error("down"); }), { crisis: true, kind: "self_harm", via: "llm" });
 });
 
+test("classifier reply without NONE fails SAFE (empty, blocked, garbled)", async () => {
+  const crisis = { crisis: true, kind: "self_harm", via: "llm" };
+  for (const reply of ["", "   ", "I can't help with that.", "NON", "NONETHELESS"]) {
+    assert.deepEqual(await checkSafety("I feel hopeless", async () => reply), crisis, JSON.stringify(reply));
+  }
+  assert.deepEqual(await checkSafety("I feel hopeless", async () => " none.\n"), { crisis: false, via: "llm" });
+  assert.deepEqual(await checkSafety("I feel hopeless", async () => "ABUSE"), { crisis: true, kind: "abuse_victim", via: "llm" });
+});
+
 test("no distress signal: classifier is not called", async () => {
   let called = false;
   await checkSafety("I lied to my boss", async () => { called = true; return "NONE"; });
