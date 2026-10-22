@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-20T03:45:47.985Z",
+  "generatedAt": "2026-10-22T03:41:18.228Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -354,13 +354,13 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-10-18T14:39:38.850Z",
+      "retrievedAt": "2026-10-22T03:41:18.228Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",
           "url": "https://ebible.org/Scriptures/eng-web_usfm.zip",
-          "sha256": "5f3d78a921d5ec7e2420be1713543e6fa90863715433f0e222f3c0cf789939cf",
-          "bytes": 3245355
+          "sha256": "37aac697f5d9f335af08e1e8e24a34777dfd1f40da5e3f27adbefa742a440483",
+          "bytes": 3250185
         }
       ]
     }

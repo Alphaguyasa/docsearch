@@ -1,10 +1,10 @@
 # Scripture fetch report
 
-Generated 2026-10-20T03:45:47.985Z
+Generated 2026-10-22T03:41:18.228Z
 
 ## web — World English Bible with Deuterocanon
 
-#### `eng-web_usfm.zip` — 3245355 bytes
+#### `eng-web_usfm.zip` — 3250185 bytes
 (zip — contents listed by the parser session)
 
 ## confessions — The Confessions of Saint Augustine (tr. E. B. Pusey)
@@ -182,47 +182,7 @@ host of God, the Cherubic, Seraphin and Ophannin, and all the angels of power, a
 
 ## kebra_nagast — The Kebra Nagast: The Queen of Sheba and her only son Menyelek (tr. E. A. Wallis Budge, 1922)
 - pinned: queenofshebahero00budgrich
-
-#### `queenofshebahero00budgrich_djvu.txt` (archive id `queenofshebahero00budgrich`) — 731205 bytes
-13166 non-empty lines. First 25:
-```
-$B    13    57b
-BT  THE  SAME  AUTHOR.
-THE  BOOK  OF  THE  DEAD:
-THE  PAPYRUS  OF  ANI,  Scribe
-and  Treasurer  of  the  Temples  of
-Egypt,  about  1450  B.C.
-A  facsimile  coloured  reproduction  in  37
-folding  plates,  with  hieroglyphic  Transcript,
-Translation  and  Introduction.  New  Edition,
-revised  throughout  and  enlarged.  In  2
-volumes.  Royal  8vo.
-OSIRIS  AND  THE  EGYPTIAN
-RESURRECTION
-With  nearly  200  illustrations,  including
-folding  frontispiece  in  colour  and  4  plates
-in  collotype.  In  2  volumes.  Royal  8vo.
-THE  QUEEN  OF  SHEBA
-&  HER  ONLY  SON  MENYELEK
-PLATE  I
-From  Brit.  Mus.  MS.  Orient.  No.  481,  fol.  noa
-God  Almighty  the  Ancient  of  Days  (Daniel  vii,  9)  surrounded  by  the  "  living
-creatures  "  seen  by  Ezekiel  (*,  10)
-HE  QUEEN
-of  SHEBA  &
-her  only  SON
-```
-Sample from the middle:
-```
-the  nobles  of  Egypt,  whom  King  Pharaoh  had  sent
-unto  him  with  a  gift ;  and  there  was  an  abundance  of
-treasures  with  him,  and  he  came  and  made  obeisance
-to  the  King.  And  Solomon  the  King  made  haste  to
-question  him,  even  before  he  had  presented  his  gift
-and  embassy,  and  said  unto  him,  "  Hast  thou  seen
-men  of  Ethiopia  fleeing  by  this  road  ?  "  And  the
-ambassador  of  Pharaoh  answered  and  said  unto  the
-```
+**FAILED:** fetch failed
 
 ## jubilees — The Book of Jubilees (tr. R. H. Charles, 1917)
 - pinned: bookofjubileesor01char
