@@ -61,7 +61,28 @@ test("phrase hits cannot be downgraded by the classifier", async () => {
 
 test("abuse response says plainly it is not their sin", () => {
   assert.match(crisisResponse("abuse_victim").message, /not your sin/);
+  assert.match(crisisResponse("abuse_victim", "am").message, /ኃጢአትዎ አይደለም/);
   assert.ok(crisisResponse("self_harm").resources.length > 0);
+});
+
+const ETHIOPIC = /[\u1200-\u137F]/;
+
+test("the crisis card is fully Amharic in Amharic: message, steps and every detail", () => {
+  for (const kind of ["self_harm", "abuse_victim", "harm_to_others"] as const) {
+    const am = crisisResponse(kind, "am");
+    const en = crisisResponse(kind, "en");
+    assert.match(am.message, ETHIOPIC, kind);
+    assert.doesNotMatch(en.message, ETHIOPIC, kind);
+    for (const s of am.steps) assert.match(s, ETHIOPIC);
+    for (const s of en.steps) assert.doesNotMatch(s, ETHIOPIC);
+    for (const r of am.resources) assert.match(r.detail, ETHIOPIC, r.name);
+    // Same places, same numbers and links in both languages: only the words change.
+    assert.deepEqual(am.resources.map((r) => [r.phone, r.url]), en.resources.map((r) => [r.phone, r.url]));
+  }
+});
+
+test("English stays the default, so the search API payload is unchanged", () => {
+  assert.deepEqual(crisisResponse("self_harm"), crisisResponse("self_harm", "en"));
 });
 
 // answer.ts pulls in the validated env; give it harmless dummies and import lazily.

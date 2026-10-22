@@ -251,3 +251,28 @@ two new sources finished.
 
 **Next run:** ROADMAP 14, then 15. Check that ingest finished and the full eval on main is green.
 
+
+## 2026-10-22: run 8 (scheduled)
+
+- Main at start: ci and deploy green on 2fdc120. The full scripture-eval on main
+  passed, and the hand-dispatched ingest finished (9615/9615), so The Imitation of
+  Christ and Grace Abounding are now embedded.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 14 (P0): **PR #119**, squash-merged as 6ea37af. `checkSafety` now clears a
+  distress message only on an explicit NONE; an empty, blocked or garbled reply is
+  treated as SELF_HARM, like a thrown error. One push-triggered CI build failed on the
+  known Google Fonts fetch inside next/font (ROADMAP 12); the PR-triggered run on the
+  same commit had passed, and one rerun passed.
+- ROADMAP 15: the crisis message, steps and resource details are in Amharic on the
+  site (crisis card, /help) and the bot (crisis reply, /help). crisis-resources.json
+  moves to v3 with `en`/`am` per step and `detail_am` per resource. The search API
+  keeps sending English; the card picks the reader's language from the kind. Tests
+  check every Amharic line is Ethiopic, the numbers and links match English, and
+  English stays the default. Wording needs a native speaker's read (NEEDS_APPROVAL #5).
+  Local: lint 0 warnings, typecheck, npm test 279/279, vitest 339/339, build OK. See
+  its PR for the merge.
+- Tag `v2026-10-22-1` (6ea37af) was refused by the cloud git proxy, as on earlier
+  days. Alpha to create it.
+
+**Next run:** ROADMAP 16 (Gemini finishReason), then 17 (fetch-scripture starts ingest).

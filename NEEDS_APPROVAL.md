@@ -47,6 +47,8 @@ decided, move it to "Decided" with the date and the answer.
 5. **Before public launch** (from docs/NOT_ALONE.md): a priest or pastor reviews the
    `NEEDS REVIEW` items in `data/canon.json` and a sample of answers; rotate the Supabase
    service_role key.
+   Also: a native Amharic speaker reads the crisis wording (safety.ts `MESSAGES.am`, the
+   `am` and `detail_am` lines in data/crisis-resources.json, added 2026-10-22).
 
 ## Decided
 

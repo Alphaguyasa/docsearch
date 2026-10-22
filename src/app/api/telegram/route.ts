@@ -10,12 +10,11 @@
  */
 import { after } from "next/server";
 
-import resources from "../../../../data/crisis-resources.json";
 import { DICTS } from "@/app/i18n/dict";
 import { ensureDailyStory, sendJourneyDay, sendToday, sendWalkDay, subscribe, unsubscribe } from "@/lib/channel";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
-import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
+import { crisisResources, crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { DEFAULT_TRADITION, filterFor } from "@/lib/scripture/tradition-choice";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
@@ -98,7 +97,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   if (text.startsWith("/start") && !deep) return void (await send(t.welcome(msg.from?.first_name)));
   if (text.startsWith("/help")) {
     return void (await send(
-      crisisMessage({ message: t.helpTitle, steps: resources.always, resources: resources.global }, lang),
+      crisisMessage({ message: t.helpTitle, ...crisisResources(lang) }, lang),
     ));
   }
   if (text.startsWith("/today")) return void (await sendToday(token, chat_id, lang));
@@ -127,7 +126,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   // server never answered, so its safety gate never ran — check for crisis first.
   const fallback = async (busy: boolean, people = matchPeople(), checked = false) => {
     const kind = checked ? undefined : phraseCheck(text);
-    if (kind) return void (await send(crisisMessage(crisisResponse(kind), lang)));
+    if (kind) return void (await send(crisisMessage(crisisResponse(kind, lang), lang)));
     const msg = fallbackMessage(people, lang, busy);
     await send(msg ?? (busy ? t.busy : t.failed));
   };
@@ -149,7 +148,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
 
   const result = await collectStream(parseSearchStream(res.body)).catch(() => null);
   if (!result) return fallback(false);
-  if (result.crisis) return void (await send(crisisMessage(result.crisis, lang)));
+  if (result.crisis) return void (await send(crisisMessage(crisisResponse(result.crisis.kind, lang), lang)));
   if (result.error || !result.answer.trim()) {
     return fallback(false, result.figures.length ? result.figures : matchPeople(), true);
   }
