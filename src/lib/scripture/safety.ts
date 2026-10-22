@@ -82,7 +82,10 @@ export async function checkSafety(message: string, llm?: SafetyLlm): Promise<Saf
   if (reply.includes("SELF_HARM")) return { crisis: true, kind: "self_harm", via: "llm" };
   if (reply.includes("ABUSE")) return { crisis: true, kind: "abuse_victim", via: "llm" };
   if (reply.includes("OTHERS")) return { crisis: true, kind: "harm_to_others", via: "llm" };
-  return { crisis: false, via: "llm" };
+  if (/\bNONE\b/.test(reply)) return { crisis: false, via: "llm" };
+  // Only an explicit NONE clears a distress signal. An empty or garbled reply (the
+  // token cap spent on thinking, a blocked prompt) is a failure, and fails safe too.
+  return { crisis: true, kind: "self_harm", via: "llm" };
 }
 
 export interface CrisisResponse {
