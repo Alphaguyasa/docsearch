@@ -3,11 +3,14 @@
 import Link from "next/link";
 
 import type { CrisisPayload } from "@/lib/search-stream";
+import { crisisResponse } from "@/lib/scripture/safety";
 import { useT } from "../i18n/client";
 
 /** Shown instead of a story when the safety gate trips. Calm, direct, first; numbers dial on one tap. */
-export function CrisisCard({ crisis, onBack }: { crisis: CrisisPayload; onBack: () => void }) {
-  const { t } = useT();
+export function CrisisCard({ crisis: sent, onBack }: { crisis: CrisisPayload; onBack: () => void }) {
+  const { lang, t } = useT();
+  // The server sends English; the words follow the reader's language, and switching updates them.
+  const crisis = crisisResponse(sent.kind, lang);
   const phones = crisis.resources.filter((r) => r.phone);
   const others = crisis.resources.filter((r) => !r.phone);
   return (

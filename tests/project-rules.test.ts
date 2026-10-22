@@ -123,5 +123,8 @@ test("someone in distress is pointed to real help, not a story", () => {
     const card = crisisResponse(kind);
     assert.ok(card.resources.some((r) => r.phone || r.url), `${kind}: no phone or link to call`);
     assert.ok(card.steps.some((s) => /priest|pastor|trust/i.test(s)), `${kind}: no trusted person`);
+    const am = crisisResponse(kind, "am");
+    assert.ok(am.resources.some((r) => r.phone || r.url), `${kind} (am): no phone or link to call`);
+    assert.ok(am.steps.some((s) => /ካህን|መጋቢ/.test(s)), `${kind} (am): no trusted person`);
   }
 });

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import resources from "../../../data/crisis-resources.json";
+import { crisisResources } from "@/lib/scripture/safety";
 import { ArrowRight, Building, Globe, Phone } from "../components/Icons";
 import { getDict } from "../i18n/server";
 
@@ -12,10 +12,11 @@ export const metadata = { title: "Help now — Not Alone" };
  * large tap targets that dial directly.
  */
 export default async function HelpPage() {
-  const { t } = await getDict();
+  const { lang, t } = await getDict();
   const h = t.help;
-  const phones = resources.global.filter((r) => "phone" in r && r.phone);
-  const others = resources.global.filter((r) => !("phone" in r && r.phone));
+  const { steps, resources } = crisisResources(lang);
+  const phones = resources.filter((r) => r.phone);
+  const others = resources.filter((r) => !r.phone);
   return (
     <main className="pb-24">
       <section className="mx-auto max-w-3xl px-4 pt-14 text-center sm:px-6 sm:pt-24">
@@ -32,7 +33,7 @@ export default async function HelpPage() {
           {phones.map((r) => (
             <li key={r.name}>
               <a
-                href={`tel:${"phone" in r ? r.phone : ""}`}
+                href={`tel:${r.phone}`}
                 className="paper group relative flex h-full items-center gap-5 overflow-hidden rounded-[22px] p-6 ring-1 ring-care/35 transition-[box-shadow,transform] duration-300 hover:shadow-[0_0_50px_-18px_rgb(232_150_150_/_0.5)] active:scale-[0.98] sm:p-8"
               >
                 <span className="call-pulse grid h-14 w-14 shrink-0 place-items-center rounded-full bg-care text-background">
@@ -40,7 +41,7 @@ export default async function HelpPage() {
                 </span>
                 <span className="min-w-0">
                   <span className="block font-display text-5xl font-semibold leading-none text-care">
-                    {"phone" in r ? r.phone : ""}
+                    {r.phone}
                   </span>
                   <span className="mt-2 block font-medium">{r.name}</span>
                   <span className="block text-sm text-muted">
@@ -54,7 +55,7 @@ export default async function HelpPage() {
 
         <ul className="mt-4 grid gap-4 sm:grid-cols-2">
           {others.map((r) => {
-            const link = "url" in r && r.url ? r.url : undefined;
+            const link = r.url;
             const Tag = link ? "a" : "div";
             return (
               <li key={r.name}>
@@ -81,7 +82,7 @@ export default async function HelpPage() {
           {h.now}
         </h2>
         <ol className="mt-5 space-y-3">
-          {resources.always.map((s, i) => (
+          {steps.map((s, i) => (
             <li
               key={s}
               className="paper flex gap-4 rounded-[22px] p-5 font-serif text-[19px] leading-8 ring-1 ring-border sm:p-6"

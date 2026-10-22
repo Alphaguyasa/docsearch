@@ -88,30 +88,66 @@ export async function checkSafety(message: string, llm?: SafetyLlm): Promise<Saf
   return { crisis: true, kind: "self_harm", via: "llm" };
 }
 
+export type CrisisLang = "en" | "am";
+
+export interface CrisisResource {
+  name: string;
+  detail: string;
+  url?: string;
+  phone?: string;
+}
+
 export interface CrisisResponse {
   kind: SafetyKind;
   message: string;
   steps: string[];
-  resources: { name: string; detail: string; url?: string; phone?: string }[];
+  resources: CrisisResource[];
 }
 
-const MESSAGES: Record<SafetyKind, string> = {
-  self_harm:
-    "Thank you for telling me. What you're carrying sounds really heavy, and you don't have to carry it alone. " +
-    "Before anything else, please reach out to someone who can be with you in this right now.",
-  abuse_victim:
-    "What you describe is being done to you — it is not your sin, and it is not your fault. " +
-    "You deserve to be safe. Please reach out to someone who can help you get safe.",
-  harm_to_others:
-    "It sounds like you're in a lot of pain and anger right now. Please step away from the situation " +
-    "and talk to someone right now, before anyone gets hurt.",
+const MESSAGES: Record<SafetyKind, Record<CrisisLang, string>> = {
+  self_harm: {
+    en:
+      "Thank you for telling me. What you're carrying sounds really heavy, and you don't have to carry it alone. " +
+      "Before anything else, please reach out to someone who can be with you in this right now.",
+    am:
+      "ስለነገሩኝ አመሰግናለሁ። የተሸከሙት ነገር በጣም ከባድ ይመስላል፤ ብቻዎን መሸከም የለብዎትም። " +
+      "ከምንም በፊት፣ እባክዎ አሁኑኑ ከእርስዎ ጋር ሊሆን የሚችል ሰው ያግኙ።",
+  },
+  abuse_victim: {
+    en:
+      "What you describe is being done to you — it is not your sin, and it is not your fault. " +
+      "You deserve to be safe. Please reach out to someone who can help you get safe.",
+    am:
+      "የገለጹት ነገር በእርስዎ ላይ የተፈጸመ ነው — ኃጢአትዎ አይደለም፤ ጥፋትዎም አይደለም። " +
+      "በደኅንነት መኖር ይገባዎታል። እባክዎ ወደ ደኅንነት እንዲደርሱ ሊረዳዎ የሚችል ሰው ያግኙ።",
+  },
+  harm_to_others: {
+    en:
+      "It sounds like you're in a lot of pain and anger right now. Please step away from the situation " +
+      "and talk to someone right now, before anyone gets hurt.",
+    am:
+      "አሁን ብዙ ሕመምና ቁጣ ውስጥ ያሉ ይመስላል። እባክዎ ከሁኔታው ራቅ ይበሉ፤ " +
+      "ማንም ሳይጎዳ አሁኑኑ ከአንድ ሰው ጋር ይነጋገሩ።",
+  },
 };
 
-export function crisisResponse(kind: SafetyKind): CrisisResponse {
+/** The steps and places to call, in the reader's language (the site's /help, the bot's /help). */
+export function crisisResources(lang: CrisisLang = "en"): Pick<CrisisResponse, "steps" | "resources"> {
   return {
-    kind,
-    message: MESSAGES[kind],
-    steps: resources.always,
-    resources: resources.global,
+    steps: resources.always.map((s) => s[lang]),
+    resources: resources.global.map((r) => {
+      const name = lang === "am" && "name_am" in r && r.name_am ? r.name_am : r.name;
+      const detail = lang === "am" ? r.detail_am : r.detail;
+      return {
+        name,
+        detail,
+        ...("url" in r && r.url ? { url: r.url } : {}),
+        ...("phone" in r && r.phone ? { phone: r.phone } : {}),
+      };
+    }),
   };
+}
+
+export function crisisResponse(kind: SafetyKind, lang: CrisisLang = "en"): CrisisResponse {
+  return { kind, message: MESSAGES[kind][lang], ...crisisResources(lang) };
 }
