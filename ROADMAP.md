@@ -8,15 +8,14 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Open
 
-16. **[P1, M] Detect Gemini truncation and blocking.** llm.ts never reads
-    `finishReason`. A story cut off at MAX_TOKENS still sends `done`, and an example
-    question caches it for later readers (search/route.ts `cacheExample`). A blocked
-    reply shows passages with no story. Treat anything but STOP as an error and skip
-    the cache. Add stream-parser tests with a stubbed fetch (no test covers llm.ts).
 17. **[P1, S] fetch-scripture should start ingest.** Its manifest commit is a
     GITHUB_TOKEN push, which never triggers ingest-scripture, so the sources from #113
     sat fetched but unembedded for a day (dispatched by hand on 2026-10-21). End
     fetch-scripture with `gh workflow run ingest-scripture.yml` when the manifest changed.
+    Same PR: on 2026-10-22 two merges 3 minutes apart queued two fetch runs; the second
+    checked out the older commit, and its `git pull --rebase` hit a conflict in
+    manifest.json and report.md, failing the run. The manifest is regenerated whole,
+    so resolve with the run's own copy (`git pull --rebase -X theirs`) or re-fetch.
 18. **[P2, S] Friendly errors, not raw upstream text.** search/route.ts:170 and :199
     send messages like "Gemini request failed (…): 429" to readers, in English even in
     the Amharic UI. Log the detail; send a code mapped to `t.story.errors.*`.
@@ -45,6 +44,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-23: Item 16. The Gemini stream reads `finishReason` and `promptFeedback.blockReason`: anything but STOP (MAX_TOKENS, SAFETY, RECITATION, a blocked prompt, or a stream that closes with no finish reason) throws after the text already sent, so /api/search ends with an error line instead of "done" and does not cache the half-story. A last event with no trailing newline is no longer dropped. tests/llm-stream.test.ts covers the parser with a stubbed fetch. `complete()` is unchanged (the classifiers rely on short capped replies).
 - 2026-10-23: Item 12. The site fonts are self-hosted with next/font/local (src/app/fonts, OFL 1.1 from @fontsource 5.3.0: same faces, weights and subsets). The build no longer downloads from Google Fonts, which had failed CI on main ("next/font/google queries have exactly one entry"). A full local build now takes 44s with no retries, so the slow image prerender is gone too. tests/fonts.test.ts keeps it that way.
 - 2026-10-22: Item 15. The crisis card, /help and the bot's crisis and /help replies are in Amharic for Amharic readers: message, steps and every resource detail (crisis-resources.json v3 has `en`/`am` per line). The search API still sends English; the card re-renders it in the reader's language. A native speaker should check the wording (NEEDS_APPROVAL #5).
 - 2026-10-22: Item 14. The safety classifier no longer fails open: only an explicit NONE clears a distress message; an empty, blocked or garbled reply counts as SELF_HARM, like a thrown error.

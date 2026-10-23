@@ -276,3 +276,32 @@ two new sources finished.
   days. Alpha to create it.
 
 **Next run:** ROADMAP 16 (Gemini finishReason), then 17 (fetch-scripture starts ingest).
+
+
+## 2026-10-23: run 9 (scheduled)
+
+- Main at start: **ci was red** on a9c5e17 (#120), deploy green. The build failed on
+  the Google Fonts download inside next/font ("next/font/google queries have exactly one
+  entry"), the third time in three days. Fixed first: **PR #121**, squash-merged as
+  1089c4e. The four faces (OFL 1.1, @fontsource 5.3.0) are self-hosted in src/app/fonts
+  via next/font/local, same weights and subsets; tests/fonts.test.ts. A full local build
+  now takes 44s with no retries, so ROADMAP 12 (slow prerender) is closed with it.
+- Also red on main: fetch-scripture for a9c5e17. Two merges 3 minutes apart queued two
+  fetch runs; the second rebased its manifest commit onto the first's and conflicted in
+  manifest.json and report.md. The first run's manifest landed (9fabbf2), so nothing is
+  missing. Folded into ROADMAP 17 (same workflow).
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 16: the Gemini stream reads `finishReason` and `promptFeedback.blockReason`.
+  Anything but STOP (MAX_TOKENS, SAFETY, RECITATION, a blocked prompt, or a stream that
+  closes with no finish reason) throws after the text already sent, so /api/search ends
+  with an error line instead of "done" and does not cache the half-story. A last SSE
+  event with no trailing newline is no longer dropped. tests/llm-stream.test.ts (10
+  tests, stubbed fetch). Local: lint 0 warnings, typecheck, npm test 292/292, vitest
+  339/339. See its PR for the merge.
+- Tag `v2026-10-23-1` (1089c4e) was refused by the cloud git proxy, as on earlier days.
+  Alpha to create it.
+
+**Next run:** ROADMAP 17 (fetch-scripture starts ingest, and resolves the manifest
+rebase conflict), then 18 (friendly error codes; the new "stopped before the answer
+was finished" error is one of the messages to map).
