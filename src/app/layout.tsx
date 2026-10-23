@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Cormorant_Garamond, EB_Garamond, Noto_Serif_Ethiopic } from "next/font/google";
+import localFont from "next/font/local";
 import Link from "next/link";
 
 import { CandleMark } from "./components/FigureSymbol";
@@ -15,33 +15,47 @@ import "./globals.css";
 // Church type: EB Garamond for reading (the face of the old Bibles and
 // prayer books), Cormorant Garamond for headings, Cinzel (Roman inscription
 // capitals) for the name and small labels, Noto Serif Ethiopic for Amharic.
-const reading = EB_Garamond({
-  subsets: ["latin"],
+// The files live in ./fonts (OFL 1.1, from @fontsource; see fonts/README.md)
+// rather than next/font/google, whose build-time download from Google Fonts
+// failed CI builds now and then ("queries have exactly one entry").
+const reading = localFont({
+  src: [{ path: "./fonts/eb-garamond-latin-wght-normal.woff2", weight: "400 800", style: "normal" }],
   variable: "--font-reading",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
-const display = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
+const display = localFont({
+  src: [
+    { path: "./fonts/cormorant-garamond-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-500-italic.woff2", weight: "500", style: "italic" },
+    { path: "./fonts/cormorant-garamond-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-600-italic.woff2", weight: "600", style: "italic" },
+  ],
   variable: "--font-display-face",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
-const caps = Cinzel({
-  subsets: ["latin"],
-  weight: ["400", "600"],
+const caps = localFont({
+  src: [
+    { path: "./fonts/cinzel-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/cinzel-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-caps-face",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
-// Not preloaded: at 188 KB it is the heaviest file on the site, and only
-// Amharic pages use it (globals.css --eth-face); on English pages the few
-// Amharic words fall back to the phone's own Ethiopic font.
-const ethiopic = Noto_Serif_Ethiopic({
-  subsets: ["ethiopic"],
-  weight: ["400", "600"],
+// Not preloaded: these are the heaviest files on the site, and only Amharic
+// pages use them (globals.css --eth-face); on English pages the few Amharic
+// words fall back to the phone's own Ethiopic font.
+const ethiopic = localFont({
+  src: [
+    { path: "./fonts/noto-serif-ethiopic-ethiopic-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/noto-serif-ethiopic-ethiopic-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-ethiopic",
   display: "swap",
   preload: false,
+  adjustFontFallback: "Times New Roman",
 });
 
 const DESCRIPTION =
