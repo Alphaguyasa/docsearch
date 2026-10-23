@@ -38,11 +38,6 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
     could list and delete corpus books via the service-role client. ROADMAP entry
     here explains the removal, as the safety rules require.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
-12. **[P3, M] Slow `/status/[id]/[lang]` prerender.** Locally each image route takes over
-    60s to build (16 retries in one build). Find out why (fonts fetched per route?) and
-    cache them, so builds stay fast and don't time out on Vercel. (2026-10-21: one CI
-    build failed on a Google Fonts fetch, "next/font/google queries have exactly one
-    entry"; a rerun passed. Self-hosting the fonts would fix both.)
 13. **[P3, S] Make ingest's retag robust to statement timeouts.** On 2026-10-19 one
     batch of 100 row updates hit Supabase's statement timeout (each update rewrites
     the HNSW and tsv index entries). The chained rerun recovered, but retag should use
@@ -50,6 +45,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-23: Item 12. The site fonts are self-hosted with next/font/local (src/app/fonts, OFL 1.1 from @fontsource 5.3.0: same faces, weights and subsets). The build no longer downloads from Google Fonts, which had failed CI on main ("next/font/google queries have exactly one entry"). A full local build now takes 44s with no retries, so the slow image prerender is gone too. tests/fonts.test.ts keeps it that way.
 - 2026-10-22: Item 15. The crisis card, /help and the bot's crisis and /help replies are in Amharic for Amharic readers: message, steps and every resource detail (crisis-resources.json v3 has `en`/`am` per line). The search API still sends English; the card re-renders it in the reader's language. A native speaker should check the wording (NEEDS_APPROVAL #5).
 - 2026-10-22: Item 14. The safety classifier no longer fails open: only an explicit NONE clears a distress message; an empty, blocked or garbled reply counts as SELF_HARM, like a thrown error.
 - 2026-10-21: Item 10. npm audit: 9 advisories (5 high) → 2. sharp 0.35.5 (libvips CVEs), vite 8.3.4, nanoid, source-map-js, postcss 8.5.31, vitest and coverage-v8 4.1.12; no majors, licenses unchanged. Left for item 21: postcss 8.4.31 pinned inside next 15. (npm 10 crashes on this tree with "reading 'edgesOut'"; use npm 11, as CI does.)
