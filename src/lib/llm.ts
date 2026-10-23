@@ -181,9 +181,13 @@ interface GeminiPart {
 }
 interface GeminiCandidate {
   content?: { parts?: GeminiPart[] };
+  /** "STOP" for a finished answer; MAX_TOKENS, SAFETY, RECITATION, ... otherwise. */
+  finishReason?: string;
 }
 interface GeminiStreamChunk {
   candidates?: GeminiCandidate[];
+  /** Set, with no candidates, when the prompt itself was blocked. */
+  promptFeedback?: { blockReason?: string };
 }
 
 interface GeminiResponse {
@@ -315,11 +319,18 @@ const geminiProvider: LlmProvider = {
     const reader = res.body!.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
+    let finishReason: string | undefined;
+    let ended = false;
 
-    while (true) {
+    while (!ended) {
       const { value, done } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
+      if (done) {
+        // A last event with no trailing newline still counts.
+        buffer += decoder.decode() + "\n";
+        ended = true;
+      } else {
+        buffer += decoder.decode(value, { stream: true });
+      }
 
       let nl: number;
       while ((nl = buffer.indexOf("\n")) !== -1) {
@@ -331,10 +342,26 @@ const geminiProvider: LlmProvider = {
         if (!payload || payload === "[DONE]") continue;
 
         const chunk = JSON.parse(payload) as GeminiStreamChunk;
-        for (const part of chunk.candidates?.[0]?.content?.parts ?? []) {
+        const blocked = chunk.promptFeedback?.blockReason;
+        if (blocked) throw new Error(`Gemini blocked the request (${blocked})`);
+        const candidate = chunk.candidates?.[0];
+        for (const part of candidate?.content?.parts ?? []) {
           if (part.text) yield part.text;
         }
+        if (candidate?.finishReason) finishReason = candidate.finishReason;
       }
+    }
+
+    // Only STOP means the answer is whole. A story cut off at MAX_TOKENS, or
+    // stopped for SAFETY or RECITATION, must not end in "done": the route would
+    // send it as complete and cache it for every later reader of that example.
+    // A stream that closes with no finish reason at all was cut off in transit.
+    if (finishReason !== "STOP") {
+      throw new Error(
+        finishReason
+          ? `Gemini stopped before the answer was finished (${finishReason})`
+          : "Gemini stream ended before the answer was finished",
+      );
     }
   },
 
