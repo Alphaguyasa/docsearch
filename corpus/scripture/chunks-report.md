@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-10-20T03:47:41.264Z
+Generated 2026-10-24T03:44:18.786Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|
@@ -24,10 +24,10 @@ Generated 2026-10-20T03:47:41.264Z
 | philoxenus | 1 | 567 | 252940 | 446 | 616 |
 | synaxarium | 1 | 1535 | 725810 | 473 | 625 |
 | takla_haymanot | 1 | 251 | 111134 | 443 | 629 |
-| web | 78 | 3218 | 1195260 | 371 | 610 |
+| web | 78 | 3218 | 1195264 | 371 | 610 |
 |  | skipped: FRT GLO ESG 4MA DAG | | | | |
 
-**Total:** 9615 chunks, 4153302 tokens ≈ 6.9 h of embedding at 10000 TPM.
+**Total:** 9615 chunks, 4153306 tokens ≈ 6.9 h of embedding at 10000 TPM.
 
 ## Figure passage check
 
