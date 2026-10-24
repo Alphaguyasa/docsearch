@@ -46,7 +46,13 @@ import { BUSY_MESSAGE, takeSearchSlot } from "@/lib/scripture/rate-limit";
 import { checkSafety, crisisResponse } from "@/lib/scripture/safety";
 import { filterFor, TRADITION_CHOICES } from "@/lib/scripture/tradition-choice";
 import { parseRef } from "@/lib/scripture/usfm";
-import type { FigureSummary, SearchStreamMessage, SourceChunk } from "@/lib/search-stream";
+import {
+  SEARCH_ERROR_MESSAGES,
+  type FigureSummary,
+  type SearchErrorCode,
+  type SearchStreamMessage,
+  type SourceChunk,
+} from "@/lib/search-stream";
 
 const requestSchema = z.object({
   /**
@@ -61,8 +67,8 @@ const requestSchema = z.object({
     .max(1000, "question must be at most 1000 characters"),
 });
 
-function errorResponse(message: string, status: number): Response {
-  return new Response(JSON.stringify({ error: message }), {
+function errorResponse(message: string, status: number, code?: SearchErrorCode): Response {
+  return new Response(JSON.stringify({ error: message, code }), {
     status,
     headers: { "Content-Type": "application/json" },
   });
@@ -150,7 +156,7 @@ export async function POST(request: Request): Promise<Response> {
   //    never told to wait.
   if (!(await takeSearchSlot())) {
     count({ kind: "busy" });
-    return errorResponse(BUSY_MESSAGE, 429);
+    return errorResponse(BUSY_MESSAGE, 429, "busy");
   }
 
   // 4. Retrieve BEFORE opening the stream, so an upstream failure can still
@@ -167,7 +173,8 @@ export async function POST(request: Request): Promise<Response> {
     figures = result.figures;
     tags = result.tags;
   } catch (err) {
-    return errorResponse(`Retrieval failed: ${errorMessage(err)}`, 502);
+    console.error("search: retrieval failed:", errorMessage(err));
+    return errorResponse(SEARCH_ERROR_MESSAGES.retrieval, 502, "retrieval");
   }
   count({ kind: "story", tags, figures });
   const hints: FigureHint[] = figures.map(({ name, summary, note }) => ({ name, summary, note }));
@@ -193,10 +200,13 @@ export async function POST(request: Request): Promise<Response> {
         if (cacheKey) cacheExample(cacheKey, transcript.join(""));
       } catch (err) {
         void bump(["error"]);
+        console.error("search: generation failed:", errorMessage(err));
         // The status is already committed (200); report the failure in-band as
         // the terminal line instead of a "done".
         controller.enqueue(
-          encoder.encode(line({ type: "error", message: errorMessage(err) })),
+          encoder.encode(
+            line({ type: "error", message: SEARCH_ERROR_MESSAGES.generation, code: "generation" }),
+          ),
         );
       } finally {
         controller.close();
