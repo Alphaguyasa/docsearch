@@ -305,3 +305,28 @@ two new sources finished.
 **Next run:** ROADMAP 17 (fetch-scripture starts ingest, and resolves the manifest
 rebase conflict), then 18 (friendly error codes; the new "stopped before the answer
 was finished" error is one of the messages to map).
+
+
+## 2026-10-24: run 10 (scheduled)
+
+- Main at start: ci and deploy green on cd0451f (#122).
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- `gh` is not logged in from the cloud session (GH_TOKEN rejected); GitHub work went
+  through the GitHub connector instead.
+- ROADMAP 17: **PR #123**, squash-merged as a9821ea. fetch-scripture dispatches
+  ingest-scripture after a clean fetch whose manifest commit was pushed, and the
+  manifest commit re-applies the run's own files on the latest tip instead of
+  `git pull --rebase` (simulated the two-run conflict on a scratch repo: second run
+  lands, a rerun is a no-op). The merge touches the workflow, so fetch-scripture ran
+  on main straight away. This is the first real test of the dispatch.
+- ROADMAP 18: /api/search errors carry a code (`busy`, `retrieval`, `generation`) and a
+  plain English line; the upstream detail goes to the server log. The page shows
+  `t.story.errors[code]` in English or Amharic. Local: lint 0 warnings, typecheck,
+  npm test 299/299, build OK. See its PR for the merge.
+- Tag `v2026-10-24-1` (a9821ea) not pushed: the cloud git proxy refuses tags, as on
+  earlier days. Alpha to create it.
+
+**Next run:** ROADMAP 19 (auth on /api/telegram/daily; the code can land and skip the
+check while CRON_SECRET is unset), then 20 (Gemini key in a header). Check that the
+fetch-scripture run for a9821ea dispatched ingest and that ingest finished.

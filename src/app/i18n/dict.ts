@@ -297,6 +297,9 @@ const en = {
       failed: (status: number) => `The request failed (${status}). Try again.`,
       stopped: "The story stopped partway. Try again.",
       generic: "Something went wrong.",
+      busy: "Many people are reading right now. Please wait a minute and try again.",
+      retrieval: "The stories could not be looked up just now. Please try again.",
+      generation: "The story could not be finished just now. Please try again.",
     },
   },
   journey: {
@@ -681,6 +684,9 @@ const am: Dict = {
       failed: (status: number) => `ጥያቄው አልተሳካም (${status})። እንደገና ይሞክሩ።`,
       stopped: "ታሪኩ በመሃል ተቋረጠ። እንደገና ይሞክሩ።",
       generic: "አንድ ችግር ተፈጥሯል።",
+      busy: "ብዙ ሰዎች እየተጠቀሙ ነው፤ እባክዎ ከአንድ ደቂቃ በኋላ ይሞክሩ።",
+      retrieval: "ታሪኮቹን አሁን ማግኘት አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      generation: "ታሪኩን አሁን መጨረስ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
     },
   },
   journey: {

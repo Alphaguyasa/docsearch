@@ -39,6 +39,28 @@ export interface CrisisPayload {
 }
 
 /**
+ * Why a search failed, as a code the client turns into words in the reader's
+ * language. The upstream detail ("Gemini request failed (…): 429") goes to the
+ * server log, never to the reader.
+ */
+export const SEARCH_ERROR_CODES = ["busy", "retrieval", "generation"] as const;
+export type SearchErrorCode = (typeof SEARCH_ERROR_CODES)[number];
+
+export function isSearchErrorCode(value: unknown): value is SearchErrorCode {
+  return (SEARCH_ERROR_CODES as readonly unknown[]).includes(value);
+}
+
+/**
+ * English text sent alongside each code, for clients that show `message`
+ * as-is (curl, older pages). The site and the bot use the code.
+ */
+export const SEARCH_ERROR_MESSAGES: Record<SearchErrorCode, string> = {
+  busy: "Many people are reading right now. Please wait a minute and try again.",
+  retrieval: "The stories could not be looked up just now. Please try again.",
+  generation: "The story could not be finished just now. Please try again.",
+};
+
+/**
  * A line of the stream. The route guarantees ordering: exactly one `sources`
  * first, then zero or more `delta`, then exactly one terminal `done` — or an
  * `error` in its place if generation fails after the stream has opened.
@@ -48,7 +70,7 @@ export type SearchStreamMessage =
   | { type: "sources"; chunks: SourceChunk[]; figures?: FigureSummary[]; tags?: string[] }
   | { type: "delta"; text: string }
   | { type: "done" }
-  | { type: "error"; message: string };
+  | { type: "error"; message: string; code?: SearchErrorCode };
 
 /**
  * Parse an NDJSON response body into a sequence of typed messages, yielding

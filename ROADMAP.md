@@ -8,9 +8,6 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Open
 
-18. **[P2, S] Friendly errors, not raw upstream text.** search/route.ts:170 and :199
-    send messages like "Gemini request failed (…): 429" to readers, in English even in
-    the Amharic UI. Log the detail; send a code mapped to `t.story.errors.*`.
 19. **[P2, S] Auth on `/api/telegram/daily`.** Anyone can call it repeatedly (claims,
     setWebhook, setCommands). Check `Authorization: Bearer $CRON_SECRET` (Vercel cron
     sends it; free), and compare webhook/setup secrets with `timingSafeEqual`
@@ -36,6 +33,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-24: Item 18. /api/search sends a code (`busy`, `retrieval`, `generation`) with every error, and a plain English line instead of the upstream text; the detail goes to the server log. The page shows `t.story.errors[code]`, so Amharic readers get Amharic. tests/search-errors.test.ts.
 - 2026-10-24: Item 17. fetch-scripture dispatches ingest-scripture (`actions: write`) after a clean fetch whose manifest commit was pushed, so new sources and canon.json tag edits reach the database without a hand dispatch. The manifest commit re-applies the run's own regenerated files on the latest tip each attempt instead of `git pull --rebase`, so two queued fetch runs no longer conflict. tests/fetch-workflow.test.ts pins both.
 - 2026-10-23: Item 16. The Gemini stream reads `finishReason` and `promptFeedback.blockReason`: anything but STOP (MAX_TOKENS, SAFETY, RECITATION, a blocked prompt, or a stream that closes with no finish reason) throws after the text already sent, so /api/search ends with an error line instead of "done" and does not cache the half-story. A last event with no trailing newline is no longer dropped. tests/llm-stream.test.ts covers the parser with a stubbed fetch. `complete()` is unchanged (the classifiers rely on short capped replies).
 - 2026-10-23: Item 12. The site fonts are self-hosted with next/font/local (src/app/fonts, OFL 1.1 from @fontsource 5.3.0: same faces, weights and subsets). The build no longer downloads from Google Fonts, which had failed CI on main ("next/font/google queries have exactly one entry"). A full local build now takes 44s with no retries, so the slow image prerender is gone too. tests/fonts.test.ts keeps it that way.

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { TRADITION_KEY, TRADITION_OPTIONS, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
-import { parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
+import { isSearchErrorCode, parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { DEFAULT_TRADITION, filterFor, savedChoice } from "@/lib/scripture/tradition-choice";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
@@ -125,7 +125,9 @@ export default function Home() {
     }
     if (!res.ok || !res.body) {
       const body = await res.json().catch(() => null);
-      failEarly(body?.error ?? t.story.errors.failed(res.status), res.status === 429);
+      // The server's own text is English; show the reader's language by code.
+      const code: unknown = body?.code;
+      failEarly(isSearchErrorCode(code) ? t.story.errors[code] : t.story.errors.failed(res.status), res.status === 429);
       return;
     }
 
@@ -144,7 +146,7 @@ export default function Home() {
         } else if (msg.type === "done") {
           setStatus((s) => (s === "crisis" ? "crisis" : "done"));
         } else if (msg.type === "error") {
-          setError(msg.message);
+          setError(isSearchErrorCode(msg.code) ? t.story.errors[msg.code] : t.story.errors.stopped);
           setStatus("error");
         }
       }
