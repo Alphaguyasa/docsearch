@@ -8,6 +8,11 @@ name: fetch-scripture
 # Triggered by push to main (the trunk since PR #7). The commit-back touches only
 # manifest.json / failed.json, which are outside the path filter, so it cannot
 # re-trigger itself.
+#
+# A GITHUB_TOKEN push never triggers other workflows, so the manifest commit
+# alone never started ingest-scripture: new sources sat fetched but unembedded
+# (2026-10-21). After a clean fetch that changed the manifest, this dispatches
+# ingest itself, which also carries canon.json tag edits to the database.
 
 on:
   push:
@@ -23,6 +28,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # dispatch ingest-scripture
 
 concurrency:
   group: fetch-scripture
@@ -65,17 +71,43 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
       - name: Commit manifest
+        id: commit
         if: always()
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add corpus/scripture/manifest.json corpus/scripture/failed.json corpus/scripture/report.md
-          [ -f corpus/scripture/chunks-report.md ] && git add corpus/scripture/chunks-report.md
-          if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
-          git commit -m "chore(corpus): update scripture manifest [fetch-scripture]"
-          # The ingest workflow pushes progress to the same branch; rebase and retry.
-          for i in 1 2 3 4; do git pull --rebase -q && git push && exit 0; sleep $((i * 5)); done
+          # These files are regenerated whole by this run, so this run's copy wins.
+          # Re-apply them on the latest tip each attempt instead of rebasing: two
+          # fetch runs queued minutes apart conflicted in manifest.json and
+          # report.md under `git pull --rebase` (2026-10-22).
+          FILES="corpus/scripture/manifest.json corpus/scripture/failed.json corpus/scripture/report.md"
+          [ -f corpus/scripture/chunks-report.md ] && FILES="$FILES corpus/scripture/chunks-report.md"
+          mkdir -p /tmp/fetched
+          for f in $FILES; do cp "$f" /tmp/fetched/; done
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin "$GITHUB_REF_NAME"
+            git reset -q --hard "origin/$GITHUB_REF_NAME"
+            for f in $FILES; do cp "/tmp/fetched/$(basename "$f")" "$f"; done
+            git add $FILES
+            if git diff --cached --quiet; then echo "manifest unchanged"; exit 0; fi
+            git commit -q -m "chore(corpus): update scripture manifest [fetch-scripture]"
+            if git push -q origin "HEAD:$GITHUB_REF_NAME"; then
+              echo "pushed=1" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt), retrying on the new tip"
+            sleep $((attempt * 5))
+          done
+          echo "::error title=manifest not pushed::could not push the manifest after 5 attempts"
           exit 1
+      - name: Start ingest
+        # Only after a clean fetch and chunking: a partial corpus is not worth
+        # embedding, and the next clean run will dispatch it.
+        if: always() && steps.commit.outputs.pushed == '1' && steps.fetch.outcome == 'success' && steps.dry.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ingest-scripture.yml --ref "$GITHUB_REF_NAME"
       - name: Fail if fetch or chunking failed
         if: steps.fetch.outcome == 'failure' || steps.dry.outcome == 'failure'
         run: |
