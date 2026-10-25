@@ -7,11 +7,12 @@
  * `key` must be setupKey(token), so only whoever holds the bot token can run
  * it; anyone else gets a plain 404 and no Telegram calls are made.
  */
+import { safeEqual } from "@/lib/safe-equal";
 import { SITE_URL, registerWebhook, setCommands, setupKey, tg } from "@/lib/telegram";
 
 export async function GET(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token || new URL(request.url).searchParams.get("key") !== setupKey(token)) {
+  if (!token || !safeEqual(new URL(request.url).searchParams.get("key") ?? "", setupKey(token))) {
     return new Response("Not found", { status: 404 });
   }
   try {

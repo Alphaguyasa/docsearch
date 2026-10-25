@@ -5,12 +5,14 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
-9. **A `CRON_SECRET` for `/api/telegram/daily` (ROADMAP 19, 2026-10-21).** The daily
-   bot route has no auth, so anyone can make it call Telegram repeatedly. Vercel cron
-   sends `Authorization: Bearer $CRON_SECRET` for free once the env var exists. Setting
-   production env vars is yours (policy). No cost. *Default until you decide: the route
-   stays open; the code change can land first and skip the check while the secret is
-   unset.*
+9. **A `CRON_SECRET` for `/api/telegram/daily` (ROADMAP 19, 2026-10-21).** The code
+   landed on 2026-10-25: the route checks `Authorization: Bearer $CRON_SECRET`, which
+   Vercel cron sends for free once the env var exists. **To turn it on:** in Vercel
+   (project `not-alone`, Production) add `CRON_SECRET` = any long random string
+   (e.g. `openssl rand -hex 32`), mark it sensitive, and redeploy. The deploy
+   workflow's env sync only rewrites its own four variables, so it will not remove
+   it. Setting production env vars is yours (policy). No cost. *Until then the route
+   stays open, as before.*
 8. **Books the default view now hides (ROADMAP 3, 2026-10-19).** Following the
    "all six churches" rule, the Oriental Orthodox default no longer shows:
    - **2 Peter, 2 and 3 John, Jude, Revelation**: NEEDS REVIEW. The Syriac Peshitta

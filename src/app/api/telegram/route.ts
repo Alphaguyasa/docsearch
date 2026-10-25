@@ -16,6 +16,7 @@ import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResources, crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { DEFAULT_TRADITION, filterFor } from "@/lib/scripture/tradition-choice";
+import { safeEqual } from "@/lib/safe-equal";
 import { parseSearchStream } from "@/lib/search-stream";
 import {
   SITE_URL,
@@ -56,7 +57,7 @@ interface Update {
 export async function POST(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return new Response("Bot not configured", { status: 503 });
-  if (request.headers.get("x-telegram-bot-api-secret-token") !== webhookSecret(token)) {
+  if (!safeEqual(request.headers.get("x-telegram-bot-api-secret-token") ?? "", webhookSecret(token))) {
     return new Response("Forbidden", { status: 403 });
   }
 
