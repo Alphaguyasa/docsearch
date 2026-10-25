@@ -53,6 +53,7 @@ church books are under copyright.
 | `GEMINI_API_KEY` | same key as the GitHub secret |
 | `SEARCH_PER_MINUTE` | optional; default 3 |
 | `SHOW_DOCUMENTS` | leave unset (upload routes stay off) |
+| `CRON_SECRET` | optional; any long random string. Vercel cron sends it to `/api/telegram/daily`, which then refuses every other caller (401). Unset, the route is open. Set it in Vercel only; the deploy's env sync leaves it alone. |
 
 ## Local commands
 

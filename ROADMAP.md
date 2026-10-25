@@ -8,10 +8,6 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Open
 
-19. **[P2, S] Auth on `/api/telegram/daily`.** Anyone can call it repeatedly (claims,
-    setWebhook, setCommands). Check `Authorization: Bearer $CRON_SECRET` (Vercel cron
-    sends it; free), and compare webhook/setup secrets with `timingSafeEqual`
-    (middleware.ts has `safeEqual`). Needs a new secret set by Alpha (NEEDS_APPROVAL).
 20. **[P2, S] Gemini key in a header.** llm.ts puts the key in the URL query string,
     where proxies and logs record it. Send `x-goog-api-key` instead.
 21. **[P2, M] Next 16 to clear the last npm advisories.** next 15.5.x pins postcss
@@ -33,6 +29,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-25: Item 19. /api/telegram/daily answers 401 unless the request carries `Authorization: Bearer $CRON_SECRET` (Vercel cron sends it); while the secret is unset the route stays open, so the bot keeps posting until Alpha sets it (NEEDS_APPROVAL #9). The webhook and setup secrets now compare in constant time through `src/lib/safe-equal.ts`, shared with the middleware. tests/cron-auth.test.ts.
 - 2026-10-24: Item 18. /api/search sends a code (`busy`, `retrieval`, `generation`) with every error, and a plain English line instead of the upstream text; the detail goes to the server log. The page shows `t.story.errors[code]`, so Amharic readers get Amharic. tests/search-errors.test.ts.
 - 2026-10-24: Item 17. fetch-scripture dispatches ingest-scripture (`actions: write`) after a clean fetch whose manifest commit was pushed, so new sources and canon.json tag edits reach the database without a hand dispatch. The manifest commit re-applies the run's own regenerated files on the latest tip each attempt instead of `git pull --rebase`, so two queued fetch runs no longer conflict. tests/fetch-workflow.test.ts pins both.
 - 2026-10-23: Item 16. The Gemini stream reads `finishReason` and `promptFeedback.blockReason`: anything but STOP (MAX_TOKENS, SAFETY, RECITATION, a blocked prompt, or a stream that closes with no finish reason) throws after the text already sent, so /api/search ends with an error line instead of "done" and does not cache the half-story. A last event with no trailing newline is no longer dropped. tests/llm-stream.test.ts covers the parser with a stubbed fetch. `complete()` is unchanged (the classifiers rely on short capped replies).

@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { safeEqual } from "@/lib/safe-equal";
+
 /**
  * Opt-in HTTP Basic auth gate for a public deployment.
  *
@@ -11,23 +13,6 @@ import { NextResponse, type NextRequest } from "next/server";
  * upload/delete/search endpoints (which cost embedding and LLM tokens) to
  * anyone. It is not a multi-user auth system.
  */
-/**
- * Constant-time string compare. A plain `===` bails at the first differing
- * byte, so response latency leaks how much of a guessed password is correct
- * and makes the secret recoverable one character at a time.
- */
-function safeEqual(a: string, b: string): boolean {
-  const enc = new TextEncoder();
-  const av = enc.encode(a);
-  const bv = enc.encode(b);
-  // Always walk the full expected length so the loop count doesn't vary with
-  // the supplied value; the length mismatch is folded into the same result.
-  let diff = av.length ^ bv.length;
-  for (let i = 0; i < bv.length; i++) {
-    diff |= (av[i] ?? 0) ^ bv[i];
-  }
-  return diff === 0;
-}
 
 /** Upload / document-management routes from the original DocSearch app. */
 const DOCUMENT_ROUTES = /^\/(documents|api\/upload|api\/process|api\/documents)(\/|$)/;

@@ -1,15 +1,21 @@
 /**
  * GET /api/telegram/daily — posts the story of the day to the Telegram
  * channel and to everyone who asked the bot for it (/daily). Called by the Vercel cron in vercel.json each morning; safe to call
- * any number of times (see src/lib/channel.ts).
+ * any number of times (see src/lib/channel.ts). Once CRON_SECRET is set, only a
+ * request carrying it (Vercel cron sends it) gets through; anyone else gets a
+ * 401 and no Telegram calls are made.
  */
 import { postDailyStory, sendToSubscribers } from "@/lib/channel";
+import { cronAuthorized } from "@/lib/safe-equal";
 import { registerWebhook, setCommands } from "@/lib/telegram";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-export async function GET(): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
+  if (!cronAuthorized(request.headers.get("authorization"), process.env.CRON_SECRET)) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const r = await postDailyStory();
   const subscribers = await sendToSubscribers().catch(() => ({ sent: 0, gone: 0 }));
   // Keep the bot's webhook updates and command menu in step with the code (cheap, once a day).
