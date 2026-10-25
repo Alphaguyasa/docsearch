@@ -330,3 +330,26 @@ was finished" error is one of the messages to map).
 **Next run:** ROADMAP 19 (auth on /api/telegram/daily; the code can land and skip the
 check while CRON_SECRET is unset), then 20 (Gemini key in a header). Check that the
 fetch-scripture run for a9821ea dispatched ingest and that ingest finished.
+
+
+## 2026-10-25: run 11 (scheduled)
+
+- Main at start: ci and deploy green on 36b0f5d (#124). The fetch-scripture run for
+  a9821ea dispatched ingest-scripture by itself (run 56, success; 9615/9615), so the
+  ROADMAP 17 dispatch works.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 19: **PR #125**, squash-merged as 218bed4. /api/telegram/daily answers 401
+  unless the request carries `Authorization: Bearer $CRON_SECRET`; while the secret is
+  unset it stays open. Webhook and setup secrets compare in constant time
+  (`src/lib/safe-equal.ts`, shared with the middleware). tests/cron-auth.test.ts.
+  **Alpha: set `CRON_SECRET` in Vercel to switch the check on** (NEEDS_APPROVAL #9).
+- ROADMAP 20: the Gemini key goes in the `x-goog-api-key` header instead of `?key=`,
+  in src/lib/llm.ts and the eval harness provider. Local: lint 0 warnings, typecheck,
+  npm test 305/305, vitest 329/329. See its PR for the merge.
+- Tag `v2026-10-25-1` (218bed4) not pushed: the cloud git proxy refuses tags, as on
+  earlier days. Alpha to create it.
+- Roadmap: 5 open items (21, 22, 23, 11, 13), so no replan yet.
+
+**Next run:** ROADMAP 21 (Next 16, to clear the postcss advisories; own PR, full
+build first), then 22 (workflow actions on Node 24).
