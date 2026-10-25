@@ -266,14 +266,16 @@ function geminiBody(model: string, req: GeminiRequest): unknown {
  * in the chain has failed.
  */
 async function geminiPost(
-  method: "streamGenerateContent?alt=sse&" | "generateContent?",
+  method: "streamGenerateContent?alt=sse" | "generateContent",
   model: string,
   req: GeminiRequest,
 ): Promise<Response> {
   const post = (m: string) =>
-    fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:${method}key=${config.GEMINI_API_KEY}`, {
+    // The key goes in a header, not the query string, where proxies and
+    // request logs would record it.
+    fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:${method}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-goog-api-key": config.GEMINI_API_KEY ?? "" },
       body: JSON.stringify(geminiBody(m, req)),
     });
 
@@ -312,7 +314,7 @@ const geminiProvider: LlmProvider = {
     // `contents` — the system prompt goes in `system_instruction`.
     const { systemText, contents } = toGeminiPayload(messages);
 
-    const res = await geminiPost("streamGenerateContent?alt=sse&", GEMINI_MODEL, { systemText, contents });
+    const res = await geminiPost("streamGenerateContent?alt=sse", GEMINI_MODEL, { systemText, contents });
 
     // Parse the SSE stream: each event is a `data: <json>` line, separated by
     // blank lines. Buffer across chunk boundaries and emit any text parts.
@@ -372,7 +374,7 @@ const geminiProvider: LlmProvider = {
   ): Promise<LlmCompletion> {
     const { systemText, contents } = toGeminiPayload(messages);
 
-    const res = await geminiPost("generateContent?", model ?? GEMINI_MODEL, {
+    const res = await geminiPost("generateContent", model ?? GEMINI_MODEL, {
       systemText,
       contents,
       generationConfig: { maxOutputTokens: maxTokens ?? MAX_OUTPUT_TOKENS },

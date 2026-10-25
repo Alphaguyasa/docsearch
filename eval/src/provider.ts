@@ -309,13 +309,14 @@ class GeminiProvider implements LLMProvider {
 
     const url =
       `https://generativelanguage.googleapis.com/v1beta/models/` +
-      `${this.model}:generateContent?key=${apiKey}`;
+      `${this.model}:generateContent`;
 
     const res = await fetchWithRetry(
       url,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        // Header, not ?key=, so the key never lands in proxy or request logs.
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({
           ...(opts.system
             ? { system_instruction: { parts: [{ text: opts.system }] } }

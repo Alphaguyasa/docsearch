@@ -100,6 +100,19 @@ test("a stream that closes with no finish reason ends in an error", async () => 
 test("the key is sent and the stream endpoint is used", async () => {
   const fetchMock = mock.method(globalThis, "fetch", async () => sse([textChunk("ok", "STOP")]));
   for await (const d of (await getLlm()).stream([{ role: "user", content: "x" }])) void d;
-  const url = String(fetchMock.mock.calls[0].arguments[0]);
-  assert.match(url, /:streamGenerateContent\?alt=sse/);
+  const [input, init] = fetchMock.mock.calls[0].arguments as [unknown, RequestInit];
+  const url = String(input);
+  assert.match(url, /:streamGenerateContent\?alt=sse$/);
+  // The key travels in a header, never the URL, where proxies and logs keep it.
+  assert.doesNotMatch(url, /key=/);
+  assert.equal(new Headers(init.headers).get("x-goog-api-key"), process.env.GEMINI_API_KEY);
+});
+
+test("non-streaming calls send the key in a header too", async () => {
+  const body = JSON.stringify({ candidates: [{ content: { parts: [{ text: "NONE" }] }, finishReason: "STOP" }] });
+  const fetchMock = mock.method(globalThis, "fetch", async () => new Response(body, { status: 200 }));
+  await (await getLlm()).complete([{ role: "user", content: "x" }]);
+  const [input, init] = fetchMock.mock.calls[0].arguments as [unknown, RequestInit];
+  assert.match(String(input), /:generateContent$/);
+  assert.equal(new Headers(init.headers).get("x-goog-api-key"), process.env.GEMINI_API_KEY);
 });
