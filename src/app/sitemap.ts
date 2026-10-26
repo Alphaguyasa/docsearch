@@ -9,7 +9,7 @@ import { STRUGGLE_IDS } from "./struggles";
 /**
  * Every public page in both languages, so search engines find each person's
  * story in English and in Amharic. Pages choose their language from ?lang=
- * (see middleware.ts); the bare address follows the reader's own setting.
+ * (see proxy.ts); the bare address follows the reader's own setting.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths: [string, number, "daily" | "monthly"][] = [

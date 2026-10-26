@@ -8,10 +8,9 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Open
 
-21. **[P2, M] Next 16 to clear the last npm advisories.** next 15.5.x pins postcss
-    8.4.31 (GHSA-fxqj-rqcc-2cmp, GHSA-r28c-9q8g-f849, source-map path traversal at
-    build time on our own CSS, so low real risk). Only next 16 fixes it: a major
-    upgrade, own PR, full build and smoke test first.
+24. **[P1, S] zod 4.6.6 for GHSA-mrhx-c7xc-m3w5** (high: memory exhaustion while
+    validating oversized constrained collections). Found 2026-10-26; zod validates
+    request bodies, so a minor bump with `npm audit fix`, own PR.
 22. **[P2, S] Workflows on Node 24 actions.** All 8 workflows use checkout@v4,
     setup-node@v4 (cache, upload-artifact too), deprecated with Node 20; deploy and the
     data workflows build on Node 22 while CI tests on 24. Bump majors; align Node.
@@ -27,6 +26,7 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
+- 2026-10-26: Item 21. Next.js 15.5.27 → 16.4.3 (React 19.1 unchanged). Its postcss is 8.5.23, so the two postcss advisories are gone. `src/middleware.ts` is now `src/proxy.ts` (Next 16 renamed the convention; the old name still ran but was deprecated). tsconfig gains Next 16's `jsx: react-jsx` and `.next/dev/types`. tests/proxy.test.ts checks the gate still runs under the new name. Build and a `next start` smoke test of 13 pages were clean.
 - 2026-10-25: Item 20. Gemini calls (src/lib/llm.ts and the eval harness's provider) send the key in the `x-goog-api-key` header instead of `?key=` in the URL, where proxies and request logs record it. tests/llm-stream.test.ts checks both the stream and `complete()`.
 - 2026-10-25: Item 19. /api/telegram/daily answers 401 unless the request carries `Authorization: Bearer $CRON_SECRET` (Vercel cron sends it); while the secret is unset the route stays open, so the bot keeps posting until Alpha sets it (NEEDS_APPROVAL #9). The webhook and setup secrets now compare in constant time through `src/lib/safe-equal.ts`, shared with the middleware. tests/cron-auth.test.ts.
 - 2026-10-24: Item 18. /api/search sends a code (`busy`, `retrieval`, `generation`) with every error, and a plain English line instead of the upstream text; the detail goes to the server log. The page shows `t.story.errors[code]`, so Amharic readers get Amharic. tests/search-errors.test.ts.
