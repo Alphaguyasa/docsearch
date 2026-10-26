@@ -353,3 +353,26 @@ fetch-scripture run for a9821ea dispatched ingest and that ingest finished.
 
 **Next run:** ROADMAP 21 (Next 16, to clear the postcss advisories; own PR, full
 build first), then 22 (workflow actions on Node 24).
+
+
+## 2026-10-26: run 12 (scheduled)
+
+- Main at start: ci and deploy green on eb8039e (#126).
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 21: **PR #127**, squash-merged as 0859ecc. Next.js 15.5.27 → 16.4.3; its
+  postcss 8.5.23 clears the two postcss advisories. Since the last run a **critical**
+  Next advisory had been published against the version in production
+  (GHSA-2464-fhr4-w9xw, RCE in the image optimizer with SVG); 16.4.3 fixes it too.
+  `src/middleware.ts` → `src/proxy.ts` (Next 16 convention); tests/proxy.test.ts.
+  Local: lint 0 warnings, typecheck, npm test 309/309, vitest 339/339, build with no
+  warnings, `next start` smoke test of 13 routes.
+- ROADMAP 24 (new today): zod 4.4.3 → 4.6.7 for GHSA-mrhx-c7xc-m3w5 (high). `npm audit`
+  now reports 0 vulnerabilities. See its PR for the merge.
+- Replan: 4 items were left after these two, so a short audit added 25 (CI fails on
+  high/critical advisories, since today's two arrived with CI green), 26 (turn off
+  the unused image optimizer endpoint) and 27 (drop the redundant `--turbopack` flags).
+- Tag `v2026-10-26-1` (0859ecc) not pushed: the cloud git proxy refuses tags, as on
+  earlier days. Alpha to create it.
+
+**Next run:** ROADMAP 25 (npm audit gate in CI), then 26 (image optimizer off).
