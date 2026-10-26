@@ -8,12 +8,6 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Open
 
-25. **[P1, S] CI fails on high or critical npm advisories.** Between 2026-10-25 and
-    -26 a critical Next advisory (GHSA-2464-fhr4-w9xw, image optimizer RCE) and a high
-    zod one landed while CI stayed green; they surfaced only because this run ran
-    `npm audit` for item 21. Add an `npm audit --omit=dev --audit-level=high` step
-    to ci.yml (npm 11, as CI already uses), so a new advisory turns main red and the
-    next run fixes it first.
 26. **[P2, S] Turn off the Next image optimizer.** The app does not use next/image,
     but `/_next/image` is still served, and it is where the critical advisory lived.
     `images: { unoptimized: true }` in next.config.ts removes the endpoint; a test
@@ -35,6 +29,7 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Done
 
+- 2026-10-26: Item 25. ci.yml runs `npm audit --omit=dev --audit-level=high` right after install, so a new high or critical advisory in a production dependency turns main red and the next run fixes it first. tests/ci-workflow.test.ts pins the step and its place.
 - 2026-10-26: Item 24. zod 4.4.3 → 4.6.7 (GHSA-mrhx-c7xc-m3w5, high: memory exhaustion on oversized constrained collections; the API routes validate request bodies with zod). With item 21, `npm audit` reports 0 vulnerabilities.
 - 2026-10-26: Item 21. Next.js 15.5.27 → 16.4.3 (React 19.1 unchanged). Its postcss is 8.5.23, so the two postcss advisories are gone, and so is a critical Next advisory published since the last run (GHSA-2464-fhr4-w9xw, RCE in the image optimizer with SVG). PR #127. `src/middleware.ts` is now `src/proxy.ts` (Next 16 renamed the convention; the old name still ran but was deprecated). tsconfig gains Next 16's `jsx: react-jsx` and `.next/dev/types`. tests/proxy.test.ts checks the gate still runs under the new name. Build and a `next start` smoke test of 13 pages were clean.
 - 2026-10-25: Item 20. Gemini calls (src/lib/llm.ts and the eval harness's provider) send the key in the `x-goog-api-key` header instead of `?key=` in the URL, where proxies and request logs record it. tests/llm-stream.test.ts checks both the stream and `complete()`.
