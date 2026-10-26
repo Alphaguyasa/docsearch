@@ -8,10 +8,6 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Open
 
-26. **[P2, S] Turn off the Next image optimizer.** The app does not use next/image,
-    but `/_next/image` is still served, and it is where the critical advisory lived.
-    `images: { unoptimized: true }` in next.config.ts removes the endpoint; a test
-    pins it.
 22. **[P2, S] Workflows on Node 24 actions.** All 8 workflows use checkout@v4,
     setup-node@v4 (cache, upload-artifact too), deprecated with Node 20; deploy and the
     data workflows build on Node 22 while CI tests on 24. Bump majors; align Node.
@@ -29,7 +25,8 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Done
 
-- 2026-10-26: Item 25. ci.yml runs `npm audit --omit=dev --audit-level=high` right after install, so a new high or critical advisory in a production dependency turns main red and the next run fixes it first. tests/ci-workflow.test.ts pins the step and its place.
+- 2026-10-26: Item 26. next.config.ts sets `images: { unoptimized: true }`, so `/_next/image` (where GHSA-2464-fhr4-w9xw lived) answers 404; no page uses next/image. tests/next-config.test.ts pins both. Checked with `next start`: home 200, /_next/image 404.
+- 2026-10-26: Item 25 (PR #129). ci.yml runs `npm audit --omit=dev --audit-level=high` right after install, so a new high or critical advisory in a production dependency turns main red and the next run fixes it first. tests/ci-workflow.test.ts pins the step and its place.
 - 2026-10-26: Item 24. zod 4.4.3 → 4.6.7 (GHSA-mrhx-c7xc-m3w5, high: memory exhaustion on oversized constrained collections; the API routes validate request bodies with zod). With item 21, `npm audit` reports 0 vulnerabilities.
 - 2026-10-26: Item 21. Next.js 15.5.27 → 16.4.3 (React 19.1 unchanged). Its postcss is 8.5.23, so the two postcss advisories are gone, and so is a critical Next advisory published since the last run (GHSA-2464-fhr4-w9xw, RCE in the image optimizer with SVG). PR #127. `src/middleware.ts` is now `src/proxy.ts` (Next 16 renamed the convention; the old name still ran but was deprecated). tsconfig gains Next 16's `jsx: react-jsx` and `.next/dev/types`. tests/proxy.test.ts checks the gate still runs under the new name. Build and a `next start` smoke test of 13 pages were clean.
 - 2026-10-25: Item 20. Gemini calls (src/lib/llm.ts and the eval harness's provider) send the key in the `x-goog-api-key` header instead of `?key=` in the URL, where proxies and request logs record it. tests/llm-stream.test.ts checks both the stream and `complete()`.

@@ -376,3 +376,21 @@ build first), then 22 (workflow actions on Node 24).
   earlier days. Alpha to create it.
 
 **Next run:** ROADMAP 25 (npm audit gate in CI), then 26 (image optimizer off).
+
+
+## 2026-10-26: run 13 (scheduled)
+
+- Main at start: ci and deploy green on 9f3f144 (#128).
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 25: **PR #129**, squash-merged as b16ba9d. ci.yml runs
+  `npm audit --omit=dev --audit-level=high` after install; tests/ci-workflow.test.ts.
+  npm 11 audit: 0 vulnerabilities.
+- ROADMAP 26: `images: { unoptimized: true }` in next.config.ts; `next start` answers
+  404 on /_next/image (home 200). tests/next-config.test.ts. Local: lint 0 warnings,
+  typecheck, npm test 314/314, build OK. See its PR for the merge.
+- Tag `v2026-10-26-2` (b16ba9d) not pushed: the cloud git proxy refuses tags, as on
+  earlier days. Alpha to create it (and `v2026-10-26-1` on 0859ecc).
+- Roadmap: 5 open items (22, 27, 23, 11, 13), so no replan yet.
+
+**Next run:** ROADMAP 22 (workflow actions on Node 24), then 27 (drop `--turbopack`).
