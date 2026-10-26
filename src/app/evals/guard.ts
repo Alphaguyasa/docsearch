@@ -4,7 +4,7 @@
  * The spec asks for read-only and behind auth if the app has auth, otherwise an
  * env flag. This app has both halves and needs both:
  *
- *   AUTH — src/middleware.ts gates every route with HTTP Basic when APP_PASSWORD
+ *   AUTH — src/proxy.ts gates every route with HTTP Basic when APP_PASSWORD
  *   is set. That covers /evals automatically. But APP_PASSWORD is OPTIONAL: unset
  *   means the app is open, which is right for local development and wrong for a
  *   deployment that has an eval dashboard on it.

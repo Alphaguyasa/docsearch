@@ -3,7 +3,7 @@
  * byte, so response latency leaks how much of a guessed secret is correct
  * and makes it recoverable one character at a time.
  *
- * Uses only TextEncoder (no node:crypto) so the edge middleware can import it.
+ * Uses only TextEncoder (no node:crypto) so the proxy (src/proxy.ts) can import it.
  */
 export function safeEqual(a: string, b: string): boolean {
   const enc = new TextEncoder();

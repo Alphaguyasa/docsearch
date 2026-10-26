@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { safeEqual } from "@/lib/safe-equal";
 
 /**
- * Opt-in HTTP Basic auth gate for a public deployment.
+ * Opt-in HTTP Basic auth gate for a public deployment. (Next 16 renamed the
+ * middleware file convention to proxy; it runs on the Node runtime.)
  *
  * If APP_PASSWORD is set, every request must present Basic credentials whose
  * password matches it (any username). If it is unset, the app is open — for
@@ -20,7 +21,7 @@ const DOCUMENT_ROUTES = /^\/(documents|api\/upload|api\/process|api\/documents)(
 /** Header carrying a ?lang=en|am choice from the URL to the server components. */
 export const LANG_HEADER = "x-not-alone-lang";
 
-export function middleware(req: NextRequest): NextResponse {
+export function proxy(req: NextRequest): NextResponse {
   // ?lang=am / ?lang=en gives every page a language-specific address, so search
   // engines (which carry no cookie) can index the Amharic pages too.
   const q = req.nextUrl.searchParams.get("lang");
