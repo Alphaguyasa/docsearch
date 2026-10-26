@@ -36,6 +36,11 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci
+      # Fails on a new high or critical advisory in a production dependency, so
+      # main turns red and the next daily run fixes it first. Two such advisories
+      # (Next, zod) landed on 2026-10-25 while CI stayed green.
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
       - name: Lint
         run: npm run lint
       - name: Typecheck
