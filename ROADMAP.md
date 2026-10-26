@@ -4,16 +4,25 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
+Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API input limits, image endpoint). Before that 2026-10-21.
 
 ## Open
 
-24. **[P1, S] zod 4.6.6 for GHSA-mrhx-c7xc-m3w5** (high: memory exhaustion while
-    validating oversized constrained collections). Found 2026-10-26; zod validates
-    request bodies, so a minor bump with `npm audit fix`, own PR.
+25. **[P1, S] CI fails on high or critical npm advisories.** Between 2026-10-25 and
+    -26 a critical Next advisory (GHSA-2464-fhr4-w9xw, image optimizer RCE) and a high
+    zod one landed while CI stayed green; they surfaced only because this run ran
+    `npm audit` for item 21. Add an `npm audit --omit=dev --audit-level=high` step
+    to ci.yml (npm 11, as CI already uses), so a new advisory turns main red and the
+    next run fixes it first.
+26. **[P2, S] Turn off the Next image optimizer.** The app does not use next/image,
+    but `/_next/image` is still served, and it is where the critical advisory lived.
+    `images: { unoptimized: true }` in next.config.ts removes the endpoint; a test
+    pins it.
 22. **[P2, S] Workflows on Node 24 actions.** All 8 workflows use checkout@v4,
     setup-node@v4 (cache, upload-artifact too), deprecated with Node 20; deploy and the
     data workflows build on Node 22 while CI tests on 24. Bump majors; align Node.
+27. **[P3, S] Drop the redundant `--turbopack` flags.** Next 16 builds and serves
+    with Turbopack by default; the flags in `dev` and `build` only add noise.
 23. **[P3, S] Remove the legacy DocSearch routes** (api/upload, process, documents,
     documents/[id], app/documents). Dead behind SHOW_DOCUMENTS, but with it on they
     could list and delete corpus books via the service-role client. ROADMAP entry
@@ -26,7 +35,8 @@ Last replan: 2026-10-21 (second audit: code, security, i18n, workflows, deps).
 
 ## Done
 
-- 2026-10-26: Item 21. Next.js 15.5.27 → 16.4.3 (React 19.1 unchanged). Its postcss is 8.5.23, so the two postcss advisories are gone. `src/middleware.ts` is now `src/proxy.ts` (Next 16 renamed the convention; the old name still ran but was deprecated). tsconfig gains Next 16's `jsx: react-jsx` and `.next/dev/types`. tests/proxy.test.ts checks the gate still runs under the new name. Build and a `next start` smoke test of 13 pages were clean.
+- 2026-10-26: Item 24. zod 4.4.3 → 4.6.7 (GHSA-mrhx-c7xc-m3w5, high: memory exhaustion on oversized constrained collections; the API routes validate request bodies with zod). With item 21, `npm audit` reports 0 vulnerabilities.
+- 2026-10-26: Item 21. Next.js 15.5.27 → 16.4.3 (React 19.1 unchanged). Its postcss is 8.5.23, so the two postcss advisories are gone, and so is a critical Next advisory published since the last run (GHSA-2464-fhr4-w9xw, RCE in the image optimizer with SVG). PR #127. `src/middleware.ts` is now `src/proxy.ts` (Next 16 renamed the convention; the old name still ran but was deprecated). tsconfig gains Next 16's `jsx: react-jsx` and `.next/dev/types`. tests/proxy.test.ts checks the gate still runs under the new name. Build and a `next start` smoke test of 13 pages were clean.
 - 2026-10-25: Item 20. Gemini calls (src/lib/llm.ts and the eval harness's provider) send the key in the `x-goog-api-key` header instead of `?key=` in the URL, where proxies and request logs record it. tests/llm-stream.test.ts checks both the stream and `complete()`.
 - 2026-10-25: Item 19. /api/telegram/daily answers 401 unless the request carries `Authorization: Bearer $CRON_SECRET` (Vercel cron sends it); while the secret is unset the route stays open, so the bot keeps posting until Alpha sets it (NEEDS_APPROVAL #9). The webhook and setup secrets now compare in constant time through `src/lib/safe-equal.ts`, shared with the middleware. tests/cron-auth.test.ts.
 - 2026-10-24: Item 18. /api/search sends a code (`busy`, `retrieval`, `generation`) with every error, and a plain English line instead of the upstream text; the detail goes to the server log. The page shows `t.story.errors[code]`, so Amharic readers get Amharic. tests/search-errors.test.ts.
