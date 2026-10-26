@@ -8,6 +8,10 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Open
 
+28. **[P0, S] Production deploy is red (Vercel CLI 65.3.1, "scope does not exist").**
+    Waits on NEEDS_APPROVAL #10: with Alpha's OK, pin `vercel@65.2.0` in
+    deploy-not-alone.yml and add a test that pins it; otherwise check first whether
+    a re-run on a newer CLI passes.
 22. **[P2, S] Workflows on Node 24 actions.** All 8 workflows use checkout@v4,
     setup-node@v4 (cache, upload-artifact too), deprecated with Node 20; deploy and the
     data workflows build on Node 22 while CI tests on 24. Bump majors; align Node.
