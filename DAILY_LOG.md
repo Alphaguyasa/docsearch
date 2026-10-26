@@ -386,11 +386,20 @@ build first), then 22 (workflow actions on Node 24).
 - ROADMAP 25: **PR #129**, squash-merged as b16ba9d. ci.yml runs
   `npm audit --omit=dev --audit-level=high` after install; tests/ci-workflow.test.ts.
   npm 11 audit: 0 vulnerabilities.
-- ROADMAP 26: `images: { unoptimized: true }` in next.config.ts; `next start` answers
-  404 on /_next/image (home 200). tests/next-config.test.ts. Local: lint 0 warnings,
-  typecheck, npm test 314/314, build OK. See its PR for the merge.
-- Tag `v2026-10-26-2` (b16ba9d) not pushed: the cloud git proxy refuses tags, as on
-  earlier days. Alpha to create it (and `v2026-10-26-1` on 0859ecc).
-- Roadmap: 5 open items (22, 27, 23, 11, 13), so no replan yet.
+- ROADMAP 26: **PR #130**, squash-merged as fffe2c0. `images: { unoptimized: true }`
+  in next.config.ts; `next start` answers 404 on /_next/image (home 200).
+  tests/next-config.test.ts. Local: lint 0 warnings, typecheck, npm test 314/314,
+  build OK.
+- **Deploy red after both merges.** deploy-not-alone failed at `vercel link`: "The
+  specified scope does not exist". Vercel CLI 65.3.1 (published 17:14 UTC) replaced
+  65.2.0, which worked at 03:45. CI is green and production still serves #128.
+  Pinning the CLI means editing the env-sync step, which CLAUDE.md forbids, so the fix
+  waits on Alpha (NEEDS_APPROVAL #10, ROADMAP 28). This log entry lands in its own
+  docs-only PR.
+- Tags `v2026-10-26-2` (b16ba9d) and `v2026-10-26-3` (fffe2c0) not pushed: the cloud
+  git proxy refuses tags, as on earlier days. Alpha to create them (and
+  `v2026-10-26-1` on 0859ecc).
+- Roadmap: 6 open items (28, 22, 27, 23, 11, 13), so no replan yet.
 
-**Next run:** ROADMAP 22 (workflow actions on Node 24), then 27 (drop `--turbopack`).
+**Next run:** ROADMAP 28 first (deploy red: pin the CLI if Alpha approved, else see if
+a newer CLI passes), then 22 (workflow actions on Node 24).

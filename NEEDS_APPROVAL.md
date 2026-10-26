@@ -5,6 +5,19 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+10. **Production deploys fail since 17:33 UTC on 2026-10-26 (Vercel CLI 65.3.1).**
+    deploy-not-alone failed for #129 and #130 at `vercel link` with "Error: The
+    specified scope does not exist". The last good deploy (03:45, #128) used
+    `vercel@latest` = 65.2.0; 65.3.1 was published at 17:14 UTC, 20 minutes before the
+    first failure. CI is green, and production still serves #128, so the site is
+    up. #129 is CI-only, so the only change not yet live is #130 (image optimizer
+    off). **Proposed fix:** pin `vercel@65.2.0` in place of `vercel@latest` in all
+    four calls in deploy-not-alone.yml (link, the env sync's `env rm`/`env add`, and
+    deploy). Only the CLI version changes, not what the steps do. I did not make it
+    because CLAUDE.md says not to edit the env-sync step. **Alpha: either approve
+    that edit (the next run makes it), or re-run the deploy once a fixed CLI is out.**
+    If 65.2.0 fails too, the cause is the token or the team slug
+    `alphaguyasa-5358s-projects` on Vercel, which only you can check. No cost.
 9. **A `CRON_SECRET` for `/api/telegram/daily` (ROADMAP 19, 2026-10-21).** The code
    landed on 2026-10-25: the route checks `Authorization: Bearer $CRON_SECRET`, which
    Vercel cron sends for free once the env var exists. **To turn it on:** in Vercel
