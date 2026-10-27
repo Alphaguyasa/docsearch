@@ -403,3 +403,31 @@ build first), then 22 (workflow actions on Node 24).
 
 **Next run:** ROADMAP 28 first (deploy red: pin the CLI if Alpha approved, else see if
 a newer CLI passes), then 22 (workflow actions on Node 24).
+
+
+## 2026-10-27: run 14 (scheduled)
+
+- Main at start: ci green on 6c4e3f9 (#131); **deploy still red** (ROADMAP 28).
+  NEEDS_APPROVAL #10 has no answer yet, so the CLI was not pinned. Vercel CLI 65.4.0
+  came out at 02:05 UTC; I re-ran the last deploy (run 40371070578, attempt 2) and it
+  failed at `vercel link` with the same "The specified scope does not exist". A newer
+  CLI has not fixed it; the pin (or a check of the token and team slug) still waits on
+  Alpha. Production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 22: **PR #132**, squash-merged as daeefdd. All workflows except
+  deploy-not-alone use checkout@v7, setup-node@v7, cache@v6, upload-artifact@v7
+  (Node 24) and build on Node 24. The deploy workflow is left unchanged while its
+  failure is open. tests/workflow-runtimes.test.ts. All 4 PR checks green, including
+  fetch-art on the new actions.
+- ROADMAP 27: `--turbopack` dropped from `dev` and `build`; Next 16 still builds with
+  Turbopack. tests/next-config.test.ts. Local: lint 0 warnings, typecheck, npm test
+  318/318, build OK. See its PR for the merge.
+- Replan (4 items left): a short dependency audit added 29 (in-range updates), 30
+  (React 19.3), 31 (@types/node 24), 32 (ESLint 10, vitest 5, TypeScript 7). `npm
+  audit --omit=dev`: 0 vulnerabilities. The next replan should be a full audit.
+- Tag `v2026-10-27-1` (daeefdd) not pushed: the cloud git proxy refuses tags, as on
+  earlier days. Alpha to create it.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 29 (in-range dependency updates), then 30 (React 19.3).

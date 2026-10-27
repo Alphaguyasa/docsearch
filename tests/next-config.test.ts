@@ -18,3 +18,11 @@ test("no page imports next/image, which would need the optimizer", () => {
     assert.doesNotMatch(readFileSync(path.join("src", f), "utf8"), /from "next\/image"/, `${f} imports next/image`);
   }
 });
+
+// Next 16 builds and serves with Turbopack by default. A bundler flag in the
+// scripts is either noise (--turbopack) or a silent switch back (--webpack).
+test("dev and build use Next's default bundler", () => {
+  const { scripts } = JSON.parse(readFileSync("package.json", "utf8")) as { scripts: Record<string, string> };
+  assert.equal(scripts.dev, "next dev");
+  assert.equal(scripts.build, "next build");
+});
