@@ -5,8 +5,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "ingest": "tsx scripts/ingest.ts",
     "query": "tsx scripts/query.ts",
