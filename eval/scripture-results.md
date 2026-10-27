@@ -1,14 +1,16 @@
 # Scripture eval
 
-Run 2026-10-21T03:50:13.345Z
+Run 2026-10-27T03:41:29.245Z
 
-**All gates passed.**
+**Gates failed:** generation s09
+
+**Skipped 1 item(s)** (model unavailable or off): u03: fetch failed
 
 ## Struggle retrieval
 
 | Split | n | Figure hit@3 | Passage hit |
 |---|---|---|---|
-| dev | 41 | 100% | 98% |
+| dev | 41 | 100% | 95% |
 | holdout | 10 | 100% | 100% |
 
 | id | split | figure | passage | tags | figures | question |
@@ -24,7 +26,7 @@ Run 2026-10-21T03:50:13.345Z
 | s09 | dev | ✅ | ✅ @3 | deceit (synonyms) | david, abraham, jacob | I lied to protect myself and let someone else suffer |
 | s10 | dev | ✅ | ✅ @5 | deceit (synonyms) | david, abraham, jacob | I deceived my father to get what my brother deserved |
 | s11 | dev | ✅ | ✅ @1 | theft (synonyms) | jacob, zacchaeus, augustine | I stole my brother's inheritance |
-| s12 | dev | ✅ | ✅ @1 | disobedience, quitting (llm) | jonah, samson, john_mark | God called me to something and I ran the other way |
+| s12 | dev | ✅ | ✅ @3 | disobedience, cowardice, quitting (llm) | peter, jonah, samson | God called me to something and I ran the other way |
 | s13 | dev | ✅ | ✅ @4 | anger (synonyms) | moses, jonah, gelasius_cook | I'm angry that God forgave people who hurt me |
 | s14 | dev | ✅ | ✅ @1 | despair (synonyms) | elijah, job, penitent_thief | I feel hopeless and want to give up on everything after serv |
 | s15 | dev | ✅ | ✅ @3 | lust (synonyms) | david, samson, augustine | I keep giving in to lust even though I know better |
@@ -39,7 +41,7 @@ Run 2026-10-21T03:50:13.345Z
 | s24 | dev | ✅ | ✅ @5 | pride (synonyms) | paul, samson, nebuchadnezzar | I was proud and thought I built everything myself |
 | s25 | dev | ✅ | ✅ @3 | idolatry (llm) | aaron, manasseh, cyprian | I worshipped other gods and did terrible things |
 | s26 | dev | ✅ | ✅ @4 | theft (synonyms) | jacob, zacchaeus, augustine | I stole things just for the thrill of it |
-| s27 | dev | ✅ | ✅ @9 | lust, pride (synonyms) | samson, augustine, cyprian | I lived for years chasing pleasure and ambition before God f |
+| s27 | dev | ✅ | ❌ | lust, pride (synonyms) | samson, augustine, cyprian | I lived for years chasing pleasure and ambition before God f |
 | s28 | dev | ✅ | ✅ @1 | violence, theft (synonyms) | moses_the_ethiopian, jacob, zacchaeus | I used to be a violent robber |
 | s29 | dev | ✅ | ✅ @3 | deceit (synonyms) | david, abraham, jacob | ሁልጊዜ እዋሻለሁ |
 | s30 | dev | ✅ | ✅ @3 | sexual_sin (synonyms) | rahab, samaritan_woman, prodigal_son | ዝሙት ፈጽሜአለሁ |
@@ -56,9 +58,9 @@ Run 2026-10-21T03:50:13.345Z
 | s41 | dev | ✅ | ❌ | sexual_sin (synonyms) | rahab, samaritan_woman, prodigal_son | I used to be a prostitute and I don't think the church will  |
 | h01 | holdout | ✅ | ✅ @1 | adultery (synonyms) | david, woman_caught_in_adultery | I had an affair with my coworker's wife |
 | h02 | holdout | ✅ | ✅ @1 | denial (synonyms) | peter, basils_young_man, abba_moses_hermit | I said I didn't know him when it mattered most |
-| h03 | holdout | ✅ | ✅ @1 | persecution, anger (llm) | paul, moses, jonah | I hated Christians and tried to destroy the church |
+| h03 | holdout | ✅ | ✅ @1 | persecution, anger, violence (llm) | paul, moses, gelasius_cook | I hated Christians and tried to destroy the church |
 | h04 | holdout | ✅ | ✅ @5 | deceit (llm) | david, abraham, jacob | I tricked my own father |
-| h05 | holdout | ✅ | ✅ @3 | disobedience, cowardice, quitting (llm) | peter, jonah, samson | I ran from what God told me to do |
+| h05 | holdout | ✅ | ✅ @3 | cowardice, disobedience, quitting (llm) | peter, jonah, samson | I ran from what God told me to do |
 | h06 | holdout | ✅ | ✅ @2 | exploitation (synonyms) | matthew, zacchaeus | I overcharged poor customers for years |
 | h07 | holdout | ✅ | ✅ @1 | doubt (llm) | thomas, job, zechariah | I can't believe without seeing proof |
 | h08 | holdout | ✅ | ✅ @1 | quitting, abandonment (synonyms) | john_mark, mary_niece_of_abraham | I abandoned my team halfway through |
@@ -94,79 +96,89 @@ Run 2026-10-21T03:50:13.345Z
 - ✅ u02: figures none
   - answer refused ✅
 - ✅ u03: figures none
-  - answer refused ✅
+- ⚠️ u03: skipped — fetch failed
 
 ## Generated answers
 
 ### ✅ s01: I cheated on my wife and I can't forgive myself
 
-citations: 6
+citations: 5
 
-> The Gospel of John recounts how scribes and Pharisees brought a woman who was taken in adultery, in the very act, though the earliest manuscripts do not contain this passage from John 7:53–8:11 [1]. They set her in the middle before Jesus, testing him by stating that Moses commanded such women to be stoned [1]. She had committed adultery, yet as she stood before him while her accusers pressed for an answer, Jesus stooped down to write on the ground with his finger [1][2]. When they continued to ask him, he told them that whoever was without sin among them should cast the first stone at her [2]. Convicted by their conscience, her accusers left one by one, leaving her alone in the middle with Jesus [2]. Facing
+> John’s Gospel tells of a woman who was brought before Jesus at the temple, though the passage of John 7:53–8:11 is absent from the earliest manuscripts [1]. She had committed adultery and had been caught in the very act [1]. Scribes and Pharisees placed her in the midst of the crowd, reminding Jesus that the law of Moses commanded such women to be stoned, and they questioned him to test him [1]. Jesus stooped down and wrote on the ground with his finger, and when they persisted in questioning him, he said that whoever among them was without sin should cast the first stone at her [1][2]. Convicted by their own consciences, her accusers departed one by one from the oldest to the last, until she was left standing alone with
 
 ### ✅ s02: I slept with a married woman
 
-citations: 6
+citations: 5
 
-> In the Second Book of Samuel, David, the king of Israel, stayed in Jerusalem while his army went to war [1]. From his roof he saw Bathsheba, the wife of Uriah the Hittite, and sent messengers to take her; he then lay with her, and she conceived [1][2]. When his attempts to cover the act through Uriah failed, David ordered his commander to place Uriah at the forefront of the hottest battle and abandon him so that he would be struck down and die [2]. While his immediate reaction was deceit and murder [2], the Epistle to the Hebrews records that through faith, David was numbered among those who worked out righteousness and from weakness were made strong [6].
-> 
-> In the Gospel of John—though the earliest manuscripts do not contain this passage
+> In John's Gospel—though the earliest manuscripts do not contain this passage (John 7:53–8:11)—a woman was brought before Jesus at the temple by scribes and Pharisees after being caught in the very act of adultery [3]. Her accusers placed her in the middle of the crowd and stated that the law of Moses commanded such women to be stoned to death [3]. She had to stand exposed before everyone while Jesus stooped down and wrote on the ground [3]. When they continued to question Him, Jesus said that whoever among them was without sin should throw the first stone at her [4]. Convicted by their own consciences, her accusers walked away one by one, leaving her alone with Jesus [4]. When He asked if anyone had condemned her
 
 ### ✅ s03: I covered up something terrible I did and someone got hurt because of it
 
-citations: 4
+citations: 6
 
-> In the book of Genesis, Abraham was a man dwelling as a foreigner when a severe famine struck the land [3]. Fearing he would be killed because his wife Sarah was beautiful, he concealed the truth and told her to say she was his sister so that he would be spared [3]. Because of this cover-up, she was taken into Pharaoh’s household, and Pharaoh and his house were struck with great plagues because of her [3]. Later, in Gerar, Abraham repeated this deception about Sarah to King Abimelech, leading the king to take her and bringing his kingdom under the threat of great sin and death [4]. Abraham had to face the confrontation of these rulers, as Pharaoh questioned why he had concealed that Sarah was his wife, and Abimelech confronted him
+> In Genesis, the patriarch Abraham concealed the truth about his marriage, telling others that his wife Sarah was merely his sister out of fear for his own life [3][4]. Because he concealed this, Pharaoh of Egypt took Sarah into his household, and God afflicted Pharaoh and his house with severe plagues because of her [3]. Later, King Abimelech of Gerar took Sarah under the same false pretense, placing his kingdom in danger of death and great sin [4]. Abraham was forced to face his deception when Pharaoh summoned him and demanded why he had lied about his wife, and again when Abimelech called him to account for doing deeds that ought not to be done [3][4]. Yet Abraham was restored: Pharaoh returned Sarah and sent him safely on his way with all his possessions,
 
 ### ✅ s04: I pretended I didn't know Jesus when my friends laughed at me
 
-citations: 4
+citations: 3
 
-> Luke's Gospel tells how Peter followed from a distance when Jesus was seized and brought into the high priest’s house [1]. Sitting among those who had kindled a fire in the courtyard, Peter was recognized by a servant girl, but he denied Jesus, saying, "Woman, I don't know him" [1]. Confronted two more times by others who identified him as one of Jesus's companions and a Galilean, Peter insisted, "Man, I am not!" and "Man, I don't know what you are talking about!" [2]. Immediately a rooster crowed, the Lord turned and looked at Peter, and Peter remembered that Jesus had foretold he would deny him three times; he then went outside and wept bitterly [2].
+> In Luke's Gospel, Peter followed Jesus to the high priest's house, and when a servant girl and others accused him of being with Jesus, Peter denied Jesus three times, saying he did not know him [1][2]. Immediately a rooster crowed, the Lord turned and looked at Peter, and Peter remembered the Lord's word, went out, and wept bitterly [2].
 > 
-> Church tradition from the Ethiopian Syn
+> You are not the only one to have walked this path, and these people were not beyond reach. Please bring this to God in prayer and to confession or a trusted priest, pastor or mature believer in your own church.
 
 ### ✅ s05: I denied my faith at work to fit in
 
-citations: 4
+citations: 5
 
-> In Luke’s Gospel, Peter followed Jesus at a distance to the high priest’s house and sat among those who kindled a fire in the middle of the courtyard [1]. A servant girl looked intently at him in the light and stated that he was with Jesus, but Peter denied Him, saying he did not know Him [1]. Shortly after, another person said Peter was one of them, and Peter insisted he was not [2]. About an hour later, someone affirmed that Peter was truly with Jesus because he was a Galilean, and Peter denied it a third time, saying he did not know what the man was talking about [2]. Immediately, the rooster crowed, the Lord turned and looked at Peter, and Peter remembered the Lord's word that he would deny Him three times before
+> Church tradition from the Ethiopian Synaxarium tells of a young man who was a slave and became inflamed with lust and desire for his master's daughter [3]. To obtain her, he sought the help of an unbeliever and magician, who sent him at midnight to a pagan cemetery with a written document [3]. Brought before Satan, the young man agreed to his demands, writing on paper with his own hand that he denied Christ and believed on Satan [3]. 
+> 
+> When his deed was discovered, he was brought before Saint Basil, bishop of Caesarea, and he openly revealed what he had done [4]. Weeping, the young man asked the bishop whether it was possible for him to return and become a Christian once more [4]. Saint Basil made the sign of the cross
 
 ### ✅ s06: I used to mock and persecute Christians
 
-citations: 4
+citations: 7
 
-> The book of Acts tells how a young man named Saul consented to the death of Stephen while the witnesses placed their garments at his feet [1]. Saul then ravaged the assembly, entering into every house and dragging both men and women off to prison [1]. Still breathing threats and slaughter against the disciples of the Lord, he went to the high priest and obtained letters to the synagogues of Damascus, intending to bring anyone belonging to the Way bound to Jerusalem [2]. 
+> The book of Acts and the First Epistle to Timothy tell the story of Saul of Tarsus [1][3][5]. 
 > 
-> As he traveled near Damascus, a light from the sky suddenly shone around him, and he fell to the earth as a voice asked, "Saul, Saul, why do you persecute me?" [2]. When Saul asked who was speaking, the Lord answered, "I am Jesus, whom you are persecuting," and commanded
+> Saul was a young man who consented to the death of Stephen while the witnesses laid their garments at his feet [1]. He then ravaged the assembly, entering house after house to drag off both men and women to prison [1]. Still breathing threats and slaughter against the disciples of the Lord, he obtained letters from the high priest to Damascus so that he could bind anyone belonging to the Way and bring them to Jerusalem [2]. Saul later described himself during that time as an insolent persecutor and a blasphemer, counting himself the chief of sinners [5]. 
+> 
+> As he neared Damascus, a light from the sky suddenly shone around him, and he fell to the
 
 ### ✅ s07: I was violent and hurt people who believed in God
 
-citations: 5
+citations: 8
 
-> The Acts of the Apostles tells of a young man named Saul [1]. When witnesses stoned Stephen, they placed their garments at Saul's feet, and Saul was consenting to Stephen's death [1]. Saul then ravaged the assembly, entering into every house and dragging both men and women off to prison [1]. Still breathing threats and slaughter against the disciples of the Lord, he secured letters from the high priest to Damascus so that if he found any who were of the Way, whether men or women, he might bring them bound to Jerusalem [2]. Yet as he drew close to Damascus, a light from the sky suddenly shone around him, causing him to fall to the earth, where he heard a voice saying to him, "Saul, Saul, why do you persecute me?" [2].
+> In the book of Acts, Paul—then known as Saul—consented to the death of Stephen, ravaged the assembly by entering houses, and dragged men and women off to prison [1]. He went about breathing threats and slaughter against the disciples of the Lord, seeking letters to bring them bound to Jerusalem [2]. He faced this by being confronted by a light from the sky and a voice asking why he persecuted Him [2]. In Exodus, Moses saw an Egyptian striking a Hebrew, killed the Egyptian, and hid him in the sand [3]. When his deed became known and Pharaoh sought to kill him, Moses fled and lived in the land of Midian [3]. 
+> 
+> These stories come from Scripture [1][2][3]. 
+> 
+> You are not the only one to walk this path, and these people were not beyond reach. Please bring this to God in prayer, and to confession or a trusted priest, pastor, or mature believer in your own church.
 
 ### ✅ s08: I killed a man in anger years ago
 
-citations: 14
-
-> In Exodus, Moses was a Hebrew who had grown up as the son of Pharaoh’s daughter [1]. When he went out to his brothers and saw an Egyptian striking a Hebrew, he looked both ways, saw no one, killed the Egyptian, and hid his body in the sand [1]. The next day, when he questioned a Hebrew who was striking his fellow, the man challenged him and asked if Moses planned to kill him as he had killed the Egyptian [1]. Afraid that the deed was known, and fleeing from Pharaoh who sought to kill him, Moses escaped to the land of Midian [1]. Years later, while tending the flock of his father-in-law in the wilderness, Moses came to Horeb, the mountain of God, where Yahweh’s angel appeared to him in a flame of fire from the middle of a burning bush that was not consumed, calling him to see this great sight [2].
-> 
-> Church tradition in the Ethiopian Synaxarium tells of a cook in the monastery of Saint Abba Gelasius [5]. After boiling a fish and setting a boy to watch it, the cook returned and discovered that the boy had eaten the greater part of it before the elder had blessed it [5]. Wrath overcame the cook, and in his fury he kicked the boy with his foot, causing the boy to fall to the ground and die [5]. Dismayed and terrified by what he had done, the cook went directly to Saint Gelasius and told him what had happened [5]. The elder instructed him to lay the body in the sanctuary, and after the evening prayer, the saint came out with the boy alive and following him; Saint Gelasius then laid a penance on the cook and commanded him to speak of the matter to no one until after the elder's death [5].
-> 
-> You are not the only one who carries the crushing weight of having taken a life in anger [1][5]. Even those who committed fatal violence were not beyond reach [2][5]. 
-> 
-> Bring this honestly before God in prayer, and bring it to confession or to a trusted priest, pastor, or mature believer in your own church.
-
-### ✅ s09: I lied to protect myself and let someone else suffer
-
 citations: 6
 
-> In Genesis, we find the account of Abraham, who protected his own life through deceit while letting others suffer the consequences [3][4]. Abraham lived as a foreigner in unfamiliar lands, yet God knew him and called him a prophet [3][4]. During a severe famine in Egypt, Abraham feared that the people would kill him because his wife Sarai was beautiful, so he instructed her to lie and say she was his sister to preserve his own life [3]. Because of this deception, Sarai was taken into Pharaoh’s house, and while Abraham was rewarded with sheep, cattle, donkeys, and servants, Pharaoh and his household were struck with great plagues on Sarai's account [3]. Later, in Gerar, Abraham repeated this lie about Sarah, causing King Abimelech to
+> In Exodus, Moses saw an Egyptian striking a Hebrew, and he killed the Egyptian and hid him in the sand [1]. When Pharaoh sought to kill him for this, Moses fled and lived in the land of Midian [1]. Later, God's angel appeared to him in a flame of fire out of a bush, and God sent him back to lead His people from bondage [2]. This story comes from Exodus. 
+> 
+> According to Church tradition, in the Ethiopian Synaxarium, a cook in the monastery of Abba Gelasius grew wroth when a boy ate the greater part of a fish before it was blessed [5]. By the work of Satan, wrath came upon the cook and he kicked the boy with his foot, causing him to die [5]. Filled with dismay and fear, the cook confessed to Abba Gelasius, who told him to lay the boy in the sanctuary; after evening prayers, the boy was found alive, and the saint laid a penance on the cook and commanded him to tell no one until after his death [5]. This story comes from the Ethiopian Synaxarium (Yakatit).
+> 
+> You are not the only one to carry the heavy weight of taking a life in anger. These people fell deeply, yet they were not beyond reach. 
+> 
+> Please bring this burden to God in prayer, and seek out confession or speak with a trusted priest, pastor, or mature believer in your own church.
+
+### ❌ s09: I lied to protect myself and let someone else suffer
+
+citations: 0
+
+> This question is not covered by these documents.
 
 ### ✅ s10: I deceived my father to get what my brother deserved
 
 citations: 5
 
-> In Genesis, Scripture tells the story of Jacob, the younger son of Isaac and Rebekah [5][6]. When his father was old and his eyes had grown dim, Isaac asked his elder son, Esau, to hunt venison and prepare food so he could bless him before he died [5]. At the urging of his mother, Jacob took two young goats from the flock and allowed Rebekah to cover his hands and the smooth of his neck with goat skins and dress him in Esau’s clothes, preventing his father from recognizing him as a deceiver [6]. Through this disguise, Jacob deceived his father and obtained the blessing, being made lord over his brother [9]. When the truth became known, Esau wept, hated his brother, and resolved to kill Jacob once their father died
+> In Genesis, Abraham said that Sarah was his sister to save his life [3][4]. Later, in Genesis, Jacob took a blessing that belonged to his brother by deceiving his father Isaac [6][9]. 
+> 
+> You are not the only one to walk this path of deception, nor are these people beyond reach. 
+> 
+> This story comes from the Paradise of the Holy Fathers, recorded as Christian tradition [7]. Bring this to God in prayer and to confession or a trusted priest, pastor or mature believer in your own church.
 
