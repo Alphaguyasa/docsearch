@@ -18,6 +18,8 @@ decided, move it to "Decided" with the date and the answer.
     that edit (the next run makes it), or re-run the deploy once a fixed CLI is out.**
     If 65.2.0 fails too, the cause is the token or the team slug
     `alphaguyasa-5358s-projects` on Vercel, which only you can check. No cost.
+    *2026-10-27:* a re-run on the newer CLI 65.4.0 failed the same way, so waiting
+    for a fixed CLI has not helped. Still open; production still serves #128.
 9. **A `CRON_SECRET` for `/api/telegram/daily` (ROADMAP 19, 2026-10-21).** The code
    landed on 2026-10-25: the route checks `Authorization: Bearer $CRON_SECRET`, which
    Vercel cron sends for free once the env var exists. **To turn it on:** in Vercel

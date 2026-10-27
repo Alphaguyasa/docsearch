@@ -76,7 +76,7 @@ jobs:
     outputs:
       generation: ${{ steps.paths.outputs.generation }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: paths
@@ -98,8 +98,8 @@ jobs:
     name: retrieval smoke (30 questions)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
@@ -108,7 +108,7 @@ jobs:
       # Keyed on the golden set: the question embeddings cached here are keyed
       # by question text, so a change to the golden set is exactly when they
       # stop being reusable.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: eval/.cache
           key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}
@@ -156,14 +156,14 @@ jobs:
     if: needs.changed.outputs.generation == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
       - run: npm ci
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: eval/.cache
           key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}
@@ -210,13 +210,13 @@ jobs:
     # judged run is mostly waiting. 686s of it on the last local run.
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
       - run: npm ci
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: eval/.cache
           key: eval-cache-${{ hashFiles('eval/golden/questions.dev.jsonl') }}

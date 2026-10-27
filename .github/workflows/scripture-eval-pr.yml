@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Only with the database and Voyage secrets
         id: gate
         env:
@@ -55,7 +55,7 @@ jobs:
             echo "Secrets not available (fork PR?) — skipping the retrieval gate." | tee -a "$GITHUB_STEP_SUMMARY"
             echo "ready=false" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.gate.outputs.ready == 'true'
         with:
           node-version: 24

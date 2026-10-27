@@ -11,10 +11,9 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 28. **[P0, S] Production deploy is red (Vercel CLI 65.3.1, "scope does not exist").**
     Waits on NEEDS_APPROVAL #10: with Alpha's OK, pin `vercel@65.2.0` in
     deploy-not-alone.yml and add a test that pins it; otherwise check first whether
-    a re-run on a newer CLI passes.
-22. **[P2, S] Workflows on Node 24 actions.** All 8 workflows use checkout@v4,
-    setup-node@v4 (cache, upload-artifact too), deprecated with Node 20; deploy and the
-    data workflows build on Node 22 while CI tests on 24. Bump majors; align Node.
+    a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
+    way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
+    and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
 27. **[P3, S] Drop the redundant `--turbopack` flags.** Next 16 builds and serves
     with Turbopack by default; the flags in `dev` and `build` only add noise.
 23. **[P3, S] Remove the legacy DocSearch routes** (api/upload, process, documents,
@@ -29,6 +28,7 @@ Last replan: 2026-10-26 (small third audit after the Next 16 upgrade: deps, API 
 
 ## Done
 
+- 2026-10-27: Item 22. Every workflow but deploy-not-alone uses the Node 24 actions (checkout@v7, setup-node@v7, cache@v6, upload-artifact@v7) and builds on Node 24, as CI tests. The deploy workflow waits on item 28. tests/workflow-runtimes.test.ts.
 - 2026-10-26: Item 26. next.config.ts sets `images: { unoptimized: true }`, so `/_next/image` (where GHSA-2464-fhr4-w9xw lived) answers 404; no page uses next/image. tests/next-config.test.ts pins both. Checked with `next start`: home 200, /_next/image 404.
 - 2026-10-26: Item 25 (PR #129). ci.yml runs `npm audit --omit=dev --audit-level=high` right after install, so a new high or critical advisory in a production dependency turns main red and the next run fixes it first. tests/ci-workflow.test.ts pins the step and its place.
 - 2026-10-26: Item 24. zod 4.4.3 → 4.6.7 (GHSA-mrhx-c7xc-m3w5, high: memory exhaustion on oversized constrained collections; the API routes validate request bodies with zod). With item 21, `npm audit` reports 0 vulnerabilities.
