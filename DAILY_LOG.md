@@ -431,3 +431,31 @@ a newer CLI passes), then 22 (workflow actions on Node 24).
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 29 (in-range dependency updates), then 30 (React 19.3).
+
+
+## 2026-10-28: run 15 (scheduled)
+
+- Main at start: ci green on 84b4a21 (#133); **deploy still red** (ROADMAP 28, Vercel
+  CLI 65.4.0, "The specified scope does not exist"). NEEDS_APPROVAL #10 has no answer
+  yet, so the CLI was not pinned. Production still serves #128.
+- The post-merge scripture eval for #132 failed one gate: generation s09 got the
+  not-covered phrase although retrieval found David/Abraham/Jacob and the passage @3.
+  Everything else passed (retrieval dev 100%/95%, holdout 100%/100%, filters, crisis
+  routing, off-topic). Intermittent (s02 did the same on 2026-10-20), so it is ROADMAP
+  33 rather than a red main.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 29: **PR #134**, squash-merged as 414e0f7. In-range updates (supabase-js
+  2.118.0, tsx, typescript-eslint, unpdf, React types), lockfile only. Local: lint,
+  typecheck, npm test 318/318, vitest 339/339, build, `next start` smoke test.
+- ROADMAP 30: React 19.1.0 → 19.3.1. tests/react-version.test.ts. Local: lint,
+  typecheck, npm test 320/320, vitest 339/339, build; a Playwright smoke test of 12
+  pages (home, about, help, library, people, journey, journal, struggles, return,
+  credits, two person pages) with no page or console errors. See its PR for the merge.
+- Roadmap: added 33 (the s09 over-refusal) and 34 (@anthropic-ai/sdk 1.x, a new
+  major). 8 items open, so no replan; the next one should be a full audit.
+- Tags not pushed (the cloud git proxy refuses tags, as on earlier days). Alpha to
+  create `v2026-10-28-1` on 414e0f7, and `-2` on the React merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 33 (s09 over-refusal), then 23 (remove the legacy DocSearch routes).

@@ -14,8 +14,14 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-30. **[P2, S] React 19.1.0 → 19.3.1** (react, react-dom; Next 16.4 supports it). Own
-    PR, since it changes the runtime of every page; build and smoke-test the pages.
+33. **[P2, S] Over-refusal in generation (scripture eval s09).** On 2026-10-27 the
+    post-merge eval answered s09 ("I lied to protect myself and let someone else
+    suffer") with the not-covered phrase, though retrieval found the right figure and
+    passage (@3). s02 failed the same way on 2026-10-20 and passed on the next run, so
+    it is intermittent. Read the prompt in src/lib/answer.ts against the passages
+    retrieved for s09 offline (no LLM calls) and see what makes the model judge them
+    off-topic; a dev question, so tuning on it is allowed. Keep the refusal for real
+    off-topic questions (u01-u03).
 23. **[P3, S] Remove the legacy DocSearch routes** (api/upload, process, documents,
     documents/[id], app/documents). Dead behind SHOW_DOCUMENTS, but with it on they
     could list and delete corpus books via the service-role client. ROADMAP entry
@@ -27,12 +33,16 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
     smaller batches and split a batch in half on a timeout.
 31. **[P3, S] @types/node 20 → 24.** CI, deploy and the data workflows run on Node 24
     since item 22, but the types still describe Node 20. Typecheck may surface fixes.
+34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Only the optional Anthropic
+    provider in src/lib/llm.ts uses it, and its key is not set in production. Read the
+    migration notes; tests mock it, so no API calls.
 32. **[P3, L] Toolchain majors, one PR each:** ESLint 10 (+ @eslint/js 10,
     react-hooks plugin 7, which adds new rules), vitest/coverage-v8 5, TypeScript 7.
     Read each migration guide first; dev-only, so no runtime risk.
 
 ## Done
 
+- 2026-10-28: Item 30. React and react-dom 19.1.0 → 19.3.1 (scheduler 0.28), still pinned exactly. tests/react-version.test.ts checks the two stay equal and match what is installed. Build clean; a browser smoke test of 12 pages had no page or console errors.
 - 2026-10-28: Item 29. In-range updates, lockfile only: supabase-js 2.118.0, tsx 4.23.15, typescript-eslint 8.72.1, unpdf 1.9.1, @types/react(-dom) 19.3.0. No packages added or removed; `npm audit` 0. Lint, typecheck, npm test 318/318, vitest 339/339, build, and a `next start` smoke test (/, /about, /help 200; /_next/image 404).
 - 2026-10-27: Item 27. `dev` and `build` call `next dev` / `next build` without `--turbopack`; Next 16 uses Turbopack by default (the build banner still says "Turbopack"). tests/next-config.test.ts pins the scripts.
 - 2026-10-27: Item 22. Every workflow but deploy-not-alone uses the Node 24 actions (checkout@v7, setup-node@v7, cache@v6, upload-artifact@v7) and builds on Node 24, as CI tests. The deploy workflow waits on item 28. tests/workflow-runtimes.test.ts.
