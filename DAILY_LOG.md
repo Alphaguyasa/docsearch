@@ -459,3 +459,33 @@ otherwise ROADMAP 29 (in-range dependency updates), then 30 (React 19.3).
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 33 (s09 over-refusal), then 23 (remove the legacy DocSearch routes).
+
+
+## 2026-10-28: run 16 (scheduled)
+
+- Main at start: ci green on 9d69c91 (#135); **deploy still red** (ROADMAP 28; the
+  #134 and #135 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI
+  was not pinned. Production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 33: **PR #136**, squash-merged as 1ca9777. When figures are named, the
+  answer prompt repeats rule 10 after the message (tell their stories, do not send the
+  not-covered sentence); off-topic questions name no one and keep the refusal. Read
+  offline, no LLM calls. tests/scripture-safety.test.ts. answer.ts is not in the
+  scripture-eval path filter, so the next eval that runs on its own (after an ingest
+  or golden-set change) shows whether s09 holds; no eval was forced, to spare the
+  shared Gemini quota. It is not live until the deploy is fixed.
+- ROADMAP 23: **PR #137**. The legacy DocSearch routes (api/upload, api/process,
+  api/documents, app/documents) and the SHOW_DOCUMENTS gate are removed. Local: lint,
+  typecheck, npm test 321/321, vitest 339/339, build; `next start` gave 200 on /,
+  /about, /people and 404 on /documents, /api/upload, /api/documents. See the PR for
+  the merge.
+- The branch for #137 carries a merge of #136's pre-squash commit (no tree change),
+  because force-push is not allowed.
+- Roadmap: 6 items open (28, 11, 13, 31, 34, 32), so no replan; the next one should be
+  a full audit.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-10-28-3` on 1ca9777 and `-4` on the #137 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 13 (ingest retag batches) and 31 (@types/node 24).

@@ -107,11 +107,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               <Link href="/people" className="text-muted transition-colors hover:text-foreground">
                 {t.nav.people}
               </Link>
-              {process.env.SHOW_DOCUMENTS === "1" && (
-                <Link href="/documents" className="text-muted transition-colors hover:text-foreground">
-                  Documents
-                </Link>
-              )}
               {process.env.EVAL_DASHBOARD === "1" && (
                 <Link href="/evals" className="text-muted transition-colors hover:text-foreground">
                   Evals
