@@ -11,12 +11,9 @@ import { safeEqual } from "@/lib/safe-equal";
  * local development, or when it sits behind platform-level access protection.
  *
  * This is a lightweight single-user lock so a public URL doesn't expose the
- * upload/delete/search endpoints (which cost embedding and LLM tokens) to
+ * search endpoint (which costs embedding and LLM tokens) to
  * anyone. It is not a multi-user auth system.
  */
-
-/** Upload / document-management routes from the original DocSearch app. */
-const DOCUMENT_ROUTES = /^\/(documents|api\/upload|api\/process|api\/documents)(\/|$)/;
 
 /** Header carrying a ?lang=en|am choice from the URL to the server components. */
 export const LANG_HEADER = "x-not-alone-lang";
@@ -31,12 +28,6 @@ export function proxy(req: NextRequest): NextResponse {
     headers.set(LANG_HEADER, q);
     return NextResponse.next({ request: { headers } });
   };
-
-  // The scripture corpus is curated and ingested by CI; uploading arbitrary
-  // PDFs into it (and paying to embed them) is off unless explicitly enabled.
-  if (process.env.SHOW_DOCUMENTS !== "1" && DOCUMENT_ROUTES.test(req.nextUrl.pathname)) {
-    return new NextResponse("Not found", { status: 404 });
-  }
 
   const password = process.env.APP_PASSWORD;
   if (!password) return pass();

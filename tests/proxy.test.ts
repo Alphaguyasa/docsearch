@@ -35,10 +35,13 @@ test("the gate lives in src/proxy.ts, with no leftover middleware file", () => {
   assert.equal(existsSync("src/middleware.ts"), false);
 });
 
-test("document routes are hidden unless SHOW_DOCUMENTS is on", () => {
-  withEnv({ SHOW_DOCUMENTS: undefined, APP_PASSWORD: undefined }, () => {
-    assert.equal(proxy(req("/api/upload")).status, 404);
-    assert.equal(proxy(req("/documents/1")).status, 404);
+// They could list and delete corpus books through the service-role client
+// (ROADMAP 23), so they are gone rather than hidden behind a flag.
+test("the legacy DocSearch upload and document routes stay removed", () => {
+  for (const dir of ["src/app/documents", "src/app/api/upload", "src/app/api/process", "src/app/api/documents"]) {
+    assert.equal(existsSync(dir), false, dir);
+  }
+  withEnv({ APP_PASSWORD: undefined }, () => {
     assert.equal(proxy(req("/people")).status, 200);
   });
 });

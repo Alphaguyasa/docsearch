@@ -1,5 +1,9 @@
 # DocSearch
 
+> This README describes the original DocSearch app, kept at tag `v1-docsearch`.
+> `main` is now Not Alone (see `CLAUDE.md` and `docs/NOT_ALONE.md`), and the
+> upload and document-management routes below were removed on 2026-10-28.
+
 Ask questions about a corpus of PDFs and get answers that are **grounded and
 cited** — every factual claim carries an inline `[n]` citation back to the source
 chunk, and the system refuses plainly when the documents don't cover the

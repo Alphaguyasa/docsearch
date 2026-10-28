@@ -14,10 +14,6 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-23. **[P3, S] Remove the legacy DocSearch routes** (api/upload, process, documents,
-    documents/[id], app/documents). Dead behind SHOW_DOCUMENTS, but with it on they
-    could list and delete corpus books via the service-role client. ROADMAP entry
-    here explains the removal, as the safety rules require.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
 13. **[P3, S] Make ingest's retag robust to statement timeouts.** On 2026-10-19 one
     batch of 100 row updates hit Supabase's statement timeout (each update rewrites
@@ -34,6 +30,7 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
 
 ## Done
 
+- 2026-10-28: Item 23. The legacy DocSearch upload and document routes are gone (api/upload, api/process, api/documents, api/documents/[id], app/documents), with the SHOW_DOCUMENTS gate, nav link, robots entry and DocumentSummary type. With the flag on they could list and delete corpus books through the service-role client; the corpus is curated and ingested by CI. The CLI ingest (scripts/ingest.ts, src/lib/pipeline.ts) stays. tests/proxy.test.ts checks the routes stay removed. The README says it describes v1 (tag v1-docsearch).
 - 2026-10-28: Item 33. When retrieval names figures, the answer prompt repeats rule 10 right after the message: tell their stories, do not send the not-covered sentence. Off-topic questions name no one, so their refusal is unchanged. Read offline (no LLM calls): s09 had David, Abraham and Jacob named and Genesis 12 retrieved, yet refused, with rule 10 far up the system prompt. tests/scripture-safety.test.ts. The post-merge scripture eval shows whether it holds.
 - 2026-10-28: Item 30. React and react-dom 19.1.0 → 19.3.1 (scheduler 0.28), still pinned exactly. tests/react-version.test.ts checks the two stay equal and match what is installed. Build clean; a browser smoke test of 12 pages had no page or console errors.
 - 2026-10-28: Item 29. In-range updates, lockfile only: supabase-js 2.118.0, tsx 4.23.15, typescript-eslint 8.72.1, unpdf 1.9.1, @types/react(-dom) 19.3.0. No packages added or removed; `npm audit` 0. Lint, typecheck, npm test 318/318, vitest 339/339, build, and a `next start` smoke test (/, /about, /help 200; /_next/image 404).
