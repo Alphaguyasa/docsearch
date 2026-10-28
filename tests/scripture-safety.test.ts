@@ -117,3 +117,15 @@ test("pre-pivot chunks (no ref) still render with title and page", async () => {
   const c = { ...chunk(null, "Paper"), pageNumber: 3 };
   assert.match(buildMessages("q", [c])[1].content, /\[1\] \(Paper, p\.3\)/);
 });
+
+test("a named figure gets a reminder not to refuse; no figure keeps the refusal open", async () => {
+  const { buildMessages, NOT_COVERED_PHRASE } = await answerModule();
+  const [, named] = buildMessages("I lied to protect myself and let someone else suffer",
+    [chunk("Genesis 12:10-20")], [{ name: "Abraham", summary: "s" }]);
+  // The reminder comes after the message, so it is the last thing the model reads.
+  assert.ok(named.content.indexOf("Message:") < named.content.indexOf("stories fit this message"));
+  assert.match(named.content, new RegExp(`Do not reply with the "${NOT_COVERED_PHRASE}" sentence`));
+  const [, offTopic] = buildMessages("What is the capital of France?", [chunk("Genesis 12:10-20")]);
+  assert.doesNotMatch(offTopic.content, /stories fit this message|Do not reply/);
+  assert.ok(offTopic.content.endsWith("Message: What is the capital of France?"));
+});
