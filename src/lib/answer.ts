@@ -107,10 +107,21 @@ export function buildMessages(
         .join("; ")}.\n\n`
     : "";
 
+  // Rule 10 already says this, but from the far end of the system prompt a model
+  // sometimes still refused a fitting message (scripture eval s09, 2026-10-27:
+  // "I lied to protect myself and let someone else suffer" got the not-covered
+  // sentence with Abraham named and Genesis 12 retrieved). Repeating it after the
+  // message, only when someone is named, leaves the refusal intact for off-topic
+  // questions, which name no one.
+  const reminder = figures.length
+    ? `\n\nThese people's stories fit this message: tell them, citing their passages. Do not reply with the "${NOT_COVERED_PHRASE}" sentence.`
+    : "";
+
   const user =
     `Context passages:\n\n${context}\n\n` +
     hint +
-    `Message: ${question}`;
+    `Message: ${question}` +
+    reminder;
 
   return [
     { role: "system", content: SYSTEM_PROMPT },
