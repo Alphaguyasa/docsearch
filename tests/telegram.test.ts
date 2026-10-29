@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { afterEach, mock, test } from "node:test";
 
 import { FIGURES } from "../src/lib/scripture/figures";
 import type { SearchStreamMessage } from "../src/lib/search-stream";
@@ -10,13 +10,17 @@ import {
   crisisMessage,
   detectLang,
   fallbackMessage,
+  htmlToPlain,
   markdownToHtml,
+  sendHtml,
   setupKey,
   splitMessage,
   storyMessages,
   todayCaption,
   webhookSecret,
 } from "../src/lib/telegram";
+
+afterEach(() => mock.restoreAll());
 
 async function* from(msgs: SearchStreamMessage[]) {
   yield* msgs;
@@ -193,4 +197,62 @@ test("/walk: commands and deep links name a struggle group; anything else shows 
   assert.match(c, /Day 1 of 7 · Lust/);
   assert.match(c, new RegExp(`/people/${people[0].id}"`));
   assert.match(walkChoices("am"), /\/walk_lust — ፍትወት/);
+});
+
+/** Every tag closes in the order it opened (what Telegram's HTML parser demands). */
+function balanced(html: string): boolean {
+  const stack: string[] = [];
+  for (const [, close, name] of html.matchAll(/<(\/?)([a-z]+)[^>]*>/g)) {
+    if (!close) stack.push(name);
+    else if (stack.pop() !== name) return false;
+  }
+  return stack.length === 0;
+}
+
+test("markdown that overlaps bold and italic still gives balanced tags", () => {
+  for (const md of ["**a *b** c*", "*a **b* c**", "**x** *y **z***", "# **Peter** *wept*", "*a* **b *c* d**"]) {
+    const html = markdownToHtml(md);
+    assert.ok(balanced(html), `${md} -> ${html}`);
+  }
+});
+
+test("a hard cut never ends a part inside an entity", () => {
+  for (let shift = 0; shift < 6; shift++) {
+    const para = "a".repeat(MAX_MESSAGE - 3 + shift) + "&amp;" + "b".repeat(50);
+    const parts = splitMessage(para);
+    assert.ok(parts.length > 1);
+    for (const p of parts) {
+      assert.ok(p.length <= MAX_MESSAGE);
+      assert.doesNotMatch(p, /&[a-z#0-9]*$/i, `shift ${shift}`);
+    }
+    assert.equal(parts.join(""), para);
+  }
+});
+
+test("plain text undoes the markup and the escaping", () => {
+  assert.equal(htmlToPlain("<b>Peter</b> wept &lt;bitterly&gt; &amp; <i>alone</i>"), "Peter wept <bitterly> & alone");
+});
+
+test("a part Telegram rejects is resent as plain text, keeping the keyboard", async () => {
+  mock.method(console, "error", () => {});
+  const bodies: Record<string, unknown>[] = [];
+  mock.method(globalThis, "fetch", async (_url: unknown, init: RequestInit) => {
+    const body = JSON.parse(String(init.body)) as Record<string, unknown>;
+    bodies.push(body);
+    const ok = body.parse_mode === undefined;
+    return Response.json(ok ? { ok: true } : { ok: false, description: "Bad Request: can't parse entities" });
+  });
+  const keyboard = { inline_keyboard: [] };
+  await sendHtml("t", 7, "<b>Peter</b> &amp; <i>John", { reply_markup: keyboard });
+  assert.equal(bodies.length, 2);
+  assert.equal(bodies[0].parse_mode, "HTML");
+  assert.equal(bodies[1].text, "Peter & John");
+  assert.equal(bodies[1].chat_id, 7);
+  assert.deepEqual(bodies[1].reply_markup, keyboard);
+});
+
+test("an HTML part Telegram accepts is sent once", async () => {
+  const fetchMock = mock.method(globalThis, "fetch", async () => Response.json({ ok: true }));
+  await sendHtml("t", 7, "<b>ok</b>");
+  assert.equal(fetchMock.mock.callCount(), 1);
 });
