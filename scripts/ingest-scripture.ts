@@ -17,7 +17,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import type { Manifest } from "../src/lib/scripture/manifest";
-import { groups, planIngest, type ExistingRow } from "../src/lib/scripture/plan";
+import { applyInBatches, groups, planIngest, RETAG_BATCH, type ExistingRow } from "../src/lib/scripture/plan";
 import { buildSource } from "../src/lib/scripture/sources";
 import type { ScriptureChunk } from "../src/lib/scripture/types";
 
@@ -127,9 +127,10 @@ async function main(): Promise<void> {
   );
   // Tags only: content and embedding stay as they are.
   for (const r of plan.retag) {
-    for (const ids of groups(r.ids, 100)) {
-      const upd = await db.from("chunks").update({ traditions: r.traditions }).in("id", ids);
-      if (upd.error) throw new Error(`retag failed: ${upd.error.message}`);
+    try {
+      await applyInBatches(r.ids, RETAG_BATCH, async (ids) => db.from("chunks").update({ traditions: r.traditions }).in("id", ids));
+    } catch (err) {
+      throw new Error(`retag failed: ${(err as Error).message}`);
     }
   }
   for (const ids of groups(plan.staleRowIds, 100)) {
