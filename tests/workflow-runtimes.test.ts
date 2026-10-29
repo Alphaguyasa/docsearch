@@ -46,3 +46,12 @@ test("every workflow builds on the Node version CI tests", () => {
     }
   }
 });
+
+test("@types/node describes the Node major that CI runs", () => {
+  const ci = readFileSync(`${DIR}/ci.yml`, "utf8");
+  const node = ci.match(/node-version:\s*["']?(\d+)/)?.[1];
+  const pkg = JSON.parse(readFileSync("package.json", "utf8")) as { devDependencies: Record<string, string> };
+  const types = pkg.devDependencies["@types/node"]?.match(/(\d+)/)?.[1];
+  assert.ok(node && types, "ci.yml node-version and @types/node must both be set");
+  assert.equal(types, node);
+});

@@ -15,8 +15,6 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
-31. **[P3, S] @types/node 20 → 24.** CI, deploy and the data workflows run on Node 24
-    since item 22, but the types still describe Node 20. Typecheck may surface fixes.
 34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Only the optional Anthropic
     provider in src/lib/llm.ts uses it, and its key is not set in production. Read the
     migration notes; tests mock it, so no API calls.
@@ -26,6 +24,7 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
 
 ## Done
 
+- 2026-10-29: Item 31. @types/node 20 → 24.19.2 (undici-types 7.24.6), matching the Node 24 that CI and the workflows run. Typecheck needed no code changes. tests/workflow-runtimes.test.ts checks the types major equals ci.yml's node-version.
 - 2026-10-29: Item 13. Ingest retags in batches of 25 rows (was 100), and a batch that hits a statement timeout is split in half and retried, down to one row (`applyInBatches` in src/lib/scripture/plan.ts). Other errors still fail at once. tests/scripture-plan.test.ts, with a mocked update.
 - 2026-10-28: Item 23. The legacy DocSearch upload and document routes are gone (api/upload, api/process, api/documents, api/documents/[id], app/documents), with the SHOW_DOCUMENTS gate, nav link, robots entry and DocumentSummary type. With the flag on they could list and delete corpus books through the service-role client; the corpus is curated and ingested by CI. The CLI ingest (scripts/ingest.ts, src/lib/pipeline.ts) stays. tests/proxy.test.ts checks the routes stay removed. The README says it describes v1 (tag v1-docsearch).
 - 2026-10-28: Item 33. When retrieval names figures, the answer prompt repeats rule 10 right after the message: tell their stories, do not send the not-covered sentence. Off-topic questions name no one, so their refusal is unchanged. Read offline (no LLM calls): s09 had David, Abraham and Jacob named and Genesis 12 retrieved, yet refused, with rule 10 far up the system prompt. tests/scripture-safety.test.ts. The post-merge scripture eval shows whether it holds.
