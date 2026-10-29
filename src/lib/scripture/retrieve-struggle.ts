@@ -9,7 +9,7 @@
  */
 import { db } from "../db";
 import { getLlm, lightModel } from "../llm";
-import { retrieve, type RetrievedChunk } from "../retrieve";
+import { retrieve, type RetrieveResult, type RetrievedChunk } from "../retrieve";
 import { canonByCode, type Tradition } from "./canon";
 import { cleanPassage, orderedPassages, rankFigures, refsOverlap, type Figure } from "./figures";
 import { mapStruggle, type TagLlm } from "./struggle";
@@ -86,26 +86,48 @@ export async function retrieveForStruggle(
     fusedScore: 1 - i / 1000, // figure passages rank above search results
   }));
 
-  let degraded = false;
-  if (results.length < limit) {
-    const search = await retrieve(message, { limit: limit + results.length, filterTraditions: filter });
-    degraded = search.degraded;
-    for (const r of search.results) {
-      if (results.length >= limit) break;
-      if (!seen.has(r.id)) {
-        seen.add(r.id);
-        results.push(r);
-      }
-    }
-  }
+  const topped = await topUpWithSearch(results, limit, () =>
+    retrieve(message, { limit: limit + results.length, filterTraditions: filter }),
+  );
 
   return {
     tags,
     via,
     figures: figures.map(({ id, name, summary, note, kind }) => ({ id, name, summary, note, kind })),
-    results: results.slice(0, limit),
-    degraded,
+    ...topped,
   };
+}
+
+/**
+ * Fill the figure passages up to `limit` with search results, deduplicated.
+ * When the search fails outright but figure passages were found, the story can
+ * still be told from them: keep them and mark the result degraded, rather than
+ * throwing them away for a 502.
+ */
+export async function topUpWithSearch(
+  figureResults: RetrievedChunk[],
+  limit: number,
+  search: () => Promise<Pick<RetrieveResult, "results" | "degraded">>,
+): Promise<{ results: RetrievedChunk[]; degraded: boolean }> {
+  const results = [...figureResults];
+  if (results.length >= limit) return { results: results.slice(0, limit), degraded: false };
+  let found: Pick<RetrieveResult, "results" | "degraded">;
+  try {
+    found = await search();
+  } catch (err) {
+    if (!results.length) throw err;
+    console.error("struggle retrieval: search failed, answering from figure passages", err);
+    return { results, degraded: true };
+  }
+  const seen = new Set(results.map((r) => r.id));
+  for (const r of found.results) {
+    if (results.length >= limit) break;
+    if (!seen.has(r.id)) {
+      seen.add(r.id);
+      results.push(r);
+    }
+  }
+  return { results, degraded: found.degraded };
 }
 
 /** Chunks for one figure passage, respecting the tradition filter. */
@@ -142,13 +164,26 @@ function escapeLike(s: string): string {
   return s.replace(/[\\%_]/g, (c) => `\\${c}`);
 }
 
-const docIdCache = new Map<string, string | null>();
-async function documentIdFor(sourceId: string): Promise<string | null> {
-  if (docIdCache.has(sourceId)) return docIdCache.get(sourceId)!;
-  const { data } = await db.from("documents").select("id").eq("source_id", sourceId).maybeSingle<{ id: string }>();
-  docIdCache.set(sourceId, data?.id ?? null);
-  return data?.id ?? null;
+/**
+ * Remember each key's answer for the life of the server, but only once the
+ * lookup succeeds: a failed one (a timeout, a dropped connection) is tried
+ * again on the next request instead of hiding a source until a cold start.
+ */
+export function memoizeSuccess<T>(lookup: (key: string) => Promise<T>): (key: string) => Promise<T> {
+  const cache = new Map<string, T>();
+  return async (key) => {
+    if (cache.has(key)) return cache.get(key)!;
+    const value = await lookup(key);
+    cache.set(key, value);
+    return value;
+  };
 }
+
+const documentIdFor = memoizeSuccess(async (sourceId: string): Promise<string | null> => {
+  const { data, error } = await db.from("documents").select("id").eq("source_id", sourceId).maybeSingle<{ id: string }>();
+  if (error) throw new Error(`document lookup failed (${sourceId}): ${error.message}`);
+  return data?.id ?? null;
+});
 
 async function documentMeta(ids: string[]): Promise<Map<string, { title: string; filename: string }>> {
   const unique = [...new Set(ids)];
