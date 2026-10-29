@@ -73,3 +73,37 @@ export function groups<T>(items: T[], size: number): T[][] {
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
   return out;
 }
+
+/** Rows per retag update. Each update rewrites the row's HNSW and tsv index entries. */
+export const RETAG_BATCH = 25;
+
+/**
+ * Run `apply` over `ids` in batches of `size`; a batch that hits a statement
+ * timeout is split in half and retried, down to single rows. Any other error,
+ * or a timeout on one row, is thrown.
+ *
+ * WHY: on 2026-10-19 one retag of 100 rows hit Supabase's statement timeout.
+ * The chained rerun recovered, but halving lets the same run finish.
+ */
+export async function applyInBatches(
+  ids: string[],
+  size: number,
+  apply: (batch: string[]) => Promise<{ error: { message: string } | null }>,
+): Promise<void> {
+  for (const batch of groups(ids, size)) await applySplitting(batch, apply);
+}
+
+async function applySplitting(
+  batch: string[],
+  apply: (batch: string[]) => Promise<{ error: { message: string } | null }>,
+): Promise<void> {
+  const { error } = await apply(batch);
+  if (!error) return;
+  if (batch.length > 1 && /statement timeout|canceling statement/i.test(error.message)) {
+    const mid = Math.ceil(batch.length / 2);
+    await applySplitting(batch.slice(0, mid), apply);
+    await applySplitting(batch.slice(mid), apply);
+    return;
+  }
+  throw new Error(error.message);
+}

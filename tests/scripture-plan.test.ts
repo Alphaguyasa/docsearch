@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { groups, planIngest, type ExistingRow } from "../src/lib/scripture/plan";
+import { applyInBatches, groups, planIngest, RETAG_BATCH, type ExistingRow } from "../src/lib/scripture/plan";
 import type { ScriptureChunk } from "../src/lib/scripture/types";
 
 function chunk(doc: string, i: number, content = `c${i}`): ScriptureChunk {
@@ -74,4 +74,40 @@ test("rows with unknown tags, or that are re-embedded anyway, are not retagged",
   const plan = planIngest(expected, [row("a", 0), { ...row("a", 1), traditions: [] }]);
   assert.deepEqual(plan.retag, []);
   assert.deepEqual(plan.toEmbed.map((c) => c.chunkIndex), [1]);
+});
+
+const ids = (n: number) => Array.from({ length: n }, (_, i) => `id${i}`);
+
+test("retag batches are small (each update rewrites index entries)", () => {
+  assert.ok(RETAG_BATCH <= 25);
+});
+
+test("applyInBatches sends every id once, in batches of the given size", async () => {
+  const seen: string[][] = [];
+  await applyInBatches(ids(60), 25, async (b) => (seen.push(b), { error: null }));
+  assert.deepEqual(seen.map((b) => b.length), [25, 25, 10]);
+  assert.deepEqual(seen.flat(), ids(60));
+});
+
+test("a statement timeout splits the batch in half and retries", async () => {
+  const seen: number[] = [];
+  await applyInBatches(ids(8), 8, async (b) => {
+    seen.push(b.length);
+    return { error: b.length > 2 ? { message: "canceling statement due to statement timeout" } : null };
+  });
+  // 8 times out, then 4, 4 time out, then four batches of 2 succeed.
+  assert.deepEqual(seen, [8, 4, 2, 2, 4, 2, 2]);
+});
+
+test("a timeout on a single row, or any other error, is thrown", async () => {
+  await assert.rejects(
+    applyInBatches(ids(3), 3, async () => ({ error: { message: "statement timeout" } })),
+    /statement timeout/,
+  );
+  const calls: number[] = [];
+  await assert.rejects(
+    applyInBatches(ids(4), 4, async (b) => (calls.push(b.length), { error: { message: "permission denied" } })),
+    /permission denied/,
+  );
+  assert.deepEqual(calls, [4]); // not retried
 });
