@@ -4,7 +4,7 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` clean). Before that 2026-10-26 and 2026-10-21. The next replan should be a full one (code, security, UX, accessibility, Amharic gaps).
+Last replan: 2026-10-29 (full audit: code, security, accessibility, localization, tests; items 35-42). Before that 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
 
 ## Open
 
@@ -14,9 +14,43 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
+35. **[P1, S] A Telegram story is lost when a send fails.** api/telegram/route.ts sends
+    each part with no fallback; a `sendMessage` 400 (mis-nested tags from
+    `markdownToHtml` in src/lib/telegram.ts, e.g. `**a *b** c*`, or `splitMessage`'s
+    hard cut through an `&amp;` entity) only reaches console.error, and the reader gets
+    nothing. Fix: on a rejected part, resend it as plain text; cut only on entity
+    boundaries. Test: balanced tags; no part ends in a partial entity.
+36. **[P1, S] One failing search drops the figure passages, and a lookup error is cached.**
+    retrieve-struggle.ts calls `retrieve()` with no catch, so when both search arms fail
+    the figure chunks already found are thrown away (502). `documentIdFor` ignores
+    `error` and caches null until a cold start. Fix: keep the figure chunks on a failed
+    search; cache only successful lookups. Test needs a small db seam.
+37. **[P2, S] Accessibility of the streamed story.** The story `<article>` (page.tsx) has
+    no `aria-busy` and nothing announces it is ready; an Amharic answer under the
+    English UI has no `lang`, so screen readers use an English voice. Fix: aria-busy,
+    an sr-only "story ready" status, `lang` from a shared Ethiopic-script helper (the
+    regex is in telegram.ts `detectLang`). Test the helper.
+38. **[P2, M] Tests for /api/search and /api/telegram.** Neither route is imported by a
+    test. Cover: 400 on bad or over-long input; crisis answered before the rate limit;
+    a cached example served before taking a slot; 429 has `code: "busy"`; 403 on a
+    wrong webhook secret; only private chats answered. Mock db and LLM.
+39. **[P2, M] One person can use the whole site's search limit.** The site-wide limiter
+    (3/min, `take_search_slot`) has no per-user share. Start with a per-chat limit in
+    the bot (pure limiter, injectable clock). A per-IP web limit needs a privacy
+    decision first (hashed IP, short retention): ask in NEEDS_APPROVAL.
+40. **[P2, M] Keep example answers across cold starts.** example-cache.ts keeps the 7 fixed
+    example answers in memory, so each cold start spends Gemini quota on them again.
+    An additive table holding only those fixed questions (no user text), 6-hour TTL.
+    Migration plus a test.
+41. **[P3, S] Leftover DocSearch code and English-only home metadata.** Unused:
+    components/SearchInput.tsx, CitationTargets.tsx, `IdleExamples`/`EmptyState` in
+    States.tsx ("ingest PDFs"). proxy.ts uses realm "DocSearch", and its matcher would
+    block /api/telegram and the cron if APP_PASSWORD were set. layout.tsx metadata is
+    English when lang=am. Test: every component is imported; extend the proxy test.
+42. **[P3, S] Validate the Telegram webhook body with zod.** route.ts casts JSON to
+    `Update` and reads `msg.chat.type`, which throws (500, Telegram retries) on a
+    message without `chat`. Secret is checked first, so low risk.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
-31. **[P3, S] @types/node 20 → 24.** CI, deploy and the data workflows run on Node 24
-    since item 22, but the types still describe Node 20. Typecheck may surface fixes.
 34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Only the optional Anthropic
     provider in src/lib/llm.ts uses it, and its key is not set in production. Read the
     migration notes; tests mock it, so no API calls.
@@ -26,6 +60,7 @@ Last replan: 2026-10-27 (short dependency audit: `npm outdated`; `npm audit` cle
 
 ## Done
 
+- 2026-10-29: Item 31. @types/node 20 → 24.19.2 (undici-types 7.24.6), matching the Node 24 that CI and the workflows run. Typecheck needed no code changes. tests/workflow-runtimes.test.ts checks the types major equals ci.yml's node-version.
 - 2026-10-29: Item 13. Ingest retags in batches of 25 rows (was 100), and a batch that hits a statement timeout is split in half and retried, down to one row (`applyInBatches` in src/lib/scripture/plan.ts). Other errors still fail at once. tests/scripture-plan.test.ts, with a mocked update.
 - 2026-10-28: Item 23. The legacy DocSearch upload and document routes are gone (api/upload, api/process, api/documents, api/documents/[id], app/documents), with the SHOW_DOCUMENTS gate, nav link, robots entry and DocumentSummary type. With the flag on they could list and delete corpus books through the service-role client; the corpus is curated and ingested by CI. The CLI ingest (scripts/ingest.ts, src/lib/pipeline.ts) stays. tests/proxy.test.ts checks the routes stay removed. The README says it describes v1 (tag v1-docsearch).
 - 2026-10-28: Item 33. When retrieval names figures, the answer prompt repeats rule 10 right after the message: tell their stories, do not send the not-covered sentence. Off-topic questions name no one, so their refusal is unchanged. Read offline (no LLM calls): s09 had David, Abraham and Jacob named and Genesis 12 retrieved, yet refused, with rule 10 far up the system prompt. tests/scripture-safety.test.ts. The post-merge scripture eval shows whether it holds.

@@ -489,3 +489,28 @@ otherwise ROADMAP 33 (s09 over-refusal), then 23 (remove the legacy DocSearch ro
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 13 (ingest retag batches) and 31 (@types/node 24).
+
+
+## 2026-10-29: run 17 (scheduled)
+
+- Main at start: ci green on 23050a3 (#137); **deploy still red** (ROADMAP 28; the
+  #136 and #137 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI
+  was not pinned. Production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 13: **PR #138**, squash-merged as 4c21c17. Ingest retags in batches of 25
+  and halves a batch that hits a statement timeout, down to one row
+  (`applyInBatches`). tests/scripture-plan.test.ts with a mocked update. All PR checks
+  green.
+- ROADMAP 31: @types/node 20 → 24.19.2; typecheck needed no changes.
+  tests/workflow-runtimes.test.ts checks the types major matches ci.yml's Node. Local:
+  lint 0 warnings, typecheck, npm test 326/326, vitest 339/339 (with CI's dummy env),
+  build, `npm audit --omit=dev` 0. See its PR for the merge.
+- Replan (4 items left): full audit of code, security, accessibility, localization and
+  tests added items 35-42. Top: Telegram stories lost on a failed send (35), a failed
+  search dropping the figure passages (36), accessibility of the streamed story (37).
+- Tags not pushed (the cloud git proxy and the REST API both refuse tag writes). Alpha
+  to create `v2026-10-29-1` on 4c21c17, and `-2` on the item 31 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 35 (Telegram send fallback), then 36 (keep figure passages).
