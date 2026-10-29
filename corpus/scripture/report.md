@@ -358,47 +358,7 @@ she made a coat(?) and a cloak of byssus cloth, and purple for his
 
 ## takla_haymanot — The Life of Takla Haymanot (tr. E. A. Wallis Budge, 1906, from the Dabra Libanos manuscript)
 - pinned: lifeoftaklahymnt00budg
-
-#### `lifeoftaklahymnt00budg_djvu.txt` (archive id `lifeoftaklahymnt00budg`) — 747796 bytes
-12015 non-empty lines. First 25:
-```
-»  "  "  .  . .  -  -•  •;
--
-LIBRARY  =g°>
-Brigham  Young  University
-RARE  BOOK  COLLECTION  |Hg
-q922.l63  IBS
-T139b
-'
-‘
-TWO  HUNDRED  AND  FIFTY  COPIES  PRINTED  FOR
-PRIVATE  CIRCULATION  ONLY,  OF  WHICH  THIS  IS
-THE  LIFE  AND  MIRACLES
-T;:;!OT  '
-FESHH  A-SEYON
-WHO  WAS  NAMED  BY  OUR  LORD
-TAKLA  HAYMAnOT.
-THE  LIFE  OF  TAKLA  HAYMANOT  (Folio  za).  PLATE  I.
-I.  The  Holy  Trinity,  throned  in  glory  in  heaven.
-II.  The  Angel,  symbol  of  Saint  Matthew.
-III.  The  Lion,  symbol  of  Saint  Mark.
-IV.  The  Eagle;  symbol  of  Saint  John.
-V.  The  Bull,  symbol  of  Saint  Luke.
-VI.  Takla  HHym&ndt  lying  prostrate  at  the  feet  of  the  Trinity.
-THE  LIFE  OF  TAKLA  HAYMAn6T
-IN  THE  VERSION  OF  DABRA  LIBANOS,  >
-```
-Sample from the middle:
-```
-All  Asti?.  T.IKA
-JWVV-4*S5- h*-H»
-M;--6  A-T--.h'r
-an Jf- ffivvn  him-.
-h'll'.ID  (DOTIil.
-f-"MI  A.«PAfc,
-Aip-h-h-imfi-Th
-(DA-fl  J»
-```
+**FAILED:** fetch failed
 
 ## baralam — Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)
 - pinned: baralamyewasef0000sire
