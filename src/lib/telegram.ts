@@ -61,11 +61,15 @@ export function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/** The answer's light markdown (**bold**, *italic*) as Telegram HTML. */
+/**
+ * The answer's light markdown (**bold**, *italic*) as Telegram HTML. Italics
+ * never reach across a tag, so `**a *b** c*` cannot nest <i> through </b>:
+ * Telegram rejects mis-nested tags and the whole message is lost.
+ */
 export function markdownToHtml(md: string): string {
   return escapeHtml(md)
     .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-    .replace(/(^|[^*])\*(?!\s)([^*\n]+?)\*(?!\*)/g, "$1<i>$2</i>")
+    .replace(/(^|[^*])\*(?!\s)([^*\n<]+?)\*(?!\*)/g, "$1<i>$2</i>")
     .replace(/^#{1,6}\s*(.+)$/gm, "<b>$1</b>");
 }
 
@@ -245,8 +249,15 @@ export function splitMessage(text: string, max = MAX_MESSAGE): string[] {
     if (para.length <= max) current = para;
     else {
       // A single paragraph longer than a message: drop its formatting and cut it.
+      // Never cut inside an entity such as &amp;, which Telegram would reject.
       const plain = para.replace(/<[^>]+>/g, "");
-      for (let i = 0; i < plain.length; i += max) parts.push(plain.slice(i, i + max));
+      for (let i = 0; i < plain.length; ) {
+        let end = Math.min(i + max, plain.length);
+        const amp = plain.lastIndexOf("&", end - 1);
+        if (end < plain.length && amp > i && amp > end - 8 && plain.indexOf(";", amp) >= end) end = amp;
+        parts.push(plain.slice(i, end));
+        i = end;
+      }
       current = "";
     }
   }
@@ -264,6 +275,35 @@ export async function tg(token: string, method: string, body: Record<string, unk
   const json = (await res.json().catch(() => ({}))) as { ok?: boolean; description?: string };
   if (!json.ok) throw new Error(`Telegram ${method} failed: ${json.description ?? res.status}`);
   return json;
+}
+
+/** Telegram HTML as plain text, for when Telegram refuses the markup. */
+export function htmlToPlain(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&");
+}
+
+/**
+ * Send one HTML message; if Telegram rejects it (a 400 on the markup), send the
+ * same words as plain text, so the reader still gets the story.
+ */
+export async function sendHtml(
+  token: string,
+  chat_id: number | string,
+  html: string,
+  extra: Record<string, unknown> = {},
+): Promise<unknown> {
+  const base = { chat_id, link_preview_options: { is_disabled: true }, ...extra };
+  try {
+    return await tg(token, "sendMessage", { ...base, text: html, parse_mode: "HTML" });
+  } catch (err) {
+    console.error("telegram: HTML send failed, resending as plain text", err);
+    return tg(token, "sendMessage", { ...base, text: htmlToPlain(html) });
+  }
 }
 
 /** The bot's command menu, in English and Amharic. */

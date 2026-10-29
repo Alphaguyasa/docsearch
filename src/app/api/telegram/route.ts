@@ -29,6 +29,7 @@ import {
   inlineResults,
   feedbackKeyboard,
   parseFeedbackData,
+  sendHtml,
   storyMessages,
   tg,
   parseWalk,
@@ -83,8 +84,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   const walkLang = /^\/start walk_[a-z]+_(en|am)$/.exec(text)?.[1];
   const lang: BotLang = ((deep?.[2] ?? walkLang) as BotLang | undefined) ?? detectLang(text, msg.from?.language_code);
   const t = TEXT[lang];
-  const send = (html: string) =>
-    tg(token, "sendMessage", { chat_id, text: html, parse_mode: "HTML", link_preview_options: { is_disabled: true } });
+  const send = (html: string) => sendHtml(token, chat_id, html);
 
   if (!text) return void (await send(t.textOnly));
   const walk = parseWalk(text);
@@ -156,14 +156,7 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
   const parts = storyMessages(result, lang);
   for (const [i, part] of parts.entries()) {
     if (i < parts.length - 1) await send(part);
-    else
-      await tg(token, "sendMessage", {
-        chat_id,
-        text: part,
-        parse_mode: "HTML",
-        link_preview_options: { is_disabled: true },
-        reply_markup: feedbackKeyboard(result, result.tags, lang),
-      });
+    else await sendHtml(token, chat_id, part, { reply_markup: feedbackKeyboard(result, result.tags, lang) });
   }
 }
 
