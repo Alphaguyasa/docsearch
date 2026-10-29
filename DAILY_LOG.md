@@ -514,3 +514,25 @@ otherwise ROADMAP 13 (ingest retag batches) and 31 (@types/node 24).
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 35 (Telegram send fallback), then 36 (keep figure passages).
+
+
+## 2026-10-29: run 18 (scheduled)
+
+- Main at start: ci green on dd18fad (#139); **deploy still red** (ROADMAP 28; the
+  #138 and #139 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI
+  was not pinned. Production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 35: **PR #140**, squash-merged as 2f52038. A rejected Telegram part is
+  resent as plain text, keeping the feedback keyboard; italics no longer cross a tag;
+  hard cuts keep entities whole. tests/telegram.test.ts. All PR checks green.
+- ROADMAP 36: a failed search keeps the figure passages (degraded) instead of a 502;
+  the document-id lookup caches only successes. tests/retrieve-struggle.test.ts.
+  Local: lint 0 warnings, typecheck, npm test 336/336. See its PR for the merge.
+- The branch for item 36 carries a merge of main after #140's squash (no force-push).
+- Roadmap: 10 items open, no replan.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-10-29-3` on 2f52038, and `-4` on the item 36 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 37 (accessibility of the streamed story), then 38 (route tests).

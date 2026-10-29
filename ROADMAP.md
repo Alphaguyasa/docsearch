@@ -14,17 +14,6 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-35. **[P1, S] A Telegram story is lost when a send fails.** api/telegram/route.ts sends
-    each part with no fallback; a `sendMessage` 400 (mis-nested tags from
-    `markdownToHtml` in src/lib/telegram.ts, e.g. `**a *b** c*`, or `splitMessage`'s
-    hard cut through an `&amp;` entity) only reaches console.error, and the reader gets
-    nothing. Fix: on a rejected part, resend it as plain text; cut only on entity
-    boundaries. Test: balanced tags; no part ends in a partial entity.
-36. **[P1, S] One failing search drops the figure passages, and a lookup error is cached.**
-    retrieve-struggle.ts calls `retrieve()` with no catch, so when both search arms fail
-    the figure chunks already found are thrown away (502). `documentIdFor` ignores
-    `error` and caches null until a cold start. Fix: keep the figure chunks on a failed
-    search; cache only successful lookups. Test needs a small db seam.
 37. **[P2, S] Accessibility of the streamed story.** The story `<article>` (page.tsx) has
     no `aria-busy` and nothing announces it is ready; an Amharic answer under the
     English UI has no `lang`, so screen readers use an English voice. Fix: aria-busy,
@@ -60,6 +49,8 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 
 ## Done
 
+- 2026-10-29: Item 36. When a search fails outright, `retrieveForStruggle` keeps the figure passages it already found and marks the result degraded (`topUpWithSearch`); it still throws when there are none. The document-id lookup throws on a db error and caches only successful lookups (`memoizeSuccess`), so a transient error no longer hides a source until a cold start. tests/retrieve-struggle.test.ts.
+- 2026-10-29: Item 35 (PR #140). A story part Telegram rejects is resent as plain text with its keyboard (`sendHtml` in src/lib/telegram.ts); italics no longer cross a tag (`**a *b** c*` was mis-nested), and splitMessage's hard cut backs off before a partial entity. tests/telegram.test.ts.
 - 2026-10-29: Item 31. @types/node 20 → 24.19.2 (undici-types 7.24.6), matching the Node 24 that CI and the workflows run. Typecheck needed no code changes. tests/workflow-runtimes.test.ts checks the types major equals ci.yml's node-version.
 - 2026-10-29: Item 13. Ingest retags in batches of 25 rows (was 100), and a batch that hits a statement timeout is split in half and retried, down to one row (`applyInBatches` in src/lib/scripture/plan.ts). Other errors still fail at once. tests/scripture-plan.test.ts, with a mocked update.
 - 2026-10-28: Item 23. The legacy DocSearch upload and document routes are gone (api/upload, api/process, api/documents, api/documents/[id], app/documents), with the SHOW_DOCUMENTS gate, nav link, robots entry and DocumentSummary type. With the flag on they could list and delete corpus books through the service-role client; the corpus is curated and ingested by CI. The CLI ingest (scripts/ingest.ts, src/lib/pipeline.ts) stays. tests/proxy.test.ts checks the routes stay removed. The README says it describes v1 (tag v1-docsearch).
