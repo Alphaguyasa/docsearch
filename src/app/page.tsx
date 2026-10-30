@@ -8,6 +8,7 @@ import { isSearchErrorCode, parseSearchStream, type CrisisPayload, type FigureSu
 import { peopleFor } from "@/lib/scripture/people-for";
 import { DEFAULT_TRADITION, filterFor, savedChoice } from "@/lib/scripture/tradition-choice";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
+import { textLang } from "@/lib/script-lang";
 
 import { AnswerView } from "./components/AnswerView";
 import { StoryFallback } from "./components/StoryFallback";
@@ -38,7 +39,7 @@ function extractCited(text: string): number[] {
 }
 
 export default function Home() {
-  const { t } = useT();
+  const { lang, t } = useT();
   const [question, setQuestion] = useState("");
   const [tradition, setTradition] = useState<TraditionChoice>(DEFAULT_TRADITION);
   const [status, setStatus] = useState<Status>("idle");
@@ -206,8 +207,17 @@ export default function Home() {
             </div>
           ))}
 
+        {/* Always mounted, so screen readers hear it change when the story finishes. */}
+        <p role="status" className="sr-only">
+          {status === "done" && answer.trim() ? t.story.ready : ""}
+        </p>
         {showResults && (
-          <article className="mx-auto min-w-0 max-w-3xl">
+          <article
+            className="mx-auto min-w-0 max-w-3xl"
+            aria-busy={status === "streaming"}
+            // An Amharic story under the English UI (or the reverse) gets the right voice.
+            lang={textLang(answer) ?? lang}
+          >
             <StoryFigures figures={figures} />
             <div className="illuminated font-serif text-[19px] leading-8 sm:text-[20px] sm:leading-9">
               <AnswerView
