@@ -14,10 +14,6 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-38. **[P2, M] Tests for /api/search and /api/telegram.** Neither route is imported by a
-    test. Cover: 400 on bad or over-long input; crisis answered before the rate limit;
-    a cached example served before taking a slot; 429 has `code: "busy"`; 403 on a
-    wrong webhook secret; only private chats answered. Mock db and LLM.
 39. **[P2, M] One person can use the whole site's search limit.** The site-wide limiter
     (3/min, `take_search_slot`) has no per-user share. Start with a per-chat limit in
     the bot (pure limiter, injectable clock). A per-IP web limit needs a privacy
@@ -44,7 +40,8 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 
 ## Done
 
-- 2026-10-30: Item 37. The streamed story `<article>` has `aria-busy` while it streams, an always-mounted sr-only `role="status"` says "Your story is ready." (EN, AM) when it finishes, and its `lang` follows the story's majority script (`textLang` in src/lib/script-lang.ts), so an Amharic story under the English UI gets an Amharic voice. The bot's `detectLang` uses the same Ethiopic check. tests/script-lang.test.ts.
+- 2026-10-30: Item 38. tests/api-routes.test.ts calls POST /api/search and /api/telegram directly, with the db and the network mocked and `after()` run inside a minimal Next request scope that counts deferred tasks: 400 on bad, empty, over-long input or an unknown church (no slot taken); a crisis answered before the rate limit; a cached example served without a slot; 429 with `code: "busy"`; 503 without a bot token; 403 on a wrong webhook secret; only private chats get a reply.
+- 2026-10-30: Item 37 (PR #142). The streamed story `<article>` has `aria-busy` while it streams, an always-mounted sr-only `role="status"` says "Your story is ready." (EN, AM) when it finishes, and its `lang` follows the story's majority script (`textLang` in src/lib/script-lang.ts), so an Amharic story under the English UI gets an Amharic voice. The bot's `detectLang` uses the same Ethiopic check. tests/script-lang.test.ts.
 - 2026-10-29: Item 36. When a search fails outright, `retrieveForStruggle` keeps the figure passages it already found and marks the result degraded (`topUpWithSearch`); it still throws when there are none. The document-id lookup throws on a db error and caches only successful lookups (`memoizeSuccess`), so a transient error no longer hides a source until a cold start. tests/retrieve-struggle.test.ts.
 - 2026-10-29: Item 35 (PR #140). A story part Telegram rejects is resent as plain text with its keyboard (`sendHtml` in src/lib/telegram.ts); italics no longer cross a tag (`**a *b** c*` was mis-nested), and splitMessage's hard cut backs off before a partial entity. tests/telegram.test.ts.
 - 2026-10-29: Item 31. @types/node 20 → 24.19.2 (undici-types 7.24.6), matching the Node 24 that CI and the workflows run. Typecheck needed no code changes. tests/workflow-runtimes.test.ts checks the types major equals ci.yml's node-version.

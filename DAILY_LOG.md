@@ -536,3 +536,28 @@ otherwise ROADMAP 35 (Telegram send fallback), then 36 (keep figure passages).
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 37 (accessibility of the streamed story), then 38 (route tests).
+
+
+## 2026-10-30: run 19 (scheduled)
+
+- Main at start: ci green on a43bd19 (#141); **deploy still red** (ROADMAP 28; the
+  #140 and #141 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI
+  was not pinned. Production still serves #128. The fetch-scripture run on #141 failed
+  on one source (`takla_haymanot`: "fetch failed", a network error); a later fetch run
+  committed the manifest, so nothing to fix.
+- Model check: Opus 5.5 is still the newest Opus on the models page; the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 37: **PR #142**, squash-merged as 160f810. The streamed story has
+  `aria-busy`, an sr-only "story ready" status (EN, AM), and a `lang` from its
+  majority script (src/lib/script-lang.ts, shared with the bot's detectLang).
+  tests/script-lang.test.ts. All PR checks green.
+- ROADMAP 38: tests/api-routes.test.ts covers both POST routes with the db and the
+  network mocked (7 tests). Local: lint 0 warnings, typecheck, npm test 347/347.
+  See its PR for the merge.
+- The branch for item 38 carries a merge of main after #142's squash (no force-push).
+- Roadmap: 8 items open, no replan.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-10-30-1` on 160f810, and `-2` on the item 38 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 39 (per-chat limit in the bot), then 40 (example cache across cold starts).
