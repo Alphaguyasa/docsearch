@@ -16,6 +16,7 @@ import { churchDay } from "./ethiopian-calendar";
 import { FIGURES, type Figure } from "./scripture/figures";
 import { foldEthiopic, matchTags } from "./scripture/struggle";
 import { personOfTheDay } from "./scripture/today";
+import { hasEthiopic } from "./script-lang";
 import { STRUGGLE_IDS, peopleForStruggle } from "../app/struggles";
 import type { CrisisPayload, FigureSummary, SearchStreamMessage, SourceChunk } from "./search-stream";
 
@@ -52,7 +53,7 @@ export function setupKey(token: string): string {
 
 /** Amharic if the message is written in Ethiopic script, or the phone is set to Amharic. */
 export function detectLang(text: string, languageCode?: string): BotLang {
-  if (/[ሀ-፿]/.test(text)) return "am";
+  if (hasEthiopic(text)) return "am";
   if (/^[a-z]/i.test(text)) return "en";
   return languageCode?.startsWith("am") ? "am" : "en";
 }

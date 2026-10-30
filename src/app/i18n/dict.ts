@@ -246,6 +246,7 @@ const en = {
   story: {
     notOnly: "You are not the only one",
     loading: "Finding someone who walked this road before you…",
+    ready: "Your story is ready.",
     retry: "Try again",
     readTitle: "Read it for yourself",
     readNote:
@@ -636,6 +637,7 @@ const am: Dict = {
   story: {
     notOnly: "እርስዎ ብቻ አይደሉም",
     loading: "ከእርስዎ በፊት በዚህ መንገድ የሄደን ሰው እየፈለግን ነው…",
+    ready: "ታሪክዎ ዝግጁ ነው።",
     retry: "እንደገና ይሞክሩ",
     readTitle: "ራስዎ ያንብቡት",
     readNote:

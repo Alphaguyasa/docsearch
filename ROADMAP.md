@@ -14,11 +14,6 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-37. **[P2, S] Accessibility of the streamed story.** The story `<article>` (page.tsx) has
-    no `aria-busy` and nothing announces it is ready; an Amharic answer under the
-    English UI has no `lang`, so screen readers use an English voice. Fix: aria-busy,
-    an sr-only "story ready" status, `lang` from a shared Ethiopic-script helper (the
-    regex is in telegram.ts `detectLang`). Test the helper.
 38. **[P2, M] Tests for /api/search and /api/telegram.** Neither route is imported by a
     test. Cover: 400 on bad or over-long input; crisis answered before the rate limit;
     a cached example served before taking a slot; 429 has `code: "busy"`; 403 on a
@@ -49,6 +44,7 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 
 ## Done
 
+- 2026-10-30: Item 37. The streamed story `<article>` has `aria-busy` while it streams, an always-mounted sr-only `role="status"` says "Your story is ready." (EN, AM) when it finishes, and its `lang` follows the story's majority script (`textLang` in src/lib/script-lang.ts), so an Amharic story under the English UI gets an Amharic voice. The bot's `detectLang` uses the same Ethiopic check. tests/script-lang.test.ts.
 - 2026-10-29: Item 36. When a search fails outright, `retrieveForStruggle` keeps the figure passages it already found and marks the result degraded (`topUpWithSearch`); it still throws when there are none. The document-id lookup throws on a db error and caches only successful lookups (`memoizeSuccess`), so a transient error no longer hides a source until a cold start. tests/retrieve-struggle.test.ts.
 - 2026-10-29: Item 35 (PR #140). A story part Telegram rejects is resent as plain text with its keyboard (`sendHtml` in src/lib/telegram.ts); italics no longer cross a tag (`**a *b** c*` was mis-nested), and splitMessage's hard cut backs off before a partial entity. tests/telegram.test.ts.
 - 2026-10-29: Item 31. @types/node 20 → 24.19.2 (undici-types 7.24.6), matching the Node 24 that CI and the workflows run. Typecheck needed no code changes. tests/workflow-runtimes.test.ts checks the types major equals ci.yml's node-version.
