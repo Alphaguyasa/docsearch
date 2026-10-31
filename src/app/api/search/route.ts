@@ -38,7 +38,13 @@ import { z } from "zod";
 
 import { streamAnswer, type FigureHint } from "@/lib/answer";
 import { bump, searchCounts } from "@/lib/counts";
-import { cacheExample, exampleKey, getCachedExample } from "@/lib/example-cache";
+import {
+  cacheExample,
+  exampleKey,
+  getCachedExample,
+  loadSharedExample,
+  saveSharedExample,
+} from "@/lib/example-cache";
 import { getLlm, lightModel } from "@/lib/llm";
 import type { RetrievedChunk } from "@/lib/retrieve";
 import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
@@ -141,9 +147,10 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  // An example question answered recently is served from memory: no quota spent.
+  // An example question answered recently is served from memory, or from the
+  // table every instance shares after a cold start: no quota spent.
   const cacheKey = exampleKey(question, tradition);
-  const cached = cacheKey ? getCachedExample(cacheKey) : null;
+  const cached = cacheKey ? (getCachedExample(cacheKey) ?? (await loadSharedExample(cacheKey))) : null;
   if (cached) {
     count({ kind: "cached" });
     return new Response(cached, {
@@ -197,7 +204,12 @@ export async function POST(request: Request): Promise<Response> {
         }
 
         send(line({ type: "done" }));
-        if (cacheKey) cacheExample(cacheKey, transcript.join(""));
+        if (cacheKey) {
+          const body = transcript.join("");
+          cacheExample(cacheKey, body);
+          // Awaited before the stream closes, so a serverless freeze cannot drop it.
+          await saveSharedExample(cacheKey, body);
+        }
       } catch (err) {
         void bump(["error"]);
         console.error("search: generation failed:", errorMessage(err));
