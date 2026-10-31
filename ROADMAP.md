@@ -17,10 +17,6 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,
     hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
-40. **[P2, M] Keep example answers across cold starts.** example-cache.ts keeps the 7 fixed
-    example answers in memory, so each cold start spends Gemini quota on them again.
-    An additive table holding only those fixed questions (no user text), 6-hour TTL.
-    Migration plus a test.
 41. **[P3, S] Leftover DocSearch code and English-only home metadata.** Unused:
     components/SearchInput.tsx, CitationTargets.tsx, `IdleExamples`/`EmptyState` in
     States.tsx ("ingest PDFs"). proxy.ts uses realm "DocSearch", and its matcher would
@@ -38,6 +34,8 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     Read each migration guide first; dev-only, so no runtime risk.
 
 ## Done
+
+- 2026-10-31: Item 40. Example answers are also kept in a shared table, `example_answers` (migration 20261031090000, additive: a table with RLS and two service-role-only functions, `get_example` and `put_example`, 6-hour TTL). A cold instance reads the answer back instead of spending Gemini quota on it again. Only keys made by `exampleKey` (the fixed questions) can reach the table. The answer is saved after "done" and before the stream closes. Until the migration is applied, or on any db error, the memory cache works alone as before. tests/example-cache.test.ts (shared read, fallback, key guard, migration checks) and a route test.
 
 - 2026-10-31: Item 39 (bot part). Each Telegram chat may start 2 searches per 3 minutes (`ChatLimiter` in src/lib/chat-limit.ts: pure, injectable clock, in memory, at most 10,000 chats, only chat numbers and times). Over its share a chat gets "please wait a few minutes" (EN, AM) with the matching people and no call to /api/search; a crisis phrase is still answered at once, and the fixed example questions are not counted. tests/chat-limit.test.ts and a route test in tests/api-routes.test.ts. The web per-reader limit is item 43 (NEEDS_APPROVAL #11).
 

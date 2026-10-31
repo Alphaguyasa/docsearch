@@ -79,6 +79,18 @@ test("search: a cached example is served without taking a slot", async () => {
   assert.equal(slots.mock.callCount(), 0);
 });
 
+test("search: after a cold start an example is read from the shared table, without a slot", async () => {
+  const question = EXAMPLE_QUESTIONS[5];
+  const body = '{"type":"sources","chunks":[],"figures":[],"tags":[]}\n{"type":"done"}\n';
+  slots = mock.method(db, "rpc", async (fn: string) =>
+    fn === "get_example" ? { data: body, error: null } : { data: false, error: null },
+  );
+  const { res } = await inRequest(() => search(searchReq({ question, tradition: "catholic" })));
+  assert.equal(res.status, 200);
+  assert.equal(await res.text(), body);
+  assert.deepEqual(slots.mock.calls.map((c) => c.arguments[0]), ["get_example"]);
+});
+
 test("search: with no slot left the answer is a 429 with code busy", async () => {
   const { res } = await inRequest(() => search(searchReq({ question: "I keep stealing from work" })));
   assert.equal(res.status, 429);

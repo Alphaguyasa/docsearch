@@ -561,3 +561,29 @@ otherwise ROADMAP 37 (accessibility of the streamed story), then 38 (route tests
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 39 (per-chat limit in the bot), then 40 (example cache across cold starts).
+
+
+## 2026-10-31: run 20 (scheduled)
+
+- Main at start: ci green on 7f815b7 (#143). **The deploy is still red** (ROADMAP 28). NEEDS_APPROVAL
+  #10 has no answer yet, so the CLI was not pinned, and production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- `gh` is not logged in in this session (invalid GH_TOKEN), so GitHub work went through
+  the MCP tools.
+- ROADMAP 39 (bot part): **PR #144**, squash-merged as 62acd95. Each Telegram chat may start
+  2 searches per 3 minutes (src/lib/chat-limit.ts). Over that, it gets a gentle wait with the matching
+  people. A crisis phrase is still answered at once, and the fixed examples are not counted. All PR
+  checks were green. The per-reader web limit is new item 43 and waits on NEEDS_APPROVAL #11
+  (privacy: hashed IP or nothing).
+- ROADMAP 40: example answers are shared across instances through a new `example_answers` table
+  (an additive migration), so a cold start no longer spends Gemini quota on them. The table must be
+  applied by Alpha (NEEDS_APPROVAL #12); until then the memory cache works alone. Local:
+  lint 0 warnings, typecheck, npm test 358/358, vitest 339/339, build. See its PR for the merge.
+- The branch for item 40 carries a merge of main after #144's squash (no force-push).
+- Roadmap: 7 items open, no replan.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-10-31-1` on 62acd95, and `-2` on the item 40 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 41 (leftover DocSearch code, Amharic home metadata), then 42 (zod for the webhook).

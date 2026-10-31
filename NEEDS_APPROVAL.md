@@ -5,6 +5,12 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+12. **Apply the `example_answers` migration (ROADMAP 40, 2026-10-31).** It is
+    additive (a new table plus two functions, service role only), so policy allows it,
+    but the cloud run has no database access. Run
+    `supabase/migrations/20261031090000_example_answers.sql` in the Supabase SQL editor
+    (project `not-alone-scripture`). Until then the site works as before (memory cache
+    only). No cost.
 11. **A per-reader share of the website's search limit (ROADMAP 43, 2026-10-31).**
     The site allows 3 searches a minute for everyone together, so one person
     reloading could keep others on "busy". The Telegram bot now has a per-chat share
