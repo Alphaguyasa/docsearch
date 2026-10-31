@@ -93,6 +93,7 @@ export const TEXT = {
     aiNote: "Written by an AI from these passages. It can make mistakes, so read them for yourself.",
     more: "Read it with the full passages",
     busy: "Many people are asking right now. Please send your message again in a minute.",
+    slow: "You have asked a few times in a short while. Please wait a few minutes, then send it again, so others can be heard too. If you are in danger, send /help.",
     failed: "Something went wrong while finding a story. Please try again in a moment.",
     fallback:
       "The story couldn't be written just now — but you are still not alone. These people carried this too; tap one to read their story straight from the text:",
@@ -140,6 +141,7 @@ export const TEXT = {
     aiNote: "ከእነዚህ ክፍሎች በሰው ሠራሽ አስተውሎት (AI) የተጻፈ ነው፤ ሊሳሳት ስለሚችል ራስዎ ያንብቧቸው።",
     more: "ከሙሉ ምንባቦቹ ጋር ያንብቡት",
     busy: "አሁን ብዙ ሰዎች እየጠየቁ ነው። እባክዎ ከአንድ ደቂቃ በኋላ መልእክትዎን እንደገና ይላኩ።",
+    slow: "በአጭር ጊዜ ውስጥ ብዙ ጊዜ ጠይቀዋል። ሌሎችም እንዲሰሙ፣ እባክዎ ጥቂት ደቂቃዎች ቆይተው እንደገና ይላኩ። አደጋ ላይ ከሆኑ /help ይላኩ።",
     failed: "ታሪክ በመፈለግ ላይ ችግር ተፈጠረ። እባክዎ ትንሽ ቆይተው እንደገና ይሞክሩ።",
     fallback: "ታሪኩ አሁን ሊጻፍ አልቻለም — ግን አሁንም ብቻዎን አይደሉም። እነዚህ ሰዎችም ይህን ተሸክመዋል፤ ታሪካቸውን በቀጥታ ከመጽሐፉ ለማንበብ አንዱን ይንኩ፦",
     tooLong: "ይህ ብዙ ሸክም ነው። በአጭሩ (ከ1000 ፊደል በታች) ሊነግሩኝ ይችላሉ?",
@@ -375,14 +377,14 @@ export function parseFeedbackData(
 }
 
 /**
- * When no story can be written (quota spent, site busy, stream broken): the
- * reason, then the people who carried the same thing, each linking to their
+ * When no story can be written (quota spent, site busy, this chat over its
+ * share, stream broken): the reason, then the people who carried the same thing, each linking to their
  * page — read straight from the text, no model needed. Null when there is no one.
  */
 export function fallbackMessage(
   people: Pick<FigureSummary, "id" | "name" | "summary">[],
   lang: BotLang,
-  busy: boolean,
+  lead: "busy" | "slow" | null,
 ) {
   if (!people.length) return null;
   const t = TEXT[lang];
@@ -390,7 +392,7 @@ export function fallbackMessage(
     const x = figureText(lang, f);
     return `📖 <a href="${SITE_URL}/people/${f.id}">${escapeHtml(x.name)}</a> — ${escapeHtml(x.summary)}`;
   });
-  return `${busy ? `${escapeHtml(t.busy)}\n\n` : ""}${escapeHtml(t.fallback)}\n\n${lines.join("\n\n")}`;
+  return `${lead ? `${escapeHtml(t[lead])}\n\n` : ""}${escapeHtml(t.fallback)}\n\n${lines.join("\n\n")}`;
 }
 
 /** The /today caption: who, what they carried, and a link to their page (fits a photo caption). */

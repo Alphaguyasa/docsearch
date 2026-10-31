@@ -4,14 +4,17 @@
  * Telegram sends every message here. We answer 200 at once (so Telegram never
  * retries) and do the work after the response: the text is sent to
  * /api/search exactly as the website sends it — safety gate, rate limit and
- * example cache included — and the story comes back to the chat. Only private
+ * example cache included — and the story comes back to the chat. Each chat
+ * also has its own share of the searches (src/lib/chat-limit.ts). Only private
  * chats are answered; nothing written is stored (only /daily keeps the chat
  * number, until /stop).
  */
 import { after } from "next/server";
 
 import { DICTS } from "@/app/i18n/dict";
+import { ChatLimiter } from "@/lib/chat-limit";
 import { ensureDailyStory, sendJourneyDay, sendToday, sendWalkDay, subscribe, unsubscribe } from "@/lib/channel";
+import { exampleKey } from "@/lib/example-cache";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResources, crisisResponse, phraseCheck } from "@/lib/scripture/safety";
@@ -40,6 +43,9 @@ import {
 } from "@/lib/telegram";
 
 export const maxDuration = 60;
+
+/** Each chat's share of the site-wide search limit (src/lib/chat-limit.ts). */
+const chatSearches = new ChatLimiter();
 
 interface Update {
   message?: {
@@ -125,12 +131,17 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
 
   // No story could be written: still send the people who carried this, or — if the
   // server never answered, so its safety gate never ran — check for crisis first.
-  const fallback = async (busy: boolean, people = matchPeople(), checked = false) => {
+  const fallback = async (lead: "busy" | "slow" | null, people = matchPeople(), checked = false) => {
     const kind = checked ? undefined : phraseCheck(text);
     if (kind) return void (await send(crisisMessage(crisisResponse(kind, lang), lang)));
-    const msg = fallbackMessage(people, lang, busy);
-    await send(msg ?? (busy ? t.busy : t.failed));
+    const msg = fallbackMessage(people, lang, lead);
+    await send(msg ?? (lead ? t[lead] : t.failed));
   };
+
+  // This chat has used its share of the site's searches. The server's safety gate
+  // will not see the message, so fallback checks it for crisis first. The fixed
+  // examples are served from the cache without a slot, so they are not counted.
+  if (!exampleKey(text, tradition) && !chatSearches.take(chat_id)) return fallback("slow");
 
   await tg(token, "sendChatAction", { chat_id, action: "typing" }).catch(() => {});
   let res: Response;
@@ -141,17 +152,17 @@ async function handle(token: string, msg: NonNullable<Update["message"]>): Promi
       body: JSON.stringify({ question: text, tradition }),
     });
   } catch {
-    return fallback(false);
+    return fallback(null);
   }
   // A 429 comes after the server's safety gate, so the message was already checked.
-  if (res.status === 429) return fallback(true, matchPeople(), true);
-  if (!res.ok || !res.body) return fallback(false);
+  if (res.status === 429) return fallback("busy", matchPeople(), true);
+  if (!res.ok || !res.body) return fallback(null);
 
   const result = await collectStream(parseSearchStream(res.body)).catch(() => null);
-  if (!result) return fallback(false);
+  if (!result) return fallback(null);
   if (result.crisis) return void (await send(crisisMessage(crisisResponse(result.crisis.kind, lang), lang)));
   if (result.error || !result.answer.trim()) {
-    return fallback(false, result.figures.length ? result.figures : matchPeople(), true);
+    return fallback(null, result.figures.length ? result.figures : matchPeople(), true);
   }
   const parts = storyMessages(result, lang);
   for (const [i, part] of parts.entries()) {

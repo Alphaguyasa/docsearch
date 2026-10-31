@@ -101,11 +101,13 @@ test("long answers are split under Telegram's limit", () => {
 
 test("fallback message links each person's page, or is null with no one to offer", () => {
   const people = [{ id: "peter", name: "Peter", summary: "Denied Jesus three times." }];
-  const en = fallbackMessage(people, "en", true)!;
+  const en = fallbackMessage(people, "en", "busy")!;
   assert.match(en, /Many people are asking/);
   assert.match(en, /\/people\/peter">Peter<\/a>/);
-  assert.match(fallbackMessage(people, "am", false)!, /\/people\/peter">ጴጥሮስ<\/a>/);
-  assert.equal(fallbackMessage([], "en", false), null);
+  assert.match(fallbackMessage(people, "am", null)!, /\/people\/peter">ጴጥሮስ<\/a>/);
+  assert.equal(fallbackMessage([], "en", null), null);
+  assert.match(fallbackMessage(people, "en", "slow")!, /^You have asked a few times/);
+  assert.match(fallbackMessage(people, "am", "slow")!, /^በአጭር ጊዜ ውስጥ/);
 });
 
 test("the setup key is token-bound and differs from the webhook secret", () => {

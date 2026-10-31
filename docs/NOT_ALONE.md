@@ -95,6 +95,10 @@ The bot is the website in a chat. `POST /api/telegram` is its webhook: each
 private message is sent to `/api/search` as the site sends it (safety gate,
 rate limit and example cache included) and the story comes back with its
 references. `/start` greets, `/help` gives the crisis numbers. Nothing is stored.
+Each chat may start 2 searches per 3 minutes (`src/lib/chat-limit.ts`, in memory,
+per instance), so one chat cannot use the whole site-wide limit. Over its share a
+chat gets a gentle "please wait" with the matching people; a crisis phrase is still
+answered at once, and the fixed example questions are not counted.
 
 - The token lives only in Vercel as `TELEGRAM_BOT_TOKEN` (sensitive, production).
 - To register the webhook and the English/Amharic command menu (after changing
