@@ -14,10 +14,9 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
     way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
-39. **[P2, M] One person can use the whole site's search limit.** The site-wide limiter
-    (3/min, `take_search_slot`) has no per-user share. Start with a per-chat limit in
-    the bot (pure limiter, injectable clock). A per-IP web limit needs a privacy
-    decision first (hashed IP, short retention): ask in NEEDS_APPROVAL.
+43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
+    share (item 39); the website has none. Needs a privacy decision first (a salted,
+    hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
 40. **[P2, M] Keep example answers across cold starts.** example-cache.ts keeps the 7 fixed
     example answers in memory, so each cold start spends Gemini quota on them again.
     An additive table holding only those fixed questions (no user text), 6-hour TTL.
@@ -39,6 +38,8 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     Read each migration guide first; dev-only, so no runtime risk.
 
 ## Done
+
+- 2026-10-31: Item 39 (bot part). Each Telegram chat may start 2 searches per 3 minutes (`ChatLimiter` in src/lib/chat-limit.ts: pure, injectable clock, in memory, at most 10,000 chats, only chat numbers and times). Over its share a chat gets "please wait a few minutes" (EN, AM) with the matching people and no call to /api/search; a crisis phrase is still answered at once, and the fixed example questions are not counted. tests/chat-limit.test.ts and a route test in tests/api-routes.test.ts. The web per-reader limit is item 43 (NEEDS_APPROVAL #11).
 
 - 2026-10-30: Item 38. tests/api-routes.test.ts calls POST /api/search and /api/telegram directly, with the db and the network mocked and `after()` run inside a minimal Next request scope that counts deferred tasks: 400 on bad, empty, over-long input or an unknown church (no slot taken); a crisis answered before the rate limit; a cached example served without a slot; 429 with `code: "busy"`; 503 without a bot token; 403 on a wrong webhook secret; only private chats get a reply.
 - 2026-10-30: Item 37 (PR #142). The streamed story `<article>` has `aria-busy` while it streams, an always-mounted sr-only `role="status"` says "Your story is ready." (EN, AM) when it finishes, and its `lang` follows the story's majority script (`textLang` in src/lib/script-lang.ts), so an Amharic story under the English UI gets an Amharic voice. The bot's `detectLang` uses the same Ethiopic check. tests/script-lang.test.ts.

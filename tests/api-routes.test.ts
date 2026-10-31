@@ -19,13 +19,15 @@ import { db } from "../src/lib/db";
 import { cacheExample, exampleKey, EXAMPLE_QUESTIONS } from "../src/lib/example-cache";
 import { webhookSecret } from "../src/lib/telegram";
 
-async function inRequest(call: () => Promise<Response>): Promise<{ res: Response; deferred: number }> {
-  let deferred = 0;
-  const workStore = { afterContext: { after: () => void deferred++ } };
+async function inRequest(
+  call: () => Promise<Response>,
+): Promise<{ res: Response; deferred: number; tasks: (() => unknown)[] }> {
+  const tasks: (() => unknown)[] = [];
+  const workStore = { afterContext: { after: (task: () => unknown) => void tasks.push(task) } };
   const res = await workAsyncStorage.run(workStore as never, () =>
     workUnitAsyncStorage.run({} as never, call),
   );
-  return { res, deferred };
+  return { res, deferred: tasks.length, tasks };
 }
 
 function post(url: string, body: unknown, headers: Record<string, string> = {}): Request {
@@ -118,4 +120,47 @@ test("telegram: only private chats are answered", async (t) => {
     counts[type] = deferred;
   }
   assert.deepEqual(counts, { private: 2, group: 1, supergroup: 1, channel: 1 });
+});
+
+test("telegram: a chat over its share gets a gentle wait, without calling the search", async (t) => {
+  t.after(() => delete process.env.TELEGRAM_BOT_TOKEN);
+  process.env.TELEGRAM_BOT_TOKEN = TOKEN;
+  const searches: string[] = [];
+  const sent: string[] = [];
+  mock.method(globalThis, "fetch", async (input: unknown, init?: RequestInit) => {
+    const url = String(input);
+    if (url.endsWith("/api/search")) {
+      searches.push(JSON.parse(String(init?.body)).question);
+      return new Response("{}", { status: 429 });
+    }
+    if (url.startsWith("https://api.telegram.org/")) {
+      const body = JSON.parse(String(init?.body ?? "{}"));
+      if (body.text) sent.push(body.text);
+      return Response.json({ ok: true, result: {} });
+    }
+    throw new Error(`unexpected network call in a test: ${url}`);
+  });
+  const say = async (text: string) => {
+    const { tasks } = await inRequest(() =>
+      telegram(hookReq({ message: { chat: { id: 7001, type: "private" }, text } })),
+    );
+    await tasks[0](); // the reply; the rest is the channel-post backup
+  };
+
+  await say("I keep lying");
+  await say("I keep lying again");
+  assert.equal(searches.length, 2);
+  await say("I keep lying, still");
+  assert.equal(searches.length, 2, "the third message in the window never reaches the search");
+  assert.match(sent.at(-1)!, /You have asked a few times/);
+
+  // A crisis is still answered at once, even over the share.
+  await say("I want to kill myself");
+  assert.equal(searches.length, 2);
+  assert.doesNotMatch(sent.at(-1)!, /You have asked a few times/);
+  assert.match(sent.at(-1)!, /\/help|call|988|danger/i);
+
+  // The fixed examples are served from the cache and cost no share.
+  await say(EXAMPLE_QUESTIONS[0]);
+  assert.equal(searches.length, 3);
 });

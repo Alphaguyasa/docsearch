@@ -5,6 +5,17 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+11. **A per-reader share of the website's search limit (ROADMAP 43, 2026-10-31).**
+    The site allows 3 searches a minute for everyone together, so one person
+    reloading could keep others on "busy". The Telegram bot now has a per-chat share
+    (chat numbers only, in memory). The website would need something per reader.
+    Options: (a) a salted hash of the IP address, in memory on each server instance,
+    forgotten after 3 minutes, never written to the database or logs; (b) the same,
+    but in Postgres so every instance shares it (an additive table, rows deleted after
+    a few minutes); (c) nothing per reader, as today. Both (a) and (b) touch the
+    "Nothing you write is saved" promise (an IP is not what you write, but it is
+    personal data), so the About page would say it. No cost. *Default until you
+    decide: (c), nothing per reader.*
 10. **Production deploys fail since 17:33 UTC on 2026-10-26 (Vercel CLI 65.3.1).**
     deploy-not-alone failed for #129 and #130 at `vercel link` with "Error: The
     specified scope does not exist". The last good deploy (03:45, #128) used
