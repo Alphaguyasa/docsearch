@@ -50,12 +50,6 @@ export const Cross = (p: P) => (
   </Icon>
 );
 
-export const Quote = (p: P) => (
-  <Icon {...p}>
-    <path d="M9.5 7C6.5 8 5 10.5 5 14v3h4.5v-4.5H7c0-2 1-3.5 2.5-4.2M19 7c-3 1-4.5 3.5-4.5 7v3H19v-4.5h-2.5c0-2 1-3.5 2.5-4.2" />
-  </Icon>
-);
-
 export const Phone = (p: P) => (
   <Icon {...p}>
     <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
