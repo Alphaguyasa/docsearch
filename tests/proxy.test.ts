@@ -9,7 +9,7 @@ import { test } from "node:test";
 
 import { NextRequest } from "next/server";
 
-import { proxy } from "../src/proxy";
+import { config, proxy } from "../src/proxy";
 
 const req = (path: string, headers: Record<string, string> = {}) =>
   new NextRequest(new URL(path, "https://not-alone.test"), { headers });
@@ -60,5 +60,25 @@ test("?lang= is passed to the pages as a request header", () => {
   withEnv({ APP_PASSWORD: undefined }, () => {
     const res = proxy(req("/people?lang=am"));
     assert.equal(res.headers.get("x-middleware-request-x-not-alone-lang"), "am");
+  });
+});
+
+// Next turns the matcher into a path regex; this mirrors it closely enough to
+// check which paths the gate sees.
+const gated = (path: string) => config.matcher.some((m) => new RegExp(`^${m}$`).test(path));
+
+test("the Telegram webhook, setup and daily cron skip the Basic auth gate", () => {
+  // Telegram and Vercel cron cannot send Basic credentials; each route checks its own secret.
+  for (const p of ["/api/telegram", "/api/telegram/daily", "/api/telegram/setup"]) {
+    assert.equal(gated(p), false, p);
+  }
+  for (const p of ["/", "/people", "/api/search", "/api/feedback", "/about"]) {
+    assert.equal(gated(p), true, p);
+  }
+});
+
+test("the auth challenge names Not Alone, not DocSearch", () => {
+  withEnv({ APP_PASSWORD: "s3cret" }, () => {
+    assert.match(proxy(req("/")).headers.get("www-authenticate") ?? "", /realm="Not Alone"/);
   });
 });

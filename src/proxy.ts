@@ -45,11 +45,13 @@ export function proxy(req: NextRequest): NextResponse {
 
   return new NextResponse("Authentication required.", {
     status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="DocSearch", charset="UTF-8"' },
+    headers: { "WWW-Authenticate": 'Basic realm="Not Alone", charset="UTF-8"' },
   });
 }
 
 export const config = {
-  // Gate everything except Next internals and the favicon.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // Gate everything except Next internals, the favicon and the Telegram routes.
+  // Telegram and Vercel cron cannot send Basic credentials, and each of those
+  // routes checks its own secret (webhook secret, CRON_SECRET, setup key).
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/telegram).*)"],
 };

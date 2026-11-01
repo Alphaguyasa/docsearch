@@ -9,6 +9,7 @@ import { SiteFooter } from "./components/SiteFooter";
 import { LangProvider, LangToggle } from "./i18n/client";
 import { getDict } from "./i18n/server";
 import { SiteHeader } from "./components/SiteHeader";
+import { SITE_META } from "./site-meta";
 
 import "./globals.css";
 
@@ -58,24 +59,26 @@ const ethiopic = localFont({
   adjustFontFallback: "Times New Roman",
 });
 
-const DESCRIPTION =
-  "Tell what you are struggling with, and read the true stories of holy people who fell the same way and were restored — cited from Scripture and the Church Fathers.";
-
-export const metadata: Metadata = {
-  metadataBase: new URL("https://not-alone-seven.vercel.app"),
-  title: { default: "Not Alone", template: "%s" },
-  description: DESCRIPTION,
-  applicationName: "Not Alone",
-  icons: { apple: "/icons/apple-touch-icon.png" },
-  appleWebApp: { capable: true, title: "Not Alone", statusBarStyle: "black" },
-  openGraph: {
-    type: "website",
-    siteName: "Not Alone",
-    title: "Not Alone — You are not the only one",
-    description: DESCRIPTION,
-  },
-  twitter: { card: "summary_large_image", title: "Not Alone — You are not the only one", description: DESCRIPTION },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { lang } = await getDict();
+  const m = SITE_META[lang];
+  return {
+    metadataBase: new URL("https://not-alone-seven.vercel.app"),
+    title: { default: "Not Alone", template: "%s" },
+    description: m.description,
+    applicationName: "Not Alone",
+    icons: { apple: "/icons/apple-touch-icon.png" },
+    appleWebApp: { capable: true, title: "Not Alone", statusBarStyle: "black" },
+    openGraph: {
+      type: "website",
+      siteName: "Not Alone",
+      locale: m.locale,
+      title: m.title,
+      description: m.description,
+    },
+    twitter: { card: "summary_large_image", title: m.title, description: m.description },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#0b0907",
