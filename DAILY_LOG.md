@@ -587,3 +587,29 @@ otherwise ROADMAP 39 (per-chat limit in the bot), then 40 (example cache across 
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 41 (leftover DocSearch code, Amharic home metadata), then 42 (zod for the webhook).
+
+
+## 2026-11-01: run 21 (scheduled)
+
+- Main at start: ci green on edecec6 (#145). **The deploy is still red** (ROADMAP 28; the
+  #144 and #145 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI
+  was not pinned, and production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- `gh` is still not logged in (invalid GH_TOKEN), so GitHub work went through the MCP tools.
+- ROADMAP 41: **PR #146**, squash-merged as fafa4e0. The unused DocSearch components and
+  the unused Quote icon are gone. The auth realm says "Not Alone", and /api/telegram/*
+  skips the APP_PASSWORD gate (those routes check their own secrets). The home page
+  metadata is in Amharic for Amharic readers. tests/components-used.test.ts. All PR checks green.
+- ROADMAP 42: the Telegram webhook body is validated with zod (src/lib/telegram-update.ts),
+  so a message without `chat` is a 200, not a 500 that Telegram retries.
+  tests/telegram-update.test.ts. Local, on Node 24 with the CI dummy env: lint 0 warnings,
+  typecheck and the route tests pass. See its PR for the merge.
+- The branch for item 42 carries a merge of main after #146's squash (no force-push).
+- Roadmap: 5 items open (28 and 43 wait on Alpha; 11 waits on NEEDS_APPROVAL #3), so no
+  replan yet. The next run should replan once one more item closes.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-11-01-1` on fafa4e0, and `-2` on the item 42 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 34 (@anthropic-ai/sdk 1.x), then replan (fewer than 5 items left).
