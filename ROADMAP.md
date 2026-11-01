@@ -17,9 +17,6 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,
     hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
-42. **[P3, S] Validate the Telegram webhook body with zod.** route.ts casts JSON to
-    `Update` and reads `msg.chat.type`, which throws (500, Telegram retries) on a
-    message without `chat`. Secret is checked first, so low risk.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
 34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Only the optional Anthropic
     provider in src/lib/llm.ts uses it, and its key is not set in production. Read the
@@ -29,6 +26,8 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
     Read each migration guide first; dev-only, so no runtime risk.
 
 ## Done
+
+- 2026-11-01: Item 42. The Telegram webhook body is parsed with zod (`parseUpdate` in src/lib/telegram-update.ts). Each part (message, inline query, button press) is checked on its own, and a malformed part is dropped, so a message without `chat` or a body that is not JSON gets a 200 and no reply, where before it threw a 500 and Telegram retried. A bad part never drops a good one in the same update. tests/telegram-update.test.ts and a route test in tests/api-routes.test.ts.
 
 - 2026-11-01: Item 41. The unused DocSearch components are gone (SearchInput, CitationTargets, `IdleExamples` and the "ingest PDFs" `EmptyState`, and the unused `Quote` icon). The Basic auth realm says "Not Alone", and the proxy matcher skips /api/telegram/* (webhook, setup, daily cron), which cannot send Basic credentials and check their own secrets, so setting APP_PASSWORD no longer silences the bot. The home page metadata follows the reader's language (`generateMetadata` in layout.tsx, src/app/site-meta.ts; the Amharic line is the bot's own Amharic description). tests/components-used.test.ts (every exported component is used somewhere, metadata in both languages) and two proxy tests.
 

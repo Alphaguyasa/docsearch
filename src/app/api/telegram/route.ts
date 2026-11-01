@@ -21,6 +21,7 @@ import { crisisResources, crisisResponse, phraseCheck } from "@/lib/scripture/sa
 import { DEFAULT_TRADITION, filterFor } from "@/lib/scripture/tradition-choice";
 import { safeEqual } from "@/lib/safe-equal";
 import { parseSearchStream } from "@/lib/search-stream";
+import { parseUpdate, type Update } from "@/lib/telegram-update";
 import {
   SITE_URL,
   TEXT,
@@ -47,20 +48,6 @@ export const maxDuration = 60;
 /** Each chat's share of the site-wide search limit (src/lib/chat-limit.ts). */
 const chatSearches = new ChatLimiter();
 
-interface Update {
-  message?: {
-    chat: { id: number; type: string };
-    from?: { first_name?: string; language_code?: string };
-    text?: string;
-  };
-  inline_query?: { id: string; query: string; from?: { language_code?: string } };
-  callback_query?: {
-    id: string;
-    data?: string;
-    message?: { chat: { id: number }; message_id: number };
-  };
-}
-
 export async function POST(request: Request): Promise<Response> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return new Response("Bot not configured", { status: 503 });
@@ -68,7 +55,7 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Forbidden", { status: 403 });
   }
 
-  const update = (await request.json().catch(() => ({}))) as Update;
+  const update = parseUpdate(await request.json().catch(() => null));
   const msg = update.message;
   if (msg && msg.chat.type === "private") {
     after(() => handle(token, msg).catch((err) => console.error("telegram:", err)));

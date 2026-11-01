@@ -134,6 +134,17 @@ test("telegram: only private chats are answered", async (t) => {
   assert.deepEqual(counts, { private: 2, group: 1, supergroup: 1, channel: 1 });
 });
 
+test("telegram: a message without chat, or a body that is not JSON, is a 200 and no reply", async (t) => {
+  t.after(() => delete process.env.TELEGRAM_BOT_TOKEN);
+  process.env.TELEGRAM_BOT_TOKEN = TOKEN;
+  // Only the channel-post backup is scheduled; before zod this was a 500 and Telegram retried.
+  for (const body of [{ message: { text: "I keep lying" } }, "not json", null]) {
+    const { res, deferred } = await inRequest(() => telegram(hookReq(body)));
+    assert.equal(res.status, 200, JSON.stringify(body));
+    assert.equal(deferred, 1, JSON.stringify(body));
+  }
+});
+
 test("telegram: a chat over its share gets a gentle wait, without calling the search", async (t) => {
   t.after(() => delete process.env.TELEGRAM_BOT_TOKEN);
   process.env.TELEGRAM_BOT_TOKEN = TOKEN;
