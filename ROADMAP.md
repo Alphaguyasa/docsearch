@@ -4,7 +4,7 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-10-29 (full audit: code, security, accessibility, localization, tests; items 35-42). Before that 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
+Last replan: 2026-11-02 (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
 
 ## Open
 
@@ -17,15 +17,46 @@ Last replan: 2026-10-29 (full audit: code, security, accessibility, localization
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,
     hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
+44. **[P2, M] Content-Security-Policy, report-only first.** next.config.ts sends
+    nosniff, frame DENY, referrer and permissions headers, but no CSP. Start with
+    `Content-Security-Policy-Report-Only` (default-src 'self'; the inline scripts
+    Next needs; img/font self + data:; connect-src self; frame-ancestors 'none'),
+    check a `next start` browser smoke test shows no violations on the main pages,
+    then enforce in a later PR. Test pins the header.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
-34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Only the optional Anthropic
-    provider in src/lib/llm.ts uses it, and its key is not set in production. Read the
-    migration notes; tests mock it, so no API calls.
+34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Waits on NEEDS_APPROVAL #13.
+    1.x sends API version 2026-10-21, which rejects `temperature`/`top_p`/`top_k`
+    with a 400; eval/src/provider.ts sends `temperature: 0` to Haiku 4.5 (a
+    non-default value, so the owner decides). Typecheck flags only that line. Also
+    check then: 1.x sends the key as `Authorization: Bearer` (no proxy here), and
+    llm.ts's `thinking: disabled` is fine on claude-sonnet-5 but 400s on Sonnet 5.5.
 32. **[P3, L] Toolchain majors, one PR each:** ESLint 10 (+ @eslint/js 10,
     react-hooks plugin 7, which adds new rules), vitest/coverage-v8 5, TypeScript 7.
-    Read each migration guide first; dev-only, so no runtime risk.
+    Read each migration guide first; dev-only, so no runtime risk. (2026-11-02:
+    TypeScript 7 waits on typescript-eslint, whose peer range is `<6.1.0`; ESLint 10
+    still uses minimatch 10, so it does not clear item 47.)
+46. **[P3, S] Keep the /stats key out of the URL.** `/stats?key=…` puts the key in
+    request logs and browser history. Accept it once (a small form posting to a route
+    that sets an httpOnly, SameSite=Strict cookie scoped to /stats holding an HMAC,
+    not the key), keep `?key=` working for a while with a redirect that strips it, and
+    reuse src/lib/safe-equal.ts instead of the page's own timingSafeEqual. Tests.
+47. **[P3, S] Dev-only advisory GHSA-g3hv-75wg-m249** (minimatch <11.0.1, moderate,
+    DoS via glob patterns) through eslint 9 and typescript-eslint. No fixed release
+    in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
+    is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
+    force an override (minimatch 11 is a major).
+48. **[P3, S] Cap request bodies before parsing.** /api/feedback and /api/search call
+    `request.json()` on whatever arrives (Vercel allows up to 4.5 MB). Read the text,
+    answer 413 above a few KB, then parse. Tests next to the route tests.
+49. **[P3, M] Read a story aloud (browser speech, free).** A "listen" button on the
+    story using `speechSynthesis`, offered only when the browser has a voice for the
+    story's language (Amharic voices are rare; hide the button rather than read
+    Amharic with an English voice). No server cost. EN/AM labels, keyboard and
+    screen-reader friendly, respects a pause/stop.
 
 ## Done
+
+- 2026-11-02: Item 45. tests/feedback-today-routes.test.ts calls POST /api/feedback and GET /api/today with the db mocked: a good tap is stored through `add_feedback` with numbers and ids only (204); a body that is not JSON, a wrong type, an unknown language, free text in place of a person id, an unknown tag or more than 5 people is a 400 that never reaches the db; the hourly cap and a db error are a 429; today returns the posted person, falls back to the person of the day, and gives `id: null` (200) when the db throws.
 
 - 2026-11-01: Item 42. The Telegram webhook body is parsed with zod (`parseUpdate` in src/lib/telegram-update.ts). Each part (message, inline query, button press) is checked on its own, and a malformed part is dropped, so a message without `chat` or a body that is not JSON gets a 200 and no reply, where before it threw a 500 and Telegram retried. A bad part never drops a good one in the same update. tests/telegram-update.test.ts and a route test in tests/api-routes.test.ts.
 
