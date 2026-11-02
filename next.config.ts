@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { contentSecurityPolicy } from "./src/lib/csp";
+
 // Baseline security headers applied to every response.
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -9,6 +11,13 @@ const securityHeaders = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=()",
   },
+  // Report-only for now (ROADMAP 44): the browser logs what the policy would
+  // block and blocks nothing, so a missed source cannot break a page. Enforce it
+  // once production shows no violations. Scripts and styles need 'unsafe-inline'
+  // because Next streams inline bootstrap scripts (no nonces here) and the JSON-LD
+  // block is inline. Everything the site loads (fonts, paintings, the service
+  // worker, /api) is same-origin.
+  { key: "Content-Security-Policy-Report-Only", value: contentSecurityPolicy() },
 ];
 
 const nextConfig: NextConfig = {

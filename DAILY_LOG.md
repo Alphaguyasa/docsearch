@@ -613,3 +613,30 @@ otherwise ROADMAP 41 (leftover DocSearch code, Amharic home metadata), then 42 (
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 34 (@anthropic-ai/sdk 1.x), then replan (fewer than 5 items left).
+
+
+## 2026-11-02: run 22 (scheduled)
+
+- Main at start: ci green on 78adc8c (#147). **The deploy is still red** (ROADMAP 28; the
+  #146 and #147 deploys failed too). NEEDS_APPROVAL #10 has no answer yet, so the CLI was
+  not pinned, and production still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 34 (Anthropic SDK 1.x) tried and reverted: 1.x sends API version 2026-10-21,
+  which rejects `temperature`, and the eval's Anthropic path sends `temperature: 0` to
+  Haiku 4.5. Changing a non-default value is the owner's call: NEEDS_APPROVAL #13.
+- Replan (fewer than 5 open items): items 44 and 46-49, plus 50 (enforce the CSP). `npm audit`
+  shows a new dev-only moderate advisory (minimatch, GHSA-g3hv-75wg-m249) with no fixed release
+  in eslint's range; production audit is clean (item 47 watches it).
+- ROADMAP 45: **PR #148**, squash-merged as 1ffaf92 (with the replan). Route tests for
+  /api/feedback and /api/today. All PR checks green.
+- ROADMAP 44: a report-only Content-Security-Policy on every response (src/lib/csp.ts).
+  Browser smoke test of 12 pages under `next start`: no violations. Local: lint 0 warnings,
+  typecheck, npm test, build. See its PR for the merge.
+- The branch for item 44 carries a merge of main after #148's squash (no force-push).
+- Roadmap: 12 items open (28, 43, 11 and 34 wait on Alpha).
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create
+  `v2026-11-02-1` on 1ffaf92, and `-2` on the item 44 merge.
+
+**Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
+otherwise ROADMAP 32 (vitest 5 first, then ESLint 10), then 46 (/stats key out of the URL).
