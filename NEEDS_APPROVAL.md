@@ -5,6 +5,18 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
+13. **Anthropic SDK 1.x drops `temperature` (ROADMAP 34, 2026-11-02).** SDK 1.x
+    sends API version 2026-10-21, where any `temperature`, `top_p` or `top_k` is a
+    400. Only one call sends one: the eval harness's optional Anthropic provider
+    (eval/src/provider.ts) sends `temperature: 0` to Claude Haiku 4.5, so judge and
+    generator replies stay the same run to run. The live site does not use
+    Anthropic (its key is not set). Choices: (a) **recommended:** upgrade and delete
+    the field; on Haiku 4.5 that call then samples at the default (1.0), and there
+    is no replacement setting, so Anthropic-judged eval scores could vary more
+    between runs (the Gemini path keeps temperature 0 and is the default); (b) stay
+    on 0.x for now; (c) upgrade but keep that call on the old API version
+    2023-06-01 with an override. No cost either way. *Default until you decide:
+    (b), stay on 0.114.*
 12. **Apply the `example_answers` migration (ROADMAP 40, 2026-10-31).** It is
     additive (a new table plus two functions, service role only), so policy allows it,
     but the cloud run has no database access. Run
