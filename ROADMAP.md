@@ -17,12 +17,11 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,
     hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
-44. **[P2, M] Content-Security-Policy, report-only first.** next.config.ts sends
-    nosniff, frame DENY, referrer and permissions headers, but no CSP. Start with
-    `Content-Security-Policy-Report-Only` (default-src 'self'; the inline scripts
-    Next needs; img/font self + data:; connect-src self; frame-ancestors 'none'),
-    check a `next start` browser smoke test shows no violations on the main pages,
-    then enforce in a later PR. Test pins the header.
+50. **[P2, S] Enforce the CSP.** Item 44 sends it report-only. Once Alpha (or a
+    run with browser access to production) sees no "Content Security Policy" lines
+    in the console on the live site (home, a person, a story, /help, Amharic), and
+    the deploy is green again (item 28), rename the header to
+    `Content-Security-Policy` and update tests/next-config.test.ts.
 11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
 34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Waits on NEEDS_APPROVAL #13.
     1.x sends API version 2026-10-21, which rejects `temperature`/`top_p`/`top_k`
@@ -55,6 +54,8 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     screen-reader friendly, respects a pause/stop.
 
 ## Done
+
+- 2026-11-02: Item 44. Every response carries `Content-Security-Policy-Report-Only` (src/lib/csp.ts, sent from next.config.ts): same-origin only for scripts, styles, images, fonts, fetches, workers and the manifest; `'unsafe-inline'` for scripts and styles (Next's inline bootstrap, the JSON-LD block); no eval in production; `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`. A `next start` browser smoke test of 12 pages (EN and AM) logged no violations; an injected off-site image was reported, so the check works. tests/next-config.test.ts. Enforcing it is item 50.
 
 - 2026-11-02: Item 45. tests/feedback-today-routes.test.ts calls POST /api/feedback and GET /api/today with the db mocked: a good tap is stored through `add_feedback` with numbers and ids only (204); a body that is not JSON, a wrong type, an unknown language, free text in place of a person id, an unknown tag or more than 5 people is a 400 that never reaches the db; the hourly cap and a db error are a 429; today returns the posted person, falls back to the person of the day, and gives `id: null` (200) when the db throws.
 
