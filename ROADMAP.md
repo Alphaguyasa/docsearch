@@ -9,10 +9,8 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
 ## Open
 
 28. **[P0, S] Production deploy is red (Vercel CLI 65.3.1, "scope does not exist").**
-    Waits on NEEDS_APPROVAL #10: with Alpha's OK, pin `vercel@65.2.0` in
-    deploy-not-alone.yml and add a test that pins it; otherwise check first whether
-    a re-run on a newer CLI passes. (2026-10-27: a re-run on 65.4.0 failed the same
-    way.) Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
+    2026-11-02: Alpha approved; `vercel@65.2.0` is pinned in deploy-not-alone.yml
+    (tests/deploy-workflow.test.ts). Mark done once a deploy on main is green. Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
     and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,

@@ -34,21 +34,6 @@ decided, move it to "Decided" with the date and the answer.
     "Nothing you write is saved" promise (an IP is not what you write, but it is
     personal data), so the About page would say it. No cost. *Default until you
     decide: (c), nothing per reader.*
-10. **Production deploys fail since 17:33 UTC on 2026-10-26 (Vercel CLI 65.3.1).**
-    deploy-not-alone failed for #129 and #130 at `vercel link` with "Error: The
-    specified scope does not exist". The last good deploy (03:45, #128) used
-    `vercel@latest` = 65.2.0; 65.3.1 was published at 17:14 UTC, 20 minutes before the
-    first failure. CI is green, and production still serves #128, so the site is
-    up. #129 is CI-only, so the only change not yet live is #130 (image optimizer
-    off). **Proposed fix:** pin `vercel@65.2.0` in place of `vercel@latest` in all
-    four calls in deploy-not-alone.yml (link, the env sync's `env rm`/`env add`, and
-    deploy). Only the CLI version changes, not what the steps do. I did not make it
-    because CLAUDE.md says not to edit the env-sync step. **Alpha: either approve
-    that edit (the next run makes it), or re-run the deploy once a fixed CLI is out.**
-    If 65.2.0 fails too, the cause is the token or the team slug
-    `alphaguyasa-5358s-projects` on Vercel, which only you can check. No cost.
-    *2026-10-27:* a re-run on the newer CLI 65.4.0 failed the same way, so waiting
-    for a fixed CLI has not helped. Still open; production still serves #128.
 9. **A `CRON_SECRET` for `/api/telegram/daily` (ROADMAP 19, 2026-10-21).** The code
    landed on 2026-10-25: the route checks `Authorization: Bearer $CRON_SECRET`, which
    Vercel cron sends for free once the env var exists. **To turn it on:** in Vercel
@@ -98,6 +83,10 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Decided
 
+- 2026-11-02: **#10, pin the Vercel CLI** (Alpha: "do all the things to fix").
+  deploy-not-alone.yml uses `vercel@65.2.0` for link, the env sync and the deploy
+  (ROADMAP 28). If 65.2.0 fails too, the cause is the token or the team slug on
+  Vercel, which only Alpha can check.
 - 2026-10-18: **`oriental_orthodox` means the books all six Oriental Orthodox churches
   share** (Alpha chose (a) for #7). This also settles #6 as (b): the default view hides
   Ethiopian-only books such as Enoch and Jubilees, which stay under "Ethiopian Orthodox
