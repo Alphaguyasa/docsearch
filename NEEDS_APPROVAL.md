@@ -5,18 +5,20 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Open
 
-13. **Anthropic SDK 1.x drops `temperature` (ROADMAP 34, 2026-11-02).** SDK 1.x
-    sends API version 2026-10-21, where any `temperature`, `top_p` or `top_k` is a
-    400. Only one call sends one: the eval harness's optional Anthropic provider
-    (eval/src/provider.ts) sends `temperature: 0` to Claude Haiku 4.5, so judge and
-    generator replies stay the same run to run. The live site does not use
-    Anthropic (its key is not set). Choices: (a) **recommended:** upgrade and delete
-    the field; on Haiku 4.5 that call then samples at the default (1.0), and there
-    is no replacement setting, so Anthropic-judged eval scores could vary more
-    between runs (the Gemini path keeps temperature 0 and is the default); (b) stay
-    on 0.x for now; (c) upgrade but keep that call on the old API version
-    2023-06-01 with an override. No cost either way. *Default until you decide:
-    (b), stay on 0.114.*
+14. **Production deploy: check the Vercel token and team (ROADMAP 28, 2026-11-02).**
+    The CLI pin (#10) did not help: the old CLI 65.2.0 now fails at `vercel link`
+    with the same "The specified scope does not exist", so something changed on
+    Vercel's side around 2026-10-26. Only you can check (no cost):
+    1. Open vercel.com and look at the team in the address bar
+       (`vercel.com/<team-slug>/not-alone`). If the slug is no longer
+       `alphaguyasa-5358s-projects`, tell the next run the new one; it changes
+       `VERCEL_SCOPE` in deploy-not-alone.yml.
+    2. Account Settings → Tokens: check the token behind the `VERCEL_TOKEN` GitHub
+       secret has not expired and has access to that team. If in doubt, create a new
+       token scoped to the team and paste it into GitHub → Settings → Secrets →
+       Actions → `VERCEL_TOKEN`.
+    3. Re-run the latest "deploy-not-alone" run in GitHub Actions.
+    Production still serves #128 (2026-10-26) until then.
 12. **Apply the `example_answers` migration (ROADMAP 40, 2026-10-31).** It is
     additive (a new table plus two functions, service role only), so policy allows it,
     but the cloud run has no database access. Run
@@ -68,8 +70,6 @@ decided, move it to "Decided" with the date and the answer.
 2. **Lausiac History is public domain in the US only** (translator d. 1968). Fine while the
    site is hosted in the US; not fine for a mirror in a life+70 country. Keep / remove?
    *Default: keep.*
-3. **Close stale PR #6 (orthodox-library)?** It's the earlier Orthodox-library direction
-   and conflicts with main. Closing it loses nothing (the branch stays).
 4. **Voyage and Gemini free tiers can't serve real traffic** (about 3 searches a minute;
    about 20 answers a day per Gemini model). Upgrading means adding a payment method
    (Voyage → Tier 1; Gemini paid tier 1, a fraction of a cent per search). Not done,
@@ -83,6 +83,10 @@ decided, move it to "Decided" with the date and the answer.
 
 ## Decided
 
+- 2026-11-02: **#13, Anthropic SDK 1.x** (Alpha: "do all the things to fix";
+  the recommended option (a)). Upgraded to 1.3; the eval's Anthropic path no longer
+  sends `temperature` (ROADMAP 34). The Gemini path keeps temperature 0.
+- 2026-11-02: **#3, close stale PR #6** (orthodox-library). Closed; the branch stays.
 - 2026-11-02: **#10, pin the Vercel CLI** (Alpha: "do all the things to fix").
   deploy-not-alone.yml uses `vercel@65.2.0` for link, the env sync and the deploy
   (ROADMAP 28). If 65.2.0 fails too, the cause is the token or the team slug on

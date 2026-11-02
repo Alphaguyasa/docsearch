@@ -80,7 +80,8 @@ export interface CompleteOptions {
   /**
    * Sampling temperature. Defaults to 0 — a judge or generator that varies run
    * to run cannot be calibrated, and a cached result would disagree with a
-   * fresh one. Callers may override, but every current caller wants 0.
+   * fresh one. Callers may override, but every current caller wants 0. Gemini
+   * only: the Anthropic path cannot send it (API version 2026-10-21).
    */
   temperature?: number;
 }
@@ -367,10 +368,13 @@ class AnthropicProvider implements LLMProvider {
     await getPacer().acquire();
     recordRequest(this.name, this.model);
 
+    // No temperature here: SDK 1.x sends API version 2026-10-21, which rejects
+    // temperature/top_p/top_k on every model, so this path samples at the
+    // default. The disk cache still makes a re-run of the same prompt identical.
+    // Approved by Alpha, 2026-11-02 (NEEDS_APPROVAL #13).
     const message = await client.messages.create({
       model: this.model,
       max_tokens: opts.maxTokens ?? 2048,
-      temperature: opts.temperature ?? DEFAULT_TEMPERATURE,
       ...(opts.system ? { system: opts.system } : {}),
       messages: [{ role: "user", content: prompt }],
     });
