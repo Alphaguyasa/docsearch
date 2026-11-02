@@ -8,10 +8,12 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
 
 ## Open
 
-28. **[P0, S] Production deploy is red (Vercel CLI 65.3.1, "scope does not exist").**
-    2026-11-02: Alpha approved; `vercel@65.2.0` is pinned in deploy-not-alone.yml
-    (tests/deploy-workflow.test.ts). Mark done once a deploy on main is green. Once the deploy is green, bump its checkout/setup-node to v7 and Node to 24
-    and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
+28. **[P0, S] Production deploy is red ("The specified scope does not exist").**
+    2026-11-02: `vercel@65.2.0` is pinned (PR #150, tests/deploy-workflow.test.ts),
+    and 65.2.0 now fails the same way (run 41401554345), so the CLI is not the
+    cause: the Vercel token or the team slug changed. Waits on NEEDS_APPROVAL #14
+    (Alpha checks both on vercel.com). Mark done once a deploy on main is green.
+    Then bump its checkout/setup-node to v7 and Node to 24 and drop it from EXEMPT in tests/workflow-runtimes.test.ts (left out of item 22).
 43. **[P2, M] Per-reader share of the web search limit.** The bot has its per-chat
     share (item 39); the website has none. Needs a privacy decision first (a salted,
     hashed IP kept a few minutes, or nothing at all): NEEDS_APPROVAL #11. Waits on it.
@@ -20,13 +22,6 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
-11. **[P3, S] Close stale PR #6 (orthodox-library)** once Alpha agrees (NEEDS_APPROVAL.md #3).
-34. **[P3, M] @anthropic-ai/sdk 0.114 → 1.x** (major). Waits on NEEDS_APPROVAL #13.
-    1.x sends API version 2026-10-21, which rejects `temperature`/`top_p`/`top_k`
-    with a 400; eval/src/provider.ts sends `temperature: 0` to Haiku 4.5 (a
-    non-default value, so the owner decides). Typecheck flags only that line. Also
-    check then: 1.x sends the key as `Authorization: Bearer` (no proxy here), and
-    llm.ts's `thinking: disabled` is fine on claude-sonnet-5 but 400s on Sonnet 5.5.
 32. **[P3, L] Toolchain majors, one PR each:** ESLint 10 (+ @eslint/js 10,
     react-hooks plugin 7, which adds new rules), vitest/coverage-v8 5, TypeScript 7.
     Read each migration guide first; dev-only, so no runtime risk. (2026-11-02:
@@ -52,6 +47,9 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     screen-reader friendly, respects a pause/stop.
 
 ## Done
+
+- 2026-11-02: Item 34. @anthropic-ai/sdk 0.114 → 1.3.0 (Alpha approved, NEEDS_APPROVAL #13). 1.x sends API version 2026-10-21, which rejects sampling parameters, so the eval's Anthropic provider no longer sends `temperature` (the Gemini path keeps 0, and the disk cache keeps re-runs identical). llm.ts needed no change (`thinking: disabled` is accepted on claude-sonnet-5). Typecheck, npm test, vitest 339/339; `npm audit --omit=dev` 0. tests/anthropic-sdk.test.ts.
+- 2026-11-02: Item 11. Stale PR #6 (orthodox-library) closed with Alpha's OK; the branch is kept.
 
 - 2026-11-02: Item 44. Every response carries `Content-Security-Policy-Report-Only` (src/lib/csp.ts, sent from next.config.ts): same-origin only for scripts, styles, images, fonts, fetches, workers and the manifest; `'unsafe-inline'` for scripts and styles (Next's inline bootstrap, the JSON-LD block); no eval in production; `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`. A `next start` browser smoke test of 12 pages (EN and AM) logged no violations; an injected off-site image was reported, so the check works. tests/next-config.test.ts. Enforcing it is item 50.
 
