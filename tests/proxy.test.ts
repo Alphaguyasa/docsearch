@@ -14,14 +14,14 @@ import { config, proxy } from "../src/proxy";
 const req = (path: string, headers: Record<string, string> = {}) =>
   new NextRequest(new URL(path, "https://not-alone.test"), { headers });
 
-function withEnv(env: Record<string, string | undefined>, fn: () => void) {
+async function withEnv(env: Record<string, string | undefined>, fn: () => unknown) {
   const saved = Object.fromEntries(Object.keys(env).map((k) => [k, process.env[k]]));
   for (const [k, v] of Object.entries(env)) {
     if (v === undefined) delete process.env[k];
     else process.env[k] = v;
   }
   try {
-    fn();
+    await fn();
   } finally {
     for (const [k, v] of Object.entries(saved)) {
       if (v === undefined) delete process.env[k];
@@ -37,28 +37,28 @@ test("the gate lives in src/proxy.ts, with no leftover middleware file", () => {
 
 // They could list and delete corpus books through the service-role client
 // (ROADMAP 23), so they are gone rather than hidden behind a flag.
-test("the legacy DocSearch upload and document routes stay removed", () => {
+test("the legacy DocSearch upload and document routes stay removed", async () => {
   for (const dir of ["src/app/documents", "src/app/api/upload", "src/app/api/process", "src/app/api/documents"]) {
     assert.equal(existsSync(dir), false, dir);
   }
-  withEnv({ APP_PASSWORD: undefined }, () => {
-    assert.equal(proxy(req("/people")).status, 200);
+  await withEnv({ APP_PASSWORD: undefined }, async () => {
+    assert.equal((await proxy(req("/people"))).status, 200);
   });
 });
 
-test("APP_PASSWORD asks for Basic auth and accepts the right password", () => {
-  withEnv({ APP_PASSWORD: "s3cret" }, () => {
-    assert.equal(proxy(req("/")).status, 401);
+test("APP_PASSWORD asks for Basic auth and accepts the right password", async () => {
+  await withEnv({ APP_PASSWORD: "s3cret" }, async () => {
+    assert.equal((await proxy(req("/"))).status, 401);
     const wrong = `Basic ${btoa("any:nope")}`;
-    assert.equal(proxy(req("/", { authorization: wrong })).status, 401);
+    assert.equal((await proxy(req("/", { authorization: wrong }))).status, 401);
     const right = `Basic ${btoa("any:s3cret")}`;
-    assert.equal(proxy(req("/", { authorization: right })).status, 200);
+    assert.equal((await proxy(req("/", { authorization: right }))).status, 200);
   });
 });
 
-test("?lang= is passed to the pages as a request header", () => {
-  withEnv({ APP_PASSWORD: undefined }, () => {
-    const res = proxy(req("/people?lang=am"));
+test("?lang= is passed to the pages as a request header", async () => {
+  await withEnv({ APP_PASSWORD: undefined }, async () => {
+    const res = await proxy(req("/people?lang=am"));
     assert.equal(res.headers.get("x-middleware-request-x-not-alone-lang"), "am");
   });
 });
@@ -77,8 +77,8 @@ test("the Telegram webhook, setup and daily cron skip the Basic auth gate", () =
   }
 });
 
-test("the auth challenge names Not Alone, not DocSearch", () => {
-  withEnv({ APP_PASSWORD: "s3cret" }, () => {
-    assert.match(proxy(req("/")).headers.get("www-authenticate") ?? "", /realm="Not Alone"/);
+test("the auth challenge names Not Alone, not DocSearch", async () => {
+  await withEnv({ APP_PASSWORD: "s3cret" }, async () => {
+    assert.match((await proxy(req("/"))).headers.get("www-authenticate") ?? "", /realm="Not Alone"/);
   });
 });

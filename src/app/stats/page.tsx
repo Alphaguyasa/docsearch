@@ -1,9 +1,9 @@
-import { timingSafeEqual } from "node:crypto";
-
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { db } from "@/lib/db";
+import { STATS_COOKIE, STATS_KEY_MAX, statsCookieOk } from "@/lib/stats-auth";
 import { FIGURES } from "@/lib/scripture/figures";
 import { addisDay } from "@/lib/scripture/today";
 
@@ -14,22 +14,21 @@ export const metadata: Metadata = { title: "Numbers — Not Alone", robots: { in
 
 const DAYS = 30;
 
-function keyOk(given: string | undefined): boolean {
-  const key = process.env.STATS_KEY;
-  if (!key || !given) return false;
-  const a = Buffer.from(given);
-  const b = Buffer.from(key);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
 /**
- * GET /stats?key=… — the owner's numbers: how many stories were read, which
+ * GET /stats — the owner's numbers: how many stories were read, which
  * struggles and people they found, crisis answers, "this helped" taps, and the
  * bot's morning subscribers. Only counts (lib/counts.ts); nothing anyone wrote.
- * Without the right key (env STATS_KEY) it is a plain 404.
+ *
+ * If STATS_KEY is unset it is a plain 404. Otherwise a browser without the
+ * stats cookie gets a one-field form that posts the key to /stats/session
+ * (lib/stats-auth.ts). An old `/stats?key=…` link still works: the proxy sets
+ * the cookie and redirects to /stats without the key.
  */
-export default async function StatsPage({ searchParams }: { searchParams: Promise<{ key?: string }> }) {
-  if (!keyOk((await searchParams).key)) notFound();
+export default async function StatsPage({ searchParams }: { searchParams: Promise<{ wrong?: string }> }) {
+  if (!process.env.STATS_KEY) notFound();
+  if (!(await statsCookieOk((await cookies()).get(STATS_COOKIE)?.value))) {
+    return <KeyForm wrong={(await searchParams).wrong === "1"} />;
+  }
 
   const today = addisDay(new Date());
   const since = new Date(Date.now() - DAYS * 86_400_000).toISOString();
@@ -96,6 +95,44 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
           rows={crisis.map(([k, v]) => ({ label: k.slice("crisis:".length), n: v }))}
         />
       )}
+      <form method="post" action="/stats/session" className="mt-16">
+        <input type="hidden" name="forget" value="1" />
+        <button type="submit" className="text-sm text-muted underline underline-offset-4 hover:text-foreground">
+          Sign this browser out
+        </button>
+      </form>
+    </main>
+  );
+}
+
+function KeyForm({ wrong }: { wrong: boolean }) {
+  return (
+    <main className="mx-auto max-w-md px-4 py-16 sm:px-6">
+      <h1 className="font-display text-4xl font-semibold">Numbers</h1>
+      <form method="post" action="/stats/session" className="mt-8 space-y-4">
+        <label htmlFor="stats-key" className="block text-sm text-muted">
+          Key
+        </label>
+        <input
+          id="stats-key"
+          name="key"
+          type="password"
+          required
+          maxLength={STATS_KEY_MAX}
+          autoComplete="current-password"
+          aria-invalid={wrong || undefined}
+          aria-describedby={wrong ? "stats-key-wrong" : undefined}
+          className="w-full rounded-[12px] border border-border bg-card px-4 py-3"
+        />
+        {wrong && (
+          <p id="stats-key-wrong" role="alert" className="text-sm">
+            That key did not work.
+          </p>
+        )}
+        <button type="submit" className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-fg">
+          Open
+        </button>
+      </form>
     </main>
   );
 }

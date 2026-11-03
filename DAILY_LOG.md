@@ -640,3 +640,27 @@ otherwise ROADMAP 34 (@anthropic-ai/sdk 1.x), then replan (fewer than 5 items le
 
 **Next run:** if Alpha approved NEEDS_APPROVAL #10, pin the Vercel CLI (ROADMAP 28);
 otherwise ROADMAP 32 (vitest 5 first, then ESLint 10), then 46 (/stats key out of the URL).
+
+
+## 2026-11-03: run 23 (scheduled)
+
+- Main at start: ci green on 744a4b8 (#151). **The deploy is still red** (ROADMAP 28,
+  NEEDS_APPROVAL #14: the Vercel token or team slug; only Alpha can check). Production
+  still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 32, vitest part: **PR #152**, squash-merged as 53e9095. vitest and
+  @vitest/coverage-v8 4.1.12 → 5.1.0 (dev only). Read the 5.0 migration guide; nothing
+  in eval/ uses the changed APIs, and the coverage report is identical before and after.
+  All PR checks green.
+- ROADMAP 46: the /stats key moves from the URL to a form and an HMAC cookie scoped to
+  /stats; old `?key=` links are redirected without the key. tests/stats-auth.test.ts.
+  Local, with the CI dummy env: lint 0 warnings, typecheck, npm test 393/393, vitest
+  339/339, build, and a `next start` check with curl and Chromium. See its PR for the merge.
+- The branch for item 46 carries a merge of main after #152's squash (no force-push).
+- Roadmap: 7 items open (28 and 43 wait on Alpha; 50 waits on 28), so no replan.
+- Tags not pushed (the cloud git proxy still refuses tags and the tag API). Alpha to
+  create `v2026-11-03-1` on 53e9095, and `-2` on the item 46 merge.
+
+**Next run:** ROADMAP 48 (cap request bodies before parsing), then 32's ESLint 10 part
+(react-hooks 7 adds rules; read its guide first). If Alpha answered #14, fix the deploy first.

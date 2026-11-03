@@ -27,11 +27,6 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     Read each migration guide first; dev-only, so no runtime risk. (2026-11-02:
     TypeScript 7 waits on typescript-eslint, whose peer range is `<6.1.0`; ESLint 10
     still uses minimatch 10, so it does not clear item 47.)
-46. **[P3, S] Keep the /stats key out of the URL.** `/stats?key=…` puts the key in
-    request logs and browser history. Accept it once (a small form posting to a route
-    that sets an httpOnly, SameSite=Strict cookie scoped to /stats holding an HMAC,
-    not the key), keep `?key=` working for a while with a redirect that strips it, and
-    reuse src/lib/safe-equal.ts instead of the page's own timingSafeEqual. Tests.
 47. **[P3, S] Dev-only advisory GHSA-g3hv-75wg-m249** (minimatch <11.0.1, moderate,
     DoS via glob patterns) through eslint 9 and typescript-eslint. No fixed release
     in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
@@ -48,7 +43,8 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
 
 ## Done
 
-- 2026-11-03: Item 32 (vitest part). vitest and @vitest/coverage-v8 4.1.12 → 5.1.0, dev only. Read the 5.0 migration guide: the eval tests use no mocks, `sequential`, `toThrow("")`, unawaited `resolves`, or removed entry points, and the coverage include patterns were already root-relative, so no config change. vitest 339/339 and an identical coverage report (same files, same figures) before and after. tests/vitest-version.test.ts keeps the two packages on one release.
+- 2026-11-03: Item 46. /stats no longer takes its key in the URL. Without the stats cookie it shows a one-field form that posts to /stats/session, which sets `na_stats`: an HMAC-SHA256 of the key (never the key), httpOnly, Secure, SameSite=Strict, Path=/stats, 30 days; "Sign this browser out" clears it, and changing STATS_KEY signs everyone out. An old `/stats?key=…` link is answered by the proxy with a 303 to /stats without the key (cookie set only if it was right); the Basic auth gate still runs first. The page's own timingSafeEqual is gone (src/lib/stats-auth.ts uses safeEqual and Web Crypto). The form body is capped before parsing. With STATS_KEY unset the page is still a 404. tests/stats-auth.test.ts; tests/proxy.test.ts awaits the now-async proxy. Checked under `next start` with curl and Chromium (wrong key, right key, sign out; no console or CSP errors).
+- 2026-11-03: Item 32 (vitest part, PR #152). vitest and @vitest/coverage-v8 4.1.12 → 5.1.0, dev only. Read the 5.0 migration guide: the eval tests use no mocks, `sequential`, `toThrow("")`, unawaited `resolves`, or removed entry points, and the coverage include patterns were already root-relative, so no config change. vitest 339/339 and an identical coverage report (same files, same figures) before and after. tests/vitest-version.test.ts keeps the two packages on one release.
 - 2026-11-02: Item 34. @anthropic-ai/sdk 0.114 → 1.3.0 (Alpha approved, NEEDS_APPROVAL #13). 1.x sends API version 2026-10-21, which rejects sampling parameters, so the eval's Anthropic provider no longer sends `temperature` (the Gemini path keeps 0, and the disk cache keeps re-runs identical). llm.ts needed no change (`thinking: disabled` is accepted on claude-sonnet-5). Typecheck, npm test, vitest 339/339; `npm audit --omit=dev` 0. tests/anthropic-sdk.test.ts.
 - 2026-11-02: Item 11. Stale PR #6 (orthodox-library) closed with Alpha's OK; the branch is kept.
 
