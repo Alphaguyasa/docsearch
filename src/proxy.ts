@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { safeEqual } from "@/lib/safe-equal";
+import { STATS_COOKIE, statsCookieAttributes, statsKeyOk, statsToken } from "@/lib/stats-auth";
 
 /**
  * Opt-in HTTP Basic auth gate for a public deployment. (Next 16 renamed the
@@ -18,11 +19,29 @@ import { safeEqual } from "@/lib/safe-equal";
 /** Header carrying a ?lang=en|am choice from the URL to the server components. */
 export const LANG_HEADER = "x-not-alone-lang";
 
-export function proxy(req: NextRequest): NextResponse {
+/**
+ * An old `/stats?key=…` link (ROADMAP 46): strip the key from the address at
+ * once, and if it was right, leave the stats cookie behind so /stats opens.
+ * Either way the next URL in the history and the logs carries no key.
+ */
+async function statsKeyRedirect(req: NextRequest): Promise<NextResponse> {
+  const url = req.nextUrl.clone();
+  const given = url.searchParams.get("key");
+  url.searchParams.delete("key");
+  const res = NextResponse.redirect(url, 303);
+  const key = process.env.STATS_KEY;
+  if (key && statsKeyOk(given, key)) {
+    res.cookies.set(STATS_COOKIE, await statsToken(key), statsCookieAttributes());
+  }
+  return res;
+}
+
+export async function proxy(req: NextRequest): Promise<NextResponse> {
   // ?lang=am / ?lang=en gives every page a language-specific address, so search
   // engines (which carry no cookie) can index the Amharic pages too.
   const q = req.nextUrl.searchParams.get("lang");
   const pass = () => {
+    if (req.nextUrl.pathname === "/stats" && req.nextUrl.searchParams.has("key")) return statsKeyRedirect(req);
     if (q !== "en" && q !== "am") return NextResponse.next();
     const headers = new Headers(req.headers);
     headers.set(LANG_HEADER, q);

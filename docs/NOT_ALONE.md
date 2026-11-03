@@ -140,13 +140,18 @@ cron also refreshes the bot's command menu each morning.
 
 ## Numbers page (/stats)
 
-`/stats?key=<STATS_KEY>` shows the last 30 days: stories read (web and
+`/stats` shows the last 30 days: stories read (web and
 Telegram, English and Amharic), crisis answers, "too busy" waits, which
 struggles and people came up, "this helped" taps, morning subscribers and
 channel posts. The search route bumps plain names in `daily_counts`
-(`bump_counts`) after responding — never anything a person wrote. Without the
-key, or if `STATS_KEY` is unset, the page is a 404; it is kept out of robots.txt
-and the sitemap.
+(`bump_counts`) after responding — never anything a person wrote. If
+`STATS_KEY` is unset the page is a 404. Otherwise it asks for the key once: the
+form posts to `/stats/session`, which sets an httpOnly, SameSite=Strict cookie
+scoped to `/stats` holding an HMAC of the key (not the key), good for 30 days.
+"Sign this browser out" clears it, and changing `STATS_KEY` signs every browser
+out. An old `/stats?key=…` link still works: the proxy sets the cookie and
+redirects to `/stats` without the key, so it does not stay in history or logs.
+The page is kept out of robots.txt and the sitemap.
 
 ### Sharing a story in any chat (inline mode)
 
