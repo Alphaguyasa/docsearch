@@ -23,7 +23,7 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
 32. **[P3, L] Toolchain majors, one PR each:** ESLint 10 (+ @eslint/js 10,
-    react-hooks plugin 7, which adds new rules), vitest/coverage-v8 5, TypeScript 7.
+    react-hooks plugin 7, which adds new rules), TypeScript 7 (vitest 5 done 2026-11-03).
     Read each migration guide first; dev-only, so no runtime risk. (2026-11-02:
     TypeScript 7 waits on typescript-eslint, whose peer range is `<6.1.0`; ESLint 10
     still uses minimatch 10, so it does not clear item 47.)
@@ -48,6 +48,7 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
 
 ## Done
 
+- 2026-11-03: Item 32 (vitest part). vitest and @vitest/coverage-v8 4.1.12 → 5.1.0, dev only. Read the 5.0 migration guide: the eval tests use no mocks, `sequential`, `toThrow("")`, unawaited `resolves`, or removed entry points, and the coverage include patterns were already root-relative, so no config change. vitest 339/339 and an identical coverage report (same files, same figures) before and after. tests/vitest-version.test.ts keeps the two packages on one release.
 - 2026-11-02: Item 34. @anthropic-ai/sdk 0.114 → 1.3.0 (Alpha approved, NEEDS_APPROVAL #13). 1.x sends API version 2026-10-21, which rejects sampling parameters, so the eval's Anthropic provider no longer sends `temperature` (the Gemini path keeps 0, and the disk cache keeps re-runs identical). llm.ts needed no change (`thinking: disabled` is accepted on claude-sonnet-5). Typecheck, npm test, vitest 339/339; `npm audit --omit=dev` 0. tests/anthropic-sdk.test.ts.
 - 2026-11-02: Item 11. Stale PR #6 (orthodox-library) closed with Alpha's OK; the branch is kept.
 
