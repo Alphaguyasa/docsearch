@@ -664,3 +664,32 @@ otherwise ROADMAP 32 (vitest 5 first, then ESLint 10), then 46 (/stats key out o
 
 **Next run:** ROADMAP 48 (cap request bodies before parsing), then 32's ESLint 10 part
 (react-hooks 7 adds rules; read its guide first). If Alpha answered #14, fix the deploy first.
+
+
+## 2026-11-04: run 24 (scheduled)
+
+- Main at start: ci green on 9434326 (#153). **The deploy is still red** (ROADMAP 28,
+  NEEDS_APPROVAL #14: the Vercel token or team slug; only Alpha can check). Production
+  still serves #128.
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- `gh` is not usable in the cloud session (its token is rejected); GitHub work went
+  through the GitHub tools instead.
+- ROADMAP 48: **PR #154**, squash-merged as 6150cdd. Request bodies are capped before
+  parsing (src/lib/read-body.ts): search 16 KB and feedback 4 KB answer 413; an
+  oversized Telegram update is dropped with a 200. Checked under `next start` with a
+  2 MB body, plain and chunked. All PR checks green.
+- ROADMAP 32, ESLint part: eslint 10.14, @eslint/js 10, react-hooks 7.1 (dev only).
+  Two rethrows gain `cause`; three new React Compiler rules stay off (16 findings in
+  components), now ROADMAP 51. Local: lint, typecheck, npm test 404/404, vitest
+  339/339, build. `npm audit` still shows only the minimatch advisory (item 47);
+  production audit 0. See its PR for the merge.
+- The branch for the ESLint part carries a merge of main after #154's squash (no force-push).
+- Roadmap: 7 items open (28 and 43 wait on Alpha; 50 waits on 28; 32 waits on
+  typescript-eslint; 47 is a watch), so no replan, but only 49 and 51 can be worked
+  without Alpha. The next run should replan.
+- Tags not pushed (the cloud git proxy still refuses tags). Alpha to create
+  `v2026-11-04-1` on 6150cdd, and `-2` on the ESLint 10 merge.
+
+**Next run:** ROADMAP 49 (read a story aloud), then replan (only 49 and 51 are
+unblocked). If Alpha answered #14, fix the deploy first.

@@ -4,7 +4,7 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-11-02 (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
+Last replan: 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
 
 ## Open
 
@@ -22,16 +22,22 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
-32. **[P3, L] Toolchain majors, one PR each:** ESLint 10 (+ @eslint/js 10,
-    react-hooks plugin 7, which adds new rules), TypeScript 7 (vitest 5 done 2026-11-03).
-    Read each migration guide first; dev-only, so no runtime risk. (2026-11-02:
-    TypeScript 7 waits on typescript-eslint, whose peer range is `<6.1.0`; ESLint 10
-    still uses minimatch 10, so it does not clear item 47.)
+32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
+    ESLint 10 done 2026-11-04). Waits on typescript-eslint, whose peer range is still
+    `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
+51. **[P3, M] Turn on the three React Compiler lint rules left off** in eslint.config.mjs
+    (react-hooks 7): `set-state-in-effect` (10 findings: localStorage and URL state
+    read on mount in page.tsx and the person/story pages), `refs` (5: `lastQuestion.current`
+    read while rendering in page.tsx), `purity` (1: `Date.now()` in the /stats server
+    page). One rule per PR; each fix must keep the behaviour (no flash of the wrong
+    church or language on load). Check in a browser under `next start`, EN and AM.
+    tests/eslint-config.test.ts lists the rules that are off; update it as each turns on.
 47. **[P3, S] Dev-only advisory GHSA-g3hv-75wg-m249** (minimatch <11.0.1, moderate,
     DoS via glob patterns) through eslint 9 and typescript-eslint. No fixed release
     in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
     is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
-    force an override (minimatch 11 is a major).
+    force an override (minimatch 11 is a major). 2026-11-04: still minimatch 10.2.6
+    under ESLint 10.14 and typescript-eslint 8.72.
 49. **[P3, M] Read a story aloud (browser speech, free).** A "listen" button on the
     story using `speechSynthesis`, offered only when the browser has a voice for the
     story's language (Amharic voices are rare; hide the button rather than read
@@ -39,6 +45,8 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     screen-reader friendly, respects a pause/stop.
 
 ## Done
+
+- 2026-11-04: Item 32 (ESLint part). eslint 9 → 10.14, @eslint/js 10, eslint-plugin-react-hooks 5 → 7.1, dev only. ESLint 10's new `preserve-caught-error` found two rethrows without `cause` (eval/src/config.ts, scripts/ingest-scripture.ts); both now pass it. react-hooks 7's recommended set adds the React Compiler rules: all on except `set-state-in-effect`, `refs` and `purity`, which flag 16 deliberate patterns and are item 51. tests/eslint-config.test.ts checks the majors, that rules-of-hooks and exhaustive-deps still fire, and exactly which hooks rules are off. Lint, typecheck, npm test 404/404, vitest 339/339, build.
 
 - 2026-11-04: Item 48. Request bodies are capped before parsing (src/lib/read-body.ts): the declared Content-Length is checked first, then the stream is read chunk by chunk and the read stops once it passes the cap, so a chunked body with no length is not buffered whole either. Caps: /api/search 16 KB, /api/feedback 4 KB (both answer 413), /api/telegram 256 KB (an oversized update is dropped with a 200, like a malformed one, so Telegram does not retry). /stats/session uses the same reader. tests/read-body.test.ts and route tests; checked under `next start` with curl (2 MB body, plain and chunked: 413).
 

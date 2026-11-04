@@ -78,6 +78,7 @@ export function loadVariant(name: string): Variant {
   } catch (err) {
     throw new Error(
       `Variant config is not valid JSON: ${file}\n  ${errorMessage(err)}`,
+      { cause: err },
     );
   }
 
