@@ -130,7 +130,7 @@ async function main(): Promise<void> {
     try {
       await applyInBatches(r.ids, RETAG_BATCH, async (ids) => db.from("chunks").update({ traditions: r.traditions }).in("id", ids));
     } catch (err) {
-      throw new Error(`retag failed: ${(err as Error).message}`);
+      throw new Error(`retag failed: ${(err as Error).message}`, { cause: err });
     }
   }
   for (const ids of groups(plan.staleRowIds, 100)) {
