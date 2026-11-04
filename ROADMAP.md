@@ -32,9 +32,6 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
     is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
     force an override (minimatch 11 is a major).
-48. **[P3, S] Cap request bodies before parsing.** /api/feedback and /api/search call
-    `request.json()` on whatever arrives (Vercel allows up to 4.5 MB). Read the text,
-    answer 413 above a few KB, then parse. Tests next to the route tests.
 49. **[P3, M] Read a story aloud (browser speech, free).** A "listen" button on the
     story using `speechSynthesis`, offered only when the browser has a voice for the
     story's language (Amharic voices are rare; hide the button rather than read
@@ -42,6 +39,8 @@ Last replan: 2026-11-02 (audit: code, security, dependencies, localization, test
     screen-reader friendly, respects a pause/stop.
 
 ## Done
+
+- 2026-11-04: Item 48. Request bodies are capped before parsing (src/lib/read-body.ts): the declared Content-Length is checked first, then the stream is read chunk by chunk and the read stops once it passes the cap, so a chunked body with no length is not buffered whole either. Caps: /api/search 16 KB, /api/feedback 4 KB (both answer 413), /api/telegram 256 KB (an oversized update is dropped with a 200, like a malformed one, so Telegram does not retry). /stats/session uses the same reader. tests/read-body.test.ts and route tests; checked under `next start` with curl (2 MB body, plain and chunked: 413).
 
 - 2026-11-03: Item 46. /stats no longer takes its key in the URL. Without the stats cookie it shows a one-field form that posts to /stats/session, which sets `na_stats`: an HMAC-SHA256 of the key (never the key), httpOnly, Secure, SameSite=Strict, Path=/stats, 30 days; "Sign this browser out" clears it, and changing STATS_KEY signs everyone out. An old `/stats?key=…` link is answered by the proxy with a 303 to /stats without the key (cookie set only if it was right); the Basic auth gate still runs first. The page's own timingSafeEqual is gone (src/lib/stats-auth.ts uses safeEqual and Web Crypto). The form body is capped before parsing. With STATS_KEY unset the page is still a 404. tests/stats-auth.test.ts; tests/proxy.test.ts awaits the now-async proxy. Checked under `next start` with curl and Chromium (wrong key, right key, sign out; no console or CSP errors).
 - 2026-11-03: Item 32 (vitest part, PR #152). vitest and @vitest/coverage-v8 4.1.12 → 5.1.0, dev only. Read the 5.0 migration guide: the eval tests use no mocks, `sequential`, `toThrow("")`, unawaited `resolves`, or removed entry points, and the coverage include patterns were already root-relative, so no config change. vitest 339/339 and an identical coverage report (same files, same figures) before and after. tests/vitest-version.test.ts keeps the two packages on one release.

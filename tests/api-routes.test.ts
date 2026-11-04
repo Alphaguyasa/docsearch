@@ -17,6 +17,7 @@ import { POST as search } from "../src/app/api/search/route";
 import { POST as telegram } from "../src/app/api/telegram/route";
 import { db } from "../src/lib/db";
 import { cacheExample, exampleKey, EXAMPLE_QUESTIONS } from "../src/lib/example-cache";
+import { BODY_LIMITS } from "../src/lib/read-body";
 import { webhookSecret } from "../src/lib/telegram";
 
 async function inRequest(
@@ -58,6 +59,14 @@ test("search: bad, empty or over-long input is a 400 before anything else", asyn
     assert.equal(typeof (await res.json()).error, "string");
   }
   assert.equal(slots.mock.callCount(), 0, "no rate-limit slot taken for bad input");
+});
+
+test("search: a body over the cap is a 413, before anything else", async () => {
+  const huge = JSON.stringify({ question: "x".repeat(BODY_LIMITS.search) });
+  const { res } = await inRequest(() => search(searchReq(huge)));
+  assert.equal(res.status, 413);
+  assert.equal(typeof (await res.json()).error, "string");
+  assert.equal(slots.mock.callCount(), 0, "no rate-limit slot taken for an oversized body");
 });
 
 test("search: a crisis is answered before the rate limit, even when the site is busy", async () => {
@@ -143,6 +152,16 @@ test("telegram: a message without chat, or a body that is not JSON, is a 200 and
     assert.equal(res.status, 200, JSON.stringify(body));
     assert.equal(deferred, 1, JSON.stringify(body));
   }
+});
+
+test("telegram: an oversized update is a 200 and no reply, so Telegram does not retry it", async (t) => {
+  t.after(() => delete process.env.TELEGRAM_BOT_TOKEN);
+  process.env.TELEGRAM_BOT_TOKEN = TOKEN;
+  const big = message("private") as { message: { text: string } };
+  big.message.text = "x".repeat(BODY_LIMITS.telegram);
+  const { res, deferred } = await inRequest(() => telegram(hookReq(big)));
+  assert.equal(res.status, 200);
+  assert.equal(deferred, 1, "only the channel-post backup is scheduled");
 });
 
 test("telegram: a chat over its share gets a gentle wait, without calling the search", async (t) => {
