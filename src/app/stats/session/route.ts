@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { readCapped } from "@/lib/read-body";
 import {
   STATS_COOKIE,
   STATS_KEY_MAX,
@@ -26,10 +27,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // A few hundred bytes is plenty for one form field. Look at the declared
   // length first, then at what actually arrived, before parsing anything.
   const limit = STATS_KEY_MAX + 64;
-  if (Number(request.headers.get("content-length") ?? 0) > limit) return to(true);
-  const body = await request.text();
-  if (body.length > limit) return to(true);
-  const form = new URLSearchParams(body);
+  const body = await readCapped(request, limit);
+  if (!body.ok) return to(true);
+  const form = new URLSearchParams(body.text);
 
   if (form.get("forget") === "1") {
     const res = to(false);

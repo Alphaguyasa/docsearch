@@ -16,6 +16,7 @@ import { ChatLimiter } from "@/lib/chat-limit";
 import { ensureDailyStory, sendJourneyDay, sendToday, sendWalkDay, subscribe, unsubscribe } from "@/lib/channel";
 import { exampleKey } from "@/lib/example-cache";
 import { feedbackSchema, recordFeedback } from "@/lib/feedback";
+import { BODY_LIMITS, readJsonCapped } from "@/lib/read-body";
 import { peopleFor } from "@/lib/scripture/people-for";
 import { crisisResources, crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { DEFAULT_TRADITION, filterFor } from "@/lib/scripture/tradition-choice";
@@ -55,7 +56,10 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Forbidden", { status: 403 });
   }
 
-  const update = parseUpdate(await request.json().catch(() => null));
+  // An oversized body is dropped like a malformed one: a 200 with no reply, so
+  // Telegram does not retry it (lib/read-body.ts, lib/telegram-update.ts).
+  const body = await readJsonCapped(request, BODY_LIMITS.telegram);
+  const update = parseUpdate(body.ok ? body.value : null);
   const msg = update.message;
   if (msg && msg.chat.type === "private") {
     after(() => handle(token, msg).catch((err) => console.error("telegram:", err)));

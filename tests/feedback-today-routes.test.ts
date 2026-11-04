@@ -8,6 +8,7 @@ import { afterEach, beforeEach, mock, test } from "node:test";
 import { POST as feedback } from "../src/app/api/feedback/route";
 import { GET as today } from "../src/app/api/today/route";
 import { db } from "../src/lib/db";
+import { BODY_LIMITS } from "../src/lib/read-body";
 import { FIGURES } from "../src/lib/scripture/figures";
 import { personOfTheDay } from "../src/lib/scripture/today";
 
@@ -72,6 +73,14 @@ test("feedback: a bad body is a 400 and never reaches the database", async () =>
     assert.equal(res.status, 400, JSON.stringify(body));
     assert.equal(typeof (await res.json()).error, "string");
   }
+  assert.equal(rpc.mock.callCount(), 0);
+});
+
+test("feedback: a body over the cap is a 413 and never reaches the database", async () => {
+  const rpc = mock.method(db, "rpc", async () => ({ data: true, error: null }));
+  const res = await feedback(post({ ...good, padding: "x".repeat(BODY_LIMITS.feedback) }));
+  assert.equal(res.status, 413);
+  assert.equal(typeof (await res.json()).error, "string");
   assert.equal(rpc.mock.callCount(), 0);
 });
 

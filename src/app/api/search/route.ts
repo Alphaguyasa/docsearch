@@ -46,6 +46,7 @@ import {
   saveSharedExample,
 } from "@/lib/example-cache";
 import { getLlm, lightModel } from "@/lib/llm";
+import { BODY_LIMITS, readJsonCapped } from "@/lib/read-body";
 import type { RetrievedChunk } from "@/lib/retrieve";
 import { retrieveForStruggle } from "@/lib/scripture/retrieve-struggle";
 import { BUSY_MESSAGE, takeSearchSlot } from "@/lib/scripture/rate-limit";
@@ -114,14 +115,16 @@ function sourceLine(chunks: RetrievedChunk[], figures: FigureSummary[] = [], tag
 
 export async function POST(request: Request): Promise<Response> {
   // 1. Parse and validate the body — bad input is a 400, before anything else.
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return errorResponse("Request body must be valid JSON.", 400);
+  //    The body is read with a cap first, so a huge body is a 413 without
+  //    being buffered whole (lib/read-body.ts).
+  const body = await readJsonCapped(request, BODY_LIMITS.search);
+  if (!body.ok) {
+    return body.reason === "too_large"
+      ? errorResponse("Request body is too large.", 413)
+      : errorResponse("Request body must be valid JSON.", 400);
   }
 
-  const parsed = requestSchema.safeParse(body);
+  const parsed = requestSchema.safeParse(body.value);
   if (!parsed.success) {
     return errorResponse(parsed.error.issues[0]?.message ?? "Invalid request.", 400);
   }
