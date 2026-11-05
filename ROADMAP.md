@@ -4,7 +4,7 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
+Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 work). Before that 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
 
 ## Open
 
@@ -22,8 +22,13 @@ Last replan: 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (a
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
+52. **[P2, S] In-range patch updates** (lockfile only): next 16.4.3 → 16.4.5 (read
+    its release notes for security fixes first), supabase-js 2.119, tailwindcss and
+    @tailwindcss/postcss 4.3.4, @anthropic-ai/sdk 1.5 (eval only). three and
+    @types/three 0.187 are a 0.x minor: check the art scene renders before taking them.
+    Lint, typecheck, both suites, build and a `next start` smoke test.
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
-    ESLint 10 done 2026-11-04). Waits on typescript-eslint, whose peer range is still
+    ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
 51. **[P3, M] Turn on the three React Compiler lint rules left off** in eslint.config.mjs
     (react-hooks 7): `set-state-in-effect` (10 findings: localStorage and URL state
@@ -38,13 +43,18 @@ Last replan: 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (a
     is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
     force an override (minimatch 11 is a major). 2026-11-04: still minimatch 10.2.6
     under ESLint 10.14 and typescript-eslint 8.72.
-49. **[P3, M] Read a story aloud (browser speech, free).** A "listen" button on the
-    story using `speechSynthesis`, offered only when the browser has a voice for the
-    story's language (Amharic voices are rare; hide the button rather than read
-    Amharic with an English voice). No server cost. EN/AM labels, keyboard and
-    screen-reader friendly, respects a pause/stop.
+53. **[P3, S] "Listen" on person pages.** people/[id] shows the person's passages
+    (and the 1962 Amharic Bible for Amharic readers); reuse ListenButton (item 49) on
+    them, with the text's own language (`textLang`). Same rule: no voice, no button.
+54. **[P3, S] Markdown marks in live answers?** AnswerView prints the answer as plain
+    text, so a `**name**` from Gemini would show its asterisks (the listen button
+    already strips them). Read a few cached example answers (no new LLM calls); if any
+    carry markdown, either tell the prompt "plain text, no markdown" or render bold
+    and italics in AnswerView. Test either way.
 
 ## Done
+
+- 2026-11-05: Item 49. A "Listen" button under a finished story reads it with the browser's own voice (speechSynthesis; free, on the device, nothing sent). Shown only when the device has a voice for the story's language (`pickVoice` matches the language subtag and never falls back to another language, so most phones show no button on an Amharic story). Citation markers and markdown marks are not read (`speakableText`); the text is spoken in sentence-sized pieces under 220 characters, cut on English and Amharic sentence ends (`speechChunks`; Chrome stops a long utterance after about 15 seconds). Pause, Go on and Stop; a new story, a language change or leaving the page stops it. EN and AM labels. src/lib/speech.ts, src/app/components/ListenButton.tsx, tests/speech.test.ts. Checked under `next start` in Chromium with a mocked story and fake voices: EN and AM play, pause, resume, stop and keyboard; hidden for an Amharic story with only an English voice; no console or CSP errors.
 
 - 2026-11-04: Item 32 (ESLint part). eslint 9 → 10.14, @eslint/js 10, eslint-plugin-react-hooks 5 → 7.1, dev only. ESLint 10's new `preserve-caught-error` found two rethrows without `cause` (eval/src/config.ts, scripts/ingest-scripture.ts); both now pass it. react-hooks 7's recommended set adds the React Compiler rules: all on except `set-state-in-effect`, `refs` and `purity`, which flag 16 deliberate patterns and are item 51. tests/eslint-config.test.ts checks the majors, that rules-of-hooks and exhaustive-deps still fire, and exactly which hooks rules are off. Lint, typecheck, npm test 404/404, vitest 339/339, build.
 

@@ -12,6 +12,7 @@ import { textLang } from "@/lib/script-lang";
 
 import { AnswerView } from "./components/AnswerView";
 import { StoryFallback } from "./components/StoryFallback";
+import { ListenButton } from "./components/ListenButton";
 import { PrayerCard } from "./components/PrayerCard";
 import { StoryFeedback } from "./components/StoryFeedback";
 import { CrisisCard } from "./components/CrisisCard";
@@ -230,6 +231,7 @@ export default function Home() {
             </div>
             {status === "done" && answer.trim() && (
               <>
+                <ListenButton text={answer} lang={textLang(answer) ?? lang} />
                 <PrayerCard tags={tags} figureId={figures.length === 1 ? figures[0].id : undefined} />
                 <StoryFeedback figures={figures.map((f) => f.id)} tags={tags} />
               </>

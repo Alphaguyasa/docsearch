@@ -247,6 +247,7 @@ const en = {
     notOnly: "You are not the only one",
     loading: "Finding someone who walked this road before you…",
     ready: "Your story is ready.",
+    listen: { label: "Listen to this story", play: "Listen", pause: "Pause", resume: "Go on", stop: "Stop" },
     retry: "Try again",
     readTitle: "Read it for yourself",
     readNote:
@@ -638,6 +639,7 @@ const am: Dict = {
     notOnly: "እርስዎ ብቻ አይደሉም",
     loading: "ከእርስዎ በፊት በዚህ መንገድ የሄደን ሰው እየፈለግን ነው…",
     ready: "ታሪክዎ ዝግጁ ነው።",
+    listen: { label: "ይህን ታሪክ ያዳምጡ", play: "ያዳምጡ", pause: "ለአፍታ ያቁሙ", resume: "ይቀጥሉ", stop: "ያቁሙ" },
     retry: "እንደገና ይሞክሩ",
     readTitle: "ራስዎ ያንብቡት",
     readNote:
