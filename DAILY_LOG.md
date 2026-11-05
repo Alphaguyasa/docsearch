@@ -693,3 +693,27 @@ otherwise ROADMAP 32 (vitest 5 first, then ESLint 10), then 46 (/stats key out o
 
 **Next run:** ROADMAP 49 (read a story aloud), then replan (only 49 and 51 are
 unblocked). If Alpha answered #14, fix the deploy first.
+
+## 2026-11-05: run 25 (scheduled)
+
+- Main at start: ci green on b167dae (#155). **The deploy is still red** (ROADMAP 28,
+  NEEDS_APPROVAL #14 is unanswered: the Vercel token or team slug, which only Alpha can check).
+  Production still serves #128 (2026-10-26).
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 49: a "Listen" button under a finished story uses the browser's own voice
+  (free, on the device). It is hidden when the device has no voice for the story's
+  language, so there is no English voice reading Amharic. Pause, Go on and Stop are
+  in EN and AM. Citation markers are not read. src/lib/speech.ts, ListenButton.tsx,
+  tests/speech.test.ts (9 tests). Local: lint, typecheck, npm test 413/413, vitest
+  339/339, build. Checked in Chromium under `next start` (mocked story, fake voices,
+  EN and AM, keyboard): no console or CSP errors. See its PR for the merge.
+- Light replan: items 52 (patch updates, incl. next 16.4.5), 53 (listen on person
+  pages) and 54 (do live answers carry markdown?). That makes 9 open, and 4 of them
+  can be worked without Alpha (51-54). Audit: `npm audit --omit=dev` 0; dev only has
+  the minimatch advisory (item 47, still no fix in range). TypeScript 7.0.2 is out
+  (item 32 still waits on typescript-eslint).
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create `v2026-11-05-1`
+  on the item 49 merge.
+
+**Next run:** ROADMAP 52 (patch updates), then 53. If Alpha answered #14, fix the deploy first.
