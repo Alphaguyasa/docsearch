@@ -707,13 +707,21 @@ unblocked). If Alpha answered #14, fix the deploy first.
   in EN and AM. Citation markers are not read. src/lib/speech.ts, ListenButton.tsx,
   tests/speech.test.ts (9 tests). Local: lint, typecheck, npm test 413/413, vitest
   339/339, build. Checked in Chromium under `next start` (mocked story, fake voices,
-  EN and AM, keyboard): no console or CSP errors. See its PR for the merge.
+  EN and AM, keyboard): no console or CSP errors. **PR #156**, all checks green,
+  squash-merged as 0fa16a6.
+- ROADMAP 52: next 16.4.3 → 16.4.5. Its release notes list seven moderate security
+  advisories (`use cache` leaks and poisoning, an SVG bypass in the image optimizer,
+  an HttpOnly cookie leak on Edge routes), which `npm audit` does not list yet. Also
+  supabase-js 2.119, tailwind 4.3.4 and Anthropic SDK 1.5, lockfile only. three 0.187
+  is now item 55. tests/next-version.test.ts. Local: everything green, plus a
+  `next start` smoke test. See its PR for the merge. Production gets none of this
+  until the deploy is fixed (item 28).
 - Light replan: items 52 (patch updates, incl. next 16.4.5), 53 (listen on person
   pages) and 54 (do live answers carry markdown?). That makes 9 open, and 4 of them
-  can be worked without Alpha (51-54). Audit: `npm audit --omit=dev` 0; dev only has
+  can be worked without Alpha (51-54); item 55 split from 52 later in the run. Audit: `npm audit --omit=dev` 0; dev only has
   the minimatch advisory (item 47, still no fix in range). TypeScript 7.0.2 is out
   (item 32 still waits on typescript-eslint).
 - Tags not pushed (the cloud git proxy refuses tags). Alpha to create `v2026-11-05-1`
-  on the item 49 merge.
+  on 0fa16a6 (#156) and `-2` on the item 52 merge.
 
-**Next run:** ROADMAP 52 (patch updates), then 53. If Alpha answered #14, fix the deploy first.
+**Next run:** ROADMAP 53 (listen on person pages), then 54. If Alpha answered #14, fix the deploy first.

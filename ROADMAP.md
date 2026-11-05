@@ -22,11 +22,9 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
-52. **[P2, S] In-range patch updates** (lockfile only): next 16.4.3 → 16.4.5 (read
-    its release notes for security fixes first), supabase-js 2.119, tailwindcss and
-    @tailwindcss/postcss 4.3.4, @anthropic-ai/sdk 1.5 (eval only). three and
-    @types/three 0.187 are a 0.x minor: check the art scene renders before taking them.
-    Lint, typecheck, both suites, build and a `next start` smoke test.
+55. **[P3, S] three and @types/three 0.186 → 0.187** (a 0.x minor, left out of
+    item 52). Read its release notes for breaking changes, update, and check the
+    candle/art scene renders in Chromium under `next start` (no console errors).
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
     ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
@@ -53,6 +51,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     and italics in AnswerView. Test either way.
 
 ## Done
+
+- 2026-11-05: Item 52. next 16.4.3 → 16.4.5 (still pinned exactly). Its release fixes seven moderate advisories: four in `use cache`, a cache-poisoning one, an SVG bypass in the image optimizer, and an HttpOnly cookie leak on Edge routes. `npm audit` did not list them yet. In range, lockfile only: supabase-js 2.119, tailwindcss and @tailwindcss/postcss 4.3.4, @anthropic-ai/sdk 1.5 (eval only); no packages added, only dedupe moves. three 0.187 is split out as item 55. tests/next-version.test.ts. Lint, typecheck, npm test 415/415, vitest 339/339, build; `next start`: 8 pages 200 and /_next/image 404; the listen smoke test in Chromium (EN, AM) had no console errors.
 
 - 2026-11-05: Item 49. A "Listen" button under a finished story reads it with the browser's own voice (speechSynthesis; free, on the device, nothing sent). Shown only when the device has a voice for the story's language (`pickVoice` matches the language subtag and never falls back to another language, so most phones show no button on an Amharic story). Citation markers and markdown marks are not read (`speakableText`); the text is spoken in sentence-sized pieces under 220 characters, cut on English and Amharic sentence ends (`speechChunks`; Chrome stops a long utterance after about 15 seconds). Pause, Go on and Stop; a new story, a language change or leaving the page stops it. EN and AM labels. src/lib/speech.ts, src/app/components/ListenButton.tsx, tests/speech.test.ts. Checked under `next start` in Chromium with a mocked story and fake voices: EN and AM play, pause, resume, stop and keyboard; hidden for an Amharic story with only an English voice; no console or CSP errors.
 
