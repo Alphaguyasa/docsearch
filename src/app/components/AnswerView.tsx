@@ -1,6 +1,7 @@
 "use client";
 
 import type { UiSource } from "@/app/types";
+import { emphasisRuns } from "@/lib/emphasis";
 import { useT } from "../i18n/client";
 
 interface Props {
@@ -15,18 +16,27 @@ interface Props {
  * The streaming answer body. Splits on [n] markers and renders each as a
  * small gold superscript that jumps to its passage below. A marker with no
  * matching passage (possible while streaming) is shown quietly, not as an
- * error. Generous line height — this text is read closely.
+ * error. The model's light markdown (**bold**, *italic*, a # heading) is shown
+ * as bold and italics, as the Telegram bot does, never as asterisks. Generous
+ * line height — this text is read closely.
  */
 export function AnswerView({ answer, sources, activeCitation, streaming, onCiteClick }: Props) {
   const { t } = useT();
   const known = new Set(sources.map((s) => s.n));
-  const parts = answer.split(/(\[\d+\])/g);
+  // Emphasis first, then citations inside each run, so "**David [1]**" stays bold around its marker.
+  const parts = emphasisRuns(answer).flatMap((run) =>
+    run.text.split(/(\[\d+\])/g).map((text) => ({ ...run, text })),
+  );
 
   return (
     <div className="whitespace-pre-wrap">
-      {parts.map((part, i) => {
+      {parts.map(({ text: part, bold, italic }, i) => {
         const m = part.match(/^\[(\d+)\]$/);
-        if (!m) return <span key={i}>{part}</span>;
+        if (!m) {
+          if (!part) return null;
+          const inner = italic ? <em>{part}</em> : part;
+          return bold ? <strong key={i} className="font-semibold">{inner}</strong> : <span key={i}>{inner}</span>;
+        }
 
         const n = Number(m[1]);
         const isKnown = known.has(n);

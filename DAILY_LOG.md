@@ -725,3 +725,30 @@ unblocked). If Alpha answered #14, fix the deploy first.
   on 0fa16a6 (#156) and `-2` on the item 52 merge.
 
 **Next run:** ROADMAP 53 (listen on person pages), then 54. If Alpha answered #14, fix the deploy first.
+
+## 2026-11-06: run 26 (scheduled)
+
+- Main at start: ci green on 29b03eb (#157). **The deploy is still red** (ROADMAP 28,
+  NEEDS_APPROVAL #14 still unanswered). Production still serves #128 (2026-10-26).
+- Model check: Opus 5.5 is still the newest Opus on the models page, and the run is on it.
+  No switch (Fable not used, per policy).
+- ROADMAP 53: person pages get the Listen button. It reads the passages as the page shows
+  them, under their headings and with their references, in one language: the 1962 Amharic
+  Bible for Amharic readers where the page has it, otherwise English. If the device has no
+  voice for that language, there is no button. `personListening` in src/lib/speech.ts, 4 tests.
+  Checked in Chromium under `next start` with a stub Supabase REST server and fake voices
+  (EN; AM with an Amharic voice; AM with only an English voice → hidden). **PR #158**, all
+  checks green, squash-merged as 0b523bc.
+- ROADMAP 54: no answers could be read offline (the cache is in memory, the table is not
+  applied, and the eval results keep no text). But the bot already converts `**bold**`,
+  `*italic*` and `#` headings, so the site now renders the same marks (`emphasisRuns`,
+  React elements, no HTML). The prompt is unchanged. 7 tests, including that the site and
+  the bot agree. Checked in Chromium with a mocked stream, EN and AM. See its PR for the merge.
+- Watch items: typescript-eslint 8.72.1 still caps TypeScript at <6.1 (item 32); ESLint
+  10.14 still uses minimatch 10 (item 47); `npm audit --omit=dev` 0. Roadmap: 7 open, so
+  no replan needed. Only 55 and 51 can be worked without Alpha, so the next run should
+  replan if those two go.
+- Tags not pushed (the cloud git proxy refuses tags). Alpha to create `v2026-11-06-1`
+  on 0b523bc (#158) and `-2` on the item 54 merge.
+
+**Next run:** ROADMAP 55 (three 0.187), then 51 (one React Compiler rule). If Alpha answered #14, fix the deploy first.
