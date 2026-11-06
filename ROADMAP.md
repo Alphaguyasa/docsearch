@@ -41,9 +41,6 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
     force an override (minimatch 11 is a major). 2026-11-04: still minimatch 10.2.6
     under ESLint 10.14 and typescript-eslint 8.72.
-53. **[P3, S] "Listen" on person pages.** people/[id] shows the person's passages
-    (and the 1962 Amharic Bible for Amharic readers); reuse ListenButton (item 49) on
-    them, with the text's own language (`textLang`). Same rule: no voice, no button.
 54. **[P3, S] Markdown marks in live answers?** AnswerView prints the answer as plain
     text, so a `**name**` from Gemini would show its asterisks (the listen button
     already strips them). Read a few cached example answers (no new LLM calls); if any
@@ -51,6 +48,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     and italics in AnswerView. Test either way.
 
 ## Done
+
+- 2026-11-06: Item 53. "Listen" on person pages: the passages are read as the page shows them, each under its heading (read once per run) and with its reference, by the browser's own voice. One voice reads it all, so one language: an Amharic reader hears the 1962 Amharic Bible where the page has it (passages without Amharic are left out, never read across languages); otherwise, or with no Amharic passage, the English. Same rule as item 49: no voice for that language, no button. `personListening` in src/lib/speech.ts, tests/speech.test.ts (4 new). Lint, typecheck, npm test 419/419, vitest 339/339, build. Checked under `next start` in Chromium with a stub Supabase REST server and fake voices: EN reads English; AM with an Amharic voice reads only Ethiopic (23 pieces); AM with only an English voice shows no button; keyboard works; no console or CSP errors.
 
 - 2026-11-05: Item 52. next 16.4.3 → 16.4.5 (still pinned exactly). Its release fixes seven moderate advisories: four in `use cache`, a cache-poisoning one, an SVG bypass in the image optimizer, and an HttpOnly cookie leak on Edge routes. `npm audit` did not list them yet. In range, lockfile only: supabase-js 2.119, tailwindcss and @tailwindcss/postcss 4.3.4, @anthropic-ai/sdk 1.5 (eval only); no packages added, only dedupe moves. three 0.187 is split out as item 55. tests/next-version.test.ts. Lint, typecheck, npm test 415/415, vitest 339/339, build; `next start`: 8 pages 200 and /_next/image 404; the listen smoke test in Chromium (EN, AM) had no console errors.
 

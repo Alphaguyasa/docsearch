@@ -79,3 +79,43 @@ export function speechChunks(text: string, max = 220): string[] {
   push();
   return out;
 }
+
+/** The parts of a person page's story that listening needs (StoryPart, structurally). */
+export interface ListenPart {
+  role: "fall" | "restoration" | "context";
+  ref: string;
+  passages: readonly { ref: string; content: string }[];
+}
+
+/**
+ * What "Listen" reads on a person page: the passages as the page shows them,
+ * each under its heading and with its reference, in one language only, because
+ * one voice reads it all. An Amharic reader hears the 1962 Amharic Bible where
+ * the page shows it (passages it has no Amharic for are left out, rather than
+ * read in Ethiopic by an English voice or the other way round); everyone else,
+ * or an Amharic reader on a page with no Amharic passage, hears the English.
+ */
+export function personListening(
+  parts: readonly ListenPart[],
+  readerLang: "en" | "am",
+  headings: Record<ListenPart["role"], string>,
+  amharic: (ref: string) => { ref: string; text: string } | null,
+): { text: string; lang: "en" | "am" } | null {
+  // A heading is read once per run of its role, closed by the language's own full stop.
+  const blocks = (rows: { role: ListenPart["role"]; body: string }[], stop: string) =>
+    rows
+      .map((r, i) => (i === 0 || rows[i - 1].role !== r.role ? `${headings[r.role]}${stop}\n\n${r.body}` : r.body))
+      .join("\n\n");
+
+  if (readerLang === "am") {
+    const rows = parts.flatMap((p) => {
+      const am = amharic(p.ref);
+      return am ? [{ role: p.role, body: `${am.ref}።\n${am.text}` }] : [];
+    });
+    if (rows.length) return { text: blocks(rows, "።"), lang: "am" };
+  }
+  const rows = parts.flatMap((p) =>
+    p.passages.filter((x) => x.content.trim()).map((x) => ({ role: p.role, body: `${x.ref}.\n${x.content.trim()}` })),
+  );
+  return rows.length ? { text: blocks(rows, "."), lang: "en" } : null;
+}
