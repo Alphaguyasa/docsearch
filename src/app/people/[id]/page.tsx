@@ -7,10 +7,12 @@ import { ensureDailyStory } from "@/lib/channel";
 import { FIGURES } from "@/lib/scripture/figures";
 import { AMHARIC_BIBLE_NOTICE, amharicPassage } from "@/lib/scripture/amharic";
 import { figureStory, type StoryPart } from "@/lib/scripture/retrieve-struggle";
+import { personListening } from "@/lib/speech";
 import { SITE_URL } from "@/lib/telegram";
 
 import { artByline, artFor } from "../../art";
 import { ArtImage } from "../../components/ArtImage";
+import { ListenButton } from "../../components/ListenButton";
 import { JourneyMark } from "../../components/Journey";
 import { JsonLd } from "../../components/JsonLd";
 import { PrayerCard } from "../../components/PrayerCard";
@@ -73,6 +75,8 @@ export default async function PersonPage({ params }: Params) {
   const refs = storyRefs(f);
   const similar = similarPeople(f, FIGURES);
   const heading = { fall: tp.fall, restoration: tp.rise, context: tp.context };
+  // Read aloud by the reader's own device; the button hides itself when there is no voice for the language.
+  const listening = parts ? personListening(parts, lang, heading, amharicPassage) : null;
 
   const pageUrl = `${SITE_URL}/people/${f.id}?lang=${lang}`;
   const structured = {
@@ -164,6 +168,7 @@ export default async function PersonPage({ params }: Params) {
         {parts && parts.length > 0 ? (
           <>
             <p className="text-sm text-muted">{tp.fromText}</p>
+            {listening && <ListenButton text={listening.text} lang={listening.lang} />}
             {parts.map((part, i) => (
               <section key={`${part.role}-${i}`} className="mt-12">
                 {(i === 0 || parts![i - 1].role !== part.role) && (

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-import { pickVoice, speakableText, speechChunks } from "../src/lib/speech";
+import { personListening, pickVoice, speakableText, speechChunks } from "../src/lib/speech";
 import { DICTS } from "../src/app/i18n/dict";
 
 const v = (lang: string, name: string, extra: { default?: boolean; localService?: boolean } = {}) => ({
@@ -79,4 +79,50 @@ test("the listen button is on the finished story and hides without a voice", () 
   const btn = readFileSync("src/app/components/ListenButton.tsx", "utf8");
   assert.match(btn, /if \(!voice\) return null;/);
   assert.match(btn, /speechSynthesis\.cancel\(\)/);
+});
+
+const H = { fall: "The fall", restoration: "Restoration", context: "Context" };
+const parts = [
+  {
+    role: "fall" as const,
+    ref: "2 Samuel 11:2-4",
+    passages: [{ ref: "2 Samuel 11:2-4", content: "And it came to pass in an eveningtide..." }],
+  },
+  {
+    role: "restoration" as const,
+    ref: "Psalm 51:1-2",
+    passages: [
+      { ref: "Psalm 51:1", content: "Have mercy upon me, O God." },
+      { ref: "Psalm 51:2", content: "Wash me throughly." },
+    ],
+  },
+];
+
+test("personListening reads the English passages under their headings, with their references", () => {
+  const out = personListening(parts, "en", H, () => ({ ref: "x", text: "ዳዊት" }));
+  assert.equal(out?.lang, "en");
+  assert.equal(
+    out?.text,
+    "The fall.\n\n2 Samuel 11:2-4.\nAnd it came to pass in an eveningtide...\n\n" +
+      "Restoration.\n\nPsalm 51:1.\nHave mercy upon me, O God.\n\nPsalm 51:2.\nWash me throughly.",
+  );
+});
+
+test("personListening gives an Amharic reader the Amharic Bible only, never mixed with English", () => {
+  const am = (ref: string) => (ref.startsWith("Psalm") ? { ref: "መዝሙረ ዳዊት 51፥1-2", text: "አቤቱ፥ ማረኝ።" } : null);
+  const out = personListening(parts, "am", { fall: "ውድቀት", restoration: "መመለስ", context: "x" }, am);
+  assert.deepEqual(out, { lang: "am", text: "መመለስ።\n\nመዝሙረ ዳዊት 51፥1-2።\nአቤቱ፥ ማረኝ።" });
+  assert.doesNotMatch(out!.text, /[A-Za-z]/);
+});
+
+test("personListening falls back to English when the page shows no Amharic passage", () => {
+  assert.equal(personListening(parts, "am", H, () => null)?.lang, "en");
+  assert.equal(personListening([], "en", H, () => null), null);
+  assert.equal(personListening([{ role: "fall", ref: "x", passages: [{ ref: "x", content: "  " }] }], "en", H, () => null), null);
+});
+
+test("the person page reads its passages with the listen button", () => {
+  const page = readFileSync("src/app/people/[id]/page.tsx", "utf8");
+  assert.match(page, /personListening\(parts, lang, heading, amharicPassage\)/);
+  assert.match(page, /<ListenButton text=\{listening\.text\} lang=\{listening\.lang\} \/>/);
 });
