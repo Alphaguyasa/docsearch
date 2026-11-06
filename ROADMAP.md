@@ -41,13 +41,10 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     is clean, so CI stays green. Watch; update when they move to minimatch 11. Do not
     force an override (minimatch 11 is a major). 2026-11-04: still minimatch 10.2.6
     under ESLint 10.14 and typescript-eslint 8.72.
-54. **[P3, S] Markdown marks in live answers?** AnswerView prints the answer as plain
-    text, so a `**name**` from Gemini would show its asterisks (the listen button
-    already strips them). Read a few cached example answers (no new LLM calls); if any
-    carry markdown, either tell the prompt "plain text, no markdown" or render bold
-    and italics in AnswerView. Test either way.
 
 ## Done
+
+- 2026-11-06: Item 54. Live answers' markdown is now shown as bold and italics on the site. There were no answers to read offline: the example cache is in memory, its table is not applied (NEEDS_APPROVAL #12), and the eval results keep scores, not text. But the Telegram bot was already built to convert the answer's `**bold**`, `*italic*` and `#` headings (`markdownToHtml`), so the model does write them. AnswerView now renders the same marks (`emphasisRuns` in src/lib/emphasis.ts) as React elements, never HTML. Emphasis is applied before citations, so `**David [1]**` stays bold around its marker. Marks never reach across lines, and an unclosed `**` while streaming is left as written. The prompt is unchanged, so the eval is unaffected. tests/emphasis.test.ts (7) includes a check that the site and the bot agree. Lint, typecheck, npm test 426/426, vitest 339/339, build. Checked in Chromium under `next start` with a mocked stream in EN and AM: bold, italics and a heading show without asterisks, citations still work, and there are no console or CSP errors.
 
 - 2026-11-06: Item 53. "Listen" on person pages: the passages are read as the page shows them, each under its heading (read once per run) and with its reference, by the browser's own voice. One voice reads it all, so one language: an Amharic reader hears the 1962 Amharic Bible where the page has it (passages without Amharic are left out, never read across languages); otherwise, or with no Amharic passage, the English. Same rule as item 49: no voice for that language, no button. `personListening` in src/lib/speech.ts, tests/speech.test.ts (4 new). Lint, typecheck, npm test 419/419, vitest 339/339, build. Checked under `next start` in Chromium with a stub Supabase REST server and fake voices: EN reads English; AM with an Amharic voice reads only Ethiopic (23 pieces); AM with only an English voice shows no button; keyboard works; no console or CSP errors.
 
