@@ -6,7 +6,7 @@
  * the cost of one API call over the top-N candidates. The pipeline uses it to
  * reorder a wide retrieval down to a narrow, better-ordered top-k.
  *
- * REST via fetch, no SDK — the project convention (CLAUDE.md).
+ * REST via fetch, no SDK — the project convention (the engineering handbook).
  */
 import { config } from "../../src/lib/env";
 

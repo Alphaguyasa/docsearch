@@ -6,7 +6,7 @@ missing from this file or has no public-domain / open license.
 
 Only public-domain or openly licensed texts are allowed. A source whose status is
 anything other than plain worldwide public domain is flagged below and listed in
-`NEEDS_APPROVAL.md`.
+The decision log.
 
 ## Texts
 
@@ -39,7 +39,7 @@ anything other than plain worldwide public domain is flagged below and listed in
 
 - **`lausiac`**: public domain in the US only. Clarke died in 1968, so in life+70
   countries the translation stays in copyright until 2039. The site is served from US
-  hosting. See NEEDS_APPROVAL.md.
+  hosting. See the decision log.
 - **`kjv`**: public domain everywhere except the UK, where Crown letters patent apply.
 - **`web`**: public domain. "World English Bible" is a trademark, so the text must
   stay unaltered.
@@ -50,7 +50,7 @@ anything other than plain worldwide public domain is flagged below and listed in
 Testament e-text is published with the Bible Society of Ethiopia's permission for
 non-commercial use; the Old Testament comes from github.com/magna25/amharic-bible-json.
 It is shown on /about and under the verses with its copyright statement. It predates
-the "public domain or openly licensed only" rule and is listed in NEEDS_APPROVAL.md
+the "public domain or openly licensed only" rule and is listed in the decision log
 for the owner to decide.
 
 ## Paintings

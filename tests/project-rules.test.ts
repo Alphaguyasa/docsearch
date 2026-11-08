@@ -1,5 +1,5 @@
 /**
- * The project rules in CLAUDE.md, pinned as tests. Each of these protects
+ * The project rules in the engineering handbook, pinned as tests. Each of these protects
  * against a failure a reader could not detect for themselves: an invented
  * quote, a copyrighted translation, an answer that speaks for God, or an eval
  * number that was tuned on the questions meant to check it.
@@ -33,7 +33,7 @@ interface Source {
 }
 const SOURCES: Source[] = JSON.parse(read("corpus/scripture/sources.json")).sources;
 
-/** Licenses a source may carry. Anything else needs an entry in NEEDS_APPROVAL.md first. */
+/** Licenses a source may carry. Anything else needs an entry in the decision log first. */
 const OPEN_LICENSE = /^(Public domain|CC0|CC BY(-SA)? \d)/i;
 
 test("every corpus source records a public-domain or open license", () => {
@@ -55,7 +55,7 @@ test("every corpus source is listed in SOURCES.md with its license", () => {
  * The holdout splits are frozen. Retrieval and prompts are never tuned on them,
  * so their questions must not change either. If you are certain a holdout edit
  * is legitimate (e.g. a factual error in an expected reference), record why in
- * DAILY_LOG.md and update the hash in the same PR.
+ * The dev log and update the hash in the same PR.
  */
 const HOLDOUT_SCRIPTURE = "572288a2fd3e9bffdb10a0f9262119db09d0d1a425a5087b2f1067fb9daf45ab";
 const HOLDOUT_PAPERS = "75ae36db57dca19daa23ba50a87cb817baa625f6b80744bde32733f7d73094e5";

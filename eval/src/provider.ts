@@ -371,7 +371,7 @@ class AnthropicProvider implements LLMProvider {
     // No temperature here: SDK 1.x sends API version 2026-10-21, which rejects
     // temperature/top_p/top_k on every model, so this path samples at the
     // default. The disk cache still makes a re-run of the same prompt identical.
-    // Approved by Alpha, 2026-11-02 (NEEDS_APPROVAL #13).
+    // Approved by Alpha, 2026-11-02 (the decision log #13).
     const message = await client.messages.create({
       model: this.model,
       max_tokens: opts.maxTokens ?? 2048,

@@ -1,7 +1,7 @@
 /**
  * Environment configuration, validated once at module load.
  *
- * Per CLAUDE.md: secrets are read from process.env and validated on startup —
+ * Per the engineering handbook: secrets are read from process.env and validated on startup —
  * we fail loudly here, never silently at request time. Importing this module
  * (directly or transitively) is enough to trigger validation.
  *

@@ -1,6 +1,6 @@
 // Plain typescript-eslint + React hooks rather than eslint-config-next: the Next
 // plugin pulls in fast-glob -> micromatch -> braces, which carries a high-severity
-// advisory with no fixed release (GHSA-vfj7-8cjw-p6xm). See CLAUDE.md, safety rules.
+// advisory with no fixed release (GHSA-vfj7-8cjw-p6xm). See the engineering handbook, safety rules.
 import js from "@eslint/js";
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";

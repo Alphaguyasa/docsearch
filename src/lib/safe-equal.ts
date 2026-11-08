@@ -22,7 +22,7 @@ export function safeEqual(a: string, b: string): boolean {
  * May this request run a cron route? Vercel cron sends
  * `Authorization: Bearer $CRON_SECRET` once that env var exists. While it is
  * unset the route stays open (the bot keeps posting until Alpha adds the
- * secret; NEEDS_APPROVAL #9); once set, anything without it is refused.
+ * secret; the decision log #9); once set, anything without it is refused.
  */
 export function cronAuthorized(authorization: string | null, secret: string | undefined): boolean {
   if (!secret) return true;

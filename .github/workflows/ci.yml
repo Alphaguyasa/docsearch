@@ -1,6 +1,6 @@
 name: ci
 
-# The gate every PR must pass before merging (see CLAUDE.md, merge policy).
+# The gate every PR must pass before merging (see the engineering handbook, merge policy).
 # No real keys: the build gets dummy values, and nothing here calls Supabase,
 # Voyage, Gemini or Anthropic. Quality evals that do need keys live in
 # scripture-eval.yml.

@@ -10,7 +10,7 @@
  * anthropic backend disables thinking so its stream is pure text, matching the
  * gemini backend, so switching providers changes nothing downstream.
  *
- * Per CLAUDE.md: the Anthropic side uses the official SDK; the Gemini side calls
+ * Per the engineering handbook: the Anthropic side uses the official SDK; the Gemini side calls
  * the REST API directly with fetch (no SDK). Never import this into a client
  * component.
  */

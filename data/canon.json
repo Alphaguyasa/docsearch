@@ -1173,7 +1173,7 @@
  "tradition_rules": {
   "orthodox": "Legacy tag, the same books as eastern_orthodox. Kept until Alpha approves removing it (ROADMAP item 3).",
   "eastern_orthodox": "Books the Eastern Orthodox (Greek and Slavonic) churches read as scripture [orthodoxwiki].",
-  "oriental_orthodox": "Only books all six Oriental Orthodox churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean, Malankara) read as scripture (Alpha, 2026-10-18). Each book cites a source per church; a book any church is unconfirmed for is marked NEEDS REVIEW and left out. The Eritrean church is taken to keep the Ethiopian canon it shares, and the Malankara church the Syriac (Peshitta) canon; both to be confirmed in the pre-launch review (NEEDS_APPROVAL #5).",
+  "oriental_orthodox": "Only books all six Oriental Orthodox churches (Coptic, Syriac, Armenian, Ethiopian, Eritrean, Malankara) read as scripture (Alpha, 2026-10-18). Each book cites a source per church; a book any church is unconfirmed for is marked NEEDS REVIEW and left out. The Eritrean church is taken to keep the Ethiopian canon it shares, and the Malankara church the Syriac (Peshitta) canon; both to be confirmed in the pre-launch review (the decision log #5).",
   "ethiopian_orthodox": "Books the Ethiopian Orthodox Tewahedo Church reads as scripture [tewahedo]."
  },
  "references": {

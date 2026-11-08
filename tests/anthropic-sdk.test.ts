@@ -1,6 +1,6 @@
 /**
  * Anthropic SDK 1.x sends API version 2026-10-21, where temperature, top_p and
- * top_k are a 400 on every model (NEEDS_APPROVAL #13, decided 2026-11-02). The
+ * top_k are a 400 on every model (the decision log #13, decided 2026-11-02). The
  * Anthropic paths must not send them; the Gemini paths still may.
  */
 import assert from "node:assert/strict";

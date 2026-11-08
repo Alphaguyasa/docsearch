@@ -7,7 +7,7 @@ name: deploy-not-alone
 # Needs one secret: VERCEL_TOKEN (vercel.com -> Account Settings -> Tokens).
 # Without it the job skips cleanly.
 #
-# Every push to main is a release (see CLAUDE.md, deploy policy): a merged PR,
+# Every push to main is a release (see the engineering handbook, deploy policy): a merged PR,
 # or the scripture eval committing results. The ingestion and fetch bots' own
 # bookkeeping commits are ignored so a long ingestion doesn't redeploy hourly.
 
