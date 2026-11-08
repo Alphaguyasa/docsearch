@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-24T03:41:33.908Z",
+  "generatedAt": "2026-11-08T13:04:14.563Z",
   "entries": [
     {
       "id": "adam_and_eve",
@@ -171,13 +171,13 @@
       "kind": "tradition",
       "format": "gutenberg-txt",
       "license": "Public domain (Project Gutenberg #1653; Benham d. 1910)",
-      "retrievedAt": "2026-10-20T03:45:47.925Z",
+      "retrievedAt": "2026-11-08T13:04:14.563Z",
       "files": [
         {
           "name": "pg1653.txt",
           "url": "https://www.gutenberg.org/cache/epub/1653/pg1653.txt",
-          "sha256": "7631799607b0ede62f1bd7ed2a8eb62d89524451a3c41e9ad2b5cbf4c2aa5383",
-          "bytes": 374954
+          "sha256": "7e9f72139575c267b0e65dd1c9665cc8541a289538fda4cff370dedd0cc83a74",
+          "bytes": 374959
         }
       ]
     },
@@ -354,13 +354,13 @@
       "kind": "scripture",
       "format": "usfm-zip",
       "license": "Public domain (eBible.org dedication; 'World English Bible' is a trademark — unaltered text only)",
-      "retrievedAt": "2026-10-24T03:41:33.908Z",
+      "retrievedAt": "2026-11-08T13:04:14.048Z",
       "files": [
         {
           "name": "eng-web_usfm.zip",
           "url": "https://ebible.org/Scriptures/eng-web_usfm.zip",
-          "sha256": "1298c07ccd62fe8ebab6d0cc94ab75a88dd95272d7fe618faeb7a8f6d632c6e0",
-          "bytes": 3249632
+          "sha256": "05b0440bd8994dd4da7cc53dd8167a759ed7c09617e4a562c64eb9b3343589c8",
+          "bytes": 3250064
         }
       ]
     }

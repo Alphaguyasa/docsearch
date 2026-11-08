@@ -1,6 +1,6 @@
 # Scripture chunk report
 
-Generated 2026-10-29T03:49:09.076Z
+Generated 2026-11-08T13:08:25.847Z
 
 | Source | Docs | Chunks | Tokens | Mean | Max |
 |---|---|---|---|---|---|

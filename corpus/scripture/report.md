@@ -1,10 +1,10 @@
 # Scripture fetch report
 
-Generated 2026-10-24T03:41:33.908Z
+Generated 2026-11-08T13:04:14.563Z
 
 ## web — World English Bible with Deuterocanon
 
-#### `eng-web_usfm.zip` — 3249632 bytes
+#### `eng-web_usfm.zip` — 3250064 bytes
 (zip — contents listed by the parser session)
 
 ## confessions — The Confessions of Saint Augustine (tr. E. B. Pusey)
@@ -52,7 +52,7 @@ is a more clear foreshower of the Gospel and of the calling of the
 
 ## imitation — The Imitation of Christ (Thomas à Kempis, tr. William Benham)
 
-#### `pg1653.txt` — 374954 bytes
+#### `pg1653.txt` — 374959 bytes
 5786 non-empty lines. First 25:
 ```
 The Project Gutenberg eBook of The Imitation of Christ
@@ -67,7 +67,7 @@ Title: The Imitation of Christ
 Author: à Kempis Thomas
 Translator: William Benham
 Release date: February 1, 1999 [eBook #1653]
-Most recently updated: May 5, 2023
+Most recently updated: October 29, 2026
 Language: English
 Other information and formats: www.gutenberg.org/ebooks/1653
 *** START OF THE PROJECT GUTENBERG EBOOK THE IMITATION OF CHRIST ***
@@ -358,7 +358,47 @@ she made a coat(?) and a cloak of byssus cloth, and purple for his
 
 ## takla_haymanot — The Life of Takla Haymanot (tr. E. A. Wallis Budge, 1906, from the Dabra Libanos manuscript)
 - pinned: lifeoftaklahymnt00budg
-**FAILED:** fetch failed
+
+#### `lifeoftaklahymnt00budg_djvu.txt` (archive id `lifeoftaklahymnt00budg`) — 747796 bytes
+12015 non-empty lines. First 25:
+```
+»  "  "  .  . .  -  -•  •;
+-
+LIBRARY  =g°>
+Brigham  Young  University
+RARE  BOOK  COLLECTION  |Hg
+q922.l63  IBS
+T139b
+'
+‘
+TWO  HUNDRED  AND  FIFTY  COPIES  PRINTED  FOR
+PRIVATE  CIRCULATION  ONLY,  OF  WHICH  THIS  IS
+THE  LIFE  AND  MIRACLES
+T;:;!OT  '
+FESHH  A-SEYON
+WHO  WAS  NAMED  BY  OUR  LORD
+TAKLA  HAYMAnOT.
+THE  LIFE  OF  TAKLA  HAYMANOT  (Folio  za).  PLATE  I.
+I.  The  Holy  Trinity,  throned  in  glory  in  heaven.
+II.  The  Angel,  symbol  of  Saint  Matthew.
+III.  The  Lion,  symbol  of  Saint  Mark.
+IV.  The  Eagle;  symbol  of  Saint  John.
+V.  The  Bull,  symbol  of  Saint  Luke.
+VI.  Takla  HHym&ndt  lying  prostrate  at  the  feet  of  the  Trinity.
+THE  LIFE  OF  TAKLA  HAYMAn6T
+IN  THE  VERSION  OF  DABRA  LIBANOS,  >
+```
+Sample from the middle:
+```
+All  Asti?.  T.IKA
+JWVV-4*S5- h*-H»
+M;--6  A-T--.h'r
+an Jf- ffivvn  him-.
+h'll'.ID  (DOTIil.
+f-"MI  A.«PAfc,
+Aip-h-h-imfi-Th
+(DA-fl  J»
+```
 
 ## baralam — Baralam and Yewasef, the Ethiopic version of the Story of Barlaam and Josaphat (tr. E. A. Wallis Budge, 1923)
 - pinned: baralamyewasef0000sire
