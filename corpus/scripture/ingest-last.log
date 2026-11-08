@@ -1,10 +1,8 @@
-outcome=success at 2026-11-08T13:16:18Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/42483528402
+outcome=success at 2026-11-08T13:17:42Z run=https://github.com/Alphaguyasa/docsearch/actions/runs/42484153058
 
 > docsearch@0.1.0 scripture:ingest
 > tsx scripts/ingest-scripture.ts --max-minutes 320
 
-raw files missing, skipped this run: philoxenus
-built 9048 chunks across 97 documents
-done 9045, to embed 3, stale 0, retag 0
-  9048/9048 embedded (0.3 min)
-finished: 9048/9048
+built 9615 chunks across 98 documents
+done 9615, to embed 0, stale 0, retag 0
+finished: 9615/9615
