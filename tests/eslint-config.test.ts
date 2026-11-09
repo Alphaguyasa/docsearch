@@ -40,6 +40,6 @@ test("hook mistakes are still errors, and only three compiler rules are off", as
     .filter(([name, setting]) => name.startsWith("react-hooks/") && [0, "off"].includes(Array.isArray(setting) ? setting[0] : setting))
     .map(([name]) => name)
     .sort();
-  assert.deepEqual(off, ["react-hooks/refs", "react-hooks/set-state-in-effect"]);
+  assert.deepEqual(off, ["react-hooks/set-state-in-effect"]);
   assert.ok(config.rules?.["react-hooks/immutability"], "the other compiler rules are on");
 });

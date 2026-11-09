@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { prefersCalm, useScrollProgress } from "./Motion";
 import { useT } from "../i18n/client";
@@ -33,8 +33,13 @@ export function ScrollWords() {
     });
   });
 
+  // The other language can have fewer words; forget the ones no longer on the page.
+  const total = LINES.reduce((sum, line) => sum + line.text.split(" ").length, 0);
+  useEffect(() => {
+    words.current.length = total;
+  }, [total]);
+
   let n = 0;
-  words.current = [];
   return (
     <section ref={section} aria-label={t.words.aria} className="relative h-[240vh]">
       <div className="sticky top-0 flex h-[100svh] items-center">

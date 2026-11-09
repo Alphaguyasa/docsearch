@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const calm = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -11,7 +11,7 @@ const calm = () => typeof window !== "undefined" && window.matchMedia("(prefers-
  * everything is simply visible.
  */
 export function RevealGroup({
-  as = "div",
+  as: Tag = "div",
   className,
   children,
   elRef,
@@ -43,7 +43,11 @@ export function RevealGroup({
     return () => io.disconnect();
     // Both possible refs are stable objects, so this still runs once per mount.
   }, [ref]);
-  return createElement(as, { ref, className }, children);
+  return (
+    <Tag ref={ref} className={className}>
+      {children}
+    </Tag>
+  );
 }
 
 /**
@@ -53,7 +57,7 @@ export function RevealGroup({
  * just presses in.
  */
 export function Tilt({
-  as = "div",
+  as: Tag = "div",
   className = "",
   max = 7,
   children,
@@ -94,7 +98,11 @@ export function Tilt({
       el.removeEventListener("pointerleave", leave);
     };
   }, [max]);
-  return createElement(as, { ref, className: `tilt ${className}`, ...rest }, children);
+  return (
+    <Tag ref={ref} className={`tilt ${className}`} {...rest}>
+      {children}
+    </Tag>
+  );
 }
 
 /**
@@ -105,7 +113,10 @@ export function Tilt({
  */
 export function useScrollProgress(ref: React.RefObject<HTMLElement | null>, onProgress: (p: number) => void) {
   const cb = useRef(onProgress);
-  cb.current = onProgress;
+  // Declared first so a scroll, and the first update below, see the latest callback.
+  useEffect(() => {
+    cb.current = onProgress;
+  });
   useEffect(() => {
     let frame = 0;
     const update = () => {

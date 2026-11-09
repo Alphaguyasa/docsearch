@@ -25,12 +25,12 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
     ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
-51. **[P3, M] Turn on the React Compiler lint rules left off** in eslint.config.mjs
+51. **[P3, M] Turn on the last React Compiler lint rule left off** in eslint.config.mjs
     (react-hooks 7): `set-state-in-effect` (10 findings: localStorage and URL state
-    read on mount in page.tsx and the person/story pages), `refs` (5: `lastQuestion.current`
-    read while rendering in page.tsx). `purity` is done. One rule per PR; each fix must keep the behaviour (no flash of the wrong
-    church or language on load). Check in a browser under `next start`, EN and AM.
-    tests/eslint-config.test.ts lists the rules that are off; update it as each turns on.
+    read on mount in page.tsx and the person/story pages). `purity` and `refs` are done.
+    The fix must keep the behaviour (no flash of the wrong church or language on load).
+    Check in a browser under `next start`, EN and AM.
+    tests/eslint-config.test.ts lists the rules that are off; update it when it turns on.
 47. **[P3, S] Dev-only advisory GHSA-g3hv-75wg-m249** (minimatch <11.0.1, moderate,
     DoS via glob patterns) through eslint 9 and typescript-eslint. No fixed release
     in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
@@ -39,6 +39,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     under ESLint 10.14 and typescript-eslint 8.72.
 
 ## Done
+
+- 2026-11-09: Item 51 (`refs`). The rule is on. The home page keeps the question it last asked in state instead of a ref read while rendering, so a retry and the fallback people use what was asked, not what is in the box now. `useScrollProgress` updates its callback in an effect, ScrollWords trims its word list when the language changes, and RevealGroup and Tilt render plain JSX. Checked in Chromium under `next start`, EN and AM: a failed search still shows the right people and retries the same question, a crisis phrase on a failed search still gets help, the scroll words light up in both languages, and the people cards reveal and tilt.
 
 - 2026-11-09: Item 51 (`purity`). The rule is on. The /stats page read the clock twice while rendering; it now reads it once, so the day counts and the feedback window come from the same moment. tests/eslint-config.test.ts lists the two rules still off.
 - 2026-11-09: Item 55. three and @types/three 0.186 → 0.187. The published release notes could not be read from the build environment, so the 0.186 and 0.187 package sources were compared for every class the candle scene uses (WebGLRenderer, Scene, PerspectiveCamera, Mesh, Points, BufferGeometry, BufferAttribute, PlaneGeometry, ShaderMaterial, Texture, TextureLoader, Timer): no change to anything it calls. The scene renders in Chromium under `next start` (software WebGL) with no page errors.
