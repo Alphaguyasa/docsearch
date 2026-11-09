@@ -22,9 +22,6 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
-55. **[P3, S] three and @types/three 0.186 → 0.187** (a 0.x minor, left out of
-    item 52). Read its release notes for breaking changes, update, and check the
-    candle/art scene renders in Chromium under `next start` (no console errors).
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
     ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
@@ -43,6 +40,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     under ESLint 10.14 and typescript-eslint 8.72.
 
 ## Done
+
+- 2026-11-09: Item 55. three and @types/three 0.186 → 0.187. The published release notes could not be read from the build environment, so the 0.186 and 0.187 package sources were compared for every class the candle scene uses (WebGLRenderer, Scene, PerspectiveCamera, Mesh, Points, BufferGeometry, BufferAttribute, PlaneGeometry, ShaderMaterial, Texture, TextureLoader, Timer): no change to anything it calls. The scene renders in Chromium under `next start` (software WebGL) with no page errors.
 
 - 2026-11-06: Item 54. Live answers' markdown is now shown as bold and italics on the site. There were no answers to read offline: the example cache is in memory, its table is not applied (the decision log #12), and the eval results keep scores, not text. But the Telegram bot was already built to convert the answer's `**bold**`, `*italic*` and `#` headings (`markdownToHtml`), so the model does write them. AnswerView now renders the same marks (`emphasisRuns` in src/lib/emphasis.ts) as React elements, never HTML. Emphasis is applied before citations, so `**David [1]**` stays bold around its marker. Marks never reach across lines, and an unclosed `**` while streaming is left as written. The prompt is unchanged, so the eval is unaffected. tests/emphasis.test.ts (7) includes a check that the site and the bot agree. Lint, typecheck, npm test 426/426, vitest 339/339, build. Checked in Chromium under `next start` with a mocked stream in EN and AM: bold, italics and a heading show without asterisks, citations still work, and there are no console or CSP errors.
 
