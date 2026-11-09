@@ -40,6 +40,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
 
 ## Done
 
+- 2026-11-09: In-range patch updates, lockfile only: @anthropic-ai/sdk 1.6.0, tailwindcss and @tailwindcss/postcss 4.3.5. Lint, typecheck, npm test 426/426, vitest 339/339 and build pass; the home page renders the same under `next start`.
+
 - 2026-11-09: Item 51 (`refs`). The rule is on. The home page keeps the question it last asked in state instead of a ref read while rendering, so a retry and the fallback people use what was asked, not what is in the box now. `useScrollProgress` updates its callback in an effect, ScrollWords trims its word list when the language changes, and RevealGroup and Tilt render plain JSX. Checked in Chromium under `next start`, EN and AM: a failed search still shows the right people and retries the same question, a crisis phrase on a failed search still gets help, the scroll words light up in both languages, and the people cards reveal and tilt.
 
 - 2026-11-09: Item 51 (`purity`). The rule is on. The /stats page read the clock twice while rendering; it now reads it once, so the day counts and the feedback window come from the same moment. tests/eslint-config.test.ts lists the two rules still off.
