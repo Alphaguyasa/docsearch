@@ -30,8 +30,10 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
     return <KeyForm wrong={(await searchParams).wrong === "1"} />;
   }
 
-  const today = addisDay(new Date());
-  const since = new Date(Date.now() - DAYS * 86_400_000).toISOString();
+  // One reading of the clock, so the day counts and the feedback window agree.
+  const now = new Date();
+  const today = addisDay(now);
+  const since = new Date(now.getTime() - DAYS * 86_400_000).toISOString();
   const [counts, feedback, subs, posts] = await Promise.all([
     db.from("daily_counts").select("day,name,n").gt("day", today - DAYS),
     db.from("feedback").select("helpful,channel").gt("at", since),
