@@ -18,13 +18,11 @@ export default tseslint.config(
     plugins: { "react-hooks": reactHooks },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      // react-hooks 7 adds the React Compiler rules. These two flag patterns the
-      // app uses on purpose today (reading localStorage into state on mount, a ref
-      // read while rendering the people list). Turning them on means changing
-      // components, so it is its own ROADMAP item (51); the other new rules are on
-      // and pass.
+      // react-hooks 7 adds the React Compiler rules. This one flags a pattern the
+      // app uses on purpose today (reading localStorage into state on mount).
+      // Turning it on means changing components, so it is its own ROADMAP item (51);
+      // the other new rules are on and pass.
       "react-hooks/set-state-in-effect": "off",
-      "react-hooks/refs": "off",
       // Node scripts and the Next runtime both provide these.
       "no-undef": "off",
       // `catch {}` around localStorage etc.: failing quietly is the intent.

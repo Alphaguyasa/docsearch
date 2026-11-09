@@ -52,7 +52,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [busyServer, setBusyServer] = useState(false);
   const [activeCitation, setActiveCitation] = useState<number | null>(null);
-  const lastQuestion = useRef("");
+  // The question the last search asked; the box may have changed since.
+  const [asked, setAsked] = useState("");
   const results = useRef<HTMLDivElement>(null);
 
   // Remember the reader's church on this device only.
@@ -76,8 +77,8 @@ export default function Home() {
    * A failure before the server answered never passed its safety gate, so run
    * the same phrase check here first: a person at risk gets help, not stories.
    */
-  function failEarly(message: string, busyNow = false) {
-    const kind = phraseCheck(lastQuestion.current);
+  function failEarly(query: string, message: string, busyNow = false) {
+    const kind = phraseCheck(query);
     if (kind) {
       setCrisis(crisisResponse(kind));
       setStatus("crisis");
@@ -100,7 +101,7 @@ export default function Home() {
   async function run(q: string) {
     const query = q.trim();
     if (!query || busy) return;
-    lastQuestion.current = query;
+    setAsked(query);
     setQuestion(query);
     setStatus("loading");
     setSources([]);
@@ -122,14 +123,14 @@ export default function Home() {
         body: JSON.stringify({ question: query, tradition }),
       });
     } catch {
-      failEarly(t.story.errors.offline);
+      failEarly(query, t.story.errors.offline);
       return;
     }
     if (!res.ok || !res.body) {
       const body = await res.json().catch(() => null);
       // The server's own text is English; show the reader's language by code.
       const code: unknown = body?.code;
-      failEarly(isSearchErrorCode(code) ? t.story.errors[code] : t.story.errors.failed(res.status), res.status === 429);
+      failEarly(query, isSearchErrorCode(code) ? t.story.errors[code] : t.story.errors.failed(res.status), res.status === 429);
       return;
     }
 
@@ -165,7 +166,7 @@ export default function Home() {
       ? []
       : figures.length
         ? figures
-        : peopleFor(lastQuestion.current, filterFor(tradition));
+        : peopleFor(asked, filterFor(tradition));
 
   return (
     <main>
@@ -201,10 +202,10 @@ export default function Home() {
         )}
         {status === "error" &&
           (fallbackPeople.length > 0 ? (
-            <StoryFallback people={fallbackPeople} busy={busyServer} onRetry={() => run(lastQuestion.current)} />
+            <StoryFallback people={fallbackPeople} busy={busyServer} onRetry={() => run(asked)} />
           ) : (
             <div className="mx-auto max-w-3xl">
-              <ErrorState message={error ?? t.story.errors.generic} onRetry={() => run(lastQuestion.current)} />
+              <ErrorState message={error ?? t.story.errors.generic} onRetry={() => run(asked)} />
             </div>
           ))}
 
