@@ -4,7 +4,7 @@ Prioritised backlog. The daily run takes the top open item. Mark an item done wi
 its PR number and move it to "Done" at the bottom. Priority: P0 (urgent) → P3.
 Effort: S (< half a run), M (one run), L (split into several PRs).
 
-Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 work). Before that 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
+Last replan: 2026-11-14 (items 56-58: the next milestone, "green, enforced, and telling the DocSearch story"; 28 and 50 belong to it too). Before that 2026-11-05 (light: items 52-54 from npm outdated and the item 49 work). Before that 2026-11-02 (item 51 added 2026-11-04 from the ESLint 10 upgrade) (audit: code, security, dependencies, localization, tests; items 44-49). Before that 2026-10-29 (items 35-42), 2026-10-27 (dependencies), 2026-10-26 and 2026-10-21.
 
 ## Open
 
@@ -22,6 +22,17 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     in the console on the live site (home, a person, a story, /help, Amharic), and
     the deploy is green again (item 28), rename the header to
     `Content-Security-Policy` and update tests/next-config.test.ts.
+56. **[P2, S] "Share this story" on bot answers.** A button under each answer that
+    opens Telegram's chat picker with the bot's inline search for the first person
+    in the answer (`switch_inline_query`), so a reader can pass the story on. EN and
+    AM labels; no change to the answer itself.
+57. **[P2, S] Write the DocSearch case study** (docs/CASE_STUDY_DOCSEARCH.md) from the
+    `v1-docsearch` tag: hybrid retrieval (pgvector + full-text, fused with RRF),
+    streamed citations, refusing when the documents do not cover a question, and the
+    eval harness that measures it. Facts only from the tagged code and its eval results.
+58. **[P3, S] After a green deploy (item 28):** a browser pass on production in EN and
+    AM over five pages (home, a person, a story, /help, /journal) to confirm no CSP
+    report lines, then item 50.
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
     ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
