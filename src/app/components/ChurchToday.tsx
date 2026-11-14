@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
-import { churchDay, type ChurchDay } from "@/lib/ethiopian-calendar";
+import { churchDayFromDay } from "@/lib/ethiopian-calendar";
 import { FIGURES } from "@/lib/scripture/figures";
 
 import { lentReading } from "../journey";
@@ -11,6 +11,7 @@ import { figureText } from "../i18n/dict";
 import { readablePeople } from "../people";
 
 import { useT } from "../i18n/client";
+import { useAddisDay } from "../use-day";
 
 /**
  * Today's Ethiopian date, the feast the Church keeps and the fast it keeps,
@@ -19,8 +20,8 @@ import { useT } from "../i18n/client";
  */
 export function ChurchToday() {
   const { lang, t } = useT();
-  const [day, setDay] = useState<ChurchDay | null>(null);
-  useEffect(() => setDay(churchDay(new Date())), []);
+  const today = useAddisDay();
+  const day = useMemo(() => (today ? churchDayFromDay(today) : null), [today]);
   if (!day) return <div className="min-h-[88px]" aria-hidden />;
 
   const c = t.churchDay;

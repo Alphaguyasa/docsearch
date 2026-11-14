@@ -35,3 +35,14 @@ export function lentReading(day: number, readable: readonly { id: string }[]): s
   const list = [...JOURNEY, ...rest];
   return list[(day - 1) % list.length];
 }
+
+/** The days this reader has marked read, from what their browser kept. */
+export function journeyDone(raw: string | null | undefined): Set<string> {
+  try {
+    const saved = JSON.parse(raw ?? "[]");
+    if (Array.isArray(saved)) return new Set(saved.filter((id) => JOURNEY.includes(id)));
+  } catch {
+    /* damaged entry: start fresh */
+  }
+  return new Set();
+}

@@ -19,14 +19,16 @@ test("eslint and @eslint/js are on the same major, with react-hooks 7", () => {
   assert.equal(major(dev["eslint-plugin-react-hooks"]), 7);
 });
 
-test("hook mistakes are still errors, and only three compiler rules are off", async () => {
+test("hook mistakes are errors, and every React Compiler rule is on", async () => {
   const eslint = new ESLint();
   const code = [
     'import { useEffect, useState } from "react";',
     "export function A({ on }: { on: boolean }) {",
     "  if (on) useState(0);",
     "  const [n] = useState(1);",
+    "  const [m, setM] = useState(0);",
     "  useEffect(() => console.log(n), []);",
+    "  useEffect(() => setM(m + 1), [m]);",
     "  return null;",
     "}",
   ].join("\n");
@@ -34,12 +36,13 @@ test("hook mistakes are still errors, and only three compiler rules are off", as
   const rules = result.messages.map((m) => m.ruleId);
   assert.ok(rules.includes("react-hooks/rules-of-hooks"), JSON.stringify(rules));
   assert.ok(rules.includes("react-hooks/exhaustive-deps"), JSON.stringify(rules));
+  assert.ok(rules.includes("react-hooks/set-state-in-effect"), JSON.stringify(rules));
 
   const config = await eslint.calculateConfigForFile("src/app/page.tsx");
   const off = Object.entries(config.rules ?? {})
     .filter(([name, setting]) => name.startsWith("react-hooks/") && [0, "off"].includes(Array.isArray(setting) ? setting[0] : setting))
     .map(([name]) => name)
     .sort();
-  assert.deepEqual(off, ["react-hooks/set-state-in-effect"]);
+  assert.deepEqual(off, []);
   assert.ok(config.rules?.["react-hooks/immutability"], "the other compiler rules are on");
 });

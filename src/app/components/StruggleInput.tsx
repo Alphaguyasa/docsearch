@@ -25,12 +25,10 @@ const MAX = 1000;
  * while the box is empty and not focused, and never under reduced motion.
  */
 function useWhisper(active: boolean, WHISPERS: string[]): string {
-  const [text, setText] = useState(WHISPERS[0]);
+  // null: not typing, so the first line shows whole, in the current language.
+  const [text, setText] = useState<string | null>(null);
   useEffect(() => {
-    if (!active || prefersCalm()) {
-      setText(WHISPERS[0]);
-      return;
-    }
+    if (!active || prefersCalm()) return;
     let line = 0;
     let i = 0;
     let erasing = false;
@@ -59,9 +57,12 @@ function useWhisper(active: boolean, WHISPERS: string[]): string {
       }
     };
     timer = window.setTimeout(tick, 900);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      setText(null);
+    };
   }, [active, WHISPERS]);
-  return text;
+  return active && text !== null ? text : WHISPERS[0];
 }
 
 /**

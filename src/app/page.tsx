@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { TRADITION_KEY, TRADITION_OPTIONS, type TraditionChoice } from "@/app/traditions";
 import type { UiSource } from "@/app/types";
 import { isSearchErrorCode, parseSearchStream, type CrisisPayload, type FigureSummary } from "@/lib/search-stream";
 import { peopleFor } from "@/lib/scripture/people-for";
-import { DEFAULT_TRADITION, filterFor, savedChoice } from "@/lib/scripture/tradition-choice";
+import { filterFor, savedChoice } from "@/lib/scripture/tradition-choice";
+import { useStored, writeStored } from "./stored";
 import { crisisResponse, phraseCheck } from "@/lib/scripture/safety";
 import { textLang } from "@/lib/script-lang";
 
@@ -42,7 +43,6 @@ function extractCited(text: string): number[] {
 export default function Home() {
   const { lang, t } = useT();
   const [question, setQuestion] = useState("");
-  const [tradition, setTradition] = useState<TraditionChoice>(DEFAULT_TRADITION);
   const [status, setStatus] = useState<Status>("idle");
   const [sources, setSources] = useState<UiSource[]>([]);
   const [figures, setFigures] = useState<FigureSummary[]>([]);
@@ -56,19 +56,14 @@ export default function Home() {
   const [asked, setAsked] = useState("");
   const results = useRef<HTMLDivElement>(null);
 
-  // Remember the reader's church on this device only.
-  useEffect(() => {
-    try {
-      // The old "all", or a choice the picker no longer offers, falls back to the default.
-      const offered = TRADITION_OPTIONS.map((o) => o.value);
-      setTradition(savedChoice(localStorage.getItem(TRADITION_KEY), offered));
-    } catch {}
-  }, []);
+  // Remember the reader's church on this device only. The old "all", or a
+  // choice the picker no longer offers, falls back to the default.
+  const tradition = savedChoice(
+    useStored(TRADITION_KEY),
+    TRADITION_OPTIONS.map((o) => o.value),
+  );
   function chooseTradition(t: TraditionChoice) {
-    setTradition(t);
-    try {
-      localStorage.setItem(TRADITION_KEY, t);
-    } catch {}
+    writeStored(TRADITION_KEY, t);
   }
 
   const busy = status === "loading" || status === "streaming";

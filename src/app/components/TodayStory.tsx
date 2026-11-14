@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { personOfTheDay } from "@/lib/scripture/today";
+import { personOfDay } from "@/lib/scripture/today";
 import { FIGURES, type Figure } from "@/lib/scripture/figures";
 
 import { artFor } from "../art";
@@ -13,6 +13,7 @@ import { ArrowRight } from "./Icons";
 import { SymbolPlate } from "./SymbolPlate";
 import { useT } from "../i18n/client";
 import { figureText } from "../i18n/dict";
+import { useAddisDay } from "../use-day";
 
 /**
  * One person a day, the same for everyone (the day turns in Addis Ababa).
@@ -21,18 +22,19 @@ import { figureText } from "../i18n/dict";
  */
 export function TodayStory() {
   const { lang, t } = useT();
-  const [f, setF] = useState<Figure | null>(null);
+  const today = useAddisDay();
+  const [posted, setPosted] = useState<Figure | null>(null);
   useEffect(() => {
-    setF(personOfTheDay(new Date()));
     // The channel's pick wins, so the site agrees with the morning post.
     fetch("/api/today")
       .then((r) => r.json())
       .then(({ id }: { id: string | null }) => {
-        const posted = FIGURES.find((x) => x.id === id);
-        if (posted) setF(posted);
+        const found = FIGURES.find((x) => x.id === id);
+        if (found) setPosted(found);
       })
       .catch(() => {});
   }, []);
+  const f = posted ?? (today ? personOfDay(today) : null);
 
   return (
     <section aria-labelledby="today-heading" className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">

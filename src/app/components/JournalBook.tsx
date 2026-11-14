@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { ethiopianFromDay } from "@/lib/ethiopian-calendar";
 import { PRAYERS, type Prayer } from "@/lib/scripture/prayers";
-import { addisDay } from "@/lib/scripture/today";
 
 import {
-  EMPTY_JOURNAL,
   JOURNAL_KEY,
   addEntry,
   begin,
@@ -21,39 +19,18 @@ import {
   type Journal,
 } from "../journal-store";
 import { useT } from "../i18n/client";
+import { readStored, useStored, writeStored } from "../stored";
+import { useAddisDay } from "../use-day";
 import { Lock } from "./Icons";
 
-/** The journal in this browser's storage; null until read after mount. */
+/** The journal in this browser's storage; null until read after hydration. */
 function useJournal() {
-  const [j, setJ] = useState<Journal | null>(null);
-  useEffect(() => {
-    let saved: string | null = null;
-    try {
-      saved = localStorage.getItem(JOURNAL_KEY);
-    } catch {
-      /* private mode or blocked storage: an empty journal that won't be kept */
-    }
-    setJ(parseJournal(saved));
-  }, []);
+  const raw = useStored(JOURNAL_KEY);
+  const j = useMemo(() => (raw === undefined ? null : parseJournal(raw)), [raw]);
   const update = useCallback((f: (j: Journal) => Journal) => {
-    setJ((prev) => {
-      const next = f(prev ?? EMPTY_JOURNAL);
-      try {
-        localStorage.setItem(JOURNAL_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+    writeStored(JOURNAL_KEY, JSON.stringify(f(parseJournal(readStored(JOURNAL_KEY)))));
   }, []);
-  const erase = useCallback(() => {
-    try {
-      localStorage.removeItem(JOURNAL_KEY);
-    } catch {
-      /* ignore */
-    }
-    setJ(EMPTY_JOURNAL);
-  }, []);
+  const erase = useCallback(() => writeStored(JOURNAL_KEY, null), []);
   return { j, update, erase };
 }
 
@@ -68,12 +45,11 @@ export function JournalBook() {
   const tj = t.journal;
   const c = t.churchDay;
   const { j, update, erase } = useJournal();
-  const [today, setToday] = useState(0);
+  const today = useAddisDay();
   const [asking, setAsking] = useState<"fell" | "erase" | null>(null);
   const [justFell, setJustFell] = useState(false);
   const [draft, setDraft] = useState("");
   const [prayerId, setPrayerId] = useState<Prayer["id"]>("psalm51");
-  useEffect(() => setToday(addisDay(new Date())), []);
 
   const ethDate = (day: number) => {
     const d = ethiopianFromDay(day);

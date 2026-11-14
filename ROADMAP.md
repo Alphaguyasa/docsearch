@@ -25,12 +25,6 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
 32. **[P3, M] TypeScript 7** (the last toolchain major; vitest 5 done 2026-11-03,
     ESLint 10 done 2026-11-04). 2026-11-05: TypeScript 7.0.2 is on npm. Waits on typescript-eslint, whose peer range is still
     `>=4.8.4 <6.1.0` (8.72.1). Read the migration guide first; dev-only.
-51. **[P3, M] Turn on the last React Compiler lint rule left off** in eslint.config.mjs
-    (react-hooks 7): `set-state-in-effect` (10 findings: localStorage and URL state
-    read on mount in page.tsx and the person/story pages). `purity` and `refs` are done.
-    The fix must keep the behaviour (no flash of the wrong church or language on load).
-    Check in a browser under `next start`, EN and AM.
-    tests/eslint-config.test.ts lists the rules that are off; update it when it turns on.
 47. **[P3, S] Dev-only advisory GHSA-g3hv-75wg-m249** (minimatch <11.0.1, moderate,
     DoS via glob patterns) through eslint 9 and typescript-eslint. No fixed release
     in their ranges (ESLint 10 still uses minimatch 10), and `npm audit --omit=dev`
@@ -39,6 +33,8 @@ Last replan: 2026-11-05 (light: items 52-54 from npm outdated and the item 49 wo
     under ESLint 10.14 and typescript-eslint 8.72.
 
 ## Done
+
+- 2026-11-14: Item 51 (`set-state-in-effect`). The last React Compiler rule is on, so every hooks rule now runs. Values kept in the reader's browser (their church, the 40-day journey, the journal) are read with `useSyncExternalStore` through `src/app/stored.ts` instead of being copied into state by an effect; if storage is blocked or full, a change is kept in memory for the rest of the visit. Today's day number in Addis Ababa comes from `useAddisDay` (src/app/use-day.ts), read on the reader's clock after hydration and again when they come back to the tab, for the church day, the person of the day and the journal. The header showing again on a new page and "more passages" opening for a highlighted one are now adjusted while rendering; the people filter's count comes from the chip counts; the typing placeholder resets in its effect's cleanup. tests/stored.test.ts (5) and the lint config test. Lint, typecheck, npm test 431/431, vitest 339/339, build. Checked in Chromium under `next start`, EN and AM: a saved church is restored and a new choice survives a reload, the placeholder types and stops on focus, the journal begins, counts days and marks a prayer without a reload, the journey moves on to day 2, the people chips show the right numbers, and there are no console or hydration errors.
 
 - 2026-11-09: In-range patch updates, lockfile only: @anthropic-ai/sdk 1.6.0, tailwindcss and @tailwindcss/postcss 4.3.5. Lint, typecheck, npm test 426/426, vitest 339/339 and build pass; the home page renders the same under `next start`.
 
