@@ -26,8 +26,13 @@ export function addisHour(date: Date): number {
 }
 
 export function personOfTheDay(date: Date, all: Figure[] = FIGURES): Figure {
+  return personOfDay(addisDay(date), all);
+}
+
+/** The person for a day number from addisDay. */
+export function personOfDay(day: number, all: Figure[] = FIGURES): Figure {
   const readable = all
     .filter((f) => f.passages.some((p) => p.sourceId !== "pending"))
     .sort((a, b) => hash(a.id) - hash(b.id) || a.id.localeCompare(b.id));
-  return readable[addisDay(date) % readable.length];
+  return readable[day % readable.length];
 }

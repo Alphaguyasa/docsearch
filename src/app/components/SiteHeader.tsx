@@ -35,8 +35,13 @@ export function SiteHeader({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // A new page always starts with the bar showing.
-  useEffect(() => setHidden(false), [path]);
+  // A new page always starts with the bar showing (adjusted while rendering,
+  // so the new page never paints with the bar still tucked away).
+  const [shownFor, setShownFor] = useState(path);
+  if (shownFor !== path) {
+    setShownFor(path);
+    setHidden(false);
+  }
 
   // Let bars pinned beneath this one (.below-nav) follow it up and down.
   useEffect(() => {

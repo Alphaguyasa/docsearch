@@ -24,20 +24,15 @@ export function PeopleFilter({
 }) {
   const [active, setActive] = useState("all");
   const { t } = useT();
-  const [shown, setShown] = useState(total);
+  const shown = active === "all" ? total : (counts[active] ?? 0);
   const list = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let n = 0;
     list.current?.querySelectorAll<HTMLElement>("[data-groups]").forEach((el) => {
       const match = active === "all" || el.dataset.groups!.split(" ").includes(active);
       el.hidden = !match;
-      if (match) {
-        n++;
-        el.classList.add("is-shown");
-      }
+      if (match) el.classList.add("is-shown");
     });
-    setShown(n);
   }, [active]);
 
   // Same pill as the church picker: a thin ring at rest, gilt when chosen.

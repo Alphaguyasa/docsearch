@@ -1,36 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 import { FIGURES } from "@/lib/scripture/figures";
 
-import { JOURNEY, JOURNEY_KEY, journeyDay } from "../journey";
+import { JOURNEY, JOURNEY_KEY, journeyDay, journeyDone } from "../journey";
+import { readStored, useStored, writeStored } from "../stored";
 import { useT } from "../i18n/client";
 import { figureText } from "../i18n/dict";
 import { ArrowRight } from "./Icons";
 
 /** Which days this reader has marked read — kept only in their own browser. */
 function useJourney() {
-  const [done, setDone] = useState<Set<string>>(new Set());
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(JOURNEY_KEY) ?? "[]");
-      if (Array.isArray(saved)) setDone(new Set(saved.filter((id) => JOURNEY.includes(id))));
-    } catch {
-      /* private mode or blocked storage: start fresh */
-    }
-  }, []);
+  const raw = useStored(JOURNEY_KEY);
+  const done = useMemo(() => journeyDone(raw), [raw]);
   const mark = useCallback((id: string) => {
-    setDone((prev) => {
-      const next = new Set(prev).add(id);
-      try {
-        localStorage.setItem(JOURNEY_KEY, JSON.stringify([...next]));
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+    const next = journeyDone(readStored(JOURNEY_KEY)).add(id);
+    writeStored(JOURNEY_KEY, JSON.stringify([...next]));
   }, []);
   return { done, mark };
 }
