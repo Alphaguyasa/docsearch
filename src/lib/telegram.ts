@@ -105,6 +105,7 @@ export const TEXT = {
     readStory: "Read their story",
     helped: "🙏 This helped",
     notReally: "Not really",
+    share: "📤 Share this story",
     thanks: "Thank you. It helps us find the right stories for others.",
     dailyOn:
       "🌅 Every morning you will get the story of the day here.\n\nOnly your chat number is kept, to send it — never anything you write. Send /stop to end it.",
@@ -152,6 +153,7 @@ export const TEXT = {
     readStory: "ታሪካቸውን ያንብቡ",
     helped: "🙏 ረድቶኛል",
     notReally: "ብዙም አይደለም",
+    share: "📤 ይህን ታሪክ ያጋሩ",
     thanks: "እናመሰግናለን። ለሌሎች ትክክለኛ ታሪኮችን እንድናገኝ ይረዳናል።",
     dailyOn:
       "🌅 በየማለዳው የዕለቱን ታሪክ እዚህ ያገኛሉ።\n\nየሚቀመጠው ለመላክ የሚያስፈልገው የውይይት ቁጥርዎ ብቻ ነው — የሚጽፉት በፍጹም አይቀመጥም። ለማቆም /stop ይላኩ።",
@@ -339,24 +341,28 @@ export async function setCommands(token: string): Promise<void> {
  * Feedback buttons carry what the story used in Telegram's 64-byte
  * callback_data: "fb|<1 or 0>|<lang>|<figure positions>|<tags>". People are
  * encoded by their position in the seed list, which only ever grows at the end.
+ *
+ * A second row, "Share this story", opens Telegram's chat picker with the
+ * bot's inline search already holding the first person's name, so the reader
+ * sends that person's story card, never their own words. It is left out when
+ * no readable person is in the answer (inline search would not offer them).
  */
 export function feedbackKeyboard(result: Pick<SearchResult, "figures">, tags: string[], lang: BotLang) {
-  const figs = result.figures
-    .map((f) => FIGURES.findIndex((x) => x.id === f.id))
-    .filter((i) => i >= 0)
-    .join(".");
+  const positions = result.figures.map((f) => FIGURES.findIndex((x) => x.id === f.id)).filter((i) => i >= 0);
+  const figs = positions.join(".");
+  const first = positions.map((i) => FIGURES[i]).find((f) => f.passages.some((p) => p.sourceId !== "pending"));
   const data = (yes: boolean) => {
     const full = `fb|${yes ? 1 : 0}|${lang}|${figs}|${tags.join(".")}`;
     return full.length <= 64 ? full : `fb|${yes ? 1 : 0}|${lang}|${figs}|`;
   };
-  return {
-    inline_keyboard: [
-      [
-        { text: TEXT[lang].helped, callback_data: data(true) },
-        { text: TEXT[lang].notReally, callback_data: data(false) },
-      ],
-    ],
-  };
+  const feedback = [
+    { text: TEXT[lang].helped, callback_data: data(true) },
+    { text: TEXT[lang].notReally, callback_data: data(false) },
+  ];
+  const share = first ? [[{ text: TEXT[lang].share, switch_inline_query: figureText(lang, first).name }]] : [];
+  // A tuple, so row 0 keeps its callback_data type for callers.
+  const inline_keyboard: [typeof feedback, ...typeof share] = [feedback, ...share];
+  return { inline_keyboard };
 }
 
 export function parseFeedbackData(
